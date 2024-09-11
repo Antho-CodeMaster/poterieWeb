@@ -64,6 +64,9 @@
                             <h1>Hamid was here even more</h1>
                         </strong>
                     </div>
+                    <div>
+                        Nicola is still here, they forgot him
+                    </div>
                 </div>
             </div>
         </div>
