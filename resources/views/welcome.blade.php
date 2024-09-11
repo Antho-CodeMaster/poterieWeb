@@ -60,8 +60,8 @@
                         </strong>
                     </div>
                     <div>
-                        <strong>
-                            <h1>Hamid was here even more</h1>
+                        <strong class="text-[32px]">
+                            Hamid was here even more
                         </strong>
                     </div>
                     <div>
