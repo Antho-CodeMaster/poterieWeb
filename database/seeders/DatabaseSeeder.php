@@ -38,5 +38,10 @@ class DatabaseSeeder extends Seeder
             'password' => 'poterie'
         ]);
 
+        User::factory()->create([
+            'name' => 'Hamid Adelyar',
+            'email' => 'Hamid_adelyar@hotmail.com',
+            'password' => 'poterie'
+        ]);
     }
 }
