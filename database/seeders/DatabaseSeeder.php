@@ -30,6 +30,13 @@ class DatabaseSeeder extends Seeder
             'name' => 'Nicola Filiatreault',
             'email' => 'nicolafiliatreault@gmail.com',
             'password' => 'despot'
-        ])
+        ]);
+
+        User::factory()->create([
+            'name' => 'Anthony Samson',
+            'email' => 'lambdawavefunction@gmail.com',
+            'password' => 'poterie'
+        ]);
+
     }
 }
