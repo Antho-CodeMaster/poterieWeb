@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class QuestionSecuriteSeeder extends Seeder
 {
@@ -12,6 +13,8 @@ class QuestionSecuriteSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        DB::table('questions_securite')->insert([
+            'question' => 'Q. Test 1',
+        ]);
     }
 }
