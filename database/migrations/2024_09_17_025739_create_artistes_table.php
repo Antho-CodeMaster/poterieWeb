@@ -17,6 +17,7 @@ return new class extends Migration
             $table->bigInteger('id_user')->unsigned();
             $table->tinyInteger('id_theme')->unsigned();
             $table->string('nom_artiste')->nullable();
+            $table->string('path_photo_profil')->nullable();
             $table->boolean('is_etudiant');
             $table->string('description')->nullable();
             $table->char('couleur_banniere', 6);
