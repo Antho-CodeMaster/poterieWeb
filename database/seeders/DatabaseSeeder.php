@@ -15,8 +15,25 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         $this->call([
+            // Aucune dépendance externe : permanent
+            EtatArticleSeeder::class,
+            EtatTransactionSeeder::class,
+            EtatDemandeSeeder::class,
+            TypeDemandeSeeder::class,
+
+            // Aucune dépendance externe : temporaire
+            MotCleSeeder::class,
             QuestionSecuriteSeeder::class,
-            UserSeeder::class
+            VilleSeeder::class,
+            ThemeSeeder::class,
+            CompagnieLivraisonSeeder::class,
+
+            // Dépendances externes
+            UserSeeder::class,
+            ModerateurSeeder::class,
+            ArtisteSeeder::class,
+            ArticleSeeder::class,
+            DemandeSeeder::class
             ]);
     }
 }
