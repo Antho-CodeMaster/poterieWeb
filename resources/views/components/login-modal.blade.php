@@ -54,7 +54,7 @@
                 </div>
 
                 <!-- Login Button -->
-                <div class="text-center mb-4">
+                <div class="text-center my-8">
                     <button class="w-64 mx-auto bg-[#444444] text-[#F4F0EC] py-2 rounded">
                         {{ __('Connexion') }}
                     </button>
@@ -67,20 +67,24 @@
                 </div>
 
                 <!-- Sign Up Button -->
-                <div class="text-center mb-4">
+                <div class="text-center my-8">
                     <button class="w-64 mx-auto bg-[#444444] text-[#F4F0EC] py-2 rounded">
                         {{ __('S’inscrire') }}
                     </button>
                 </div>
 
-                <!-- Placeholder for Google and Facebook Login -->
-                <div class="flex flex-col items-center space-y-4 mb-4">
-                    <div class="bg-gray-200 w-64 h-10 flex items-center justify-center">
-                        Google
-                    </div>
-                    <div class="bg-gray-200 w-64 h-10 flex items-center justify-center">
-                        Facebook
-                    </div>
+                <!-- Placeholder for Google -->
+                <div class="text-center my-8">
+                    <button class="w-64 mx-auto bg-[#444444] text-[#F4F0EC] py-2 rounded">
+                        {{ __('Google') }}
+                    </button>
+                </div>
+
+                <!-- Placeholder for Facebook -->
+                <div class="text-center mt-4">
+                    <button class="w-64 mx-auto bg-[#444444] text-[#F4F0EC] py-2 rounded">
+                        {{ __('Facebook') }}
+                    </button>
                 </div>
             </form>
         </div>
