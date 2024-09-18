@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('question_securites', function (Blueprint $table) {
-            $table->id();
+        Schema::create('compagnies_livraison', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->smallIncrements('id_compagnie');
             $table->timestamps();
+            $table->string('compagnie');
+            $table->string('url');
         });
     }
 
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('question_securites');
+        Schema::dropIfExists('compagnies_livraison');
     }
 };

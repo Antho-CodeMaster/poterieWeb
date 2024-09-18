@@ -12,8 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('commandes', function (Blueprint $table) {
-            $table->id();
+            $table->engine = 'InnoDB';
+            $table->bigIncrements('id_commande');
+            $table->bigInteger('id_user')->unsigned();
+            $table->dateTime('date');
+            $table->string('no_civique', 6);
+            $table->string('rue');
+            $table->char('code_postal', 6);
+            $table->smallInteger('id_ville')->unsigned();
             $table->timestamps();
+        });
+
+        Schema::table('commandes', function (Blueprint $table) {
+            $table->foreign('id_user')->references('id')->on('users');
+            $table->foreign('id_ville')->references('id_ville')->on('villes');
         });
     }
 

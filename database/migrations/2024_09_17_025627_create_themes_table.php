@@ -12,8 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('themes', function (Blueprint $table) {
-            $table->id();
+            $table->engine = 'InnoDB';
+            $table->tinyIncrements('id_theme');
             $table->timestamps();
+            $table->char('arriere_plan', 6);
+            $table->char('en_vedette', 6);
+            $table->char('article', 6);
+            $table->char('bouton', 6);
         });
     }
 

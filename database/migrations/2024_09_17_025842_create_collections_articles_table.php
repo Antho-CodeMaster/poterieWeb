@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('likes', function (Blueprint $table) {
+        Schema::create('collections_articles', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->bigInteger('id_user')->unsigned();
+            $table->bigInteger('id_collection')->unsigned();
             $table->bigInteger('id_article')->unsigned();
             $table->timestamps();
         });
 
-        Schema::table('likes', function (Blueprint $table) {
-            $table->foreign('id_user')->references('id')->on('users');
+        Schema::table('collections_articles', function (Blueprint $table) {
+            $table->foreign('id_collection')->references('id_collection')->on('collections');
             $table->foreign('id_article')->references('id_article')->on('articles');
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('likes');
+        Schema::dropIfExists('collections_articles');
     }
 };

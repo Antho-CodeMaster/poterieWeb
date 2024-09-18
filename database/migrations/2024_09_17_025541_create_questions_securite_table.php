@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('photo_identites', function (Blueprint $table) {
-            $table->id();
+        Schema::create('questions_securite', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->tinyIncrements('id_question');
             $table->timestamps();
+            $table->string('question');
         });
     }
 
@@ -22,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('photo_identites');
+        Schema::dropIfExists('questions_securite');
     }
 };

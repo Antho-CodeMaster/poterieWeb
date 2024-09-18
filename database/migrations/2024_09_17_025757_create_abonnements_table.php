@@ -12,8 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('abonnements', function (Blueprint $table) {
-            $table->id();
+            $table->engine = 'InnoDB';
+            $table->bigIncrements('id_abonnement');
+            $table->bigInteger('id_artiste')->unsigned();
+            $table->tinyInteger('id_etat')->unsigned();
+            $table->double('prix_paye');
+            $table->dateTime('date');
             $table->timestamps();
+        });
+
+        Schema::table('abonnements', function (Blueprint $table) {
+            $table->foreign('id_artiste')->references('id_artiste')->on('artistes');
+            $table->foreign('id_etat')->references('id_etat')->on('etats_abonnement');
         });
     }
 

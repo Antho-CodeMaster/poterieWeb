@@ -12,8 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('signalements', function (Blueprint $table) {
-            $table->id();
+            $table->engine = 'InnoDB';
+            $table->bigIncrements('id_signalement');
+            $table->bigInteger('id_user')->unsigned();
+            $table->bigInteger('id_article')->unsigned();
+            $table->dateTime('date');
+            $table->string('description');
             $table->timestamps();
+        });
+
+        Schema::table('signalements', function (Blueprint $table) {
+            $table->foreign('id_user')->references('id')->on('users');
+            $table->foreign('id_article')->references('id_article')->on('articles');
         });
     }
 

@@ -12,8 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('demandes', function (Blueprint $table) {
-            $table->id();
+            $table->engine = 'InnoDB';
+            $table->bigIncrements('id_demande');
+            $table->tinyInteger('id_type')->unsigned();
+            $table->tinyInteger('id_etat')->unsigned();
+            $table->bigInteger('id_user')->unsigned();
             $table->timestamps();
+            $table->dateTime('date');
+        });
+
+        Schema::table('demandes', function (Blueprint $table) {
+            $table->foreign('id_type')->references('id_type')->on('types_demande');
+            $table->foreign('id_etat')->references('id_etat')->on('etats_demande');
+            $table->foreign('id_user')->references('id')->on('users');
         });
     }
 

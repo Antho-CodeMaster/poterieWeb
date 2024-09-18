@@ -12,8 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('notifications', function (Blueprint $table) {
-            $table->id();
+            $table->engine = 'InnoDB';
+            $table->bigIncrements('id_notification');
+            $table->tinyInteger('id_type')->unsigned();
+            $table->bigInteger('id_user')->unsigned();
+            $table->dateTime('date');
+            $table->string('message');
+            $table->string('lien')->nullable();
+            $table->boolean('visible');
             $table->timestamps();
+        });
+
+        Schema::table('notifications', function (Blueprint $table) {
+            $table->foreign('id_type')->references('id_type')->on('types_notification');
+            $table->foreign('id_user')->references('id')->on('users');
         });
     }
 

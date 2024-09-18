@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('photo_articles', function (Blueprint $table) {
-            $table->id();
+        Schema::create('types_notification', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->tinyIncrements('id_type');
             $table->timestamps();
+            $table->string('description');
         });
     }
 
@@ -22,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('photo_articles');
+        Schema::dropIfExists('types_notification');
     }
 };

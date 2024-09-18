@@ -11,11 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('villes', function (Blueprint $table) {
+        Schema::create('photos_identite', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->smallIncrements('id_ville');
+            $table->bigIncrements('id_photo');
+            $table->bigInteger('id_demande')->unsigned();
+            $table->string('directory');
             $table->timestamps();
-            $table->string('ville', 38);
+        });
+
+        Schema::table('photos_identite', function (Blueprint $table) {
+            $table->foreign('id_demande')->references('id_demande')->on('demandes');
         });
     }
 
@@ -24,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('villes');
+        Schema::dropIfExists('photos_identite');
     }
 };

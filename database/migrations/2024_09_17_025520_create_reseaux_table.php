@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reseau_artistes', function (Blueprint $table) {
-            $table->id();
+        Schema::create('reseaux', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->smallIncrements('id_reseau');
             $table->timestamps();
+            $table->string('reseau', 32);
+            $table->string('url');
         });
     }
 
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reseau_artistes');
+        Schema::dropIfExists('reseaux');
     }
 };

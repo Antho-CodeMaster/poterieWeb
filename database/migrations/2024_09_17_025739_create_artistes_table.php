@@ -12,8 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('artistes', function (Blueprint $table) {
-            $table->id();
+            $table->engine = 'InnoDB';
+            $table->bigIncrements('id_artiste');
+            $table->bigInteger('id_user')->unsigned();
+            $table->tinyInteger('id_theme')->unsigned();
+            $table->string('nom_artiste')->nullable();
+            $table->boolean('is_etudiant');
+            $table->string('description')->nullable();
+            $table->char('couleur_banniere', 6);
             $table->timestamps();
+        });
+
+        Schema::table('artistes', function (Blueprint $table) {
+            $table->foreign('id_user')->references('id')->on('users');
+            $table->foreign('id_theme')->references('id_theme')->on('themes');
         });
     }
 

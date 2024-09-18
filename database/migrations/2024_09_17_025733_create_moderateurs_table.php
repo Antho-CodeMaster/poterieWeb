@@ -12,8 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('moderateurs', function (Blueprint $table) {
-            $table->id();
+            $table->engine = 'InnoDB';
+            $table->bigIncrements('id_moderateur');
+            $table->bigInteger('id_user')->unsigned();
+            $table->boolean('is_admin');
             $table->timestamps();
+        });
+
+        Schema::table('moderateurs', function (Blueprint $table) {
+            $table->foreign('id_user')->references('id')->on('users');
         });
     }
 

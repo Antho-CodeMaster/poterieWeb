@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('follows', function (Blueprint $table) {
+        Schema::create('reseaux_artistes', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->bigInteger('id_user')->unsigned();
+            $table->smallInteger('id_reseau')->unsigned();
             $table->bigInteger('id_artiste')->unsigned();
+            $table->string('username');
             $table->timestamps();
         });
 
-        Schema::table('follows', function (Blueprint $table) {
-            $table->foreign('id_user')->references('id')->on('users');
+        Schema::table('reseaux_artistes', function (Blueprint $table) {
+            $table->foreign('id_reseau')->references('id_reseau')->on('reseaux');
             $table->foreign('id_artiste')->references('id_artiste')->on('artistes');
         });
     }
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('follows');
+        Schema::dropIfExists('reseaux_artistes');
     }
 };

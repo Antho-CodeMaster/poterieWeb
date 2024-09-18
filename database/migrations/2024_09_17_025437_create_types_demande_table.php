@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('article_non_recus', function (Blueprint $table) {
-            $table->id();
+        Schema::create('types_demande', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->tinyIncrements('id_type');
             $table->timestamps();
+            $table->string('type');
         });
     }
 
@@ -22,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('article_non_recus');
+        Schema::dropIfExists('types_demande');
     }
 };
