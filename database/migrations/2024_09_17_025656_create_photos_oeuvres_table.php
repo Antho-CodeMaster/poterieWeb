@@ -15,7 +15,7 @@ return new class extends Migration
             $table->engine = 'InnoDB';
             $table->bigIncrements('id_photo');
             $table->bigInteger('id_demande')->unsigned();
-            $table->string('directory');
+            $table->string('path');
             $table->timestamps();
         });
 
