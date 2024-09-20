@@ -36,7 +36,8 @@ class DatabaseSeeder extends Seeder
             ArticleSeeder::class,
             DemandeSeeder::class,
             SignalementSeeder::class,
-            LikeSeeder::class
+            LikeSeeder::class,
+            FollowSeeder::class
             ]);
     }
 }
