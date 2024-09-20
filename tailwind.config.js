@@ -13,8 +13,13 @@ export default {
         extend: {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
-                titre: ['"Arial"'],
+                titre: ['"Newsreader"'],
             },
+            colors: {
+                'darkGrey': '#444444',
+                'vert' : '009b4d',
+                'beige' : 'f4f0ec',
+              },
         },
     },
 
