@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             EtatTransactionSeeder::class,
             EtatDemandeSeeder::class,
             TypeDemandeSeeder::class,
+            TypeNotificationSeeder::class,
 
             // Aucune dépendance externe : temporaire
             MotCleSeeder::class,
