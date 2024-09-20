@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             VilleSeeder::class,
             ThemeSeeder::class,
             CompagnieLivraisonSeeder::class,
+            ReseauSeeder::class,
 
             // Dépendances externes
             UserSeeder::class,
@@ -37,7 +38,8 @@ class DatabaseSeeder extends Seeder
             DemandeSeeder::class,
             SignalementSeeder::class,
             LikeSeeder::class,
-            FollowSeeder::class
+            FollowSeeder::class,
+            ReseauArtisteSeeder::class
             ]);
     }
 }
