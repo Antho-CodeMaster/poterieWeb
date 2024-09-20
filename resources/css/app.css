@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Classe pour styliser un titre */
+.titre {
+    @apply text-titre font-titre text-beige;
+}
