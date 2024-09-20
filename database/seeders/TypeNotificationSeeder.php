@@ -14,15 +14,15 @@ class TypeNotificationSeeder extends Seeder
     public function run(): void
     {
         DB::table('types_notification')->insert([
-            'type' => '[1] a publié un nouvel article!',
+            'description' => '[1] a publié un nouvel article!',
         ]);
 
         DB::table('types_notification')->insert([
-            'type' => 'ATTENTION: un administrateur vous a averti pour la raison suivante: [1]',
+            'description' => 'ATTENTION: un administrateur vous a averti pour la raison suivante: [1]',
         ]);
 
         DB::table('types_notification')->insert([
-            'type' => 'Votre commande est prête! Cliquez pour visualiser la commande.',
+            'description' => 'Votre commande est prête! Cliquez pour visualiser la commande.',
         ]);
     }
 }

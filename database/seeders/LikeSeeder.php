@@ -18,21 +18,26 @@ class LikeSeeder extends Seeder
             while (true)
             {
                 $user = random_int(20, 29);
-                $post = random_int(0, 50);
+                $article = random_int(1, 50);
 
+                // Si le user n'avait rien liké avant
                 if(!in_array($user, $arr))
                 {
-                    array_push($arr, $user);
-                    array_push($arr[$user], $post);
+                    $arr[$user] = [];
+                    array_push($arr[$user], $article);
+                    break;
                 }
 
-                else if($arr[$user] != $post)
-                    array_push($arr[$user], $post);
+                // Si le user avait déjà liké qqch, mais
+                else if(!in_array($article, $arr[$user]))
+                {
+                    array_push($arr[$user], $article);
                     break;
+                }
             }
             DB::table('likes')->insert([
                 'id_user' => $user,
-                'id_article' => $post
+                'id_article' => $article
             ]);
         }
     }

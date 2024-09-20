@@ -18,17 +18,20 @@ class FollowSeeder extends Seeder
             while (true)
             {
                 $user = random_int(20, 29);
-                $artiste = random_int(0, 10);
+                $artiste = random_int(1, 10);
 
                 if(!in_array($user, $arr))
                 {
-                    array_push($arr, $user);
-                    array_push($arr[$user], $artiste);
-                }
-
-                else if($arr[$user] != $artiste)
+                    $arr[$user] = [];
                     array_push($arr[$user], $artiste);
                     break;
+                }
+
+                else if(!in_array($artiste, $arr[$user]))
+                {
+                    array_push($arr[$user], $artiste);
+                    break;
+                }
             }
             DB::table('follows')->insert([
                 'id_user' => $user,
