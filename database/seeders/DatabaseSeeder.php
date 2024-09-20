@@ -34,7 +34,8 @@ class DatabaseSeeder extends Seeder
             ModerateurSeeder::class,
             ArtisteSeeder::class,
             ArticleSeeder::class,
-            DemandeSeeder::class
+            DemandeSeeder::class,
+            SignalementSeeder::class
             ]);
     }
 }
