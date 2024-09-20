@@ -64,7 +64,7 @@
 
                 <!-- Sign Up Button that closes Login Modal and opens Register Modal -->
                 <div class="text-center my-8">
-                    <button @click="$dispatch('close-login-modal'); $dispatch('open-register-modal'); console.log('Dispatching open-register-modal')" class="w-64 mx-auto bg-[#444444] text-[#F4F0EC] py-2 rounded">
+                    <button @click.stop="openLogin = false; $dispatch('open-register-modal'); console.log('Dispatching open-register-modal')" class="w-64 mx-auto bg-[#444444] text-[#F4F0EC] py-2 rounded">
                         {{ __('S’inscrire') }}
                     </button>
                 </div>

@@ -55,8 +55,9 @@
                 @else
                     <!-- Guest User: Show Login Modal Trigger -->
                     <div x-data="{ open: false }">
-                        <!-- Include Login Modal -->
+                        <!-- Include Login & Register Modal -->
                         @include('components.login-modal')
+                        @include('components.register-modal')
                     </div>
                 @endauth
             </div>
