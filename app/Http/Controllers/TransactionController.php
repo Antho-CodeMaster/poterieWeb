@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
+use App\Models\Commande;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
@@ -24,11 +26,21 @@ class TransactionController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a new transaction
+     * User connecté : $request['id_commande'] (à récupérer avec CommandeController->getPanier)
      */
     public function store(Request $request)
     {
-        //
+        #Créé une entrée transaction pour l'utilisateur connecté
+        if(Auth::check()){
+            Transaction::create([
+                'id_commande' => $request->input('id_commande'),
+                'id_user' => Auth::id(),
+                'quantite' => 1
+            ]);
+
+            return response()->json(['message'=>'Article ajouté a la commande avec succes'], 200);
+        }
     }
 
     /**

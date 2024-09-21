@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use App\Models\Commande;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CommandeController extends Controller
 {
@@ -12,7 +15,7 @@ class CommandeController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
@@ -62,4 +65,33 @@ class CommandeController extends Controller
     {
         //
     }
+
+    /**
+     * Get the panier if it exists or create an empty one
+     * for now, ONLY connected User
+     */
+    public function getPanier(){
+        #returns the panier of the connected user
+        #might user Auth::check later
+        return Commande::where('id_user', '=', Auth::id())->where('is_panier', '=', true)->firstOrCreate(['is_panier' => true]);
+    }
+
+    /**
+     * Montre le panier et les articles contenu
+     */
+    public function showPanier(){
+
+        #Montre le panier du user connecté
+        if(Auth::check()){
+            $commande = $this->getPanier();
+
+            $articles = $commande->transactions->article->get();
+
+
+            #$articles = Transaction::with('article')->where('id_commande', '=', $commande->id_commande);
+            #$commande = Commande::with('transactions'.'article')->where('id_user', '=', Auth::id())->where('is_panier', '=', true)->firstOrCreate(['is_panier' => true]);
+        }
+    }
+
+
 }
