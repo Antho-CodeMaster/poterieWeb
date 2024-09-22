@@ -7,6 +7,7 @@ use App\Models\Commande;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 
 class CommandeController extends Controller
 {
@@ -70,24 +71,30 @@ class CommandeController extends Controller
      * Get the panier if it exists or create an empty one
      * for now, ONLY connected User
      */
-    public function getPanier(){
+    public function getPanier(Request $request){
         #returns the panier of the connected user
-        #might user Auth::check later
-        return Commande::where('id_user', '=', Auth::id())->where('is_panier', '=', true)->firstOrCreate(['is_panier' => true]);
+        if (Auth::check())
+            return Commande::where('id_user', '=', Auth::id())->where('is_panier', '=', true)->firstOrCreate(['is_panier' => true]);
+        else
+            return $request->cookie('panier');
+
     }
 
     /**
      * Montre le panier et les articles contenu
      */
-    public function showPanier(){
+    public function showPanier(Request $request){
 
         #Montre le panier du user connecté
         if(Auth::check()){
-            $commande = $this->getPanier();
+            $commande = $this->getPanier($request);
 
             $articles = $commande->transactions->article->get();
 
-
+            return view('commande/panier',
+                ['commande' => $commande,
+                        'articles' => $articles]
+            );
             #$articles = Transaction::with('article')->where('id_commande', '=', $commande->id_commande);
             #$commande = Commande::with('transactions'.'article')->where('id_user', '=', Auth::id())->where('is_panier', '=', true)->firstOrCreate(['is_panier' => true]);
         }

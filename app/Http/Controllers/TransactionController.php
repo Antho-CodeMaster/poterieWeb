@@ -60,11 +60,11 @@ class TransactionController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update la quantité d'article dans la transaction
      */
     public function update(Request $request, transaction $transaction)
     {
-        //
+
     }
 
     /**
@@ -73,5 +73,14 @@ class TransactionController extends Controller
     public function destroy(transaction $transaction)
     {
         //
+    }
+
+    /**
+     * Modifie la quantité d'article dans la transaction
+     */
+    public function updatequantite(Request $request, transaction $transaction){
+        if(Auth::check()){
+            $transaction->setAttribute('quantite', $request->input('quantite'));
+        }
     }
 }
