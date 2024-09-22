@@ -6,3 +6,7 @@
 .titre {
     @apply text-titre font-titre text-beige;
 }
+
+.smallText {
+    @apply text-footer font-small text-beige;
+}

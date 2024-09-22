@@ -14,6 +14,7 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
                 titre: ['"Newsreader"'],
+                small: ['"Arial"']
             },
             fontSize: {
                 titre: ['36px', {
@@ -21,6 +22,12 @@ export default {
                   letterSpacing: '0.2em',
                   fontWeight: 'bold',
                 }],
+
+                footer: ['12px', {
+                    lineHeight: '1rem',
+                    letterSpacing: '0em',
+                    fontWeight: 'medium',
+                  }],
             },
             colors: {
                 'darkGrey': '#444444',

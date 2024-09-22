@@ -21,7 +21,7 @@
         <div class="flex justify-end w-[225px] items-center mr-[16px]">
 
             {{-- Bouton Admin --}}
-            <a href="{{ route('decouverte') }}"  class="ml-[15px]">
+            <a href="{{ route('decouverte') }}"  class="ml-[15px] hover:bg-white-700">
                 <svg width="34" height="34" viewBox="0 0 78 78" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
                     <rect class="w-full h-full" rx="16" fill="#F4F0EC" />
