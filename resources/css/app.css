@@ -4,4 +4,13 @@
 
 [x-cloak] {
     display: none !important;
- }
+}
+
+/* Classe pour styliser un titre */
+.titre {
+    @apply text-titre font-titre text-beige;
+}
+
+.smallText {
+    @apply text-footer font-small text-beige;
+}
