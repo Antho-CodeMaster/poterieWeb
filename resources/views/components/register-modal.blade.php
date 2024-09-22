@@ -22,14 +22,14 @@
                 <!-- Email Address -->
                 <div class="mb-4 text-left">
                     <x-input-label for="email" :value="__('Courriel')" />
-                    <x-text-input id="r-email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
+                    <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
                     <x-input-error :messages="$errors->get('email')" class="mt-2" />
                 </div>
 
                 <!-- Password -->
                 <div class="mb-4 text-left">
                     <x-input-label for="password" :value="__('Mot de passe')" />
-                    <x-text-input id="r-password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
+                    <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" minlength="8" required autocomplete="new-password" />
                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
                 </div>
 

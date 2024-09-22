@@ -33,10 +33,10 @@
                             </button>
                         </x-slot>
 
-                        <x-slot name="content">
-                            <div>{{ Auth::user()->name }}</div>
+                        <x-slot name="content"> <!-- Changer couleur pour DARKGRAY et BEIGE via preset colors -->
+                            <div class="bg-[#444444] text-[#f4f0ec] rounded-t-lg px-3 text-lg font-bold shadow-2xl">{{ Auth::user()->name }}</div>
 
-                            <x-dropdown-link :href="route('profile.edit')">
+                            <x-dropdown-link :href="route('profile.edit')" class="hover:underline">
                                 {{ __('Paramètres du compte') }}
                             </x-dropdown-link>
 
@@ -44,7 +44,7 @@
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
 
-                                <x-dropdown-link :href="route('logout')"
+                                <x-dropdown-link :href="route('logout')" class="hover:underline"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
                                     {{ __('Se déconnecter') }}
