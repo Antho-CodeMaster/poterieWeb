@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Transaction;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -15,8 +17,38 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         $this->call([
+            // Aucune dépendance externe : permanent
+            EtatArticleSeeder::class,
+            EtatTransactionSeeder::class,
+            EtatDemandeSeeder::class,
+            TypeDemandeSeeder::class,
+            TypeNotificationSeeder::class,
+
+            // Aucune dépendance externe : temporaire
+            MotCleSeeder::class,
             QuestionSecuriteSeeder::class,
-            UserSeeder::class
+            VilleSeeder::class,
+            ThemeSeeder::class,
+            CompagnieLivraisonSeeder::class,
+            ReseauSeeder::class,
+
+            // Dépendances externes
+            UserSeeder::class,
+            ModerateurSeeder::class,
+            ArtisteSeeder::class,
+            ArticleSeeder::class,
+            DemandeSeeder::class,
+            SignalementSeeder::class,
+            LikeSeeder::class,
+            FollowSeeder::class,
+            ReseauArtisteSeeder::class,
+            MotCleArticleSeeder::class,
+            PhotoArticleSeeder::class,
+            CommandeSeeder::class,
+            TransactionSeeder::class,
+            PhotoOeuvreSeeder::class,
+            PhotoIdentiteSeeder::class,
+            PhotoLivraisonSeeder::class
             ]);
     }
 }
