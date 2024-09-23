@@ -45,7 +45,9 @@ class DatabaseSeeder extends Seeder
             MotCleArticleSeeder::class,
             PhotoArticleSeeder::class,
             CommandeSeeder::class,
-            TransactionSeeder::class
+            TransactionSeeder::class,
+            PhotoOeuvreSeeder::class,
+
             ]);
     }
 }
