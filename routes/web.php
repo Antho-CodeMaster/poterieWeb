@@ -1,11 +1,18 @@
 <?php
 
+use App\Http\Controllers\ArtisteController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('decouverte');
 });
+
+/* Route relié au kiosque */
+Route::controller(ArtisteController::class)->group(function(){
+    Route::post('/kiosque/{id_artiste}', 'show')->name('kiosque');
+});
+
 
 Route::get('/decouverte', function () {
     return view('decouverte');

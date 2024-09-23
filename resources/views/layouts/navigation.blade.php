@@ -37,7 +37,7 @@
             </a>
 
             {{-- Bouton kiosque omg le svg est big update: j'ai géré la calibration --}}
-            <a href="{{ route('decouverte') }}" class="ml-[15px]">
+            <a href="{{ route('kiosque', 1) }}" class="ml-[15px]">
                 <svg width="34" height="34" viewBox="0 0 78 78" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
                     <rect class="w-full h-full" rx="16" fill="#F4F0EC" />

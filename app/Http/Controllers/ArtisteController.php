@@ -34,9 +34,13 @@ class ArtisteController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(artiste $artiste)
+    public function show(int $id_artiste)
     {
-        //
+        $artiste = Artiste::where('id_artiste', $id_artiste);
+
+        return view('kiosque.kiosque', [
+            'artiste' => $artiste
+        ]);
     }
 
     /**
