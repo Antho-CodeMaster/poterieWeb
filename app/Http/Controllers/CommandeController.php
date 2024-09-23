@@ -101,10 +101,9 @@ class CommandeController extends Controller
 
         }
 
-        return view('commande/panier',
+        return view( 'commande/panier',
                 ['commande' => $commande,
-                        'articles' => $articles]
-            );
+                        'articles' => $articles]);
     }
 
 
