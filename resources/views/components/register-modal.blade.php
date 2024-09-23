@@ -1,7 +1,7 @@
 <div x-cloak x-data="{ openRegister: false }" @open-register-modal.window="openRegister = true; console.log('Received open-register-modal event')">
     <!-- Register Modal -->
     <div x-show="openRegister" x-cloak class="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
-        <div @click.away="openRegister = false" class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
             <!-- Close Button -->
             <button @click="openRegister = false" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-5xl p-2">
                 &times;
