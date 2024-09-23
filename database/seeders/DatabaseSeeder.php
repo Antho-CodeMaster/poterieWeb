@@ -41,7 +41,9 @@ class DatabaseSeeder extends Seeder
             FollowSeeder::class,
             ReseauArtisteSeeder::class,
             MotCleArticleSeeder::class,
-            PhotoArticleSeeder::class
+            PhotoArticleSeeder::class,
+            CommandeSeeder::class,
+
             ]);
     }
 }
