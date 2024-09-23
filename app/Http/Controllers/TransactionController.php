@@ -28,6 +28,7 @@ class TransactionController extends Controller
     /**
      * Store a new transaction
      * User connecté : $request['id_commande'] (à récupérer avec CommandeController->getPanier)
+     * id_article nécessaire, quantité de 1. Modifiable dans un formulaire avec une autre fonction.
      */
     public function store(Request $request)
     {
@@ -36,10 +37,29 @@ class TransactionController extends Controller
             Transaction::create([
                 'id_commande' => $request->input('id_commande'),
                 'id_user' => Auth::id(),
+                'id_article' => $request->input('id_article'),
                 'quantite' => 1
             ]);
 
             return response()->json(['message'=>'Article ajouté a la commande avec succes'], 200);
+        }
+        #Créé un cookie qui store le panier si l'utilisateur n'est pas connecté
+        else{
+            #récupère le cookie déja existant (sinon on en créé un vide)
+            $panier = $request->cookie('panier',[]);
+
+            $id_article = $request->input('id_article');
+
+            $panier[$id_article] = [
+                'id_article' => $id_article,
+                'quantite' => 1
+            ];
+
+
+            #Update le cookie pour un 30j d'activité après avoir ajouté un article
+            $biscuit = cookie('panier',$panier, 60*24*30);
+
+            return response('Article ajouté au panier (biscuit)')->cookie($biscuit);
         }
     }
 
@@ -81,6 +101,12 @@ class TransactionController extends Controller
     public function updatequantite(Request $request, transaction $transaction){
         if(Auth::check()){
             $transaction->setAttribute('quantite', $request->input('quantite'));
+            return response()->json('Quantité changé avec succès',200);
+        }
+        else{
+            $biscuit = $request->cookie('panier');
+            $biscuit[$request->input('id_article')]['quantite'] = $request->input('quantite');
+            return response('quantite updaté')->cookie($biscuit);
         }
     }
 }

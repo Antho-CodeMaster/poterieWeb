@@ -69,14 +69,14 @@ class CommandeController extends Controller
 
     /**
      * Get the panier if it exists or create an empty one
-     * for now, ONLY connected User
+     * Same for disconnected users
      */
     public function getPanier(Request $request){
         #returns the panier of the connected user
         if (Auth::check())
             return Commande::where('id_user', '=', Auth::id())->where('is_panier', '=', true)->firstOrCreate(['is_panier' => true]);
         else
-            return $request->cookie('panier');
+            return $request->cookie('panier', []);
 
     }
 
@@ -85,19 +85,26 @@ class CommandeController extends Controller
      */
     public function showPanier(Request $request){
 
-        #Montre le panier du user connecté
+        #Prend les valeurs dans la bd si connecté ou dans le cookie si non connecté
         if(Auth::check()){
             $commande = $this->getPanier($request);
 
             $articles = $commande->transactions->article->get();
+        }
+        else{
+            $commande = $this->getPanier($request);
 
-            return view('commande/panier',
+            $articles = [];
+            foreach($commande as $id_article){
+                $articles += Article::where('id_article', '=', $id_article)->get();
+            }
+
+        }
+
+        return view('commande/panier',
                 ['commande' => $commande,
                         'articles' => $articles]
             );
-            #$articles = Transaction::with('article')->where('id_commande', '=', $commande->id_commande);
-            #$commande = Commande::with('transactions'.'article')->where('id_user', '=', Auth::id())->where('is_panier', '=', true)->firstOrCreate(['is_panier' => true]);
-        }
     }
 
 
