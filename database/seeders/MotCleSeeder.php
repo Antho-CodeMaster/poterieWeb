@@ -10,6 +10,7 @@ class MotCleSeeder extends Seeder
 {
     /**
      * Ces enregistrements sont à des fins de tests et peuvent être supprimés.
+     * Source: https://www.rimessolides.com/motscles.aspx?m=La+Poterie
      */
     public function run(): void
     {

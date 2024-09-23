@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class ModerateurSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Ces enregistrements sont à des fins de tests et peuvent être supprimés.
      */
     public function run(): void
     {

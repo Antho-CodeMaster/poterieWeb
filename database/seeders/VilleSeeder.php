@@ -10,6 +10,7 @@ class VilleSeeder extends Seeder
 {
     /**
      * Ces enregistrements sont à des fins de tests et peuvent être supprimés.
+     * Source: https://fr.wikipedia.org/wiki/Liste_des_villes_du_Qu%C3%A9bec
      */
     public function run(): void
     {

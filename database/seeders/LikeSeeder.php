@@ -15,6 +15,7 @@ class LikeSeeder extends Seeder
     {
         $arr = [];
         for($i = 0; $i < 20; $i++){
+            //Générer des paires user-articles à l'infini, et des conditions "break" seront appelées si les paires sont uniques.
             while (true)
             {
                 $user = random_int(20, 29);
@@ -28,7 +29,7 @@ class LikeSeeder extends Seeder
                     break;
                 }
 
-                // Si le user avait déjà liké qqch, mais
+                // Si le user avait déjà liké qqch, mais qu'il n'avait jamais liké l'article généré
                 else if(!in_array($article, $arr[$user]))
                 {
                     array_push($arr[$user], $article);
