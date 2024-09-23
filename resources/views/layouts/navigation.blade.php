@@ -68,67 +68,50 @@
                 </svg>
             </a>
 
-            {{-- Bouton profil --}}
+            <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center ml-[15px]">
-                <x-dropdown align="right" width="48">
-                    <x-slot name="trigger">
-                        <button class="flex item-center">
-                            <svg width="24" height="34" viewBox="0 0 34 44" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M2 36.2857V39.1429C2 39.9006 2.31607 40.6273 2.87868 41.1632C3.44129 41.699 4.20435 42 5 42H29C29.7956 42 30.5587 41.699 31.1213 41.1632C31.6839 40.6273 32 39.9006 32 39.1429V36.2857C32 34.0124 31.0518 31.8323 29.364 30.2248C27.6761 28.6173 25.3869 27.7143 23 27.7143H11C8.61305 27.7143 6.32387 28.6173 4.63604 30.2248C2.94821 31.8323 2 34.0124 2 36.2857ZM26 10.5714C26 12.8447 25.0518 15.0249 23.364 16.6323C21.6761 18.2398 19.3869 19.1429 17 19.1429C14.6131 19.1429 12.3239 18.2398 10.636 16.6323C8.94821 15.0249 8 12.8447 8 10.5714C8 8.29814 8.94821 6.11797 10.636 4.51051C12.3239 2.90306 14.6131 2 17 2C19.3869 2 21.6761 2.90306 23.364 4.51051C25.0518 6.11797 26 8.29814 26 10.5714Z"
-                                    stroke="#F4F0EC" stroke-width="4" />
-                            </svg>
-                        </button>
-                    </x-slot>
-                    <!-- Settings Dropdown -->
-                    <div class="hidden sm:flex sm:items-center sm:ms-6">
-                        @auth
-                            <!-- Authenticated User: Show Dropdown -->
-                            <x-dropdown align="right" width="48">
-                                <x-slot name="trigger">
-                                    <button
-                                        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                                        <div class="ms-1">
-                                            <svg width="24" height="34" viewBox="0 0 34 44" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M2 36.2857V39.1429C2 39.9006 2.31607 40.6273 2.87868 41.1632C3.44129 41.699 4.20435 42 5 42H29C29.7956 42 30.5587 41.699 31.1213 41.1632C31.6839 40.6273 32 39.9006 32 39.1429V36.2857C32 34.0124 31.0518 31.8323 29.364 30.2248C27.6761 28.6173 25.3869 27.7143 23 27.7143H11C8.61305 27.7143 6.32387 28.6173 4.63604 30.2248C2.94821 31.8323 2 34.0124 2 36.2857ZM26 10.5714C26 12.8447 25.0518 15.0249 23.364 16.6323C21.6761 18.2398 19.3869 19.1429 17 19.1429C14.6131 19.1429 12.3239 18.2398 10.636 16.6323C8.94821 15.0249 8 12.8447 8 10.5714C8 8.29814 8.94821 6.11797 10.636 4.51051C12.3239 2.90306 14.6131 2 17 2C19.3869 2 21.6761 2.90306 23.364 4.51051C25.0518 6.11797 26 8.29814 26 10.5714Z"
-                                                    stroke="#444444" stroke-width="3.8" />
-                                            </svg>
-                                        </div>
-                                    </button>
-                                </x-slot>
+                @auth
+                    <!-- Authenticated User: Show Dropdown -->
+                    <x-dropdown align="right" width="48">
+                        <x-slot name="trigger">
+                            <button class="inline-flex items-center border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                <div class="ms-1">
+                                    <svg width="24" height="34" viewBox="0 0 34 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2 36.2857V39.1429C2 39.9006 2.31607 40.6273 2.87868 41.1632C3.44129 41.699 4.20435 42 5 42H29C29.7956 42 30.5587 41.699 31.1213 41.1632C31.6839 40.6273 32 39.9006 32 39.1429V36.2857C32 34.0124 31.0518 31.8323 29.364 30.2248C27.6761 28.6173 25.3869 27.7143 23 27.7143H11C8.61305 27.7143 6.32387 28.6173 4.63604 30.2248C2.94821 31.8323 2 34.0124 2 36.2857ZM26 10.5714C26 12.8447 25.0518 15.0249 23.364 16.6323C21.6761 18.2398 19.3869 19.1429 17 19.1429C14.6131 19.1429 12.3239 18.2398 10.636 16.6323C8.94821 15.0249 8 12.8447 8 10.5714C8 8.29814 8.94821 6.11797 10.636 4.51051C12.3239 2.90306 14.6131 2 17 2C19.3869 2 21.6761 2.90306 23.364 4.51051C25.0518 6.11797 26 8.29814 26 10.5714Z" stroke="#f4f0ec" stroke-width="3.8"/>
+                                    </svg>
+                                </div>
+                            </button>
+                        </x-slot>
 
-                                <x-slot name="content">
-                                    <x-dropdown-link :href="route('profile.edit')">
-                                        {{ __('Profile') }}
-                                    </x-dropdown-link>
+                        <x-slot name="content"> <!-- Changer couleur pour DARKGRAY et BEIGE via preset colors -->
+                            <div class="bg-[#444444] text-[#f4f0ec] rounded-t-lg px-3 text-lg font-bold shadow-2xl">{{ Auth::user()->name }}</div>
 
-                                    <!-- Authentication -->
-                                    <form method="POST" action="{{ route('logout') }}">
-                                        @csrf
+                            <x-dropdown-link :href="route('profile.edit')" class="hover:underline">
+                                {{ __('Paramètres du compte') }}
+                            </x-dropdown-link>
 
-                                        <x-dropdown-link :href="route('logout')" class="hover:underline"
-                                            onclick="event.preventDefault();
+                            <!-- Authentication -->
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+
+                                <x-dropdown-link :href="route('logout')" class="hover:underline"
+                                    onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                            {{ __('Se déconnecter') }}
-                                        </x-dropdown-link>
-                                    </form>
-                                </x-slot>
-                            </x-dropdown>
-                        @else
-                            <!-- Guest User: Show Login Modal Trigger -->
-                            <div x-data="{ open: false }">
-                                <!-- Include Login & Register Modal -->
-                                @include('components.login-modal')
-                                @include('components.register-modal')
-                            </div>
-                        @endauth
+                                    {{ __('Se déconnecter') }}
+                                </x-dropdown-link>
+                            </form>
+                        </x-slot>
+                    </x-dropdown>
+                @else
+                    <!-- Guest User: Show Login Modal Trigger -->
+                    <div x-data="{ open: false }">
+
+                        <!-- Include Login & Register Modal -->
+                        @include('components.login-modal')
+                        @include('components.register-modal')
                     </div>
-
+                @endauth
             </div>
-
         </div>
 
         <!-- Responsive Navigation Menu -->
@@ -154,7 +137,6 @@
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
                             {{ __('Log Out') }}
-                        @endif
                         </x-responsive-nav-link>
                     </form>
                 </div>
