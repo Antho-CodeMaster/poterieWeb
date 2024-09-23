@@ -10,7 +10,7 @@ Route::get('/', function () {
 
 /* Route relié au kiosque */
 Route::controller(ArtisteController::class)->group(function(){
-    Route::post('/kiosque/{id_artiste}', 'show')->name('kiosque');
+    Route::post('/kiosque', 'show')->name('kiosque');
 });
 
 

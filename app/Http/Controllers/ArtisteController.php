@@ -34,11 +34,12 @@ class ArtisteController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(int $id_artiste)
+    public function show(Request $request)
     {
-        $artiste = Artiste::where('id_artiste', $id_artiste);
+        $id_artiste = $request->input("id_artiste");
+        $artiste = Artiste::where('id_artiste', $id_artiste)->get();
 
-        return view('kiosque.kiosque', [
+        return view('kiosque/kiosque', [
             'artiste' => $artiste
         ]);
     }
