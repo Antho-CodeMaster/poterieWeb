@@ -47,7 +47,8 @@ class DatabaseSeeder extends Seeder
             CommandeSeeder::class,
             TransactionSeeder::class,
             PhotoOeuvreSeeder::class,
-            PhotoIdentiteSeeder::class
+            PhotoIdentiteSeeder::class,
+            PhotoLivraisonSeeder::class
             ]);
     }
 }
