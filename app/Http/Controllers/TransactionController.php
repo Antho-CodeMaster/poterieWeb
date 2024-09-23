@@ -80,7 +80,7 @@ class TransactionController extends Controller
     }
 
     /**
-     * Update la quantité d'article dans la transaction
+     * Update rien pour l'instant
      */
     public function update(Request $request, transaction $transaction)
     {
@@ -89,10 +89,13 @@ class TransactionController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * works for connected users
      */
     public function destroy(transaction $transaction)
     {
-        //
+        if (Auth::check()){
+            $transaction->delete();
+        }
     }
 
     /**
