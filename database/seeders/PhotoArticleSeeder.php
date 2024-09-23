@@ -26,7 +26,7 @@ class PhotoArticleSeeder extends Seeder
                 public/img/tests/pot_4.jpg,
                 d'où la concaténation du path avec la variable $j.
             */
-            DB::table('photos_articles')->insert([
+            DB::table('photos_article')->insert([
                 'id_article' => $i,
                 'path' => 'tests/pot_' . $j . '.jpg',
             ]);
