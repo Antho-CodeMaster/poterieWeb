@@ -15,6 +15,7 @@ class LikeSeeder extends Seeder
     {
         $arr = [];
         for($i = 0; $i < 20; $i++){
+
             //Générer des paires user-articles à l'infini, et des conditions "break" seront appelées si les paires sont uniques.
             while (true)
             {
