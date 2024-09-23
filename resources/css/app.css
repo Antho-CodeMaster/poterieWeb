@@ -6,9 +6,34 @@
     display: none !important;
 }
 
+body {
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    color: #444444;
+}
+
+h1  {
+    font-family: "Newsreader", serif;
+    font-weight: 600;
+    font-size: 3em;
+    letter-spacing: 1.5em;
+    color: #444444;
+}
+
+h2 {
+    font-family: "Newsreader", serif;
+    font-weight: 500;
+    font-size: large;
+    letter-spacing: 1em;
+    color: #444444;
+}
+
 /* Classe pour styliser un titre */
 .titre {
-    @apply text-titre font-titre text-beige;
+    @apply text-titre text-beige;
+    font-family: "Newsreader", serif;
+    font-weight: 600;
+    letter-spacing: 0.5em;
 }
 
 .smallText {
