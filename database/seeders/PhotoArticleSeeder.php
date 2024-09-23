@@ -17,7 +17,7 @@ class PhotoArticleSeeder extends Seeder
         for($i = 1; $i <= 50; $i++)
         {
             // Les articles, dans cette mise en situation, auront entre 1 et 4 photos chacun
-            for($j = 0; $j <= random_int(1, 4); $j++)
+            for($j = 1; $j <= random_int(1, 4); $j++)
 
             /* Les paths des photos bidon sont:
                 public/img/tests/pot_1.jpg,
