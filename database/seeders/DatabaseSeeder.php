@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Transaction;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -41,7 +43,12 @@ class DatabaseSeeder extends Seeder
             FollowSeeder::class,
             ReseauArtisteSeeder::class,
             MotCleArticleSeeder::class,
-            PhotoArticleSeeder::class
+            PhotoArticleSeeder::class,
+            CommandeSeeder::class,
+            TransactionSeeder::class,
+            PhotoOeuvreSeeder::class,
+            PhotoIdentiteSeeder::class,
+            PhotoLivraisonSeeder::class
             ]);
     }
 }
