@@ -13,11 +13,14 @@ class SignalementSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('signalements')->insert([
-            'id_user' => random_int(20, 29),
-            'id_article' => random_int(1, 50),
-            'date' => now(),
-            'description' => fake()->sentence(),
-        ]);
+        for($i = 0; $i < 20; $i++)
+        {
+            DB::table('signalements')->insert([
+                'id_user' => random_int(20, 29),
+                'id_article' => random_int(1, 50),
+                'date' => now(),
+                'description' => fake()->sentence(),
+            ]);
+        }
     }
 }
