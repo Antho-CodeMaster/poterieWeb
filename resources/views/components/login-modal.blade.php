@@ -1,4 +1,8 @@
-<div x-cloak x-data="{ openLogin: false }" @close-login-modal.window="openLogin = false">
+<div
+    x-cloak
+    x-data="{ openLogin: {{ $errors->any() ? 'true' : 'false' }} }"
+    @close-login-modal.window="openLogin = false"
+>
     <!-- Trigger Button for Login Modal -->
     <button @click="openLogin = true">
         <div class="ms-1">
@@ -64,7 +68,10 @@
 
                 <!-- Sign Up Button that closes Login Modal and opens Register Modal -->
                 <div class="text-center my-8">
-                    <button @click.stop="openLogin = false; $dispatch('open-register-modal'); console.log('Dispatching open-register-modal')" class="w-64 mx-auto bg-[#444444] text-[#F4F0EC] py-2 rounded">
+                    <button
+                        @click.stop="openLogin = false; $dispatch('open-register-modal')"
+                        class="w-64 mx-auto bg-[#444444] text-[#F4F0EC] py-2 rounded"
+                    >
                         {{ __('S’inscrire') }}
                     </button>
                 </div>
