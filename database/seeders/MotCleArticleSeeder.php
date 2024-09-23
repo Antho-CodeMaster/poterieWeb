@@ -36,10 +36,10 @@ class MotCleArticleSeeder extends Seeder
                     break;
                 }
             }
+            DB::table('mots_cles_articles')->insert([
+                'id_mot_cle' => $mot_cle,
+                'id_article' => $article,
+            ]);
         }
-        DB::table('mots_cles_articles')->insert([
-            'id_mot_cle' => $mot_cle,
-            'id_article' => $article,
-        ]);
     }
 }
