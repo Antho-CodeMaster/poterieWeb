@@ -39,10 +39,13 @@ class ArtisteController extends Controller
     public function show(Request $request)
     {
         $id_user = $request->input("id_user");
-        $artiste = Artiste::where('id_user', $id_user)->first();
+        $artiste = Artiste::with("reseaux")->where('id_user', $id_user)->first();
+        $reseaux = $artiste->reseaux;
+
 
         return view('kiosque/kiosque', [
-            'artiste' => $artiste
+            'artiste' => $artiste,
+            'reseaux' => $reseaux
         ]);
     }
 

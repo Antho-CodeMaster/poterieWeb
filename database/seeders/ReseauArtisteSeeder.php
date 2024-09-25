@@ -13,11 +13,11 @@ class ReseauArtisteSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('reseaux_artistes')->insert(['id_reseau' => '3','id_artiste' => '1','username' => '@fern-tv']);
-        DB::table('reseaux_artistes')->insert(['id_reseau' => '3','id_artiste' => '2','username' => '@chess']);
-        DB::table('reseaux_artistes')->insert(['id_reseau' => '3','id_artiste' => '3','username' => '@MrBeast']);
-        DB::table('reseaux_artistes')->insert(['id_reseau' => '3','id_artiste' => '4','username' => '@MarkRober']);
-        DB::table('reseaux_artistes')->insert(['id_reseau' => '3','id_artiste' => '5','username' => '@MichaelReeves']);
+        DB::table('reseaux_artistes')->insert(['id_reseau' => '3','id_artiste' => '1','username' => 'fern-tv']);
+        DB::table('reseaux_artistes')->insert(['id_reseau' => '3','id_artiste' => '2','username' => 'chess']);
+        DB::table('reseaux_artistes')->insert(['id_reseau' => '3','id_artiste' => '3','username' => 'MrBeast']);
+        DB::table('reseaux_artistes')->insert(['id_reseau' => '3','id_artiste' => '4','username' => 'MarkRober']);
+        DB::table('reseaux_artistes')->insert(['id_reseau' => '3','id_artiste' => '5','username' => 'MichaelReeves']);
         DB::table('reseaux_artistes')->insert(['id_reseau' => '2','id_artiste' => '2','username' => 'zuck']);
         DB::table('reseaux_artistes')->insert(['id_reseau' => '2','id_artiste' => '3','username' => 'facebook']);
         DB::table('reseaux_artistes')->insert(['id_reseau' => '2','id_artiste' => '4','username' => 'maisondesmetiersdartdequebec']);
