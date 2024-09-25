@@ -1,4 +1,4 @@
-<button class="h-10 shadow-inner rounded border border-[#3779A9] bg-[#8DC7FB] hover:bg-[#73BCFF] mx-[10%] flex">
+<a href="{{$href}}" class="h-10 w-[288px] shadow-inner rounded border border-[#3779A9] bg-[#8DC7FB] hover:bg-[#73BCFF] mx-auto flex">
     <div class="m-auto flex gap-2">
         <svg class="w-6 h-6 my-auto" aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
@@ -9,4 +9,4 @@
         </svg>
         <p class="text-xl text-[#3779A9]">Accéder au kiosque</p>
     </div>
-</button>
+</a>

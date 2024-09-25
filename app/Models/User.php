@@ -44,4 +44,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function artiste()
+    {
+        return $this->hasOne(Artiste::class, 'id_user');
+    }
+
+    public function moderateur()
+    {
+        return $this->hasOne(Moderateur::class, 'id_user');
+    }
 }

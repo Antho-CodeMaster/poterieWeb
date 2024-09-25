@@ -45,7 +45,7 @@ export default {
             },
             borderRadius: {
                 DEFAULT: '28px',
-              }
+            },
         },
     },
 
