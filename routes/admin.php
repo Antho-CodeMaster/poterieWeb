@@ -2,14 +2,14 @@
 
 use App\Http\Middleware\EnsureUserIsModerateur;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/admin', [AdminController::class, 'index'])
     ->name('admin')->middleware(EnsureUserIsModerateur::class);
 
-Route::get('/admin/utilisateurs', function() {
-    return view('admin/utilisateurs');
-})->name('admin-utilisateurs')->middleware(EnsureUserIsModerateur::class);
+Route::get('/admin/utilisateurs', [UserController::class, 'index'])
+    ->name('admin-utilisateurs')->middleware(EnsureUserIsModerateur::class);
 
 Route::get('/admin/publications', function() {
     return view('admin/publications');
