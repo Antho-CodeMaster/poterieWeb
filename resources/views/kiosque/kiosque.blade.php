@@ -57,9 +57,18 @@
     <section>
         <h2 class="titre2 mx-[16px]">En vedette</h2>
         @foreach ($articles as $article)
-            <div>
-                {{$article->etat->etat}}
-                <img src="" alt="">
+            <div class="bg-beige">
+                {{-- Apparence de l'article selon l'état --}}
+                @if ($article->etat->etat == 'Visible client')
+                    <div>
+                        <img src="img/{{ $article->photosArticle->path }}" alt="Photo d'article">
+                    </div>
+                @elseif ($article->etat->etat == 'Masqué client')
+                    <div class="relative w-[300px] border border-red">
+                        <img src="img/{{ $article->photosArticle->path }}" alt="Photo d'article" class="text-darkGrey">
+                        <p>{{ $article->nom }}</p>
+                    </div>
+                @endif
             </div>
         @endforeach
     </section>

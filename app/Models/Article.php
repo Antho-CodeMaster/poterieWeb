@@ -14,4 +14,8 @@ class Article extends Model
     public function etat(){
         return $this->belongsTo(Etat_article::class, "id_etat", "id_etat");
     }
+
+    public function photosArticle(){
+        return $this->belongsTo(Photo_article::class, "id_article", "id_article");
+    }
 }
