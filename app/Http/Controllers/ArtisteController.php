@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Artiste;
+use App\Models\Reseau;
+use App\Models\Reseau_artiste;
 use Illuminate\Http\Request;
 
 class ArtisteController extends Controller
@@ -12,7 +14,7 @@ class ArtisteController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
@@ -36,8 +38,8 @@ class ArtisteController extends Controller
      */
     public function show(Request $request)
     {
-        $id_artiste = $request->input("id_artiste");
-        $artiste = Artiste::where('id_artiste', $id_artiste)->get();
+        $id_user = $request->input("id_user");
+        $artiste = Artiste::where('id_user', $id_user)->first();
 
         return view('kiosque/kiosque', [
             'artiste' => $artiste
