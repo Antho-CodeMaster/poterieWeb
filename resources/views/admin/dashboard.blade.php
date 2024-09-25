@@ -7,7 +7,8 @@
             <h1 class="text-4xl text-black">Tableau de bord</h1>
             <!-- Conteneur des statistiques -->
             <div class="flex w-[100%] h-[100%] pt-10 justify-between flex-wrap content-start gap-y-16">
-                <div class="w-[25%] h-[25%] border-2 border-black rounded-[14px] flex flex-col justify-around p-2 bg-lightGrey hover:bg-hoverGrey">
+
+                <a href="{{ route('admin-utilisateurs') }}" class="w-[25%] h-[25%] border-2 border-black rounded-[14px] flex flex-col justify-around p-2 bg-lightGrey hover:bg-hoverGrey">
                     <svg class="w-16 h-16 mx-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                         height="24" fill="black" viewBox="0 0 24 24">
                         <path fill-rule="evenodd"
@@ -15,11 +16,12 @@
                             clip-rule="evenodd" />
                     </svg>
                     <div class="mx-auto flex flex-col">
-                        <p class="mx-auto text-2xl">XX</p>
+                        <p class="mx-auto text-2xl">{{$artistes}}</p>
                         <p class="mx-auto text-2xl">Artistes</p>
                     </div>
-                </div>
-                <div class="w-[25%] h-[25%] border-2 border-black rounded-[14px] flex flex-col justify-around p-2 mx-2 bg-lightGrey hover:bg-hoverGrey">
+                </a>
+
+                <a href="{{ route('admin-publications') }}" class="w-[25%] h-[25%] border-2 border-black rounded-[14px] flex flex-col justify-around p-2 mx-2 bg-lightGrey hover:bg-hoverGrey">
                     <svg class="w-16 h-16 mx-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                         height="24" fill="black" viewBox="0 0 24 24">
                         <path fill-rule="evenodd"
@@ -27,22 +29,24 @@
                             clip-rule="evenodd" />
                     </svg>
                     <div class="mx-auto flex flex-col">
-                        <p class="mx-auto text-2xl">XX</p>
+                        <p class="mx-auto text-2xl">{{$articles}}</p>
                         <p class="mx-auto text-2xl">Publications</p>
                     </div>
-                </div>
-                <div class="w-[25%] h-[25%] border-2 border-black rounded-[14px] flex flex-col justify-around p-2 bg-lightGrey hover:bg-hoverGrey">
+                </a>
+
+                <a href="{{ route('admin-signalements') }}" class="w-[25%] h-[25%] border-2 border-black rounded-[14px] flex flex-col justify-around p-2 bg-lightGrey hover:bg-hoverGrey">
                     <svg class="w-16 h-16 mx-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                         height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="black" stroke-linecap="round" stroke-width="2"
                             d="m6 6 12 12m3-6a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                     </svg>
                     <div class="mx-auto flex flex-col">
-                        <p class="mx-auto text-2xl">XX</p>
+                        <p class="mx-auto text-2xl">{{$signalements}}</p>
                         <p class="mx-auto text-2xl">Signalements</p>
                     </div>
-                </div>
-                <div class="w-[25%] h-[25%] border-2 border-black rounded-[14px] flex flex-col justify-around p-2 bg-lightGrey hover:bg-hoverGrey">
+                </a>
+
+                <a href="{{ route('admin-demandes') }}" class="w-[25%] h-[25%] border-2 border-black rounded-[14px] flex flex-col justify-around p-2 bg-lightGrey hover:bg-hoverGrey">
                     <svg class="w-16 h-16 mx-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                         height="24" fill="black" viewBox="0 0 24 24">
                         <path fill-rule="evenodd"
@@ -50,11 +54,12 @@
                             clip-rule="evenodd" />
                     </svg>
                     <div class="mx-auto flex flex-col">
-                        <p class="mx-auto text-2xl">XX</p>
+                        <p class="mx-auto text-2xl">{{$demandes}}</p>
                         <p class="mx-auto text-2xl">Demandes d'inscription</p>
                     </div>
-                </div>
-                <div class="w-[25%] h-[25%] border-2 border-black rounded-[14px] flex flex-col justify-around p-2 mx-2 bg-lightGrey hover:bg-hoverGrey">
+                </a>
+
+                <a href="{{ route('admin-articles-non-recus') }}" class="w-[25%] h-[25%] border-2 border-black rounded-[14px] flex flex-col justify-around p-2 mx-2 bg-lightGrey hover:bg-hoverGrey">
                     <svg class="w-16 h-16 mx-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                         height="24" fill="black" viewBox="0 0 24 24">
                         <path fill-rule="evenodd"
@@ -62,11 +67,12 @@
                             clip-rule="evenodd" />
                     </svg>
                     <div class="mx-auto flex flex-col">
-                        <p class="mx-auto text-2xl">XX</p>
+                        <p class="mx-auto text-2xl">{{$articles_non_recus}}</p>
                         <p class="mx-auto text-2xl">Articles non reçus</p>
                     </div>
-                </div>
-                <div class="w-[25%] h-[25%] border-2 border-black rounded-[14px] flex flex-col justify-around p-2 bg-lightGrey hover:bg-hoverGrey">
+                </a>
+
+                <a href="{{ route('admin-transactions') }}" class="w-[25%] h-[25%] border-2 border-black rounded-[14px] flex flex-col justify-around p-2 bg-lightGrey hover:bg-hoverGrey">
                     <svg class="w-16 h-16 mx-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                         height="24" fill="black" viewBox="0 0 24 24">
                         <path fill-rule="evenodd"
@@ -74,10 +80,11 @@
                             clip-rule="evenodd" />
                     </svg>
                     <div class="mx-auto flex flex-col">
-                        <p class="mx-auto text-2xl">XX</p>
+                        <p class="mx-auto text-2xl">{{$transactions}}</p>
                         <p class="mx-auto text-2xl">Transactions</p>
                     </div>
-                </div>
+                </a>
+
             </div>
         </div>
     </div>

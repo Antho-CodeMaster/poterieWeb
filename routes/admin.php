@@ -1,11 +1,11 @@
 <?php
 
 use App\Http\Middleware\EnsureUserIsModerateur;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/admin', function() {
-    return view('admin/dashboard');
-})->name('admin')->middleware(EnsureUserIsModerateur::class);
+Route::get('/admin', [AdminController::class, 'index'])
+    ->name('admin')->middleware(EnsureUserIsModerateur::class);
 
 Route::get('/admin/utilisateurs', function() {
     return view('admin/utilisateurs');
