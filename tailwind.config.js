@@ -18,21 +18,27 @@ export default {
             },
             fontSize: {
                 titre: ['36px', {
-                  lineHeight: '2rem',
-                  letterSpacing: '0.2em',
-                  fontWeight: 'bold',
+                    lineHeight: '2rem',
+                    letterSpacing: '0.2em',
+                    fontWeight: 'bold',
                 }],
 
                 footer: ['12px', {
                     lineHeight: '1rem',
                     letterSpacing: '0em',
                     fontWeight: 'medium',
-                  }],
+                }],
+
+                reseaux: ['24px', {
+                    lineHeight: '2rem',
+                    letterSpacing: '0.0em',
+                    fontWeight: 'bold',
+                }],
             },
             colors: {
                 'darkGrey': '#444444',
-                'vert' : '#009b4d',
-                'beige' : '#f4f0ec',
+                'vert': '#009b4d',
+                'beige': '#f4f0ec',
                 'red': '#ff0000'
             },
             height: {
@@ -43,7 +49,7 @@ export default {
             },
             borderRadius: {
                 DEFAULT: '28px',
-              }
+            }
         },
     },
 

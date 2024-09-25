@@ -14,3 +14,7 @@
 .smallText {
     @apply text-footer font-small text-beige;
 }
+
+.reseaux {
+    @apply text-reseaux text-darkGrey;
+}
