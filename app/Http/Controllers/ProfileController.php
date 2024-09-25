@@ -38,6 +38,21 @@ class ProfileController extends Controller
     }
 
     /**
+     * Update the user's accessibility (blur) information.
+     */
+    public function setBlur(ProfileUpdateRequest $request): RedirectResponse
+    {
+        $blurEnabled = $request->has('blurValue') ? true : false;
+        dd($request);
+
+        $request->user()->contenu_sensible = $blurEnabled;
+
+        $request->user()->save();
+
+        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    }
+
+    /**
      * Delete the user's account.
      */
     public function destroy(Request $request): RedirectResponse
