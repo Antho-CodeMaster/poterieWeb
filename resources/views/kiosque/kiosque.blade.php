@@ -1,6 +1,7 @@
 <x-app-layout>
     {{-- Section Bannière --}}
-    <section class="flex items-center justify-between p-[16px]">
+    <section class="flex items-center justify-between p-[16px]"
+        style="background-color: #{{ $artiste->couleur_banniere }}">
         {{-- Nom d'artiste --}}
         <div class="flex-1 text-left reseaux">
             {{ $artiste->nom_artiste }}
@@ -16,8 +17,7 @@
         <div class="flex-1 felx-shrink">
             @foreach ($reseaux as $reseau)
                 <div class="text-right">
-                    <a href="{{ $reseau->url }}{{ $reseau->pivot->username }}"
-                        class="inline-flex items-center">
+                    <a href="{{ $reseau->url }}{{ $reseau->pivot->username }}" class="inline-flex items-center">
                         <p class="reseaux">{{ $reseau->pivot->username }}</p>
 
                         {{-- Si réseau youtube --}}
@@ -51,6 +51,17 @@
                 </div>
             @endforeach
         </div>
+    </section>
+
+    {{-- Section En vedette --}}
+    <section>
+        <h2 class="titre2 mx-[16px]">En vedette</h2>
+        @foreach ($articles as $article)
+            <div>
+                {{$article->etat->etat}}
+                <img src="" alt="">
+            </div>
+        @endforeach
     </section>
 </x-app-layout>
 

@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Article extends Model
 {
     use HasFactory;
+    protected $table = "articles";
+    protected $primaryKey = "id_article";
+
+    public function etat(){
+        return $this->belongsTo(Etat_article::class, "id_etat", "id_etat");
+    }
 }

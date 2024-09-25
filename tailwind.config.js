@@ -20,7 +20,13 @@ export default {
                 titre: ['36px', {
                     lineHeight: '2rem',
                     letterSpacing: '0.2em',
-                    fontWeight: 'bold',
+                    fontWeight: '500',
+                }],
+
+                titreSection: ['30px', {
+                    lineHeight: '2rem',
+                    letterSpacing: '0.1em',
+                    fontWeight: '500',
                 }],
 
                 footer: ['12px', {
@@ -34,6 +40,7 @@ export default {
                     letterSpacing: '0.0em',
                     fontWeight: 'bold',
                 }],
+
             },
             colors: {
                 'darkGrey': '#444444',
