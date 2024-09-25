@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Models\Artiste;
+use App\Models\User;
 use App\Models\Article;
 use App\Models\Signalement;
 use App\Models\Demande;
@@ -19,7 +19,7 @@ class AdminController extends Controller
     public function index()
     {
         return view('admin/dashboard', [
-            'artistes' => Artiste::All()->count(),
+            'utilisateurs' => User::All()->count(),
             'articles' => Article::All()->count(),
             'signalements' => Signalement::All()->count(),
             'demandes' => Demande::All()->count(),

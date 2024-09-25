@@ -16,8 +16,8 @@
                             clip-rule="evenodd" />
                     </svg>
                     <div class="mx-auto flex flex-col">
-                        <p class="mx-auto text-2xl">{{$artistes}}</p>
-                        <p class="mx-auto text-2xl">Artistes</p>
+                        <p class="mx-auto text-2xl">{{$utilisateurs}}</p>
+                        <p class="mx-auto text-2xl">Utilisateurs</p>
                     </div>
                 </a>
 
