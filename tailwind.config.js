@@ -16,6 +16,7 @@ export default {
                 titre: ['"Newsreader"'],
                 small: ['"Arial"']
             },
+
             fontSize: {
                 titre: ['36px', {
                     lineHeight: '2rem',
@@ -41,6 +42,12 @@ export default {
                     fontWeight: 'bold',
                 }],
 
+                article: ['16px', {
+                    lineHeight: '1rem',
+                    letterSpacing: '0.0em',
+                    fontWeight: 'bold',
+                }],
+
             },
             colors: {
                 'darkGrey': '#444444',
@@ -48,15 +55,28 @@ export default {
                 'beige': '#f4f0ec',
                 'red': '#ff0000'
             },
+
             height: {
                 'nav': '48px',
             },
+
             borderWidth: {
                 DEFAULT: '2px',
             },
+
             borderRadius: {
                 DEFAULT: '28px',
-            }
+            },
+
+            keyframes: {
+                scrollText: {
+                  '0%': { transform: 'translateX(100%)' },
+                  '100%': { transform: 'translateX(-100%)' },
+                },
+              },
+              animation: {
+                scrollText: 'scrollText 10s linear infinite',
+              },
         },
     },
 

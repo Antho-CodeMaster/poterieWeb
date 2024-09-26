@@ -1,7 +1,6 @@
 <x-app-layout>
     {{-- Section Bannière --}}
-    <section class="flex items-center justify-between p-[16px]"
-        style="background-color: #{{ $artiste->couleur_banniere }}">
+    <section class="flex items-center justify-between p-[16px]" {{-- style="background-color: #{{ $artiste->couleur_banniere }}" --}}>
         {{-- Nom d'artiste --}}
         <div class="flex-1 text-left reseaux">
             {{ $artiste->nom_artiste }}
@@ -55,22 +54,35 @@
 
     {{-- Section En vedette --}}
     <section>
-        <h2 class="titre2 mx-[16px]">En vedette</h2>
-        @foreach ($articles as $article)
-            <div class="bg-beige">
+        <div class="bg-beige flex items-center">
+            {{-- Flèche gauche --}}
+            <svg class="w-16 h-16 text-darkGrey" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="m15 19-7-7 7-7" />
+            </svg>
+
+            <div class="flex">
                 {{-- Apparence de l'article selon l'état --}}
-                @if ($article->etat->etat == 'Visible client')
-                    <div>
-                        <img src="img/{{ $article->photosArticle->path }}" alt="Photo d'article">
-                    </div>
-                @elseif ($article->etat->etat == 'Masqué client')
-                    <div class="relative w-[300px] border border-red">
-                        <img src="img/{{ $article->photosArticle->path }}" alt="Photo d'article" class="text-darkGrey">
-                        <p>{{ $article->nom }}</p>
-                    </div>
-                @endif
+                @foreach ($articles as $article)
+                    @if ($article->etat->etat == 'Visible client')
+                        <div class="w-[300px] m-[16px] overflow-hidden whitespace-nowrap">
+                            <img src="img/{{ $article->photosArticle->path }}" alt="Photo d'article"
+                                class="shadow-md rounded-[16px] cursor-pointer">
+                            <p class="article flex my-[8px] animate-scrollText" id="scrollingText">{{ $article->nom }}
+                            </p>
+                        </div>
+                    @endif
+                @endforeach
             </div>
-        @endforeach
+
+            {{-- Flèche droite --}}
+            <svg class="w-16 h-16 text-darkGrey" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="m9 5 7 7-7 7" />
+            </svg>
+        </div>
     </section>
 </x-app-layout>
 

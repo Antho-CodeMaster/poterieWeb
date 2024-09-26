@@ -1,4 +1,5 @@
 import './bootstrap';
+import '../../public/js/kiosque.js'
 
 import Alpine from 'alpinejs';
 
