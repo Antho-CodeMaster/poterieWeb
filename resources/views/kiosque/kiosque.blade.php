@@ -54,7 +54,7 @@
 
     {{-- Section En vedette --}}
     <section>
-        <div class="bg-beige flex items-center">
+        <div class="bg-beige flex items-center justify-between">
             {{-- Flèche gauche --}}
             <svg class="w-16 h-16 text-darkGrey" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                 height="24" fill="none" viewBox="0 0 24 24">
@@ -62,10 +62,10 @@
                     d="m15 19-7-7 7-7" />
             </svg>
 
-            <div class="flex">
-                {{-- Apparence de l'article selon l'état --}}
+            <div class="flex flex-grow overflow-hidden">
+                {{-- Affiche seulement les articles visibles, en stock et en vedette seulement --}}
                 @foreach ($articles as $article)
-                    @if ($article->etat->etat == 'Visible client')
+                    @if ($article->etat->etat == 'Visible client' && $article->quantite_disponible > 0 && $article->is_en_vedette == 1)
                         <div class="w-[300px] m-[16px] overflow-hidden whitespace-nowrap">
                             <img src="img/{{ $article->photosArticle->path }}" alt="Photo d'article"
                                 class="shadow-md rounded-[16px] cursor-pointer">
