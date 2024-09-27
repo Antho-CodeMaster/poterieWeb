@@ -21,6 +21,7 @@ return new class extends Migration
             $table->char('code_postal', 6);
             $table->smallInteger('id_ville')->unsigned();
             $table->timestamps();
+            $table->boolean('is_panier');
         });
 
         Schema::table('commandes', function (Blueprint $table) {

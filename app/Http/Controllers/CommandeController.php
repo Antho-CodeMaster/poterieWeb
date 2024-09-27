@@ -76,7 +76,7 @@ class CommandeController extends Controller
         if (Auth::check())
             return Commande::where('id_user', '=', Auth::id())->where('is_panier', '=', true)->firstOrCreate(['is_panier' => true]);
         else
-            return $request->cookie('panier', []);
+            return $request->cookie('panier', [1,2,3]);
 
     }
 
@@ -96,7 +96,7 @@ class CommandeController extends Controller
 
             $articles = [];
             foreach($commande as $id_article){
-                $articles += Article::where('id_article', '=', $id_article)->get();
+                $articles[] = Article::where('id_article', '=', $id_article)->first();
             }
 
         }

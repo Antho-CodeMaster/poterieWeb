@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Article extends Model
 {
     use HasFactory;
-    protected $table = 'article';
+    protected $table = 'articles';
     protected $primary_key = 'id_article';
 
 
