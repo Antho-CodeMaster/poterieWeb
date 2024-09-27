@@ -28,5 +28,5 @@
 
 /* Classe pour le text des articles */
 .article {
-    @apply text-article text-darkGrey text-ellipsis overflow-hidden ;
+    @apply text-article text-darkGrey text-ellipsis overflow-hidden whitespace-nowrap ;
 }

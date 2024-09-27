@@ -14,7 +14,7 @@ class User extends Authenticatable
     protected $primaryKey = "id";
 
     public function likes() {
-        return $this->belongsToMany(Like::class, "likes", 'id_user', 'id');
+        return $this->hasMany(Like::class, 'id_user', 'id' );
     }
 
     /**

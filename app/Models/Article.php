@@ -11,15 +11,23 @@ class Article extends Model
     protected $table = "articles";
     protected $primaryKey = "id_article";
 
-    public function etat(){
+    public function etat()
+    {
         return $this->belongsTo(Etat_article::class, "id_etat", "id_etat");
     }
 
-    public function photosArticle(){
+    public function photosArticle()
+    {
         return $this->belongsTo(Photo_article::class, "id_article", "id_article");
     }
 
-    public function likes() {
-        return $this->belongsToMany(Like::class, "likes", 'id_article', 'id_article');
+    public function likes()
+    {
+        return $this->hasMany(Like::class, 'id_article', 'id_article');
+    }
+
+    public function isLikedByUser($id_user)
+    {
+        return $this->likes()->where('id_user', $id_user)->exists();
     }
 }
