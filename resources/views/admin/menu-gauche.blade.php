@@ -1,5 +1,5 @@
 <!-- Navigation Menu -->
-<div class="w-[20%] h-[100vh] bg-lightGrey">
+<div class="w-[20%] h-[100%] bg-lightGrey">
 
     <!-- Boutons de droite -->
     <div class="items-center">

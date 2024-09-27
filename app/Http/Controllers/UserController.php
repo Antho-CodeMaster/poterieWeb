@@ -13,7 +13,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('admin/utilisateurs', ['users' => User::All()]);
+        return view('admin/utilisateurs', ['users' => User::where('active', 1)->get()]);
     }
 
     /**
@@ -59,8 +59,11 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(int $id)
     {
-        //
+        $user = User::where('id', $id)->first();
+        $user->active = 0;
+        $user->save();
+        return redirect()->to(route('admin-utilisateurs'));
     }
 }

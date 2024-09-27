@@ -11,6 +11,9 @@ Route::get('/admin', [AdminController::class, 'index'])
 Route::get('/admin/utilisateurs', [UserController::class, 'index'])
     ->name('admin-utilisateurs')->middleware(EnsureUserIsModerateur::class);
 
+Route::delete('/admin/delete/{id}', [UserController::class, 'destroy'])
+    ->name('admin-user-delete')->middleware(EnsureUserIsModerateur::class);
+
 Route::get('/admin/publications', function() {
     return view('admin/publications');
 })->name('admin-publications')->middleware(EnsureUserIsModerateur::class);
