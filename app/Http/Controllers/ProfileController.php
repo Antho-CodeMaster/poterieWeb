@@ -40,16 +40,15 @@ class ProfileController extends Controller
     /**
      * Update the user's accessibility (blur) information.
      */
-    public function setBlur(ProfileUpdateRequest $request): RedirectResponse
+    public function updateBlur(Request $request): RedirectResponse
     {
-        $blurEnabled = $request->has('blurValue') ? true : false;
-        dd($request);
+        $blurEnabled = ($request['blurValue'] === 'on' | 0 ? 0 : 1);
 
         $request->user()->contenu_sensible = $blurEnabled;
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return Redirect::route('profile.edit')->with('status', 'blur-updated');
     }
 
     /**
