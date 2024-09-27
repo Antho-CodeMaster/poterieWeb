@@ -18,19 +18,24 @@ class PasswordResetLinkController extends Controller
      */
     public function create(): View
     {
-        return view('auth.forgot-password');
+        return view('auth/forgot-password');
     }
 
     /**
      * Display the password reset link request view.
      */
-    public function question(Request $request): View
+    public function question(Request $request)
     {
         $request->validate([
             'email' => ['required', 'email'],
         ]);
 
-        $q_id = User::where('email', $request->email)->first()->id_question_securite;
+        $user = User::where('email', $request->email)->first();
+
+        if($user == null)
+            return back()->withInput($request->only('email'))->withErrors(['email' => 'Cette adresse courriel n\'existe pas dans notre système.']);
+
+        $q_id = $user->id_question_securite;
 
         $q = Question_securite::where('id_question', $q_id)->first()->question;
 
@@ -55,9 +60,17 @@ class PasswordResetLinkController extends Controller
         // to send the link, we will examine the response then see the message we
         // need to show to the user. Finally, we'll send out a proper response.
         if(Hash::check($request->reponse, $rep))
+        {
             $status = Password::sendResetLink(
                 $request->only('email')
             );
+            back()->with('status', __($status));
+        }
+        else
+        {
+            return back()->withInput(['email' => $request->email, 'reponse' => $request->reponse])
+                            ->withErrors(['reponse' => __($status)]);
+        }
         return $status == Password::RESET_LINK_SENT
                     ? back()->with('status', __($status))
                     : back()->withInput($request->only('reponse'))

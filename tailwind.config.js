@@ -33,7 +33,6 @@ export default {
                 'darkGrey': '#444444',
                 'vert' : '#009b4d',
                 'beige' : '#f4f0ec',
-                'red': '#ff0000'
             },
             height: {
                 'nav': '48px',

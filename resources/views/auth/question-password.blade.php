@@ -9,11 +9,12 @@
     <form method="POST" action="{{ route('password.email') }}">
         @csrf
         <input type="hidden" value={{$email}} name="email">
+
         <!-- Question de sécurité -->
         <div>
             <x-input-label for="reponse" :value="__($question)" />
-            <x-text-input id="reponse" class="block mt-1 w-full" type="reponse" name="reponse" :value="old('reponse')" required autofocus />
-            <x-input-error :messages="$errors->get('reponse')" class="mt-2" />
+            <x-text-input id="reponse" class="block mt-1 w-full" type="text" name="reponse" :value="old('reponse')" required autofocus />
+            <x-input-error :messages="$errors->get('reponse')" class="mt-2 text-red-600" />
         </div>
 
         <div class="flex items-center justify-end mt-4">
