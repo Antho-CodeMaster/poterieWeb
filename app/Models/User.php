@@ -10,6 +10,12 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
+    protected $table = "users";
+    protected $primaryKey = "id";
+
+    public function likes() {
+        return $this->belongsToMany(Like::class, "likes", 'id_user', 'id');
+    }
 
     /**
      * The attributes that are mass assignable.

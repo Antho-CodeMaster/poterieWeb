@@ -62,15 +62,18 @@
                     d="m15 19-7-7 7-7" />
             </svg>
 
-            <div class="flex flex-grow overflow-hidden">
+            <div class="flex flex-grow" id="enVedette">
                 {{-- Affiche seulement les articles visibles, en stock et en vedette seulement --}}
                 @foreach ($articles as $article)
                     @if ($article->etat->etat == 'Visible client' && $article->quantite_disponible > 0 && $article->is_en_vedette == 1)
                         <div class="w-[300px] m-[16px] overflow-hidden whitespace-nowrap">
                             <img src="img/{{ $article->photosArticle->path }}" alt="Photo d'article"
                                 class="shadow-md rounded-[16px] cursor-pointer">
-                            <p class="article flex my-[8px] animate-scrollText" id="scrollingText">{{ $article->nom }}
-                            </p>
+                            <p class="article flex my-[8px] article_nom mb-[2px] mt-[10px]">{{ $article->nom }} pppppp</p>
+                            <div>
+                                <p id="prix" class="my-[0px]">{{ $article->prix }}$</p>
+                            </div>
+
                         </div>
                     @endif
                 @endforeach

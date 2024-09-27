@@ -28,28 +28,5 @@
 
 /* Classe pour le text des articles */
 .article {
-    @apply text-article text-darkGrey;
-}
-
-/* Classe pour gérer l'animation du texte */
-@keyframes scrollTextWithDelay {
-    0% {
-        transform: translateX(0);
-        /* Commence à la position initiale */
-    }
-
-    10% {
-        transform: translateX(0);
-        /* Commence à la position initiale */
-    }
-
-    100% {
-        transform: translateX(-30%);
-        /* Reste à la fin pour un court moment */
-    }
-}
-
-.animate-scrollText {
-    animation: scrollTextWithDelay 8s ease-out infinite;
-    animation-delay: 3s;
+    @apply text-article text-darkGrey text-ellipsis overflow-hidden ;
 }

@@ -14,7 +14,7 @@ class PhotoArticleSeeder extends Seeder
     public function run(): void
     {
         // Pour chacun des articles
-        for($i = 1; $i <= 50; $i++)
+        for($i = 1; $i <= 500; $i++)
         {
             // Les articles, dans cette mise en situation, auront entre 1 et 4 photos chacun
             for($j = 1; $j <= random_int(1, 4); $j++)

@@ -1,18 +1,21 @@
 window.onload = () => {
     if (document.baseURI.includes("kiosque")) {
+        function tronquerNoms() {
+            const nomArticles = document.querySelectorAll(".article_nom");
 
-        function animationText(){
-            const textElement = document.getElementById('scrollingText');
-            const parentElement = textElement.parentElement;
+            nomArticles.forEach(nomArticle => {
+                const divArticle = nomArticle.parentElement.offsetWidth;
+                const longueurNomArticle = nomArticle.scrollWidth;
 
-            // Vérifie si la largeur du texte dépasse celle du conteneur
-            if (textElement.scrollWidth > parentElement.clientWidth) {
-                textElement.classList.add('animate-scrollText');
-            } else {
-                textElement.classList.remove('animate-scrollText');
-            }
+                // Si la largeur du texte dépasse celle du parent
+                if (longueurNomArticle > divArticle) {
+                    const charCount = Math.floor((divArticle / longueurNomArticle) * nomArticle.textContent.length);
+                    nomArticle.textContent = nomArticle.textContent.substring(0, charCount - 1) + '...';
+                }
+            });
         }
 
-        animationText()
-    };
-}
+        // Appeler la fonction tronquerNoms
+        tronquerNoms();
+    }
+};

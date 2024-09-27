@@ -18,4 +18,8 @@ class Article extends Model
     public function photosArticle(){
         return $this->belongsTo(Photo_article::class, "id_article", "id_article");
     }
+
+    public function likes() {
+        return $this->belongsToMany(Like::class, "likes", 'id_article', 'id_article');
+    }
 }

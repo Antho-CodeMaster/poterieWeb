@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Artiste;
 use App\Models\Reseau;
+use App\Models\User;
 use App\Models\Reseau_artiste;
 use Illuminate\Http\Request;
 
@@ -46,7 +47,7 @@ class ArtisteController extends Controller
         return view('kiosque/kiosque', [
             'artiste' => $artiste,
             'reseaux' => $reseaux,
-            'articles' => $articles
+            'articles' => $articles,
         ]);
     }
 
