@@ -5,12 +5,21 @@
             <h1 class="text-4xl text-black">Utilisateurs</h1>
             <h2 class="text-2xl text-darkGrey">{{ sizeof($users) }} résultats</h2>
 
-            <!-- Barre de recherche -->
-            <div class="mr-0 w-[500px] border rounded border-black">
-                <form action="" class="w-full h-[38px] py-auto flex"> {{-- Il faut remplir l'action --}}
-                    <input class="w-full border-0 focus:border-0 focus:shadow-none rounded h-full" type="text" placeholder="Rechercher..."
-                        name="search">
-                    <button type="submit">
+            <div class="flex float-right mr-14 mb-4">
+                <!-- Sélection du type d'utilisateur -->
+                <select id="type" class="mr-6 border rounded border-black">
+                    <option selected value="tous">Tous</option>
+                    <option value="Client">Clients</option>
+                    <option value="Artiste">Artistes</option>
+                    <option value="Modérateur">Modérateurs</option>
+                    <option value="Administrateur">Administrateurs</option>
+                </select>
+
+                <!-- Barre de recherche -->
+                <div id="search-user" class="w-[500px] h-[50px] py-auto flex border rounded border-black">
+                    <input class="w-full border-0 focus:border-0 focus:shadow-none rounded h-full" type="text"
+                        placeholder="Rechercher par nom..." name="search">
+                    <button>
                         <svg class="w-6 h-6 mr-3 text-gray-800 dark:text-white" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                             viewBox="0 0 24 24">
@@ -18,7 +27,7 @@
                                 d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                         </svg>
                     </button>
-                </form>
+                </div>
             </div>
 
             <div class="flex flex-wrap h-[100%] gap-x-[5%] gap-y-10 pt-16">
@@ -52,10 +61,10 @@
                                 </svg>
                             @endif
 
-                            <div class="flex mx-auto gap-2">
-                                @include('admin.components.avertir-button')
-                                <x-delete-user-button href="{{ route('admin-user-delete', ['id' => $user->id]) }}"></x-delete-user-button>
-                            </div>
+                        <div class="flex mx-auto gap-2">
+                            @include('admin.components.avertir-button')
+                            <x-delete-user-button
+                                href="{{ route('admin-user-delete', ['id' => $user->id]) }}"></x-delete-user-button>
                         </div>
                 @endforeach
             </div>
