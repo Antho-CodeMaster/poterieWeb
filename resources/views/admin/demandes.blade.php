@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="flex">
         @include('admin.menu-gauche')
-        <div class="pt-20 pl-20">
+        <div class="pt-20 pl-20 ml-[350px] mt-[48px]">
             <h1 class="text-4xl text-black">Demandes d'inscription</h1>
         </div>
     </div>
