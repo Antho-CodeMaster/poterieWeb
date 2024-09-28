@@ -1,4 +1,4 @@
-<footer class="bg-darkGrey flex text-[beige] smallText justify-between items-center   ">
+<footer class="z-50 fixed bottom-0 w-[100%] bg-darkGrey flex text-[beige] smallText justify-between items-center   ">
 
     {{-- Informations générale --}}
     <div class="mx-[16px]">

@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class=" bg-darkGrey border-gray-100">
+<nav x-data="{ open: false }" class="z-50 fixed w-full bg-darkGrey border-gray-100">
     <!-- Navigation Menu -->
     <div class="flex h-nav justify-between items-center">
 
@@ -12,7 +12,7 @@
         <!-- Barre de recherche -->
         <div class="w-[500px]">
             <form action="" class="w-full h-[38px] py-auto"> {{-- Il faut remplir l'action --}}
-                <input class="w-full rounded h-full" type="text" placeholder="Search.." name="search">
+                <input id="search" class="w-full rounded h-full" type="text" placeholder="Search.." name="search">
                 <button type="submit"><i class="fa fa-search"></i></button>
             </form>
         </div>
