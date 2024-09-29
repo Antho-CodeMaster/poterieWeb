@@ -42,7 +42,13 @@ export default {
                     fontWeight: 'bold',
                 }],
 
-                article: ['16px', {
+                article: ['18px', {
+                    lineHeight: '1rem',
+                    letterSpacing: '0.0em',
+                    fontWeight: 'bold',
+                }],
+
+                smallArticle: ['14px', {
                     lineHeight: '1rem',
                     letterSpacing: '0.0em',
                     fontWeight: 'bold',

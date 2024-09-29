@@ -41,6 +41,8 @@ class ArtisteController extends Controller
     {
         $id_user = $request->input("id_user");
         $artiste = Artiste::with("reseaux","articles")->where('id_user', $id_user)->first();
+
+        /* Va chercher les reseaux et articles de l'artiste pour alléger le code dans la vue */
         $reseaux = $artiste->reseaux;
         $articles = $artiste->articles;
 

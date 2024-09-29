@@ -28,5 +28,28 @@
 
 /* Classe pour le text des articles */
 .article {
-    @apply text-article text-darkGrey text-ellipsis overflow-hidden whitespace-nowrap ;
+    @apply text-article text-darkGrey text-ellipsis overflow-hidden whitespace-nowrap;
 }
+
+.smallArticle {
+    @apply text-smallArticle text-darkGrey text-ellipsis overflow-hidden whitespace-nowrap;
+}
+
+/* Classe pour animer le caroussel */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    /* Internet Explorer 10+ */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+#carousel {
+    scroll-behavior: smooth;
+    padding: 0 64px;
+    /* Pour laisser l'espace des flèches */
+}
+
