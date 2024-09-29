@@ -151,7 +151,7 @@
             {{-- Affichage de tous les articles --}}
             @if ($article->etat->etat == 'Visible client' || $article->etat->etat == 'Masqué client')
                 @foreach ($articles as $article)
-                    <div class="w-[160px] mx-[8px] my-[16px] whitespace-nowrap">
+                    <div class="w-[160px] mx-[16px] my-[16px] whitespace-nowrap">
 
                         {{-- Changer l'image selon l'état de l'article --}}
                         @if ($article->id_etat == 2)
@@ -168,7 +168,7 @@
                         <div class="flex justify-between items-center my-[4px]">
                             <div class="w-[80%]">
                                 <p class="smallArticle">{{ $article->nom }}</p>
-                                <p id="prix" class="text-[11px] font-bold text-darkGrey ">{{ $article->prix }}$
+                                <p class="text-[11px] font-bold text-darkGrey ">{{ $article->prix }}$
                                 </p>
                             </div>
 

@@ -3,6 +3,7 @@
 use App\Http\Controllers\ArtisteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LikeController;
+use App\Models\Article;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -14,11 +15,9 @@ Route::controller(ArtisteController::class)->group(function(){
     Route::post('/kiosque', 'show')->name('kiosque');
 });
 
-/* Routes relié aux likes
-Route::controller(LikeController::class)->group(function(){
-    Route::post('/kiosque', 'show')->name('kiosque');
-}); */
-
+Route::controller(Article::class)->group(function(){
+    Route::post('/addArticle', 'add')->name('addArticle');
+});
 
 Route::get('/decouverte', function () {
     return view('decouverte');
