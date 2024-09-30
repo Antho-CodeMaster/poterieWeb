@@ -1,28 +1,31 @@
 <x-app-layout>
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <!-- Left Menu -->
+        <div class="lg:col-span-1">
+            @include('profile.partials.menu-gauche')
+        </div>
 
-    <div class="flex py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-beige shadow sm:rounded-lg">
+        <!-- Main Content (Profile Information + Password Update + Accessibilité) -->
+        <div class="lg:col-span-3 grid grid-cols-1 lg:grid-cols-2 gap-6 py-12 mx-4">
+            <!-- Profile Information -->
+            <div class="col-span-1 p-4 sm:p-8 bg-beige shadow sm:rounded-lg">
                 <div class="max-w-xl">
                     @include('profile.partials.update-profile-information-form')
                 </div>
             </div>
 
-            <div class="p-4 sm:p-8 bg-beige shadow sm:rounded-lg">
+            <!-- Accessibilité -->
+            <div class="col-span-1 p-4 sm:p-8 bg-beige shadow sm:rounded-lg">
                 <div class="max-w-xl">
-                    @include('profile.partials.update-password-form')
+                    @include('profile.partials.update-blur-form')
                 </div>
             </div>
 
-            <div class="p-4 sm:p-8 bg-beige shadow sm:rounded-lg">
+            <!-- Password Update (Full Width in Two Columns) -->
+            <div class="col-span-1 p-4 sm:p-8 bg-beige shadow sm:rounded-lg">
                 <div class="max-w-xl">
-                    @include('profile.partials.delete-user-form')
+                    @include('profile.partials.update-password-form')
                 </div>
-            </div>
-        </div>
-        <div class="p-4 sm:p-8 bg-beige shadow sm:rounded-lg">
-            <div class="max-w-xl">
-                @include('profile.partials.update-blur-form')
             </div>
         </div>
     </div>

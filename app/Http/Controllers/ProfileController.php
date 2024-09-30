@@ -21,6 +21,16 @@ class ProfileController extends Controller
         ]);
     }
 
+        /**
+     * Display the user's facturation form.
+     */
+    public function facturation(Request $request): View
+    {
+        return view('profile.facturation', [
+            'user' => $request->user(),
+        ]);
+    }
+
     /**
      * Update the user's profile information.
      */
