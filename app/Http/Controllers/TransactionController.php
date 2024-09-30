@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use App\Models\Commande;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -91,10 +92,15 @@ class TransactionController extends Controller
      * Remove the specified resource from storage.
      * works for connected users
      */
-    public function destroy(transaction $transaction)
+    public function destroy(transaction $transaction, Request $request)
     {
-        if (Auth::check()){
-            $transaction->delete();
+        try{
+            if (Auth::check()){
+                $transaction->delete();
+                return response()->json(['message' => 'Transaction effacé avec succès'],200);
+            }
+        }catch(Exception $e){
+            return response()->json(['message' => $e], 400);
         }
     }
 

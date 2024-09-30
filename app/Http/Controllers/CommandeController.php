@@ -16,6 +16,16 @@ class CommandeController extends Controller
      */
     public function index()
     {
+        if(Auth::check()){
+            $commandes = Commande::where('id_user', '=', Auth::id())->where('is_panier', '=', false)->get();
+
+            return view('commande/commandes',[
+                'commandes' => $commandes
+            ]);
+        }
+        else{
+            return view('commande/commandes', ['commandes' => 'allo', 'authis' => Auth::id()]);
+        }
 
     }
 
