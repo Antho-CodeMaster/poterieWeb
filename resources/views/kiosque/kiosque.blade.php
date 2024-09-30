@@ -140,7 +140,7 @@
             {{-- Boutons d'artistes --}}
 
             {{-- Vérification si l'utilisateur qui visite la page est le propriétaire du kiosque --}}
-            @if (Auth::user()->id == $artiste->id_user)
+            @if (Auth::id() == $artiste->id_user)
                 <div x-data="{ open: false }">
                     @include('components.addArticle-modal')
                 </div>

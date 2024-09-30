@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ArtisteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LikeController;
@@ -15,8 +16,8 @@ Route::controller(ArtisteController::class)->group(function(){
     Route::post('/kiosque', 'show')->name('kiosque');
 });
 
-Route::controller(Article::class)->group(function(){
-    Route::post('/addArticle', 'add')->name('addArticle');
+Route::controller(ArticleController::class)->group(function(){
+    Route::post('/addArticle', 'store')->name('addArticle');
 });
 
 Route::get('/decouverte', function () {

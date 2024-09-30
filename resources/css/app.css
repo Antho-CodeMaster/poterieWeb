@@ -53,3 +53,8 @@
     /* Pour laisser l'espace des flèches */
 }
 
+/* Styles pour le label lorsque le checkbox est coché */
+#enVedetteBtn:checked+label, #masquerBtn:checked+label, #floutterBtn:checked+label {
+    @apply bg-gray-500 text-beige;
+    /* Appliquer les styles de Tailwind */
+}
