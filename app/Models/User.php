@@ -50,4 +50,8 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function artistes(){
+        return $this->belongsTo(Artiste::class, "id_user", "id_user");
+    }
 }

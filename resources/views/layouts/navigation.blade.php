@@ -24,7 +24,7 @@
             {{-- Avoir le droit de voir ces bouton que si nous somme connecté --}}
             @auth
                 {{-- Bouton Admin --}}
-                <form action="{{ route('decouverte') }}" method="GET"
+                <form action="{{ route('decouverte') }}" method="get"
                     class="ml-[15px] hover:bg-white-700 flex items-center">
                     @csrf
                     <button>
@@ -44,10 +44,9 @@
                 </form>
 
                 {{-- Bouton kiosque omg le svg est big update: j'ai géré la calibration --}}
-                <form action="{{ route('kiosque') }}" method="POST" class="ml-[15px] flex items-center">
+                <form action="{{ route('kiosque', ['idUser' => Auth::user()->id]) }}" method="get" class="ml-[15px] flex items-center">
                     @csrf
-                    <button>
-                        <input type="hidden" value={{ Auth::user()->id }} name="id_user">
+                    <button type="submit">
                         <svg width="34" height="34" viewBox="0 0 78 78" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <rect class="w-full h-full" rx="16" fill="#F4F0EC" />

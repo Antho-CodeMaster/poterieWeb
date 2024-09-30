@@ -10,7 +10,7 @@
 
         {{-- Photo de profil --}}
         <div class="flex-shrink-0 mx-auto ">
-            <img src="img/{{ $artiste->path_photo_profil }}" alt="photo de profil"
+            <img src="/../img/{{ $artiste->path_photo_profil }}" alt="photo de profil"
                 class="w-[150px] h-[150px] rounded-[100px]">
         </div>
 
@@ -74,7 +74,7 @@
                 @foreach ($articles as $article)
                     @if ($article->etat->etat == 'Visible client' && $article->quantite_disponible > 0 && $article->is_en_vedette == 1)
                         <div class="w-[300px] m-[16px] flex-shrink-0 overflow-hidden whitespace-nowrap">
-                            <img src="img/{{ $article->photosArticle->path }}" alt="Photo d'article"
+                            <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
                                 class="shadow-md rounded-[16px] cursor-pointer">
                             <div class="flex justify-between items-center my-[10px]">
                                 <div class="w-[80%]">
@@ -155,18 +155,18 @@
 
                         {{-- Changer l'image selon l'état de l'article --}}
                         @if ($article->id_etat == 2)
-                            <img src="img/{{ $article->photosArticle->path }}" alt="Photo d'article"
+                            <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
                                 class="shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%]">
                         @elseif ($article->quantite_disponible = 0 && $article->id_etat == 1)
-                            <img src="img/{{ $article->photosArticle->path }}" alt="Photo d'article"
+                            <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
                                 class="shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%]">
                         @else
-                            <img src="img/{{ $article->photosArticle->path }}" alt="Photo d'article"
+                            <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
                                 class="shadow-md shadow-rounded rounded-[12px] cursor-pointer">
                         @endif
 
                         <div class="flex justify-between items-center my-[4px]">
-                            <div class="w-[80%]">
+                            <div class="w-[75%]">
                                 <p class="smallArticle">{{ $article->nom }}</p>
                                 <p class="text-[11px] font-bold text-darkGrey ">{{ $article->prix }}$
                                 </p>

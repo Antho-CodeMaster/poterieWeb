@@ -45,7 +45,7 @@
 
             <div>
                 {{-- Form pour ajouter un article --}}
-                <form method="POST" action="{{ route('addArticle') }}"
+                <form method="post" action="{{ route('addArticle') }}" id="addArticleForm"
                     class="w-full rounded-r-[12px] rounded-b-[12px] bg-darkGrey p-4">
                     @csrf
 
@@ -84,12 +84,18 @@
 
                     <div class="grid grid-cols-4 gap-6 mt-4">
                         <!-- nom Article -->
-                        <x-text-input id="nomArticle" class="w-full col-span-2" type="text" name="nomArticle"
+                        <x-text-input id="nomArticle" class="w-full col-span-2" type="text" name="nomArticle" required
                             placeholder="Nom de l'article" />
+
+                        <!-- prix Article -->
+                        <x-text-input id="prixArticle" class="w-full col-span-1" type="number" name="prixArticle" required step="0.01" min="0"
+                        placeholder="Prix ($)" />
 
                         <!-- Type de pièce -->
                         <select id="pieceUnique" name="pieceUnique"
-                            class="w-full col-span-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                            class="w-full col-span-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
+                            <option value="" disabled selected hidden >Sélectionner un type d'article</option>
+                            <!-- Placeholder -->
                             <option value="1">Unique</option>
                             <option value="0">En série</option>
                         </select>
@@ -99,21 +105,21 @@
                         <!-- Description de l'article -->
                         <textarea id="descriptionArticle" name="descriptionArticle" rows="2"
                             class="w-full col-span-4 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            placeholder="Description"></textarea>
+                            placeholder="Description" required ></textarea>
                     </div>
 
                     <div class="grid grid-cols-4 gap-6 mt-4">
                         <!-- Hauteur et largeur de l'article -->
                         <x-text-input id="hauteurArticle" class="w-full col-span-1" type="number" name="hauteurArticle"
-                            placeholder="Hauteur (cm)" />
+                            placeholder="Hauteur (cm)" min="0" required/>
 
                         <x-text-input id="largeurArticle" class="w-full col-span-1" type="number" name="largeurArticle"
-                            placeholder="Largeur (cm)" />
+                            placeholder="Largeur (cm)" min="0" required/>
 
                         <!-- Type de pièce -->
-                        <select id="typePiece" name="typePiece"
+                        <select id="typePiece" name="typePiece" required
                             class="w-full col-span-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                            <option value="" disabled selected hidden>Sélectionner un type de pièce</option>
+                            <option value="" disabled selected hidden >Sélectionner un type de pièce</option>
                             <!-- Placeholder -->
                             <option value="1">Alimentaire</option>
                             <option value="0">Non-alimentaire</option>
@@ -121,15 +127,15 @@
                     </div>
 
                     <div class="grid grid-cols-4 gap-6 mt-4">
-                        {{-- Profondeur poids et quantit de l'article --}}
+                        {{-- Profondeur poids et quantite de l'article --}}
                         <x-text-input id="profondeurArticle" class="w-full col-span-1" type="number"
-                            name="profondeurArticle" placeholder="Profondeur (cm)" />
+                            name="profondeurArticle" placeholder="Profondeur (cm)" min="0" required/>
 
                         <x-text-input id="poidsArticle" class="w-full col-span-1" type="number" name="poidsArticle"
-                            placeholder="Poids (g)" />
+                            placeholder="Poids (g)" min="0" required/>
 
                         <x-text-input id="quantiteArticle" class="w-full col-span-2" type="number"
-                            name="quantiteArticle" placeholder="Quantité en vente" step="1" />
+                            name="quantiteArticle" placeholder="Quantité en vente" step="1" min="1" required/>
                     </div>
 
                     <div class="grid grid-cols-4 gap-6 mt-4">
@@ -143,20 +149,23 @@
                     <div class="grid grid-cols-4 gap-6 mt-4">
 
                         {{-- masquer --}}
-                        <input type="checkbox" name="masquer" id="masquerBtn" value="1" class="hidden" />
+                        <input type="hidden" name="masquer" value="1"/>
+                        <input type="checkbox" name="masquer" id="masquerBtn" value="2" class="hidden" />
                         <label for="masquerBtn"
                             class="col-span-1 w-full cursor-pointer bg-[#fff] text-darkGrey font-bold py-2 text-center rounded-md transition duration-200 ease-in-out hover:bg-gray-500">
                             Masquer
                         </label>
 
                         {{-- floutter --}}
-                        <input type="checkbox" name="floutter" id="floutterBtn" value="1" class="hidden" />
-                        <label for="floutterBtn"
+                        <input type="hidden" name="flouter" value="0" />
+                        <input type="checkbox" name="flouter" id="flouterBtn" value="1" class="hidden" />
+                        <label for="flouterBtn"
                             class="col-span-1 w-full cursor-pointer bg-[#fff] text-darkGrey font-bold py-2 text-center rounded-md transition duration-200 ease-in-out hover:bg-gray-500">
-                            Floutter
+                            Flouter
                         </label>
 
                         {{-- En vedette --}}
+                        <input type="hidden" name="enVedette" value="0"/>
                         <input type="checkbox" name="enVedette" id="enVedetteBtn" value="1" class="hidden" />
                         <label for="enVedetteBtn"
                             class="col-span-2 w-full cursor-pointer bg-[#fff] text-darkGrey font-bold py-2 text-center rounded-md transition duration-200 ease-in-out hover:bg-gray-500">
@@ -164,8 +173,10 @@
                         </label>
                     </div>
 
+                    <input type="hidden" name="idArtiste" value="{{$artiste->id_artiste}}">
+
                     {{-- Boutons d'envoie --}}
-                    <button type="submit" id="addArticleBtn"
+                    <button type="submit" id="addArticleBtn" value="confirmer"
                         class="w-full mt-4 cursor-pointer bg-vert text-beige text-[36px] font-bold py-[10px] text-center rounded-md hover:bg-[#00ba5c]">
                         Ajouter article
                     </button>

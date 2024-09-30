@@ -4,7 +4,6 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ArtisteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LikeController;
-use App\Models\Article;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -13,7 +12,7 @@ Route::get('/', function () {
 
 /* Route relié au kiosque */
 Route::controller(ArtisteController::class)->group(function(){
-    Route::post('/kiosque', 'show')->name('kiosque');
+    Route::get('/kiosque/{idUser}', 'show')->name('kiosque');
 });
 
 Route::controller(ArticleController::class)->group(function(){

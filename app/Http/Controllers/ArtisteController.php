@@ -37,10 +37,14 @@ class ArtisteController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request)
+    public function show($idUser)
     {
-        $id_user = $request->input("id_user");
-        $artiste = Artiste::with("reseaux","articles")->where('id_user', $id_user)->first();
+        $artiste = Artiste::with("reseaux","articles")->where('id_user', $idUser)->first();
+
+        if (!$artiste) {
+            // Gérer le cas où l'artiste n'est pas trouvé
+            return redirect()->back()->with('error', 'Artiste non trouvé.');
+        }
 
         /* Va chercher les reseaux et articles de l'artiste pour alléger le code dans la vue */
         $reseaux = $artiste->reseaux;
