@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Mot_cle;
+use App\Models\Mot_cle_article;
 use App\Models\Photo_article;
 use Illuminate\Http\Request;
 
@@ -88,43 +90,53 @@ class ArticleController extends Controller
         ]);
 
         /* Création de l'article */
-        $newArticle = new Article();
+            $newArticle = new Article();
 
         // Attribuer les données à l'instance
-        $newArticle->id_artiste = $validatedData['idArtiste'];
-        $newArticle->id_etat = $validatedData['masquer'];
-        $newArticle->nom = $validatedData['nomArticle'];
-        $newArticle->description = $validatedData['descriptionArticle'];
-        $newArticle->prix = $validatedData["prixArticle"];
-        $newArticle->hauteur = $validatedData['hauteurArticle'];
-        $newArticle->largeur = $validatedData['largeurArticle'];
-        $newArticle->profondeur = $validatedData['profondeurArticle'];
-        $newArticle->poids = $validatedData['poidsArticle'];
-        $newArticle->quantite_disponible = $validatedData['quantiteArticle'];
-        $newArticle->date_publication = (new \DateTime())->format('Y-m-d H:i:s');
-        $newArticle->is_en_vedette = $validatedData['enVedette'];
-        $newArticle->is_sensible = $validatedData['flouter'];
-        $newArticle->is_alimentaire = $validatedData['typePiece'];
-        $newArticle->is_unique = $validatedData['pieceUnique'];
-        $newArticle->couleur = "brun marde"; /* On devrait dropper cette attribut puisqu'on gère les mots clés */
+            $newArticle->id_artiste = $validatedData['idArtiste'];
+            $newArticle->id_etat = $validatedData['masquer'];
+            $newArticle->nom = $validatedData['nomArticle'];
+            $newArticle->description = $validatedData['descriptionArticle'];
+            $newArticle->prix = $validatedData["prixArticle"];
+            $newArticle->hauteur = $validatedData['hauteurArticle'];
+            $newArticle->largeur = $validatedData['largeurArticle'];
+            $newArticle->profondeur = $validatedData['profondeurArticle'];
+            $newArticle->poids = $validatedData['poidsArticle'];
+            $newArticle->quantite_disponible = $validatedData['quantiteArticle'];
+            $newArticle->date_publication = (new \DateTime())->format('Y-m-d H:i:s');
+            $newArticle->is_en_vedette = $validatedData['enVedette'];
+            $newArticle->is_sensible = $validatedData['flouter'];
+            $newArticle->is_alimentaire = $validatedData['typePiece'];
+            $newArticle->is_unique = $validatedData['pieceUnique'];
+            $newArticle->couleur = "brun marde"; /* On devrait dropper cette attribut puisqu'on gère les mots clés */
 
-        $newArticle->save(); /* Stockage en BD du nouvelle article */
+            $newArticle->save(); /* Stockage en BD du nouvelle article */
 
-        $newArticle->mots_cles = $validatedData['motClesArticle'];
+        /* Gestion des mots clés*/
+            $motsClesString = $validatedData['motClesArticle'];
+
+            $motsClesArray = array_filter(array_map('trim', explode('#', $motsClesString)));
+            foreach ($motsClesArray as $motCle) {
+                /* Vérifie si le mot clé existe dans la table "Mot_Cle", si non il le crée et si oui, il y accède */
+                $instanceMotCle = Mot_cle::where("mot", $motCle)->firstOrCreate(["mot" => $motCle]);
+                /* Vérifie si le mot clé existe dans la table "Mot_Cle_article", si non il le crée et si oui, il y accède */
+                Mot_cle_article::where("id_mot_cle",$instanceMotCle->id_mot_cle, "and", "id_article", $newArticle->id_article)->firstOrCreate(["id_mot_cle" => $instanceMotCle->id_mot_cle, "id_article" => $newArticle->id_article]);
+            }
+
 
         // Gestion du téléchargement de l'image
-        for ($i = 1; $i <= 5; $i++) {
-            if ($request->hasFile('photo'.$i)) {
-                $file = $request->file('photo'.$i);
-                $filename = time() . '.' . $file->getClientOriginalExtension(); // Générer un nom de fichier unique pour eviter le conflit de nom similaire
-                $filePath = $file->storeAs('img', $filename, 'public'); // Stocker dans le dossier 'photos' du disque public
-                $newPhotoArticle = new Photo_article();   /* Création de l'instance photo_article*/
-                // Attribuer les données à l'instance
-                $newPhotoArticle->id_article = $newArticle->id_article;
-                $newPhotoArticle->path = $filePath;
-                $newPhotoArticle->save(); /* Stockage en BD de la nouvelle photo */
+            for ($i = 1; $i <= 5; $i++) {
+                if ($request->hasFile('photo'.$i)) {
+                    $file = $request->file('photo'.$i);
+                    $filename = time() . '.' . $file->getClientOriginalExtension(); // Générer un nom de fichier unique pour eviter le conflit de nom similaire
+                    $filePath = $file->storeAs('img', $filename, 'public'); // Stocker dans le dossier 'photos' du disque public
+                    $newPhotoArticle = new Photo_article();   /* Création de l'instance photo_article*/
+                    // Attribuer les données à l'instance
+                    $newPhotoArticle->id_article = $newArticle->id_article;
+                    $newPhotoArticle->path = $filePath;
+                    $newPhotoArticle->save(); /* Stockage en BD de la nouvelle photo */
+                }
             }
-        }
 
         return redirect()->route('kiosque')->with("success", "Article créé avec succès!");
     }
