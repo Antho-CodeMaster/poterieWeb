@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Artiste;
 use App\Models\Reseau;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Reseau_artiste;
 use Illuminate\Http\Request;
 
@@ -48,7 +49,24 @@ class ArtisteController extends Controller
 
         /* Va chercher les reseaux et articles de l'artiste pour alléger le code dans la vue */
         $reseaux = $artiste->reseaux;
-        $articles = $artiste->articles;
+
+        /* Filtre les articles en fonctions de qui visite la page */
+        if(Auth::id() == $artiste->id_user)
+        {
+            $articles = $artiste->articles;
+        }
+        else
+        {
+            $articles = [];
+            foreach ($artiste->articles as $article){
+                if($article->id_etat == 1)
+                {
+                    $articles[] = $article;
+                }
+            }
+        }
+
+
 
         return view('kiosque/kiosque', [
             'artiste' => $artiste,
