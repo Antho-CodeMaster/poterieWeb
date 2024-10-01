@@ -54,4 +54,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Moderateur::class, 'id_user');
     }
+
+    public function active() : bool
+    {
+        return $this->active;
+    }
 }
