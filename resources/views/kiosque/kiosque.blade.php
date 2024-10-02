@@ -75,7 +75,7 @@
                     @if ($article->etat->etat == 'Visible client' && $article->quantite_disponible > 0 && $article->is_en_vedette == 1)
                         <div class="w-[300px] m-[16px] flex-shrink-0 overflow-hidden whitespace-nowrap">
                             <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
-                                class="shadow-md rounded-[16px] cursor-pointer">
+                                class="shadow-md rounded-[16px] cursor-pointer w-full h-[300px] object-cover">
                             <div class="flex justify-between items-center my-[10px]">
                                 <div class="w-[80%]">
                                     <p class="article mb-[3px]">{{ $article->nom }}</p>
@@ -117,7 +117,8 @@
             {{-- Flèche droite --}}
 
             <svg id="nextBtn" class="text-darkGrey absolute right-0 cursor-pointer z-0" aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="none" viewBox="4 4 16 16">
+                xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="none"
+                viewBox="4 4 16 16">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="m9 5 7 7-7 7" />
             </svg>
@@ -156,13 +157,13 @@
                         {{-- Changer l'image selon l'état de l'article --}}
                         @if ($article->id_etat == 2)
                             <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
-                                class="shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%]">
+                                class="shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover">
                         @elseif ($article->quantite_disponible = 0 && $article->id_etat == 1)
                             <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
-                                class="shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%]">
+                                class="shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover">
                         @else
                             <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
-                                class="shadow-md shadow-rounded rounded-[12px] cursor-pointer">
+                                class="shadow-md shadow-rounded rounded-[12px] cursor-pointer h-[160px] w-full object-cover">
                         @endif
 
                         <div class="flex justify-between items-center my-[4px]">

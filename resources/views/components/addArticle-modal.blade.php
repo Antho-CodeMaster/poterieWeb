@@ -45,12 +45,11 @@
 
             <div>
                 {{-- Form pour ajouter un article --}}
-                <form method="post" action="{{ route('addArticle') }}" id="addArticleForm"
+                <form method="post" action="{{ route('addArticle') }}" id="addArticleForm" enctype="multipart/form-data"
                     class="w-full rounded-r-[12px] rounded-b-[12px] bg-darkGrey p-4">
                     @csrf
 
                     {{-- Téléverser les photos --}}
-                    <label for="photos" class="text-beige font-bold text-[24px]">Photos de l'article</label>
                     <div class="grid grid-cols-5 gap-6">
                         @for ($i = 1; $i <= 5; $i++)
                             <div class="flex justify-center items-center">
@@ -60,7 +59,6 @@
 
                                 <!-- Conteneur pour l'aperçu de l'image ou le SVG -->
                                 <div id="previewContainer{{ $i }}" class="flex items-center">
-
                                     <!-- Par défaut, le bouton SVG pour déclencher l'upload -->
                                     <button type="button"
                                         onclick="document.getElementById('photo{{ $i }}').click()"
@@ -78,78 +76,113 @@
                                     </button>
                                 </div>
                             </div>
+                            @if ($errors->has("photo{$i}"))
+                                <span class="text-red-500">{{ $errors->first("photo{$i}") }}</span>
+                            @endif
                         @endfor
                     </div>
 
-
                     <div class="grid grid-cols-4 gap-6 mt-4">
-                        <!-- nom Article -->
-                        <x-text-input id="nomArticle" class="w-full col-span-2" type="text" name="nomArticle" required
-                            placeholder="Nom de l'article" />
+                        <!-- Nom Article -->
+                        <x-text-input id="nomArticle" class="w-full col-span-2" type="text" name="nomArticle"
+                            required placeholder="Nom de l'article" />
+                        @if ($errors->has('nomArticle'))
+                            <span class="text-red-500">{{ $errors->first('nomArticle') }}</span>
+                        @endif
 
-                        <!-- prix Article -->
-                        <x-text-input id="prixArticle" class="w-full col-span-1" type="number" name="prixArticle" required step="0.01" min="0"
-                        placeholder="Prix ($)" />
+                        <!-- Prix Article -->
+                        <x-text-input id="prixArticle" class="w-full col-span-1" type="number" name="prixArticle"
+                            required step="0.01" min="0" placeholder="Prix ($)" />
+                        @if ($errors->has('prixArticle'))
+                            <span class="text-red-500">{{ $errors->first('prixArticle') }}</span>
+                        @endif
 
                         <!-- Type de pièce -->
                         <select id="pieceUnique" name="pieceUnique"
-                            class="w-full col-span-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
-                            <option value="" disabled selected hidden >Sélectionner un type d'article</option>
-                            <!-- Placeholder -->
+                            class="w-full col-span-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            required>
+                            <option value="" disabled selected hidden>Sélectionner un type d'article</option>
                             <option value="1">Unique</option>
                             <option value="0">En série</option>
                         </select>
+                        @if ($errors->has('pieceUnique'))
+                            <span class="text-red-500">{{ $errors->first('pieceUnique') }}</span>
+                        @endif
                     </div>
 
                     <div class="grid grid-cols-4 gap-6 mt-4">
                         <!-- Description de l'article -->
                         <textarea id="descriptionArticle" name="descriptionArticle" rows="2"
                             class="w-full col-span-4 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            placeholder="Description" required ></textarea>
+                            placeholder="Description" required></textarea>
+                        @if ($errors->has('descriptionArticle'))
+                            <span class="text-red-500">{{ $errors->first('descriptionArticle') }}</span>
+                        @endif
                     </div>
 
                     <div class="grid grid-cols-4 gap-6 mt-4">
-                        <!-- Hauteur et largeur de l'article -->
-                        <x-text-input id="hauteurArticle" class="w-full col-span-1" type="number" name="hauteurArticle"
-                            placeholder="Hauteur (cm)" min="0" required/>
+                        <!-- Hauteur et Largeur de l'article -->
+                        <x-text-input id="hauteurArticle" class="w-full col-span-1" type="number"
+                            name="hauteurArticle" placeholder="Hauteur (cm)" min="0" required />
+                        @if ($errors->has('hauteurArticle'))
+                            <span class="text-red-500">{{ $errors->first('hauteurArticle') }}</span>
+                        @endif
 
-                        <x-text-input id="largeurArticle" class="w-full col-span-1" type="number" name="largeurArticle"
-                            placeholder="Largeur (cm)" min="0" required/>
+                        <x-text-input id="largeurArticle" class="w-full col-span-1" type="number"
+                            name="largeurArticle" placeholder="Largeur (cm)" min="0" required />
+                        @if ($errors->has('largeurArticle'))
+                            <span class="text-red-500">{{ $errors->first('largeurArticle') }}</span>
+                        @endif
 
                         <!-- Type de pièce -->
                         <select id="typePiece" name="typePiece" required
                             class="w-full col-span-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                            <option value="" disabled selected hidden >Sélectionner un type de pièce</option>
-                            <!-- Placeholder -->
+                            <option value="" disabled selected hidden>Sélectionner un type de pièce</option>
                             <option value="1">Alimentaire</option>
                             <option value="0">Non-alimentaire</option>
                         </select>
+                        @if ($errors->has('typePiece'))
+                            <span class="text-red-500">{{ $errors->first('typePiece') }}</span>
+                        @endif
                     </div>
 
                     <div class="grid grid-cols-4 gap-6 mt-4">
-                        {{-- Profondeur poids et quantite de l'article --}}
+                        <!-- Profondeur, Poids et Quantité de l'article -->
                         <x-text-input id="profondeurArticle" class="w-full col-span-1" type="number"
-                            name="profondeurArticle" placeholder="Profondeur (cm)" min="0" required/>
+                            name="profondeurArticle" placeholder="Profondeur (cm)" min="0" required />
+                        @if ($errors->has('profondeurArticle'))
+                            <span class="text-red-500">{{ $errors->first('profondeurArticle') }}</span>
+                        @endif
 
                         <x-text-input id="poidsArticle" class="w-full col-span-1" type="number" name="poidsArticle"
-                            placeholder="Poids (g)" min="0" required/>
+                            placeholder="Poids (g)" min="0" required />
+                        @if ($errors->has('poidsArticle'))
+                            <span class="text-red-500">{{ $errors->first('poidsArticle') }}</span>
+                        @endif
 
                         <x-text-input id="quantiteArticle" class="w-full col-span-2" type="number"
-                            name="quantiteArticle" placeholder="Quantité en vente" step="1" min="1" required/>
+                            name="quantiteArticle" placeholder="Quantité en vente" step="1" min="1"
+                            required />
+                        @if ($errors->has('quantiteArticle'))
+                            <span class="text-red-500">{{ $errors->first('quantiteArticle') }}</span>
+                        @endif
                     </div>
 
                     <div class="grid grid-cols-4 gap-6 mt-4">
-                        {{-- Mots-clés --}}
+                        <!-- Mots-clés -->
                         <textarea id="motClesArticle" name="motClesArticle" rows="2"
                             class="w-full col-span-4 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             placeholder="#Funky#MeilleurArticleEver#Automne#Aussiété"></textarea>
+                        @if ($errors->has('motClesArticle'))
+                            <span class="text-red-500">{{ $errors->first('motClesArticle') }}</span>
+                        @endif
                     </div>
 
                     {{-- Les boutons (en vedette, flouter et masquer) --}}
                     <div class="grid grid-cols-4 gap-6 mt-4">
 
                         {{-- masquer --}}
-                        <input type="hidden" name="masquer" value="1"/>
+                        <input type="hidden" name="masquer" value="1" />
                         <input type="checkbox" name="masquer" id="masquerBtn" value="2" class="hidden" />
                         <label for="masquerBtn"
                             class="col-span-1 w-full cursor-pointer bg-[#fff] text-darkGrey font-bold py-2 text-center rounded-md transition duration-200 ease-in-out hover:bg-gray-500">
@@ -165,7 +198,7 @@
                         </label>
 
                         {{-- En vedette --}}
-                        <input type="hidden" name="enVedette" value="0"/>
+                        <input type="hidden" name="enVedette" value="0" />
                         <input type="checkbox" name="enVedette" id="enVedetteBtn" value="1" class="hidden" />
                         <label for="enVedetteBtn"
                             class="col-span-2 w-full cursor-pointer bg-[#fff] text-darkGrey font-bold py-2 text-center rounded-md transition duration-200 ease-in-out hover:bg-gray-500">
@@ -173,7 +206,7 @@
                         </label>
                     </div>
 
-                    <input type="hidden" name="idArtiste" value="{{$artiste->id_artiste}}">
+                    <input type="hidden" name="idArtiste" value="{{ $artiste->id_artiste }}">
 
                     {{-- Boutons d'envoie --}}
                     <button type="submit" id="addArticleBtn" value="confirmer"

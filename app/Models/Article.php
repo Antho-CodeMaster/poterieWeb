@@ -10,6 +10,24 @@ class Article extends Model
     use HasFactory;
     protected $table = "articles";
     protected $primaryKey = "id_article";
+    protected $fillable = [
+        'id_artiste',
+        'id_etat',
+        'nom',
+        'description',
+        'prix',
+        'hauteur',
+        'largeur',
+        'profondeur',
+        'poids',
+        'quantite_disponible',
+        'date_publication',
+        'is_en_vedette',
+        'is_sensible',
+        'is_alimentaire',
+        'is_unique',
+        'couleur',
+    ];
 
     public function etat()
     {
