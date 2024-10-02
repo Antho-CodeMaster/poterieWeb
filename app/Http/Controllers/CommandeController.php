@@ -17,7 +17,12 @@ class CommandeController extends Controller
     public function index()
     {
         if(Auth::check()){
-            $commandes = Commande::where('id_user', '=', Auth::id())->where('is_panier', '=', false)->get();
+            $commandes = Commande::where('id_user', Auth::id())
+            ->where('is_panier', false)
+            ->with(['transactions' => function($query) {
+                $query->orderBy('status_id', 'desc');
+            }])
+            ->get();
 
             return view('commande/commandes',[
                 'commandes' => $commandes
@@ -83,11 +88,12 @@ class CommandeController extends Controller
      */
     public function getPanier(Request $request){
         #returns the panier of the connected user
+        # or the disconnaected user
         if (Auth::check())
             return Commande::where('id_user', '=', Auth::id())->where('is_panier', '=', true)->firstOrCreate(['is_panier' => true]);
         else
             return $request->cookie('panier', [1,2,3]);
-
+        /** TODO : REMOVE DEFAULT VALUES IN COOKIE */
     }
 
     /**
