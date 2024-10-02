@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Transaction extends Model
 {
     use HasFactory;
-    protected $table = 'transaction';
+    protected $table = 'transactions';
     protected $primary_key ='id_transaction';
 
     public function article_non_recu(){

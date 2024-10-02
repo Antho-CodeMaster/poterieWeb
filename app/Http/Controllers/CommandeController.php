@@ -20,7 +20,7 @@ class CommandeController extends Controller
             $commandes = Commande::where('id_user', Auth::id())
             ->where('is_panier', false)
             ->with(['transactions' => function($query) {
-                $query->orderBy('status_id', 'desc');
+                $query->orderBy('id_etat', 'desc');
             }])
             ->get();
 
@@ -55,7 +55,7 @@ class CommandeController extends Controller
      */
     public function show(commande $commande)
     {
-        //
+        return view('commande.components.detail-commande-modal')->render();
     }
 
     /**
