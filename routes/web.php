@@ -15,7 +15,7 @@ Route::get('/decouverte', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::get('/profile/facturation', [ProfileController::class, 'facturation'])->name('profile.facturation');
-    Route::post('/profile', [ProfileController::class, 'updateBlur'])->name('profile.updateBlur');
+    Route::post('/profile/edit', [ProfileController::class, 'updateBlur'])->name('profile.updateBlur');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
