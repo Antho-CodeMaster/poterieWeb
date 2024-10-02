@@ -35,7 +35,7 @@ class ArticleController extends Controller
         /* Validation des entrés */
         $validatedData = $request->validate([
             "idArtiste" => "required",
-            "masquer" => "required|in:0,1",
+            "masquer" => "required|",
             "enVedette" => "required|in:0,1",
             "flouter" => "required|in:0,1",
             "prixArticle" => "required",
