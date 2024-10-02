@@ -32,8 +32,10 @@ export default {
             colors: {
                 'darkGrey': '#444444',
                 'vert' : '#009b4d',
+                'lightVert' : '#00CE66',
                 'beige' : '#f4f0ec',
                 'rouge': '#ff0000',
+                'hoverGrey' : '#A3A3A3',
             },
             height: {
                 'nav': '48px',
