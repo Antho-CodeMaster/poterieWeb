@@ -19,7 +19,7 @@
 </head>
 
 <body class="font-sans antialiased">
-    <div class="min-h-screen bg-ffffff">
+    <div class="min-h-screen bg-ffffff flex flex-col">
         @include('layouts.navigation')
 
         <!-- Page Heading -->
@@ -32,7 +32,7 @@
         @endisset
 
         <!-- Page Content -->
-        <main>
+        <main class="pt-[44px] grow">
             {{ $slot }}
         </main>
 

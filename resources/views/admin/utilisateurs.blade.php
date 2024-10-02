@@ -1,40 +1,43 @@
 <x-app-layout>
-    <div class="flex">
+    <div class="flex content-height">
         @include('admin.menu-gauche')
-        <div class="pt-20 pl-20 w-[80%] ml-[350px] mt-[48px]" x-data="{ openAvertir: false }">
-            <h1 class="text-4xl text-black">Utilisateurs</h1>
-            <h2 class="text-2xl text-darkGrey">{{ sizeof($users) }} résultats</h2>
+        <div class="pt-20 px-20 w-[90%] h-[100%] flex flex-col" x-data="{ openAvertir: false, openDelete: false }">
+            <div id="header-info">
+                <h1 class="text-4xl text-black">Utilisateurs</h1>
+                <h2 class="text-2xl text-darkGrey">{{ sizeof($users) }} résultats</h2>
 
-            <div class="flex float-right mr-14 mb-4">
-                <!-- Sélection du type d'utilisateur -->
-                <select id="type" class="mr-6 border rounded border-black">
-                    <option selected value="tous">Tous</option>
-                    <option value="Client">Clients</option>
-                    <option value="Artiste">Artistes</option>
-                    <option value="Modérateur">Modérateurs</option>
-                    <option value="Administrateur">Administrateurs</option>
-                </select>
+                <div class="flex justify-end">
+                    <!-- Sélection du type d'utilisateur -->
+                    <select id="type" class="mr-6 border rounded border-black">
+                        <option selected value="tous">Tous</option>
+                        <option value="Client">Clients</option>
+                        <option value="Artiste">Artistes</option>
+                        <option value="Modérateur">Modérateurs</option>
+                        <option value="Administrateur">Administrateurs</option>
+                    </select>
 
-                <!-- Barre de recherche -->
-                <div id="search-user" class="w-[500px] h-[50px] py-auto flex border rounded border-black">
-                    <input class="w-full border-0 focus:border-0 focus:shadow-none rounded h-full" type="text"
-                        placeholder="Rechercher par nom..." name="search">
-                    <button>
-                        <svg class="w-6 h-6 mr-3 text-gray-800 dark:text-white" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                            viewBox="0 0 24 24">
-                            <path stroke="#444444" stroke-linecap="round" stroke-width="2"
-                                d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
-                        </svg>
-                    </button>
+                    <!-- Barre de recherche -->
+                    <div id="search-user" class="w-[500px] h-[50px] py-auto flex border rounded border-black">
+                        <input class="w-full border-0 focus:border-0 focus:shadow-none rounded h-full" type="text"
+                            placeholder="Rechercher par nom..." name="search">
+                        <button>
+                            <svg class="w-6 h-6 mr-3 text-gray-800 dark:text-white" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                viewBox="0 0 24 24">
+                                <path stroke="#444444" stroke-linecap="round" stroke-width="2"
+                                    d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
-
-            <div class="flex flex-wrap w-[100%] max-h-screen h-[629px] pt-4 overflow-auto">
+            <div class="flex flex-wrap grow justify-evenly py-4 overflow-auto">
                 @foreach ($users as $user)
-                    <div class="user py-6 w-1/4">
+                    <div class="user my-6 mx-4">
                         <div class="w-[320px] h-[360px] bg-lightGrey rounded-[14px] flex flex-col p-3 gap-3">
-                            <h3 class="text-2xl mx-auto">{{ $user->name }}</h3>
+                            <h3 title="{{ $user->name }}"
+                                class="w-[90%] text-center text-2xl mx-auto text-ellipsis overflow-hidden whitespace-nowrap">
+                                {{ $user->name }}</h3>
 
                             @if ($user->artiste != null)
                                 <p class="mx-auto">Artiste</p>

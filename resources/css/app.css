@@ -14,3 +14,7 @@
 .smallText {
     @apply text-footer font-small text-beige;
 }
+
+.content-height {
+    height: calc(100vh - 48px - 25px);
+}

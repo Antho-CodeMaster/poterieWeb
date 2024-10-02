@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="z-50 fixed w-full bg-darkGrey border-gray-100">
+<nav x-data="{ open: false }" class="z-50 h-[48px] fixed w-full bg-darkGrey border-gray-100">
     <!-- Navigation Menu -->
     <div class="flex h-nav justify-between items-center">
 
