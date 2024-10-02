@@ -1,5 +1,5 @@
-<div x-cloak x-data="{ openAvertir: {{ $errors->any() ? 'true' : 'false' }} }" @close-avertir-modal.window="openAvertir = false">
-    <button @click="openAvertir = true; $dispatch ('open-avertir-modal'); $dispatch('set-id', {{$id}});" class="h-10 w-fit px-4 shadow-inner rounded bg-[#FA3D3D] hover:bg-[#FF0000] flex">
+<div x-cloak x-data="{ openAvertir: {{ $errors->any() ? 'true' : 'false' }} }">
+    <button @click="openAvertir = true; $dispatch ('open-avertir-modal'); $dispatch('set-id', {{$id}}); $dispatch('set-name', {{$name}});" class="h-10 w-fit px-4 shadow-inner rounded bg-[#FA3D3D] hover:bg-[#FF0000] flex">
         <div class="m-auto flex gap-2">
             <svg class="w-6 h-6 my-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                 fill="none" viewBox="0 0 24 24">

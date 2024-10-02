@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Artiste;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -59,11 +59,27 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $id)
+    public function destroy()
     {
+        $id = request()->query('id');
         $user = User::where('id', $id)->first();
         $user->active = 0;
         $user->save();
+        return redirect()->to(route('admin-utilisateurs'));
+    }
+
+    public function avertir()
+    {
+        $id = request()->query('id');
+        $notif = Notification::create([
+            'id_type' => 2,
+            'id_user' => $id,
+            'date' => now(),
+            'message' => request()->input('reason'),
+            'lien' => null,
+            'visible' => 1
+        ]);
+        $notif->save();
         return redirect()->to(route('admin-utilisateurs'));
     }
 }

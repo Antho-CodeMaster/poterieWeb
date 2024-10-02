@@ -9,13 +9,15 @@ use Illuminate\View\Component;
 class AvertirButton extends Component
 {
     public $id;
+    public $name;
 
     /**
      * Create a new component instance.
      */
-    public function __construct($id)
+    public function __construct($id, $name)
     {
         $this->id = $id;
+        $this->name = $name;
     }
 
     /**
@@ -23,6 +25,6 @@ class AvertirButton extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('admin.components.avertir-button', ['id' => $this->id]);
+        return view('admin.components.avertir-button', ['id' => $this->id, 'name' => $this->name]);
     }
 }

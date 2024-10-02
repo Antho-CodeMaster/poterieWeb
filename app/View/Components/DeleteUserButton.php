@@ -8,14 +8,16 @@ use Illuminate\View\Component;
 
 class DeleteUserButton extends Component
 {
-    public $href;
+    public $id;
+    public $name;
 
     /**
      * Create a new component instance.
      */
-    public function __construct($href)
+    public function __construct($id, $name)
     {
-        $this->href = $href;
+        $this->id = $id;
+        $this->name = $name;
     }
 
     /**
@@ -23,6 +25,6 @@ class DeleteUserButton extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('admin.components.delete-user-button', ['href' => $this->href]);
+        return view('admin.components.delete-user-button', ['id' => $this->id, 'name' => $this->name]);
     }
 }

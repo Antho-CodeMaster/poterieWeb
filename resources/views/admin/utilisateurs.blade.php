@@ -66,16 +66,17 @@
                             @endif
 
                             <div class="flex mx-auto gap-2">
-                                <x-avertir-button id="{{$user->id}}">
+                                <x-avertir-button id="{{ $user->id }}" name="'{{ $user->name }}'">
                                 </x-avertir-button>
-                                <x-delete-user-button
-                                    href="{{ route('admin-user-delete', ['id' => $user->id]) }}"></x-delete-user-button>
+                                <x-delete-user-button id="{{ $user->id }}" name="'{{ $user->name }}'">
+                                </x-delete-user-button>
                             </div>
                         </div>
                     </div>
                 @endforeach
             </div>
-                @include('admin.components.avertir-modal')
+            @include('admin.components.avertir-modal')
+            @include('admin.components.delete-modal')
         </div>
     </div>
 </x-app-layout>
