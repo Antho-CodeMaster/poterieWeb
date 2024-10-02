@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ArtisteController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -17,6 +18,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile', [ProfileController::class, 'updateBlur'])->name('profile.updateBlur');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::post('/profile', [ArtisteController::class, 'updatePicture'])->name('artiste.updatePicture');
 });
 
 require __DIR__.'/auth.php';

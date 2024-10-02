@@ -22,13 +22,17 @@
             </div>
 
             <!-- Update profile picture -->
-            <div class="col-span-1 p-4 sm:p-8">
-                <div class="max-w-xl">
-
+            @if ($artiste)
+                <div class="col-span-1 p-4 sm:p-8">
+                    <div class="max-w-xl">
+                        @include('profile.partials.update-picture-form')
+                    </div>
                 </div>
-            </div>
+            @else
+            <span class="col-span-1 p-4 sm:p-8"></span>
+            @endif
 
-            <!-- Password Update (Full Width in Two Columns) -->
+            <!-- Password Update -->
             <div class="col-span-2 p-4 sm:p-8 bg-beige hover:shadow-lg sm:rounded-lg">
                 <div class="max-w-xl">
                     @include('profile.partials.update-password-form')
