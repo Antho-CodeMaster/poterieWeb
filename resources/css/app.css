@@ -55,6 +55,6 @@
 
 /* Styles pour le label lorsque le checkbox est coché */
 #enVedetteBtn:checked+label, #masquerBtn:checked+label, #flouterBtn:checked+label {
-    @apply bg-gray-500 text-beige;
+    @apply bg-[#ebe3dc] text-darkGrey;
     /* Appliquer les styles de Tailwind */
 }

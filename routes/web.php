@@ -15,8 +15,10 @@ Route::controller(ArtisteController::class)->group(function(){
     Route::get('/kiosque/{idUser}', 'show')->name('kiosque');
 });
 
+/* Route lié à ArticleSettings */
 Route::controller(ArticleController::class)->group(function(){
     Route::post('/addArticle', 'store')->name('addArticle');
+    Route::get('/addArticleForm', 'create')->name('addArticleForm');
 });
 
 Route::get('/decouverte', function () {

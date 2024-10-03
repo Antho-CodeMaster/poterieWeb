@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Artiste;
 use App\Models\Mot_cle;
 use App\Models\Mot_cle_article;
 use App\Models\Photo_article;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -22,16 +24,19 @@ class ArticleController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create() {}
+    public function create()
+    {
+        $artiste = Artiste::where('id_user', Auth::user()->id)->first();
+        return view("articleSettings.addArticle-form", [
+            'artiste' => $artiste
+        ]);
+    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        /* Array de tous les erreurs */
-        $erreurs = [];
-
         /* Validation des entrés */
         $validatedData = $request->validate([
             "idArtiste" => "required",
@@ -49,11 +54,11 @@ class ArticleController extends Controller
             "typePiece" => "required|in:0,1",
             "quantiteArticle" => "required|integer|min:1",
             "motClesArticle" => "nullable|regex:/^#[a-zA-Z0-9]+(#[a-zA-Z0-9]+)*$/",
-            "photo1" => "nullable|mimes:jpeg,png,jpg",
-            "photo2" => "nullable|mimes:jpeg,png,jpg",
-            "photo3" => "nullable|mimes:jpeg,png,jpg",
-            "photo4" => "nullable|mimes:jpeg,png,jpg",
-            "photo5" => "nullable|mimes:jpeg,png,jpg",
+            "photo1" => "mimes:jpeg,png,jpg",
+            "photo2" => "mimes:jpeg,png,jpg",
+            "photo3" => "mimes:jpeg,png,jpg",
+            "photo4" => "mimes:jpeg,png,jpg",
+            "photo5" => "mimes:jpeg,png,jpg",
         ], [
             "nomArticle.required" => "Le nom de l'article est obligatoire.",
             "nomArticle.max" => "Le nom de l'article ne peut pas dépasser 255 caractères.",
@@ -92,6 +97,12 @@ class ArticleController extends Controller
             "quantiteArticle.min" => "La quantité de l'article doit être au moins 1.",
 
             "motClesArticle.regex" => "Les mots clés de l'article doivent commencer par '#' et contenir aucun espacement.",
+
+            'photo1.mimes' => 'La photo 1 doit être au format JPEG, PNG ou JPG.',
+            'photo2.mimes' => 'La photo 2 doit être au format JPEG, PNG ou JPG.',
+            'photo3.mimes' => 'La photo 3 doit être au format JPEG, PNG ou JPG.',
+            'photo4.mimes' => 'La photo 4 doit être au format JPEG, PNG ou JPG.',
+            'photo5.mimes' => 'La photo 5 doit être au format JPEG, PNG ou JPG.',
         ]);
 
         /* Création de l'article */
@@ -114,7 +125,13 @@ class ArticleController extends Controller
             'couleur' => 'brun marde', // Vous pouvez le modifier selon vos besoins
         ]);
 
-        $newArticle->save(); /* Stockage en BD du nouvelle article */
+        /* Stockage en BD du nouvelle article */
+        if ($newArticle->save()){
+            session()->flash('succes', 'L\'article à bien été ajouté');
+        }
+        else{
+            session()->flash('erreur', 'Un problème lors de l\'article s\'est produit');
+        }
 
         /* Gestion des mots clés*/
         $motsClesString = $validatedData['motClesArticle'];
@@ -150,7 +167,7 @@ class ArticleController extends Controller
 
         $idUser = Auth::user()->id;
 
-        return redirect()->route('kiosque', ['idUser' => $idUser])->with("success", "Article créé avec succès!");
+        return redirect()->route('addArticleForm', ['idUser' => $idUser])->with("success", "Article créé avec succès!");
     }
 
     /**
