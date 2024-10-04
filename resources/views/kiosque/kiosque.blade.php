@@ -137,18 +137,6 @@
                     <path
                         d="M10.83 5a3.001 3.001 0 0 0-5.66 0H4a1 1 0 1 0 0 2h1.17a3.001 3.001 0 0 0 5.66 0H20a1 1 0 1 0 0-2h-9.17ZM4 11h9.17a3.001 3.001 0 0 1 5.66 0H20a1 1 0 1 1 0 2h-1.17a3.001 3.001 0 0 1-5.66 0H4a1 1 0 1 1 0-2Zm1.17 6H4a1 1 0 1 0 0 2h1.17a3.001 3.001 0 0 0 5.66 0H20a1 1 0 1 0 0-2h-9.17a3.001 3.001 0 0 0-5.66 0Z" />
                 </svg>
-
-                @if (Session::all())
-                    {{-- Succes de la suppression d'un article --}}
-                    @if (Session::has('succesDeleteArticle'))
-                        <div class="h-fit mx-2" role="alert">
-                            <div
-                                class="rounded border-[2px] border-green-900 bg-green-100 px-4 py-1 text-green-900 font-semibold">
-                                <p>{{ Session::get('succesDeleteArticle') }}</p>
-                            </div>
-                        </div>
-                    @endif
-                @endif
             </div>
 
             {{-- Boutons d'artistes --}}
@@ -240,6 +228,21 @@
             @endforeach
 
         </div>
+
+        {{-- Message de Session --}}
+        @if (Session::all())
+            {{-- Succes de la suppression d'un article --}}
+            @if (Session::has('succesDeleteArticle'))
+                <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1" role="alert">
+                    <div
+                        class="bg-green-500 border-t border-[2px] border-green-900 text-white font-bold rounded-t px-4 py-2">
+                        Succes</div>
+                    <div class="rounded-b border-[2px] border-green-900 bg-green-100 px-4 py-2 text-green-700">
+                        <p>{{ Session::get('succesDeleteArticle') }}</p>
+                    </div>
+                </div>
+            @endif
+        @endif
     </section>
 </x-app-layout>
 
