@@ -20,7 +20,7 @@ class DemandeController extends Controller
      */
     public function create()
     {
-        //
+        return view('devenir-artiste');
     }
 
     /**
