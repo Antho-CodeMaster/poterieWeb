@@ -19,9 +19,6 @@ class CommandeController extends Controller
         if(Auth::check()){
             $commandes = Commande::where('id_user', Auth::id())
             ->where('is_panier', false)
-            ->with(['transactions' => function($query) {
-                $query->orderBy('id_etat', 'desc');
-            }])
             ->get();
 
             return view('commande/commandes',[
@@ -29,7 +26,7 @@ class CommandeController extends Controller
             ]);
         }
         else{
-            return view('commande/commandes', ['commandes' => 'allo', 'authis' => Auth::id()]);
+            return view('commande/commandes', ['commandes' => null, 'authis' => Auth::id()]);
         }
 
     }

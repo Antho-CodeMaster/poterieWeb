@@ -1,20 +1,20 @@
-<div x-cloak x-data="{ openCommande: false }" @close-login-modal.window="openCommande = false">
+<div x-cloak x-data="{{'openCommande' . $commande->id_commande}}: false }" @close-login-modal.window="{{'openCommande'.$commande->id_commande}} = false">
     <!-- Trigger Button for Login Modal -->
-    <button @click="openCommande = true">
+    <button @click="{{'openCommande' . $commande->id_commande}}" = true">
         <div class="ms-1">
             Détail
         </div>
     </button>
 
     <!-- Login Modal -->
-    <div x-show="openCommande" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
+    <div x-show="{{'openCommande' . $commande->id_commande}}" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
         <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
             <!-- Close Button -->
-            <button @click="openCommande = false" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-5xl p-2">
+            <button @click="{{'openCommande' . $commande->id_commande}} = false" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-5xl p-2">
                 &times;
             </button>
 
-            <h2 class="text-left text-xl font-bold mb-6">{{$name}}</h2>
+            <h2 class="text-left text-xl font-bold mb-6">{{$commande->ville->ville}}</h2>
 
             <form method="POST" action="{{ route('login') }}">
                 @csrf
@@ -62,7 +62,7 @@
 
                 <!-- Sign Up Button that closes Login Modal and opens Register Modal -->
                 <div class="text-center my-8">
-                    <button @click.stop="openCommande = false; $dispatch('open-register-modal'); console.log('Dispatching open-register-modal')" class="w-64 mx-auto bg-[#444444] text-[#F4F0EC] py-2 rounded">
+                    <button @click.stop="{{"openCommande".$commande->id_commande}} = false; $dispatch('open-register-modal'); console.log('Dispatching open-register-modal')" class="w-64 mx-auto bg-[#444444] text-[#F4F0EC] py-2 rounded">
                         {{ __('S’inscrire') }}
                     </button>
                 </div>
