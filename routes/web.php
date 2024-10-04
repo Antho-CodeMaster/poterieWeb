@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ArtisteController;
+use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -21,5 +22,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/profile', [ArtisteController::class, 'updatePicture'])->name('artiste.updatePicture');
 });
+
+Route::get('/recherche/{search}', [ArticleController::class, 'getSearch'])->name('recherche.getSearch');
 
 require __DIR__.'/auth.php';
