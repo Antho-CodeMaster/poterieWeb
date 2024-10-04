@@ -50,9 +50,15 @@ class CommandeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(commande $commande)
+    public function show(int $id_commande)
     {
-        return view('commande.components.detail-commande-modal')->render();
+
+        $commande = Commande::where('id_commande', $id_commande)->first();
+
+        $articleParArtiste = $commande->transactions->groupBy(function ($transaction){
+            return $transaction->article->artiste;
+        });
+        return view('commande.commande-detail', ['commande' => $commande, 'articleParArtiste' => $articleParArtiste]);
     }
 
     /**

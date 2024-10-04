@@ -60,30 +60,7 @@
 
 
     <h2 class="my-8 mx-auto text-l font-bold leading-none tracking-tight md:text-4xl lg:text-4xl">Précédent</h2>
-    <div class="flex my-auto ml-24">
-        {{--images--}}
-        <div class="w-1/3 flex relative space-x-0">
-            <img src="img/tests/pot_1.jpg" alt="" class="w-1/3 h-full object-cover z-10 rounded-[12px] shadow-xl shadow-black">
-            <img src="img/tests/pot_2.jpg" alt="" class="w-1/3 h-full object-cover z-20 absolute left-[25%] rounded-[12px] shadow-xl shadow-black">
-            <img src="img/tests/pot_3.jpg" alt="" class="w-1/3 h-full object-cover z-30 absolute left-[50%] rounded-[12px] shadow-xl shadow-black">
 
-        </div>
-        {{--infos--}}
-        <div class="flex flex-col w-1/3 justify-between">
-            <p>Date : bonne fete</p>
-            <div class="flex">
-                Statut : <p class="text-[#ffb700] underline">En attente</p>
-            </div>
-            <!-- Trigger Button for Login Modal -->
-            <button @click="openCommande = true">
-
-            </button>
-        </div>
-        {{--prix--}}
-        <div class="w-1/3 self-end">
-            prix
-        </div>
-    </div>
     @dump($commandes)
 </x-app-layout>
 
