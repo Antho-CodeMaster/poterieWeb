@@ -22,10 +22,16 @@ Route::middleware('guest')->group(function () {
 
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
-    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
-                ->name('password.request');
+    //Retournera la vue forgot-password.blade.php
+    Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])
+        ->name('password.request');
 
-    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
+    //Validera l'e-mail sinon retournera, si tout va bien retournera la vue question-password.blade.php
+    Route::get('/forgot-password/question', [PasswordResetLinkController::class, 'question'])
+                ->name('password.question');
+
+    //Validera la réponse sinon retournera, si tout va bien enverra un e-mail et retournera en disant que tout s'est bien passé
+    Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
                 ->name('password.email');
 
     Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])

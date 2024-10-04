@@ -59,7 +59,11 @@ export default {
                 'darkGrey': '#444444',
                 'vert': '#009b4d',
                 'beige': '#f4f0ec',
-                'red': '#ff0000'
+                'red': '#ff0000',
+                'lightGrey' : '#c7c7c7',
+                'hoverGrey' : '#A3A3A3',
+                'vert' : '#009b4d',
+                'beige' : '#f4f0ec',
             },
 
             height: {
@@ -73,18 +77,6 @@ export default {
             borderRadius: {
                 DEFAULT: '28px',
             },
-
-            keyframes: {
-                scrollText: {
-                  '0%': { transform: 'translateX(100%)' },
-                  '100%': { transform: 'translateX(-100%)' },
-                },
-            },
-
-            animation: {
-                scrollText: 'scrollText 10s linear infinite',
-            },
-
         },
 
 

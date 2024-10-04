@@ -54,4 +54,19 @@ class User extends Authenticatable
     public function artistes(){
         return $this->belongsTo(Artiste::class, "id_user", "id_user");
     }
+
+    public function artiste()
+    {
+        return $this->hasOne(Artiste::class, 'id_user');
+    }
+
+    public function moderateur()
+    {
+        return $this->hasOne(Moderateur::class, 'id_user');
+    }
+
+    public function active() : bool
+    {
+        return $this->active;
+    }
 }

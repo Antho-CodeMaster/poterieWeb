@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class=" bg-darkGrey border-gray-100">
+<nav x-data="{ open: false }" class="z-50 h-[48px] fixed w-full bg-darkGrey border-gray-100">
     <!-- Navigation Menu -->
     <div class="flex h-nav justify-between items-center">
 
@@ -12,7 +12,7 @@
         <!-- Barre de recherche -->
         <div class="w-[500px]">
             <form action="" class="w-full h-[38px] py-auto"> {{-- Il faut remplir l'action --}}
-                <input class="w-full rounded h-full" type="text" placeholder="Search.." name="search">
+                <input id="search" class="w-full rounded h-full" type="text" placeholder="Search.." name="search">
                 <button type="submit"><i class="fa fa-search"></i></button>
             </form>
         </div>
@@ -21,13 +21,10 @@
         <!-- Boutons de droite -->
         <div class="flex justify-end w-[225px] items-center mr-[16px]">
 
-            {{-- Avoir le droit de voir ces bouton que si nous somme connecté --}}
-            @auth
-                {{-- Bouton Admin --}}
-                <form action="{{ route('decouverte') }}" method="get"
-                    class="ml-[15px] hover:bg-white-700 flex items-center">
-                    @csrf
-                    <button>
+            {{-- Bouton Admin --}}
+            @if (Auth::user() != null)
+                @if (Auth::user()->moderateur)
+                    <a href="{{ route('admin') }}" class="ml-[15px] hover:bg-white-700">
                         <svg width="34" height="34" viewBox="0 0 78 78" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <rect class="w-full h-full" rx="16" fill="#F4F0EC" />
@@ -40,11 +37,13 @@
                                 stroke="#444444" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"
                                 class="scale-[1.5] translate-y-[-13px] translate-x-[-19px]" />
                         </svg>
-                    </button>
-                </form>
+                    </a>
+                @endif
+
 
                 {{-- Bouton kiosque omg le svg est big update: j'ai géré la calibration --}}
-                <form action="{{ route('kiosque', ['idUser' => Auth::user()->id]) }}" method="get" class="ml-[15px] flex items-center">
+                <form action="{{ route('kiosque', ['idUser' => Auth::user()->id]) }}" method="get"
+                    class="ml-[15px] flex items-center">
                     @csrf
                     <button type="submit">
                         <svg width="34" height="34" viewBox="0 0 78 78" fill="none"
@@ -57,7 +56,7 @@
                         </svg>
                     </button>
                 </form>
-            @endauth
+            @endif
 
             {{-- Bouton panier --}}
             <form action="" method="GET" class="ml-[15px] flex items-center">

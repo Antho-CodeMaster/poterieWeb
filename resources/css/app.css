@@ -58,3 +58,7 @@
     @apply bg-[#ebe3dc] text-darkGrey;
     /* Appliquer les styles de Tailwind */
 }
+
+.content-height {
+    height: calc(100vh - 48px - 25px);
+}

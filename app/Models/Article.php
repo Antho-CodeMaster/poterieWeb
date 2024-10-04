@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -47,5 +46,10 @@ class Article extends Model
     public function isLikedByUser($id_user)
     {
         return $this->likes()->where('id_user', $id_user)->exists();
+    }
+
+    public function artiste()
+    {
+        return $this->hasOne(Artiste::class, 'id_artiste');
     }
 }

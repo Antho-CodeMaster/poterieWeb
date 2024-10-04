@@ -31,7 +31,8 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'contenu_sensible' => 0,
             'id_question_securite' => 1,
-            'reponse_question' => Hash::make('Lorem Ipsum Dolor Sit Amet')
+            'reponse_question' => Hash::make('Lorem Ipsum Dolor Sit Amet'),
+            'active' => 1
         ];
     }
 
