@@ -127,20 +127,34 @@
 
     {{-- Section Tous les articles --}}
     <section class="mt-[32px]">
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-end my-[8px]">
             <div class="flex">
                 <h2 class="titre2 ml-[16px] mr-[2px]">Tous les articles</h2>
+
+                {{-- Bouton de filtre --}}
                 <svg class="w-8 h-8 cursor-pointer" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                     width="24" height="24" fill="#444444" viewBox="0 0 24 24">
                     <path
                         d="M10.83 5a3.001 3.001 0 0 0-5.66 0H4a1 1 0 1 0 0 2h1.17a3.001 3.001 0 0 0 5.66 0H20a1 1 0 1 0 0-2h-9.17ZM4 11h9.17a3.001 3.001 0 0 1 5.66 0H20a1 1 0 1 1 0 2h-1.17a3.001 3.001 0 0 1-5.66 0H4a1 1 0 1 1 0-2Zm1.17 6H4a1 1 0 1 0 0 2h1.17a3.001 3.001 0 0 0 5.66 0H20a1 1 0 1 0 0-2h-9.17a3.001 3.001 0 0 0-5.66 0Z" />
                 </svg>
+
+                @if (Session::all())
+                    {{-- Succes de la suppression d'un article --}}
+                    @if (Session::has('succesDeleteArticle'))
+                        <div class="h-fit mx-2" role="alert">
+                            <div
+                                class="rounded border-[2px] border-green-900 bg-green-100 px-4 py-1 text-green-900 font-semibold">
+                                <p>{{ Session::get('succesDeleteArticle') }}</p>
+                            </div>
+                        </div>
+                    @endif
+                @endif
             </div>
 
             {{-- Boutons d'artistes --}}
             {{-- Vérification si l'utilisateur qui visite la page est le propriétaire du kiosque --}}
             @if (Auth::id() == $artiste->id_user)
-                <a href="{{ route('addArticleForm') }}">
+                <a href="{{ route('addArticleForm') }}" class="">
                     <svg width="50" height="50" viewBox="0 0 126 126" fill="none"
                         xmlns="http://www.w3.org/2000/svg" class="mx-[16px]">
                         <path
@@ -157,17 +171,23 @@
                 @if ($article->etat->etat == 'Visible client' || $article->etat->etat == 'Masqué client')
                     <div class="w-[160px] mx-[16px] my-[16px] whitespace-nowrap">
 
-                        {{-- Changer l'image selon l'état de l'article --}}
-                        @if ($article->id_etat == 2)
-                            <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
-                                class="shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover">
-                        @elseif ($article->quantite_disponible == 0 && $article->id_etat == 1)
-                            <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
-                                class="shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover">
-                        @else
-                            <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
-                                class="shadow-md shadow-rounded rounded-[12px] cursor-pointer h-[160px] w-full object-cover">
-                        @endif
+                        <div class="w-[160px] h-[160px] relative">
+                            @if ($article->id_etat == 2)
+                                <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
+                                    class="z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover">
+                            @elseif ($article->quantite_disponible == 0 && $article->id_etat == 1)
+                                <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
+                                    class="z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover">
+                            @else
+                                <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
+                                    class="z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer h-[160px] w-full object-cover">
+                            @endif
+
+                            {{-- Changer l'image selon l'état de l'article --}}
+                            @if (Auth::id() == $artiste->id_user)
+                                @include('components.deleteArticle-modal', $article)
+                            @endif
+                        </div>
 
                         <div class="flex justify-between items-center my-[4px]">
                             <div class="w-[75%]">

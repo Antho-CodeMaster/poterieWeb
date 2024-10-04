@@ -172,7 +172,7 @@ class ArticleController extends Controller
 
         $idUser = Auth::user()->id;
 
-        return redirect()->route('addArticleForm', ['idUser' => $idUser])->with("success", "Article créé avec succès!");
+        return redirect()->route('addArticleForm', ['idUser' => $idUser]);
     }
 
     /**
@@ -196,14 +196,26 @@ class ArticleController extends Controller
      */
     public function update(Request $request, article $article)
     {
-        //
+        $idArticle = $request->input("idArticle");
+
+        $article = Article::where("id_article", $idArticle)->first();
+
+        $article->id_etat = 3;
+
+        /* Stockage en BD du nouvelle article */
+        if ($article->save()) {
+            session()->flash('succesDeleteArticle', 'L\'article a bien été supprimé');
+        } else {
+            session()->flash('erreurDeleteArticle', 'Un problème lors de la suppression de l\'article s\'est produit');
+        }
+
+        $idUser = $request->input("idUser");
+
+        return redirect()->route('kiosque', ['idUser' => $idUser]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(article $article)
-    {
-        //
-    }
+    public function destroy(article $article) {}
 }
