@@ -35,7 +35,6 @@ export default {
                 'hoverGrey' : '#A3A3A3',
                 'vert' : '#009b4d',
                 'beige' : '#f4f0ec',
-                'red': '#ff0000'
             },
             height: {
                 'nav': '48px',
