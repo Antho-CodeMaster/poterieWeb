@@ -161,7 +161,7 @@
                         @if ($article->id_etat == 2)
                             <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
                                 class="shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover">
-                        @elseif ($article->quantite_disponible = 0 && $article->id_etat == 1)
+                        @elseif ($article->quantite_disponible == 0 && $article->id_etat == 1)
                             <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
                                 class="shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover">
                         @else
@@ -201,18 +201,19 @@
                             <p
                                 class="border-darkGrey border rounded-[24px] w-[100%] h-[30px] text-beige font-bold bg-darkGrey text-center">
                                 Masqué</p>
-                        @else
+                        @elseif ($article->id_etat == 1)
                             @if ($article->quantite_disponible == 0)
                                 <p
                                     class="border-darkGrey border rounded-[24px] w-[100%] h-[30px] text-beige font-bold bg-darkGrey text-center">
                                     En rupture de stock</p>
+                            @elseif ($article->quantite_disponible > 0)
+                                <form action="{{ route('decouverte') }}" method="GET">
+                                    <button type="submit" value="add" name="ajouterPanier"
+                                        class="border-darkGrey border rounded-[24px] w-[100%] h-[30px] text-darkGrey font-bold">Ajouter
+                                        au
+                                        panier</button>
+                                </form>
                             @endif
-                            <form action="{{ route('decouverte') }}" method="GET">
-                                <button type="submit" value="add" name="ajouterPanier"
-                                    class="border-darkGrey border rounded-[24px] w-[100%] h-[30px] text-darkGrey font-bold">Ajouter
-                                    au
-                                    panier</button>
-                            </form>
                         @endif
                     </div>
                 @endif
