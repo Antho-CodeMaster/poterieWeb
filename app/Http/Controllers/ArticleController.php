@@ -48,9 +48,15 @@ class ArticleController extends Controller
         $searchTerm = $request->input('search');
 
         // Query the articles table to find partial matches in the 'nom' and 'description' fields
-        $articles = Article::where('nom', 'LIKE', '%' . $searchTerm . '%')
-                            ->orWhere('description', 'LIKE', '%' . $searchTerm . '%')
-                            ->get();
+        $articles = Article::where(function ($query) use ($searchTerm) {
+            $query->where('nom', 'LIKE', '%' . $searchTerm . '%')
+                  ->orWhere('description', 'LIKE', '%' . $searchTerm . '%')
+                  ->orWhereHas('motCles', function ($subQuery) use ($searchTerm) {
+                      $subQuery->where('mot_cle', 'LIKE', '%' . $searchTerm . '%');
+                  });
+            })
+            ->where('id_etat', 1)
+            ->get();
 
         // Return the results to the view with the search term and matched articles
         return view('recherche.recherche', compact('articles', 'searchTerm'));
