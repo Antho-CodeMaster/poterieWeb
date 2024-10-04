@@ -140,7 +140,7 @@
             {{-- Boutons d'artistes --}}
             {{-- Vérification si l'utilisateur qui visite la page est le propriétaire du kiosque --}}
             @if (Auth::id() == $artiste->id_user)
-                <a href="{{route("addArticleForm")}}">
+                <a href="{{ route('addArticleForm') }}">
                     <svg width="50" height="50" viewBox="0 0 126 126" fill="none"
                         xmlns="http://www.w3.org/2000/svg" class="mx-[16px]">
                         <path
@@ -153,8 +153,8 @@
         <div class="bg-beige flex flex-wrap justify-between">
 
             {{-- Affichage de tous les articles --}}
-            @if ($article->etat->etat == 'Visible client' || $article->etat->etat == 'Masqué client')
-                @foreach ($articles as $article)
+            @foreach ($articles as $article)
+                @if ($article->etat->etat == 'Visible client' || $article->etat->etat == 'Masqué client')
                     <div class="w-[160px] mx-[16px] my-[16px] whitespace-nowrap">
 
                         {{-- Changer l'image selon l'état de l'article --}}
@@ -202,7 +202,7 @@
                                 class="border-darkGrey border rounded-[24px] w-[100%] h-[30px] text-beige font-bold bg-darkGrey text-center">
                                 Masqué</p>
                         @else
-                            @if ($article->quantite_disponible = 0)
+                            @if ($article->quantite_disponible == 0)
                                 <p
                                     class="border-darkGrey border rounded-[24px] w-[100%] h-[30px] text-beige font-bold bg-darkGrey text-center">
                                     En rupture de stock</p>
@@ -215,8 +215,9 @@
                             </form>
                         @endif
                     </div>
-                @endforeach
-            @endif
+                @endif
+            @endforeach
+
         </div>
     </section>
 </x-app-layout>

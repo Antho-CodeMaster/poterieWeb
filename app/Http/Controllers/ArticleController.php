@@ -126,11 +126,10 @@ class ArticleController extends Controller
         ]);
 
         /* Stockage en BD du nouvelle article */
-        if ($newArticle->save()){
-            session()->flash('succes', 'L\'article à bien été ajouté');
-        }
-        else{
-            session()->flash('erreur', 'Un problème lors de l\'article s\'est produit');
+        if ($newArticle->save()) {
+            session()->flash('succesArticle', 'L\'article à bien été ajouté');
+        } else {
+            session()->flash('erreurArticle', 'Un problème lors de l\'article s\'est produit');
         }
 
         /* Gestion des mots clés*/
@@ -140,6 +139,9 @@ class ArticleController extends Controller
         foreach ($motsClesArray as $motCle) {
             /* Vérifie si le mot clé existe dans la table "Mot_Cle", si non il le crée et si oui, il y accède */
             $instanceMotCle = Mot_cle::where("mot_cle", $motCle)->firstOrCreate(["mot_cle" => $motCle]);
+            if ($instanceMotCle == null) {
+                session()->flash('erreurMotsCles', 'Un problème lors de l\'ajout des mots clés s\'est produit, veuillez réessayer.');
+            }
             /* Vérifie si le mot clé existe dans la table "Mot_Cle_article", si non il le crée et si oui, il y accède */
             Mot_cle_article::where("id_mot_cle", $instanceMotCle->id_mot_cle)
                 ->where("id_article", $newArticle->id_article)
@@ -161,7 +163,10 @@ class ArticleController extends Controller
                 // Attribuer les données à l'instance
                 $newPhotoArticle->id_article = $newArticle->id_article;
                 $newPhotoArticle->path = $filePath;
-                $newPhotoArticle->save(); /* Stockage en BD de la nouvelle photo */
+                /* Stockage en BD de la nouvelle photo */
+                if (!$newPhotoArticle->save()) {
+                    session()->flash('erreurPhotos', 'Un problème lors de l\'ajout des photos s\'est produit, veuillez réessayer.');
+                }
             }
         }
 

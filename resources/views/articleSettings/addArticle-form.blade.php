@@ -5,15 +5,6 @@
         <div class=" w-[84%] p-3 ">
             <h1 class="titre2 p-1 border-b-2 border-darkGrey mb-2">Ajout d'un nouvel article</h1>
 
-            @if (Session::has('succes'))
-                <div role="alert">
-                    <div class="bg-blue-500 text-white font-bold rounded-t px-4 py-2">Information</div>
-                    <div class="border border-t-0 border-blue-400 rounded-b bg-blue-100 px-4 py-3 text-blue-700">
-                        <p>{{ Session::get('succes') }}</p>
-                    </div>
-                </div>
-            @endif
-
             <div class="grid grid-cols-7 gap-6">
                 <form method="post" action="{{ route('addArticle') }}" id="addArticleForm" enctype="multipart/form-data"
                     class="col-span-5">
@@ -24,28 +15,27 @@
                         <h2 class="text-[120%]">Téléversez les photos de l'article</h2>
                         <div class="flex gap-2">
                             @for ($i = 1; $i <= 5; $i++)
+                                {{-- Image preview --}}
                                 <input type="file" name="photo{{ $i }}" id="photo{{ $i }}"
-                                    accept="image/png, image/jpg" class="hidden"
+                                    accept="image/png, image/jpg, image/jpeg" class="hidden"
                                     onchange="previewImage(event, {{ $i }})">
 
-                                <!-- Conteneur pour l'aperçu de l'image ou le SVG -->
-                                <div id="previewContainer{{ $i }}" class="flex items-center">
-                                    <!-- Par défaut, le bouton SVG pour déclencher l'upload -->
-                                    <button type="button"
-                                        onclick="document.getElementById('photo{{ $i }}').click()"
-                                        class="flex items-center">
-                                        <svg id="svg{{ $i }}" class="w-full h-[100px]" viewBox="0 0 293 276"
-                                            fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="2.5" y="3.33682" width="288" height="269.43" rx="13.5"
-                                                stroke="#444444" stroke-width="5" />
-                                            <g clip-path="url(#clip0_4003_30)">
-                                                <path
-                                                    d="M116.667 94.6428C112.477 94.6428 109.083 98.0921 109.083 102.351V164.013C109.083 168.271 112.477 171.72 116.667 171.72H142.009C140.886 169.323 140.103 166.737 139.72 164.013H120.458C118.365 164.013 116.667 162.286 116.667 160.159V150.193C116.667 149.172 117.065 148.189 117.778 147.468L121.569 143.614C123.052 142.107 125.452 142.107 126.931 143.614L139.417 156.305L139.772 155.944C141.767 143.052 152.714 133.182 165.958 133.182C167.248 133.182 168.51 133.309 169.75 133.49V120.958C169.75 118.915 168.95 116.953 167.528 115.508L149.222 96.901C147.8 95.4558 145.87 94.6428 143.86 94.6428H116.667ZM143.208 100.251L164.063 121.62H147C144.907 121.62 143.208 119.893 143.208 117.766V100.251ZM139.417 129.328C141.51 129.328 143.208 131.054 143.208 133.182C143.208 135.309 141.51 137.036 139.417 137.036C137.324 137.036 135.625 135.309 135.625 133.182C135.625 131.054 137.324 129.328 139.417 129.328ZM165.958 140.889C155.49 140.889 147 149.518 147 160.159C147 170.799 155.49 179.428 165.958 179.428C176.427 179.428 184.917 170.799 184.917 160.159C184.917 149.518 176.427 140.889 165.958 140.889ZM165.958 148.597C168.051 148.597 169.75 150.324 169.75 152.451V156.305H173.542C175.635 156.305 177.333 158.031 177.333 160.159C177.333 162.286 175.635 164.013 173.542 164.013H169.75V167.867C169.75 169.994 168.051 171.72 165.958 171.72C163.865 171.72 162.167 169.994 162.167 167.867V164.013H158.375C156.282 164.013 154.583 162.286 154.583 160.159C154.583 158.031 156.282 156.305 158.375 156.305H162.167V152.451C162.167 150.324 163.865 148.597 165.958 148.597Z"
-                                                    fill="#444444" />
-                                            </g>
-                                        </svg>
-                                    </button>
-                                </div>
+                                <!-- Par défaut, le bouton SVG pour déclencher l'upload -->
+                                <button type="button"
+                                    onclick="document.getElementById('photo{{ $i }}').click()"
+                                    class="flex items-center w-[100px] h-[100px]"
+                                    id="previewContainer{{ $i }}">
+                                    <svg id="svg{{ $i }}" class="w-full h-full" viewBox="0 0 293 276"
+                                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="2.5" y="3.33682" width="288" height="269.43" rx="13.5"
+                                            stroke="#444444" stroke-width="5" />
+                                        <g clip-path="url(#clip0_4003_30)">
+                                            <path
+                                                d="M116.667 94.6428C112.477 94.6428 109.083 98.0921 109.083 102.351V164.013C109.083 168.271 112.477 171.72 116.667 171.72H142.009C140.886 169.323 140.103 166.737 139.72 164.013H120.458C118.365 164.013 116.667 162.286 116.667 160.159V150.193C116.667 149.172 117.065 148.189 117.778 147.468L121.569 143.614C123.052 142.107 125.452 142.107 126.931 143.614L139.417 156.305L139.772 155.944C141.767 143.052 152.714 133.182 165.958 133.182C167.248 133.182 168.51 133.309 169.75 133.49V120.958C169.75 118.915 168.95 116.953 167.528 115.508L149.222 96.901C147.8 95.4558 145.87 94.6428 143.86 94.6428H116.667ZM143.208 100.251L164.063 121.62H147C144.907 121.62 143.208 119.893 143.208 117.766V100.251ZM139.417 129.328C141.51 129.328 143.208 131.054 143.208 133.182C143.208 135.309 141.51 137.036 139.417 137.036C137.324 137.036 135.625 135.309 135.625 133.182C135.625 131.054 137.324 129.328 139.417 129.328ZM165.958 140.889C155.49 140.889 147 149.518 147 160.159C147 170.799 155.49 179.428 165.958 179.428C176.427 179.428 184.917 170.799 184.917 160.159C184.917 149.518 176.427 140.889 165.958 140.889ZM165.958 148.597C168.051 148.597 169.75 150.324 169.75 152.451V156.305H173.542C175.635 156.305 177.333 158.031 177.333 160.159C177.333 162.286 175.635 164.013 173.542 164.013H169.75V167.867C169.75 169.994 168.051 171.72 165.958 171.72C163.865 171.72 162.167 169.994 162.167 167.867V164.013H158.375C156.282 164.013 154.583 162.286 154.583 160.159C154.583 158.031 156.282 156.305 158.375 156.305H162.167V152.451C162.167 150.324 163.865 148.597 165.958 148.597Z"
+                                                fill="#444444" />
+                                        </g>
+                                    </svg>
+                                </button>
                             @endfor
                         </div>
                     </div>
@@ -96,17 +86,17 @@
                                 {{-- Hauteur --}}
                                 <x-text-input id="hauteurArticle" class="col-span-1" type="number"
                                     name="hauteurArticle" placeholder="Hauteur (cm)" min="0" required
-                                    value="{{ old('hauteurArticle') }}" step="0.01"/>
+                                    value="{{ old('hauteurArticle') }}" step="0.01" />
 
                                 {{-- Largeur --}}
                                 <x-text-input id="largeurArticle" class="col-span-1" type="number"
                                     name="largeurArticle" placeholder="Largeur (cm)" min="0" required
-                                    value="{{ old('largeurArticle') }}" step="0.01"/>
+                                    value="{{ old('largeurArticle') }}" step="0.01" />
 
                                 {{-- Poids --}}
-                                <x-text-input id="poidsArticle" class="col-span-1" type="number"
-                                    name="poidsArticle" placeholder="Poids (g)" min="0" required
-                                    value="{{ old('poidsArticle') }}" step="0.01"/>
+                                <x-text-input id="poidsArticle" class="col-span-1" type="number" name="poidsArticle"
+                                    placeholder="Poids (g)" min="0" required
+                                    value="{{ old('poidsArticle') }}" step="0.01" />
                             </div>
                         </div>
 
@@ -147,7 +137,7 @@
                                 <input type="hidden" name="masquer" value="1" />
                                 <input type="checkbox" name="masquer" id="masquerBtn" value="2"
                                     class="hidden" />
-                                <label for="masquerBtn"
+                                <label for="masquerBtn" title="Ceci permet de masquer l'article aux yeux des clients"
                                     class="col-span-1 cursor-pointer border-[1px] shadow border-gray-200 text-darkGrey font-bold py-2 text-center rounded-[0.375rem] transition duration-200 ease-in-out hover:bg-beige">
                                     Masquer
                                 </label>
@@ -157,8 +147,9 @@
                                 <input type="checkbox" name="flouter" id="flouterBtn" value="1"
                                     class="hidden" />
                                 <label for="flouterBtn"
+                                    title="Ceci floutera l'image de l'article aux yeux des clients sensibles"
                                     class="col-span-1 cursor-pointer border-[1px] shadow border-gray-200 text-darkGrey font-bold py-2 text-center rounded-[0.375rem] transition duration-200 ease-in-out hover:bg-beige">
-                                    Flouter
+                                    Flouter (+18)
                                 </label>
 
                                 {{-- En vedette --}}
@@ -166,6 +157,7 @@
                                 <input type="checkbox" name="enVedette" id="enVedetteBtn" value="1"
                                     class="hidden" />
                                 <label for="enVedetteBtn"
+                                    title="Ceci placera cette article dans votre section en vedette"
                                     class="col-span-2 cursor-pointer border-[1px] shadow border-gray-200 text-darkGrey font-bold py-2 text-center rounded-[0.375rem] transition duration-200 ease-in-out hover:bg-beige">
                                     En vedette
                                 </label>
@@ -183,7 +175,7 @@
                         </div>
                     </div>
 
-                    <input type="hidden" name="idArtiste" value="{{$artiste->id_artiste}}">
+                    <input type="hidden" name="idArtiste" value="{{ $artiste->id_artiste }}">
 
                     {{-- Boutons d'envoie --}}
                     <button type="submit" id="addArticleBtn" value="confirmer"
@@ -192,10 +184,48 @@
                     </button>
                 </form>
 
+                {{-- Message de succès ou d'erreur en BD --}}
+                @if (Session::all())
+                    {{-- Succes de l'ajout d'un article --}}
+                    @if (Session::has('succesArticle'))
+                        <div class="col-span-2 h-fit mt-2"
+                            role="alert">
+                            <div class="bg-green-500 border-t border-[2px] border-green-900 text-white font-bold rounded-t px-4 py-2">Succes</div>
+                            <div
+                                class="rounded-b border-[2px] border-green-900 bg-green-100 px-4 py-2 text-green-700">
+                                <p>{{ Session::get('succesArticle') }}</p>
+                            </div>
+                        </div>
+                    @endif
+
+                    {{-- Erreur de l'ajout des mots clés --}}
+                    @if (Session::has('erreurMotcles'))
+                    <div class="col-span-2 h-fit mt-2"
+                    role="alert">
+                    <div class="bg-[#F44336] border-t border-[2px] border-[#B71C1C] text-white font-bold rounded-t px-4 py-2">Erreur</div>
+                    <div
+                        class="rounded-b border-[2px] border-[#B71C1C] bg-[#FFCDD2] px-4 py-2 text-[#D32F2F]">
+                            <p>{{ Session::get('erreurMotcles') }}</p>
+                        </div>
+                    </div>
+                @endif
+
+                    {{-- Erreur de l'ajout des photo --}}
+                    @if (Session::has('erreurPhotos'))
+                    <div class="col-span-2 h-fit mt-2"
+                    role="alert">
+                    <div class="bg-[#F44336] border-t border-[2px] border-[#B71C1C] text-white font-bold rounded-t px-4 py-2">Erreur</div>
+                    <div
+                        class="rounded-b border-[2px] border-[#B71C1C] bg-[#FFCDD2] px-4 py-2 text-[#D32F2F]">
+                            <p>{{ Session::get('succesPhotos') }}</p>
+                        </div>
+                    </div>
+                @endif
+                @endif
 
                 {{-- Affichage des erreurs regroupées par section --}}
                 @if ($errors->any())
-                    <div class="col-span-2 p-3 mt-2 rounded-md bg-[#ffe5e9] border-[1px] border-red">
+                    <div class="col-span-2 p-3 mt-2 rounded-md bg-[#ffe5e9] border-[2px] border-red">
                         <ul class="list-disc ml-5">
 
                             {{-- Erreurs liées aux photos --}}
@@ -280,7 +310,6 @@
 
                         </ul>
                     </div>
-                    {{dump($errors)}}
                 @endif
             </div>
         </div>

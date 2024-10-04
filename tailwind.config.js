@@ -79,12 +79,25 @@ export default {
                   '0%': { transform: 'translateX(100%)' },
                   '100%': { transform: 'translateX(-100%)' },
                 },
-              },
-              animation: {
+            },
+
+            animation: {
                 scrollText: 'scrollText 10s linear infinite',
-              },
+            },
+
         },
+
+
     },
+
+    safelist: [
+        'w-[100px]',
+        'h-[96px]',
+        'object-cover',
+        "border-[2px]",
+        "border-darkGrey",
+        "rounded-[0.375rem]"
+    ],
 
     plugins: [forms],
 };
