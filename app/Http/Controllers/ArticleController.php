@@ -200,9 +200,10 @@ class ArticleController extends Controller
 
         $article = Article::where("id_article", $idArticle)->first();
 
+        /* Changement de l'état (masqué aux clients et à l'artiste) */
         $article->id_etat = 3;
 
-        /* Stockage en BD du nouvelle article */
+        /* Update de l'article en BD */
         if ($article->save()) {
             session()->flash('succesDeleteArticle', 'L\'article a bien été supprimé');
         } else {
