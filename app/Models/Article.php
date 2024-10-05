@@ -3,10 +3,12 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Article extends Model
 {
     use HasFactory;
+
     protected $table = "articles";
     protected $primaryKey = "id_article";
     protected $fillable = [
@@ -53,13 +55,21 @@ class Article extends Model
         return $this->belongsToMany(Mot_cle::class, 'mots_cles_articles', 'id_article', 'id_mot_cle');
     }
 
-    public function artiste()
-    {
-        return $this->hasOne(Artiste::class, 'id_artiste');
-    }
-
     public function getArtiste()
     {
         return $this->belongsTo(Artiste::class, 'id_artiste', 'id_artiste');
+    }
+
+    public function artiste(){
+        return $this->belongsTo(Artiste::class,'id_artiste','id_artiste');
+    }
+    public function photo_article(){
+        return $this->hasMany(Photo_article::class,'id_article','id_article');
+    }
+    public function collection(){
+        return $this->belongsToMany(Collection::class, 'article_collection', 'id_article', 'id_collection');
+    }
+    public function mot_cle(){
+        return $this->belongsToMany(Mot_cle::class,'mot_cle_article','id_article', 'id_mot_cle');
     }
 }

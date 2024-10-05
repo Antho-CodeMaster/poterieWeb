@@ -4,6 +4,10 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ArtisteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LikeController;
+
+use App\Http\Controllers\CommandeController;
+use App\Http\Controllers\TransactionController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -36,7 +40,21 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile', [ArtisteController::class, 'updatePicture'])->name('artiste.updatePicture');
 });
 
+
 Route::get('/recherche/{search}', [ArticleController::class, 'getSearch'])->name('recherche.getSearch');
+
+Route::controller(CommandeController::class)->group(function(){
+    #Route pour afficher le panier en cours de l'utilisateur
+    Route::get('/panier', [CommandeController::class, 'showPanier'])->name('panier');
+    Route::get('/commandes', [CommandeController::class, 'index']);
+    Route::get('/commande/{id}', 'show');
+
+});
+
+Route::controller(TransactionController::class)->group(function(){
+    Route::get('/deleteThisArticle/{id}','destroy');
+});
+
 
 require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';
