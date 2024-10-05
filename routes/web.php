@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ArtisteController;
+use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LikeController;
 
@@ -36,8 +37,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/edit', [ProfileController::class, 'updateBlur'])->name('profile.updateBlur');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
     Route::post('/profile', [ArtisteController::class, 'updatePicture'])->name('artiste.updatePicture');
+    Route::get('/devenir-artiste', [DemandeController::class, 'create'])->name('devenir-artiste');
+    Route::post('/devenir-artiste', [DemandeController::class, 'store'])->name('store-demande-artiste');
 });
 
 

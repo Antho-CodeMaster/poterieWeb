@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Photo_identite extends Model
 {
     use HasFactory;
+    protected $table = "photos_identite";
+    protected $fillable = ['id_demande, path'];
+    public $timestamps = false;
+    protected $primaryKey = "id_photo";
+
+    public function demande()
+    {
+        return $this->hasOne(Demande::class, 'id_demande', 'id_demande');
+    }
 }
