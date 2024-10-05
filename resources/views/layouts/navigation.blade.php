@@ -49,7 +49,7 @@
             </a>
 
             {{-- Bouton panier --}}
-            <a class="ml-[15px]" href="{{ route('decouverte') }}">
+            <a class="ml-[15px]" href="{{ route('panier') }}">
                 <svg width="34" height="34" viewBox="0 0 48 48" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
                     <path

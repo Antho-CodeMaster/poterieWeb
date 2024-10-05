@@ -21,7 +21,7 @@ Route::middleware('auth')->group(function () {
 
 Route::controller(CommandeController::class)->group(function(){
     #Route pour afficher le panier en cours de l'utilisateur
-    Route::get('/panier', [CommandeController::class, 'showPanier']);
+    Route::get('/panier', [CommandeController::class, 'showPanier'])->name('panier');
     Route::get('/commandes', [CommandeController::class, 'index']);
     Route::get('/commande/{id}', 'show');
 
