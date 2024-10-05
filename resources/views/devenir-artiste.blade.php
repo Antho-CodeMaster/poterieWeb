@@ -36,7 +36,7 @@
                 @for ($i = 0; $i < 5; $i++)
                     <div id="img-{{ $i }}" class="hidden justify-center">
                         <p class="my-auto mr-2">Image {{ $i + 1 }}</p>
-                        <button id="remove-img-{{ $i }}"
+                        <button type="button" id="remove-img-{{ $i }}"
                             class=" text-red-500 hover:text-red-600 leading-8 text-4xl">
                             &times;
                         </button>
@@ -101,7 +101,7 @@
                     @for ($i = 0; $i < 3; $i++)
                         <div id="i-img-{{ $i }}" class="hidden justify-center">
                             <p class="my-auto mr-2">Image {{ $i + 1 }}</p>
-                            <button id="i-remove-img-{{ $i }}"
+                            <button type="button" id="i-remove-img-{{ $i }}"
                                 class=" text-red-500 hover:text-red-600 leading-8 text-4xl">
                                 &times;
                             </button>

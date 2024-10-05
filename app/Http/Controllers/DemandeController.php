@@ -16,7 +16,7 @@ class DemandeController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin/demandes', ['demandes' => Demande::with('photos_oeuvres')->with('photos_identite')->get()]);
     }
 
     /**

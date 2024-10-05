@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\EnsureUserIsModerateur;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,9 +26,8 @@ Route::get('/admin/signalements', function() {
     return view('admin/signalements');
 })->name('admin-signalements')->middleware(EnsureUserIsModerateur::class);
 
-Route::get('/admin/demandes', function() {
-    return view('admin/demandes');
-})->name('admin-demandes')->middleware(EnsureUserIsModerateur::class);
+Route::get('/admin/demandes', [DemandeController::class, 'index'])
+    ->name('admin-demandes')->middleware(EnsureUserIsModerateur::class);
 
 Route::get('/admin/articles-non-recus', function() {
     return view('admin/articles-non-recus');
