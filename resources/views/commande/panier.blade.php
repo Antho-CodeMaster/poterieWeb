@@ -11,7 +11,7 @@
             @foreach ($commande->transactions as $transaction)
 
                 <div class="flex m-auto my-14 itemPanier" data-prix="{{$transaction->article->prix}}">
-                    <img src="{{'img/'.$transaction->article->photo_article[0]->path}}" alt="Une image de pot" class="rounded-xl border shadow-xl shadow-black w-1/4 m-auto">
+                    <img src="{{'img/'.$transaction->article->photo_article[0]->path}}" alt="Une image de pot" class="rounded-xl border shadow-xl shadow-black w-1/4 m-auto aspect-square">
 
                     <div class="w-1/4 m-0 ml-4 flex flex-col justify-between">
                         <div class="">
@@ -30,8 +30,7 @@
                         </div>
                     </div>
 
-                    <a href="" class="w-1/4 h-full self-end underline">Supprimer l'article</a>
-
+                    <a href="/deleteThisArticle/{{$transaction->id_transaction}}" class="w-1/4 h-full self-end underline">Supprimer l'article</a>
                     <div class="w-1/4 self-center">
                         <h3 class="self-center font-semibold" id="totalArticle{{$transaction->id_transaction}}"></h3> {{--A updater en JS--}}
                         <img src="{{'img/'.$transaction->article->artiste->path_photo_profil}}" alt="face" class="rounded-full size-32 mt-[40%]">

@@ -10,7 +10,7 @@ class Article extends Model
 {
     use HasFactory;
     protected $table = 'articles';
-    protected $primary_key = 'id_article';
+    protected $primaryKey = 'id_article';
 
 
     public function artiste(){

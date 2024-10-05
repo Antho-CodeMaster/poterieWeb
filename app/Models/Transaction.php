@@ -9,7 +9,7 @@ class Transaction extends Model
 {
     use HasFactory;
     protected $table = 'transactions';
-    protected $primary_key ='id_transaction';
+    protected $primaryKey ='id_transaction';
 
     public function article_non_recu(){
         return $this->hasMany(Article_non_recu::class,'id_transaction','id_transaction');

@@ -9,7 +9,7 @@ class Commande extends Model
 {
     use HasFactory;
     protected $table = 'commandes';
-    protected $primary_key = 'id_commande';
+    protected $primaryKey = 'id_commande';
 
     public function transactions(){
         return $this->hasMany(Transaction::class, 'id_commande','id_commande');

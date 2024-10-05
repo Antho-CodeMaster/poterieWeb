@@ -6,6 +6,9 @@ use App\Models\Transaction;
 use App\Models\Commande;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\View\View;
 
 class TransactionController extends Controller
 {
@@ -91,11 +94,24 @@ class TransactionController extends Controller
      * Remove the specified resource from storage.
      * works for connected users
      */
-    public function destroy(transaction $transaction)
+    public function destroy(int $id)
     {
         if (Auth::check()){
-            $transaction->delete();
+            $transaction = Transaction::findOrFail($id);
+
+            if($transaction->commande->id_user === Auth::id()){
+                $transaction->article_non_recu()->delete();
+                $transaction->photo_livraison()->delete();
+
+                $transaction->delete();
+
+                return redirect('/panier')->with('succes', 'Transaction annulé');
+            }else{
+                return redirect('/panier')->back()->with('error', 'Acces a une transaction non autorisé');
+            }
         }
+
+        return Redirect::to('/panier');
     }
 
     /**
