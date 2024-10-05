@@ -94,12 +94,14 @@ class ArtisteController extends Controller
     /**
      * Update the artist's profile picture and saves it to img/artistePFP.
      */
-    public function updatePicture(Request $request, artiste $artiste)
+    public function updatePicture(Request $request)
     {
         // Validate the incoming request
         $request->validate([
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:4096',  // Validate file type and size
         ]);
+
+        $artiste = $request->user()->artiste;
 
         // Check if an image was uploaded
         if ($request->hasFile('image')) {
