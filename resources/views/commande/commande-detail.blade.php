@@ -10,7 +10,7 @@
     $tooltips = [
         'Traité' => "La commande a été emballé et posté par l'artiste, ça devrait arriver bientôt!",
         'Livré' => "L'article est arrivé a destination.",
-        'En cours' => "Votre commende attend d'être vue et traité par l'artiste.",
+        'En cours' => "Votre commande attend d'être vue et traité par l'artiste.",
         'Annulé' => "Il y a eu une erreur et votre article ne peut être livré. Selon le cas, un remboursement est ou sera émis sur la carte utilisée.",
         'Panier' => "Impossible, c'est du trash code de la bd et les entrées panier ne doivent plus exister"
     ];
@@ -67,7 +67,7 @@
         {{-- Colone de droite, image, nom et total artiste --}}
         <div class="flex-col flex w-1/4 justify-between mb-6">
             <div class="w-full mr-0 ml-auto">
-                <img src="{{'../img/'. $transactions[0]->article->artiste->path_photo_profil}}" alt="face" class="rounded-full size-32 mt-4 mr-4 ml-auto">
+                <img src="{{'../' . $transactions[0]->article->artiste->path_photo_profil}}" alt="face" class="rounded-full size-32 mt-4 mr-4 ml-auto">
                 <p class="mr-4 ml-auto w-fit">{{$transactions[0]->article->artiste->nom_artiste}}</p>
             </div>
             <div class="mr-4 ml-auto text-xl font-bold text-center">

@@ -33,7 +33,7 @@
                     <a href="/deleteThisArticle/{{$transaction->id_transaction}}" class="w-1/4 h-full self-end underline">Supprimer l'article</a>
                     <div class="w-1/4 self-center">
                         <h3 class="self-center font-semibold" id="totalArticle{{$transaction->id_transaction}}"></h3> {{--A updater en JS--}}
-                        <img src="{{'img/'.$transaction->article->artiste->path_photo_profil}}" alt="face" class="rounded-full size-32 mt-[40%]">
+                        <img src="{{$transaction->article->artiste->path_photo_profil}}" alt="face" class="rounded-full size-32 mt-[40%]">
                         <p>Par {{$transaction->article->artiste->nom_artiste}}</p>
                     </div>
                 </div>
