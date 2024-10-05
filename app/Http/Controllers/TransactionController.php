@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use App\Models\Commande;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
@@ -94,6 +95,7 @@ class TransactionController extends Controller
      * Remove the specified resource from storage.
      * works for connected users
      */
+
     public function destroy(int $id)
     {
         if (Auth::check()){

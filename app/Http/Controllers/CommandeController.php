@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Models\Commande;
+use App\Models\Artiste;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +17,39 @@ class CommandeController extends Controller
      */
     public function index()
     {
+        if(Auth::check()){
+            $commandes = Commande::where('id_user', Auth::id())
+            ->where('is_panier', false)
+            ->get();
+
+            $commandeEnCours = [];
+            $commandeFini = [];
+
+            foreach ($commandes as $commande) {
+                $hasActiveTransaction = false;
+                foreach ($commande->transactions as $transaction) {
+                    $etat = $transaction->etat_transaction->etat;
+                    if ($etat === 'En cours' || $etat === 'Traité') {
+                        $hasActiveTransaction = true;
+                        break;
+                    }
+                }
+                if ($hasActiveTransaction) {
+                    $commandeEnCours[] = $commande;
+                } else {
+                    $commandeFini[] = $commande;
+                }
+            }
+
+            return view('commande/commandes',[
+                'commandes' => $commandes,
+                'commandeEnCours' => $commandeEnCours,
+                'commandeFini' => $commandeFini
+            ]);
+        }
+        else{
+            return view('commande/commandes', ['commandes' => null, 'authis' => Auth::id()]);
+        }
 
     }
 
@@ -38,9 +72,16 @@ class CommandeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(commande $commande)
+    public function show(int $id_commande)
     {
-        //
+
+        $commande = Commande::where('id_commande', $id_commande)->first();
+
+        //if(Artiste::where('id_artiste' , Auth::id()) != $commande->id_user || )
+        $articleParArtiste = $commande->transactions->groupBy(function ($transaction){
+            return $transaction->article->artiste;
+        });
+        return view('commande.commande-detail', ['commande' => $commande, 'articleParArtiste' => $articleParArtiste]);
     }
 
     /**
@@ -73,10 +114,12 @@ class CommandeController extends Controller
      */
     public function getPanier(Request $request){
         #returns the panier of the connected user
+        # or the disconnaected user
         if (Auth::check())
             return Commande::where('id_user', '=', Auth::id())->where('is_panier', '=', true)->firstOrCreate(['is_panier' => true]);
         else
             return $request->cookie('panier', []);
+
 
     }
 
