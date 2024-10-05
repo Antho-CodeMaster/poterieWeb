@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Models\Commande;
+use App\Models\Artiste;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -55,6 +56,7 @@ class CommandeController extends Controller
 
         $commande = Commande::where('id_commande', $id_commande)->first();
 
+        //if(Artiste::where('id_artiste' , Auth::id()) != $commande->id_user || )
         $articleParArtiste = $commande->transactions->groupBy(function ($transaction){
             return $transaction->article->artiste;
         });
