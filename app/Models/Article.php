@@ -48,8 +48,18 @@ class Article extends Model
         return $this->likes()->where('id_user', $id_user)->exists();
     }
 
+    public function motCles()
+    {
+        return $this->belongsToMany(Mot_cle::class, 'mots_cles_articles', 'id_article', 'id_mot_cle');
+    }
+
     public function artiste()
     {
         return $this->hasOne(Artiste::class, 'id_artiste');
+    }
+
+    public function getArtiste()
+    {
+        return $this->belongsTo(Artiste::class, 'id_artiste', 'id_artiste');
     }
 }

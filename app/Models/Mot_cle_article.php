@@ -13,7 +13,6 @@ class Mot_cle_article extends Model
         'id_mot_cle',
         'id_article',
     ];
-    protected $table = "mots_cles_articles";
 
     public function article()
     {

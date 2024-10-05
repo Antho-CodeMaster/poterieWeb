@@ -58,8 +58,8 @@
 
         {{-- Artist photo section --}}
         <div class="flex justify-end mx-2">
-            <img src="{{ asset("img/" . $article->artiste->path_photo_profil ?? 'img/artistePFP/default_artiste.png') }}"
-                alt="{{$article->artiste->nom_artiste}}" class="rounded-full w-[48px] h-[48px]">
+            <img src="{{ asset($article->getArtiste->path_photo_profil ?? 'img/artistePFP/default_artiste.png') }}"
+                alt="{{$article->getArtiste->nom_artiste}}" class="rounded-full w-[48px] h-[48px]">
         </div>
     </div>
 </div>
