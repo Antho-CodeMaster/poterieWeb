@@ -12,7 +12,7 @@ class Commande extends Model
     protected $primary_key = 'id_commande';
 
     public function transactions(){
-        return $this->hasMany(Transaction::class, 'id_commande');
+        return $this->hasMany(Transaction::class, 'id_commande','id_commande');
     }
     public function user(){
         return $this->belongsTo(User::class,'id_user','id_user');

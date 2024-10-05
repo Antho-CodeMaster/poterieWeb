@@ -76,7 +76,7 @@ class CommandeController extends Controller
         if (Auth::check())
             return Commande::where('id_user', '=', Auth::id())->where('is_panier', '=', true)->firstOrCreate(['is_panier' => true]);
         else
-            return $request->cookie('panier', [1,2,3]);
+            return $request->cookie('panier', []);
 
     }
 
@@ -88,8 +88,6 @@ class CommandeController extends Controller
         #Prend les valeurs dans la bd si connecté ou dans le cookie si non connecté
         if(Auth::check()){
             $commande = $this->getPanier($request);
-
-            $articles = $commande->transactions->article->get();
         }
         else{
             $commande = $this->getPanier($request);
@@ -102,8 +100,7 @@ class CommandeController extends Controller
         }
 
         return view( 'commande/panier',
-                ['commande' => $commande,
-                        'articles' => $articles]);
+                ['commande' => $commande]);
     }
 
 
