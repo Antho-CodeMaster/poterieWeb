@@ -22,8 +22,29 @@ class CommandeController extends Controller
             ->where('is_panier', false)
             ->get();
 
+            $commandeEnCours = [];
+            $commandeFini = [];
+
+            foreach ($commandes as $commande) {
+                $hasActiveTransaction = false;
+                foreach ($commande->transactions as $transaction) {
+                    $etat = $transaction->etat_transaction->etat;
+                    if ($etat === 'En cours' || $etat === 'Traité') {
+                        $hasActiveTransaction = true;
+                        break;
+                    }
+                }
+                if ($hasActiveTransaction) {
+                    $commandeEnCours[] = $commande;
+                } else {
+                    $commandeFini[] = $commande;
+                }
+            }
+
             return view('commande/commandes',[
-                'commandes' => $commandes
+                'commandes' => $commandes,
+                'commandeEnCours' => $commandeEnCours,
+                'commandeFini' => $commandeFini
             ]);
         }
         else{
