@@ -1,5 +1,4 @@
 <x-app-layout>
-    {{dump($errors)}}
     <form action="{{ route('store-demande-artiste') }}" method="post" enctype="multipart/form-data" class="content-height py-16 px-12 flex flex-col justify-center">
         @csrf
         <h1 class="text-center text-5xl">Devenir artiste-vendeur chez Terracium</h1>
