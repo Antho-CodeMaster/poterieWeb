@@ -40,12 +40,10 @@
                     </a>
                 @endif
 
-
-                {{-- Bouton kiosque omg le svg est big update: j'ai géré la calibration --}}
-                <form action="{{ route('kiosque', ['idUser' => Auth::user()->id]) }}" method="get"
-                    class="ml-[15px] flex items-center">
-                    @csrf
-                    <button type="submit">
+                @if (Auth::user()->artiste)
+                    {{-- Bouton kiosque omg le svg est big update: j'ai géré la calibration --}}
+                    <a href="{{ route('kiosque', ['idUser' => Auth::user()->id]) }}"
+                        class="ml-[15px] flex items-center">
                         <svg width="34" height="34" viewBox="0 0 78 78" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <rect class="w-full h-full" rx="16" fill="#F4F0EC" />
@@ -54,8 +52,8 @@
                                 stroke="#444444" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"
                                 class="scale-[1.5] translate-y-[-12px] translate-x-[-19px]" />
                         </svg>
-                    </button>
-                </form>
+                    </a>
+                @endif
             @endif
 
             {{-- Bouton panier --}}
