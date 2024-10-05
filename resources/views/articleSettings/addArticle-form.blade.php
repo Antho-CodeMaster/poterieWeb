@@ -225,7 +225,7 @@
 
                 {{-- Affichage des erreurs regroupées par section --}}
                 @if ($errors->any())
-                    <div class="col-span-2 p-3 mt-2 rounded-md bg-[#ffe5e9] border-[2px] border-red">
+                    <div class="col-span-2 p-3 mt-2 rounded-md bg-[#ffe5e9] border-[2px] border-rouge">
                         <ul class="list-disc ml-5">
 
                             {{-- Erreurs liées aux photos --}}
@@ -235,11 +235,11 @@
                                     $errors->has('photo3') ||
                                     $errors->has('photo4') ||
                                     $errors->has('photo5'))
-                                <li class="font-bold text-red">Photos de l'article</li>
+                                <li class="font-bold text-rouge">Photos de l'article</li>
                                 <ul class="list-disc ml-5">
                                     @for ($i = 1; $i <= 5; $i++)
                                         @if ($errors->has("photo{$i}"))
-                                            <li class="text-red">{{ $errors->first("photo{$i}") }}</li>
+                                            <li class="text-rouge">{{ $errors->first("photo{$i}") }}</li>
                                         @endif
                                     @endfor
                                 </ul>
@@ -252,22 +252,22 @@
                                     $errors->has('quantiteArticle') ||
                                     $errors->has('descriptionArticle') ||
                                     $errors->has('motClesArticle'))
-                                <li class="font-bold text-red">Identifiant de l'article</li>
+                                <li class="font-bold text-rouge">Identifiant de l'article</li>
                                 <ul class="list-disc ml-5">
                                     @if ($errors->has('nomArticle'))
-                                        <li class="text-red">{{ $errors->first('nomArticle') }}</li>
+                                        <li class="text-rouge">{{ $errors->first('nomArticle') }}</li>
                                     @endif
                                     @if ($errors->has('prixArticle'))
-                                        <li class="text-red">{{ $errors->first('prixArticle') }}</li>
+                                        <li class="text-rouge">{{ $errors->first('prixArticle') }}</li>
                                     @endif
                                     @if ($errors->has('quantiteArticle'))
-                                        <li class="text-red">{{ $errors->first('quantiteArticle') }}</li>
+                                        <li class="text-rouge">{{ $errors->first('quantiteArticle') }}</li>
                                     @endif
                                     @if ($errors->has('descriptionArticle'))
-                                        <li class="text-red">{{ $errors->first('descriptionArticle') }}</li>
+                                        <li class="text-rouge">{{ $errors->first('descriptionArticle') }}</li>
                                     @endif
                                     @if ($errors->has('motClesArticle'))
-                                        <li class="text-red">{{ $errors->first('motClesArticle') }}</li>
+                                        <li class="text-rouge">{{ $errors->first('motClesArticle') }}</li>
                                     @endif
                                 </ul>
                             @endif
@@ -278,32 +278,32 @@
                                     $errors->has('largeurArticle') ||
                                     $errors->has('profondeurArticle') ||
                                     $errors->has('poidsArticle'))
-                                <li class="font-bold text-red">Dimensions et poids de l'article</li>
+                                <li class="font-bold text-rouge">Dimensions et poids de l'article</li>
                                 <ul class="list-disc ml-5">
                                     @if ($errors->has('hauteurArticle'))
-                                        <li class="text-red">{{ $errors->first('hauteurArticle') }}</li>
+                                        <li class="text-rouge">{{ $errors->first('hauteurArticle') }}</li>
                                     @endif
                                     @if ($errors->has('largeurArticle'))
-                                        <li class="text-red">{{ $errors->first('largeurArticle') }}</li>
+                                        <li class="text-rouge">{{ $errors->first('largeurArticle') }}</li>
                                     @endif
                                     @if ($errors->has('profondeurArticle'))
-                                        <li class="text-red">{{ $errors->first('profondeurArticle') }}</li>
+                                        <li class="text-rouge">{{ $errors->first('profondeurArticle') }}</li>
                                     @endif
                                     @if ($errors->has('poidsArticle'))
-                                        <li class="text-red">{{ $errors->first('poidsArticle') }}</li>
+                                        <li class="text-rouge">{{ $errors->first('poidsArticle') }}</li>
                                     @endif
                                 </ul>
                             @endif
 
                             {{-- Erreurs liées au type de pièce et usage alimentaire --}}
                             @if ($errors->has('typePiece') || $errors->has('pieceUnique'))
-                                <li class="font-bold text-red">Type de pièce et usage alimentaire</li>
+                                <li class="font-bold text-rouge">Type de pièce et usage alimentaire</li>
                                 <ul class="list-disc ml-5">
                                     @if ($errors->has('typePiece'))
-                                        <li class="text-red">{{ $errors->first('typePiece') }}</li>
+                                        <li class="text-rouge">{{ $errors->first('typePiece') }}</li>
                                     @endif
                                     @if ($errors->has('pieceUnique'))
-                                        <li class="text-red">{{ $errors->first('pieceUnique') }}</li>
+                                        <li class="text-rouge">{{ $errors->first('pieceUnique') }}</li>
                                     @endif
                                 </ul>
                             @endif
