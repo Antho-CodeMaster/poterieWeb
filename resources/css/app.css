@@ -6,14 +6,40 @@
     display: none !important;
 }
 
+body {
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    color: #444444;
+}
+
+h1  {
+    font-family: "Newsreader", serif;
+    font-weight: 600;
+    font-size: 3em;
+    letter-spacing: 1.5em;
+    color: #444444;
+}
+
+h2 {
+    font-family: "Newsreader", serif;
+    font-weight: 500;
+    font-size: large;
+    letter-spacing: 0.3em;
+    color: #444444;
+}
+
 /* Classe pour styliser un titre */
 .titre {
-    @apply text-titre font-titre text-beige uppercase;
+    @apply text-titre font-titre text-beige;
+    font-family: "Newsreader", serif;
+    font-weight: 600;
+    letter-spacing: 0.5em;
 }
 
 /* Classe pour styliser un plus petit titre */
 .titre2 {
     @apply text-titreSection font-titre text-darkGrey uppercase;
+
 }
 
 /* Classe pour un petit texte */

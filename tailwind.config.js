@@ -59,11 +59,12 @@ export default {
                 'darkGrey': '#444444',
                 'vert': '#009b4d',
                 'beige': '#f4f0ec',
-                'red': '#ff0000',
                 'lightGrey' : '#c7c7c7',
                 'hoverGrey' : '#A3A3A3',
                 'vert' : '#009b4d',
+                'lightVert' : '#00CE66',
                 'beige' : '#f4f0ec',
+                'rouge': '#ff0000',
             },
 
             height: {

@@ -13,4 +13,15 @@ class Mot_cle_article extends Model
         'id_mot_cle',
         'id_article',
     ];
+    protected $table = "mots_cles_articles";
+
+    public function article()
+    {
+        return $this->belongsTo(Article::class, 'id_article', 'id_article');
+    }
+
+    public function motCle()
+    {
+        return $this->belongsTo(Mot_cle::class, 'id_mot_cle', 'id_mot_cle');
+    }
 }

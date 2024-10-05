@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\Artiste;
 
 class ProfileController extends Controller
 {
@@ -16,7 +17,21 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        // Check if the authenticated user is an artiste
+        $artiste = Artiste::where('id_user', $request->user()->id)->first();
+
         return view('profile.edit', [
+            'user' => $request->user(),
+            'artiste' => $artiste,
+        ]);
+    }
+
+        /**
+     * Display the user's facturation form.
+     */
+    public function facturation(Request $request): View
+    {
+        return view('profile.facturation', [
             'user' => $request->user(),
         ]);
     }
@@ -35,6 +50,20 @@ class ProfileController extends Controller
         $request->user()->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    }
+
+    /**
+     * Update the user's accessibility (blur) information.
+     */
+    public function updateBlur(Request $request): RedirectResponse
+    {
+        $blurEnabled = ($request['blurValue'] === 'on' | 0 ? 0 : 1);
+
+        $request->user()->contenu_sensible = $blurEnabled;
+
+        $request->user()->save();
+
+        return Redirect::route('profile.edit')->with('status', 'blur-updated');
     }
 
     /**
