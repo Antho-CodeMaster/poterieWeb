@@ -180,7 +180,15 @@ class ArticleController extends Controller
      */
     public function show(article $article)
     {
-        //
+        $idUser = Auth::user()->id;
+        $artiste = Artiste::with("reseaux","articles")->where('id_user', $idUser)->first();
+
+        $articles = $artiste->articles;
+
+        return view('articleSettings/tousMesArticles', [
+            'artiste' => $artiste,
+            'articles' => $articles,
+        ]);
     }
 
     /**
