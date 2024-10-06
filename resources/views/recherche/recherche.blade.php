@@ -1,16 +1,16 @@
 <x-app-layout>
     <section class="grid lg:grid-cols-4">
         <header class="lg:col-span-4 gap-6 m-4">
-            <h2 class="text-lg font-medium text-gray-900">
+            <h2 class="text-2xl font-medium text-gray-900">
                 Résultat de la recherche "{{ $searchTerm }}"
             </h2>
-            <p class="mt-1 text-sm text-gray-600">
+            <p class="mt-1 text-lg text-gray-600">
                 @if (sizeof($articles) == 0)
                     Aucun résultat disponible pour cette recherche.
                 @elseif (sizeof($articles) == 1)
-                    {{ sizeof($articles) }} résultat affiché.
+                    {{ sizeof($articles) }} résultat.
                 @else
-                    {{ sizeof($articles) }} résultats affichés.
+                    {{ sizeof($articles) }} résultats.
                 @endif
             </p>
         </header>
