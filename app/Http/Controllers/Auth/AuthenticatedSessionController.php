@@ -28,7 +28,19 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('decouverte', absolute: false));
+        $user = $request->user();
+
+        if($user->active == 0) {
+            Auth::guard('web')->logout();
+
+            $request->session()->invalidate();
+
+            $request->session()->regenerateToken();
+
+            return redirect('/');
+        }
+        else
+            return redirect()->intended(route('decouverte', absolute: false));
     }
 
     /**
