@@ -6,11 +6,124 @@
     display: none !important;
 }
 
+body {
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    color: #444444;
+}
+
 /* Classe pour styliser un titre */
 .titre {
     @apply text-titre font-titre text-beige;
+    font-family: "Newsreader", serif;
+    font-weight: 600;
+    letter-spacing: 0.5em;
 }
 
+.navTitre {
+    @apply text-titre font-titre text-beige;
+    font-family: "Newsreader", serif;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+}
+
+/* Classe pour styliser un plus petit titre */
+.titre2 {
+    @apply text-titreSection font-titre text-darkGrey uppercase;
+
+}
+
+/* Classe pour un petit texte */
 .smallText {
     @apply text-footer font-small text-beige;
+}
+
+/* Classe pour le text des réseaux sociaux */
+.reseaux {
+    @apply text-reseaux text-darkGrey;
+}
+
+/* Classe pour le text des articles */
+.article {
+    @apply text-article text-darkGrey text-ellipsis overflow-hidden whitespace-nowrap;
+}
+
+.smallArticle {
+    @apply text-smallArticle text-darkGrey text-ellipsis overflow-hidden whitespace-nowrap;
+}
+
+/* Classe pour animer le caroussel */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    /* Internet Explorer 10+ */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+#carousel {
+    scroll-behavior: smooth;
+    padding: 0 64px;
+    /* Pour laisser l'espace des flèches */
+}
+
+/* Styles pour le label lorsque le checkbox est coché */
+#enVedetteBtn:checked+label, #masquerBtn:checked+label, #flouterBtn:checked+label {
+    @apply bg-[#ebe3dc] text-darkGrey;
+    /* Appliquer les styles de Tailwind */
+}
+
+.content-height {
+    height: calc(100vh - 48px - 22px);
+}
+
+/* Style pour le filtre (prix) de la page "Tous mes articles" */
+.rangeSlider{
+    width: 100%;
+    position: relative;
+}
+
+.rangeFill {
+    width: 100%;
+    height: 6px;
+    @apply bg-hoverBeige;
+    position: absolute;
+    z-index: 1;
+    border-radius: 3px;
+}
+
+.slider {
+    appearance: none;
+    width: 100%;
+    background: transparent;
+    position: absolute;
+    left: 0;
+    top:50%;
+}
+
+.slider::-webkit-slider-thumb {
+    appearance: none;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    margin-top: -5px;
+    margin-right: -20px;
+    @apply bg-beigeFoncé;
+
+}
+
+.slider::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 5px;
+    background-color: #d4d4d4;
+    border-radius: 3px;
+    border: none;
+    margin-top: -2px;
+    margin-left: -2px;
 }

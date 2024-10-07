@@ -16,7 +16,6 @@ return new class extends Migration
             $table->bigIncrements('id_photo');
             $table->bigInteger('id_demande')->unsigned();
             $table->string('path');
-            $table->timestamps();
         });
 
         Schema::table('photos_identite', function (Blueprint $table) {

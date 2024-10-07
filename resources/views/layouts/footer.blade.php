@@ -1,8 +1,8 @@
-<footer class="bg-darkGrey flex text-[beige] smallText justify-between items-center   ">
+<footer class="z-50 h-[25px] w-[100%] bg-darkGrey flex text-[beige] smallText justify-between items-center   ">
 
     {{-- Informations générale --}}
     <div class="mx-[16px]">
-        Site web créée par la
+        Site web créé par la
         <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="underline">HANS corporation</a>
     </div>
 
@@ -19,7 +19,7 @@
 
         {{-- Conditions d'utilisateur --}}
         <div class="mr-[16px] underline">
-            <a href="{{ route('decouverte') }}">Conditions d'utilisateur</a>
+            <a href="{{ route('decouverte') }}">Conditions d'utilisation</a>
         </div>
     </div>
 

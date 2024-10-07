@@ -15,12 +15,13 @@ return new class extends Migration
             $table->engine = 'InnoDB';
             $table->bigIncrements('id_commande');
             $table->bigInteger('id_user')->unsigned();
-            $table->dateTime('date');
-            $table->string('no_civique', 6);
-            $table->string('rue');
-            $table->char('code_postal', 6);
-            $table->smallInteger('id_ville')->unsigned();
+            $table->dateTime('date')->nullable();
+            $table->string('no_civique', 6)->nullable();
+            $table->string('rue')->nullable();
+            $table->char('code_postal', 6)->nullable();
+            $table->smallInteger('id_ville')->unsigned()->nullable();
             $table->timestamps();
+            $table->boolean('is_panier');
         });
 
         Schema::table('commandes', function (Blueprint $table) {
