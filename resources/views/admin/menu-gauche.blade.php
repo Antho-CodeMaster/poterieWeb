@@ -15,8 +15,8 @@
             <p class="text-2xl text-darkGrey">Utilisateurs</p>
         </a>
 
-        {{-- Bouton Publications --}}
-        <a href="{{ route('admin-publications') }}" class="p-4 flex hover:bg-hoverGrey items-center {{ Request::path() ==  'admin/publications' ? 'bg-hoverGrey' : ''  }}">
+        {{-- Bouton Articles en ligne --}}
+        <a href="{{ route('admin-articles') }}" class="p-4 flex hover:bg-hoverGrey items-center {{ Request::path() ==  'admin/articles' ? 'bg-hoverGrey' : ''  }}">
             <svg class="mr-4 w-12 h-12 text-gray-800 dark:text-white" aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#444444" viewBox="0 0 24 24">
                 <path fill-rule="evenodd"
@@ -24,7 +24,7 @@
                     clip-rule="evenodd" />
             </svg>
 
-            <p class="text-2xl text-darkGrey">Publications</p>
+            <p class="text-2xl text-darkGrey">Articles en ligne</p>
         </a>
 
         {{-- Bouton Signalements --}}

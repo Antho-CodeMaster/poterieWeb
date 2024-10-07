@@ -18,9 +18,9 @@ Route::post('/admin/delete', [UserController::class, 'destroy'])
 Route::post('/admin/avertir', [UserController::class, 'avertir'])
     ->name('admin-user-avertir')->middleware(EnsureUserIsModerateur::class);
 
-Route::get('/admin/publications', function() {
-    return view('admin/publications');
-})->name('admin-publications')->middleware(EnsureUserIsModerateur::class);
+Route::get('/admin/articles', function() {
+    return view('admin/articles');
+})->name('admin-articles')->middleware(EnsureUserIsModerateur::class);
 
 Route::get('/admin/signalements', function() {
     return view('admin/signalements');
