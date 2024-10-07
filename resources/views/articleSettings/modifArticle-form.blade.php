@@ -9,6 +9,7 @@
                 <form method="post" action="{{ route('modifArticle') }}" id="modifArticleForm"
                     enctype="multipart/form-data" class="col-span-5">
                     @csrf
+                    @method("PATCH")
 
                     {{-- Téléversement des photos --}}
                     <div class="grid gap-2 mb-6">
