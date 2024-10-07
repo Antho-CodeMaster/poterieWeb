@@ -109,7 +109,7 @@ class TransactionController extends Controller
 
                 return redirect('/panier')->with('succes', 'Transaction annulé');
             }else{
-                return redirect('/panier')->back()->with('error', 'Acces a une transaction non autorisé');
+                return redirect('/panier')->with('error', 'Acces a une transaction non autorisé');
             }
         }
 

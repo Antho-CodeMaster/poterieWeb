@@ -113,14 +113,14 @@ class CommandeController extends Controller
      * Same for disconnected users
      */
     public function getPanier(Request $request){
-        #returns the panier of the connected user
-        # or the disconnaected user
+        # returns the panier of the connected user
+        # or the disconnected user
         if (Auth::check())
-            return Commande::where('id_user', '=', Auth::id())->where('is_panier', '=', true)->firstOrCreate(['is_panier' => true]);
+            return Commande::firstOrCreate(
+                ['id_user' => Auth::id(), 'is_panier' => true]
+            );
         else
             return $request->cookie('panier', []);
-
-
     }
 
     /**
