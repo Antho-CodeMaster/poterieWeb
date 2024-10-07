@@ -135,7 +135,7 @@
                                 </div>
                             </div>
 
-                            {{-- Masqué, floutter, en vedette --}}
+                            {{-- Masqué, floutter, en vedette A DEBUGGUER --}}
                             <div>
                                 @if ($article->id_etat == 1)
                                     <p
@@ -147,21 +147,21 @@
                                         Masqué</p>
                                 @endif
 
-                                @if ($article->is_en_vedette)
+                                @if ($article->is_en_vedette == 1)
                                     <p
                                         class="border border-darkGrey font-bold text-12px px-[10px] py-[3px] bg-white text-darkGrey">
                                         En vedette</p>
-                                @elseif(!$article->is_en_vedette)
+                                @elseif($article->is_en_vedette == 0)
                                     <p
                                         class="border border-darkGrey font-bold text-12px px-[10px] py-[3px] bg-darkGrey text-white">
                                         En vedette</p>
                                 @endif
 
-                                @if ($article->is_sensible)
+                                @if ($article->is_sensible == 1)
                                     <p
                                         class="border border-darkGrey font-bold text-12px px-[10px] py-[3px] bg-white text-darkGrey">
                                         Sensible</p>
-                                @elseif(!$article->is_sensible)
+                                @elseif($article->is_sensible == 0)
                                     <p
                                         class="border border-darkGrey font-bold text-12px px-[10px] py-[3px] bg-darkGrey text-white">
                                         Sensible</p>
@@ -172,7 +172,7 @@
 
                             <form action="{{ route('modifArticleForm') }}" method="post">
                                 @csrf
-                                <button type="submit"
+                                <button type="submit" name="idArticle"
                                     value="{{ $article->id_article }}">
                                     <svg class="w-12 h-12 text-gray-800 dark:text-white" aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24"

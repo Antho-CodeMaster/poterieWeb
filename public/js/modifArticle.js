@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     // Vérifie si on est sur la bonne page
-    if (document.baseURI.includes("addArticleForm")) {
+    if (document.baseURI.includes("modifArticle")) {
 
         // Fonction qui va gérer l'aperçu de l'image
         function previewImage(event, index) {
@@ -32,5 +32,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 previewImage(event, i);
             });
         }
+
+        /* Fonctions pour gérer l'ajout des images de l'article déjà existant en input */
+
     }
 });

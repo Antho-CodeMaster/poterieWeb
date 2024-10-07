@@ -23,10 +23,11 @@ Route::controller(ArtisteController::class)->group(function(){
 /* Route lié à Article */
 Route::controller(ArticleController::class)->group(function(){
     Route::post('/addArticle', 'store')->name('addArticle');
-    Route::post('/modifArticle', 'update')->name('modifArticle');
+    Route::post('/modifArticleForm', 'create')->name('modifArticleForm');
     Route::get('/tousMesArticles', 'show')->name('tousMesArticles');
     Route::patch('/deleteArticle', 'update')->name('deleteArticle');
     Route::get('/addArticleForm', 'create')->name('addArticleForm');
+    Route::patch('/modifArticle', 'create')->name('modifArticle');
 });
 
 Route::get('/decouverte', function () {
