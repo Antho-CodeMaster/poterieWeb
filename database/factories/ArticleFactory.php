@@ -22,7 +22,7 @@ class ArticleFactory extends Factory
             'id_etat' => random_int(1, 3),
             'nom' => fake()->words(random_int(1, 6), true),
             'description' => fake()->sentence(),
-            'prix' => fake()->randomFloat(2, 1, 9999),
+            'prix' => $unique == 1 ? fake()->randomFloat(2, 1, 9999) : fake()->randomFloat(2, 1, 99),
             'hauteur' => fake()->randomFloat(2, 0, 100),
             'largeur' => fake()->randomFloat(2, 0, 100),
             'profondeur' => fake()->randomFloat(2, 0, 100),

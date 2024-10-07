@@ -19,7 +19,7 @@
 
         {{-- Conditions d'utilisateur --}}
         <div class="mr-[16px] underline">
-            <a href="{{ route('decouverte') }}">Conditions d'utilisateur</a>
+            <a href="{{ route('decouverte') }}">Conditions d'utilisation</a>
         </div>
     </div>
 
