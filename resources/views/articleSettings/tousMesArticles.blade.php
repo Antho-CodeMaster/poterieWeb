@@ -1,8 +1,8 @@
 <x-app-layout>
-    <div class="flex ">
+    <div class="flex content-height">
         @include('components.articleSettings-sideMenu')
 
-        <div class=" w-[84%] p-3">
+        <div class=" w-[84%] p-3 h-full flex flex-col">
             <h1 class="titre2 p-1 border-b-2 border-darkGrey mb-2">Tous mes articles</h1>
 
             {{-- Filtres de recherche --}}
@@ -66,8 +66,8 @@
                 </div>
             </form>
 
-
-            <div class="rounded-[12px] mt-3 flex flex-wrap gap-3 h-[84vh] overflow-auto">
+            {{-- Affichage de tous les articles de l'artiste --}}
+            <div class="rounded-[12px] mt-[13px] flex flex-wrap gap-3 grow overflow-auto">
                 @foreach ($articles as $article)
                     @if ($article->id_etat != 3)
                         <div class="bg-beige rounded-[12px] w-full h-[110px] flex items-center px-[5px] gap-2 mr-2">

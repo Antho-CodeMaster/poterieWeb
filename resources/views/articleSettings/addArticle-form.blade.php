@@ -1,11 +1,11 @@
 <x-app-layout>
-    <div class="flex ">
+    <div class="flex content-height">
         @include('components.articleSettings-sideMenu')
 
-        <div class=" w-[84%] p-3 ">
+        <div class=" w-[84%] p-3 h-full flex flex-col">
             <h1 class="titre2 p-1 border-b-2 border-darkGrey mb-2">Ajout d'un nouvel article</h1>
 
-            <div class="grid grid-cols-7 gap-6">
+            <div class="grid grid-cols-7 gap-6 grow overflow-auto">
                 <form method="post" action="{{ route('addArticle') }}" id="addArticleForm" enctype="multipart/form-data"
                     class="col-span-5">
                     @csrf
@@ -56,12 +56,12 @@
                         <div class="grid grid-cols-4 gap-2">
                             <!-- Description de l'article -->
                             <textarea id="descriptionArticle" name="descriptionArticle"
-                                class="col-span-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                class="resize-none col-span-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 placeholder="Description" required>{{ old('descriptionArticle') }}</textarea>
 
                             <!-- Mots-clés -->
                             <textarea id="motClesArticle" name="motClesArticle" rows="2"
-                                class="col-span-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                class="resize-none col-span-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 placeholder="#Funky#MeilleurArticleEver#Automne#Aussiété">{{ old('motClesArticle') }}</textarea>
                         </div>
                     </div>
@@ -175,7 +175,7 @@
 
                     {{-- Boutons d'envoie --}}
                     <button type="submit" id="addArticleBtn" value="confirmer"
-                        class="w-full mt-4 cursor-pointer bg-vert text-beige text-[36px] font-bold py-[10px] text-center rounded-md transition duration-200 ease-in-out hover:bg-[#00ba5c]">
+                        class="w-full mt-3 cursor-pointer bg-vert text-beige text-[36px] font-bold py-[10px] text-center rounded-md transition duration-200 ease-in-out hover:bg-[#00ba5c]">
                         Ajouter article
                     </button>
                 </form>

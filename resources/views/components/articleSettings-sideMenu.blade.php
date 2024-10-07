@@ -1,4 +1,4 @@
-<div class="w-[16%] bg-beige h-[100vh]">
+<div class="w-[16%] bg-beige h-full">
     <h2 class="text-[150%] font-bold p-2 border-b-2 border-darkGrey">
         Menu de navigation
     </h2>

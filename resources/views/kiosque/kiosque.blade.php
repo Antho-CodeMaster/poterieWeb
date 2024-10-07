@@ -10,7 +10,7 @@
 
         {{-- Photo de profil --}}
         <div class="flex-shrink-0 mx-auto ">
-            <img src="/../img/{{ $artiste->path_photo_profil }}" alt="photo de profil"
+            <img src="/../{{ $artiste->path_photo_profil }}" alt="photo de profil"
                 class="w-[150px] h-[150px] rounded-[100px]">
         </div>
 

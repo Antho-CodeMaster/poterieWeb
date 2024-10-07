@@ -266,6 +266,7 @@ class ArticleController extends Controller
             $idUser = $request->input("idUser");
 
             return redirect()->route('kiosque', ['idUser' => $idUser]);
+
         } elseif ($request->routeIs('modifArticle')) {
             /* Validation des entrés */
             $validatedData = $request->validate([
@@ -449,6 +450,8 @@ class ArticleController extends Controller
                     }
                 }
             } */
+
+            return redirect()->route('addArticleForm', ['idArticle' => $article->id_article]);
         }
     }
 

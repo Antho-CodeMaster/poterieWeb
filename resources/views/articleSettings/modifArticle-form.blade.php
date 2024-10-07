@@ -1,11 +1,11 @@
 <x-app-layout>
-    <div class="flex ">
+    <div class="flex content-height">
         @include('components.articleSettings-sideMenu')
 
-        <div class=" w-[84%] p-3 ">
+        <div class=" w-[84%] p-3 grow overflow-auto">
             <h1 class="titre2 p-1 border-b-2 border-darkGrey mb-2">Modification d'un article</h1>
 
-            <div class="grid grid-cols-7 gap-6">
+            <div class="grid grid-cols-7 gap-6 grow overflow-auto">
                 <form method="post" action="{{ route('modifArticle') }}" id="modifArticleForm"
                     enctype="multipart/form-data" class="col-span-5">
                     @csrf
@@ -204,7 +204,7 @@
 
                     {{-- Boutons d'envoie --}}
                     <button type="submit" id="addArticleBtn" value="confirmer"
-                        class="w-full mt-4 cursor-pointer bg-vert text-beige text-[36px] font-bold py-[10px] text-center rounded-md transition duration-200 ease-in-out hover:bg-[#00ba5c]">
+                        class="w-full mt-3 cursor-pointer bg-vert text-beige text-[36px] font-bold py-[10px] text-center rounded-md transition duration-200 ease-in-out hover:bg-[#00ba5c]">
                         Modifier article
                     </button>
                 </form>

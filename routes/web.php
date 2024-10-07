@@ -27,7 +27,7 @@ Route::controller(ArticleController::class)->group(function(){
     Route::get('/tousMesArticles', 'show')->name('tousMesArticles');
     Route::patch('/deleteArticle', 'update')->name('deleteArticle');
     Route::get('/addArticleForm', 'create')->name('addArticleForm');
-    Route::patch('/modifArticle', 'create')->name('modifArticle');
+    Route::patch('/modifArticle', 'update')->name('modifArticle');
 });
 
 Route::get('/decouverte', function () {
