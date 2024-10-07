@@ -1,7 +1,7 @@
 <div x-cloak x-data="{ openDeleteArticle: false }" @close-login-modal.window="openDeleteArticle = false">
     <!-- Trigger Button for DeleteArticle Modal -->
     <button @click="openDeleteArticle = true">
-        <svg class="w-9 h-9 text-red border-[2px] border-red rounded-[12px] hover:rounded-[999px] absolute top-0 right-0"
+        <svg class="w-9 h-9 text-rouge border-[2px] border-rouge rounded-[12px] hover:rounded-[999px] absolute top-0 right-0"
             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="red"
             viewBox="0 0 24 24">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"
@@ -18,7 +18,7 @@
         <div class="bg-white px-5 py-10 rounded-[12px] shadow-lg w-full max-w-[620px]">
 
             <div class="w-full flex justify-center mb-4">
-                <svg class="w-14 h-14 text-red border-[2px] border-red rounded-[99px]" aria-hidden="true"
+                <svg class="w-14 h-14 text-rouge border-[2px] border-rouge rounded-[99px]" aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="red" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M6 18 17.94 6M18 18 6.06 6" />

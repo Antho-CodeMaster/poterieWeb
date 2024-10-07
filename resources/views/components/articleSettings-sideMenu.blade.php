@@ -4,7 +4,7 @@
     </h2>
     {{-- ArticleSettings sideMenu --}}
     <a href="{{ route('addArticleForm') }}" id="ajouterArticle"
-        class="font-medium text-[120%] flex items-center hover:bg-[#ebe3dc] p-2">
+        class="font-medium text-[120%] flex items-center hover:bg-hoverBeige p-2">
         <svg class="w-6 h-6 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
             fill="currentColor" viewBox="0 0 24 24">
             <path fill-rule="evenodd"
@@ -13,8 +13,8 @@
         </svg>
         Ajouter un
         article </a>
-    <a href="{{ route('decouverte') }}" id="tousMesArticles"
-        class="font-medium text-[120%] flex items-center hover:bg-[#ebe3dc] p-2">
+    <a href="{{ route('tousMesArticles') }}" id="tousMesArticles"
+        class="font-medium text-[120%] flex items-center hover:bg-hoverBeige p-2">
         <svg class="w-6 h-6 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
             fill="currentColor" viewBox="0 0 24 24">
             <path fill-rule="evenodd"
@@ -24,7 +24,7 @@
         Tous mes
         articles </a>
     <a href="{{ route('decouverte') }}" id="articlesEnVedette"
-        class="font-medium text-[120%] flex items-center hover:bg-[#ebe3dc] p-2">
+        class="font-medium text-[120%] flex items-center hover:bg-hoverBeige p-2">
         <svg class="w-6 h-6 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
             fill="currentColor" viewBox="0 0 24 24">
             <path
@@ -34,7 +34,7 @@
         Articles en
         vedette </a>
     <a href="{{ route('decouverte') }}" id="personnalisation"
-        class="font-medium text-[120%] flex items-center hover:bg-[#ebe3dc] p-2">
+        class="font-medium text-[120%] flex items-center hover:bg-hoverBeige p-2">
         <svg class="w-6 h-6 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
             width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
             <path fill-rule="evenodd"

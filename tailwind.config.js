@@ -59,6 +59,8 @@ export default {
                 'darkGrey': '#444444',
                 'vert': '#009b4d',
                 'beige': '#f4f0ec',
+                'beigeFoncé': '#d8c9bb',
+                'hoverBeige': '#ebe3dc',
                 'lightGrey' : '#c7c7c7',
                 'hoverGrey' : '#A3A3A3',
                 'vert' : '#009b4d',
