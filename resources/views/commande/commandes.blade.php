@@ -1,7 +1,7 @@
 
 <x-app-layout>
 
-    <h1 class="my-8 mx-auto text-4xl font-extrabold leading-none tracking-tight md:text-5xl lg:text-6xl">Commandes</h1>
+    <h1 class="my-8 mx-auto text-4xl font-bold leading-none tracking-tight md:text-5xl lg:text-6xl">Commandes</h1>
 
 
 
@@ -21,7 +21,7 @@
         <p class="">Aucune commandes</p>
     @else
 
-    <h2 class="my-8 mx-auto text-l font-bold leading-none tracking-tight md:text-4xl lg:text-4xl">En cours</h2>
+    <h2 class="my-8 mx-auto text-l leading-none tracking-tight md:text-4xl lg:text-4xl">En cours</h2>
         @if ($commandeEnCours == null)
         <p class="">Aucune commandes en cours</p>
         @else
@@ -66,7 +66,7 @@
         @endif
 
 
-    <h2 class="my-8 mx-auto text-l font-bold leading-none tracking-tight md:text-4xl lg:text-4xl">Précédent</h2>
+    <h2 class="my-8 mx-auto text-l leading-none tracking-tight md:text-4xl lg:text-4xl">Précédent</h2>
         @if ($commandeFini == null)
             <p class="">Aucune commandes précédente</p>
         @else

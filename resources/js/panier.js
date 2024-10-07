@@ -37,11 +37,11 @@ if(document.baseURI.includes('/panier')){
 
         // Function to calculate delivery fees
         function calculateDeliveryFees(subtotal) {
-            // For example, delivery is free over $100
-            if (subtotal >= 100) {
-                return 0;
-            } else {
-                return 10; // Flat rate
+            // Si le total est de 0
+            if (subtotal == 0) {
+                return 0 ;
+            } else{
+                return 10; // Frais fixe
             }
         }
 
