@@ -38,7 +38,7 @@ class DemandeController extends Controller
         else if ($nomType == "pro")
             $type = 3;
         else
-            return back()->withErrors(['msg' => 'Une erreur inattendue est survenue. Veuillez réessayer.']);
+            return back()->withErrors(['msg' => 'Une erreur inattendue s\'est produite lors de l\'envoi de votre demande. Veuillez réessayer plus tard.']);
 
         // Validation de base
         $rules = [ "photo-preuve" => "required|array|between:1,5" ];
@@ -64,7 +64,11 @@ class DemandeController extends Controller
             'id_user' => Auth::id(),
             'date' => now()
         ]);
-        $newDemande->save();
+        if(!$newDemande->save())
+        {
+            return back()->withErrors(['msg' => 'Une erreur inattendue s\'est produite lors de l\'envoi de votre demande. Veuillez réessayer plus tard.']);
+        }
+
         $id_demande = $newDemande->id_demande;
 
         // Stockage des photos d'identité, seulement si l'utilisateur sera étudiant / renouvellement étudiant
@@ -78,7 +82,10 @@ class DemandeController extends Controller
                 $newPhoto = new Photo_identite();
                 $newPhoto->id_demande = $id_demande;
                 $newPhoto->path = $filePath;
-                $newPhoto->save();
+                if(!$newPhoto->save())
+                {
+                    return back()->withErrors(['msg' => 'Une erreur inattendue s\'est produite lors de l\'envoi de votre demande. Veuillez réessayer plus tard.']);
+                }
             }
         }
 
@@ -93,10 +100,14 @@ class DemandeController extends Controller
                 $newPhoto = new Photo_oeuvre();
                 $newPhoto->id_demande = $id_demande;
                 $newPhoto->path = $filePath;
-                $newPhoto->save();
+                if(!$newPhoto->save())
+                {
+                    return back()->withErrors(['msg' => 'Une erreur inattendue s\'est produite lors de l\'envoi de votre demande. Veuillez réessayer plus tard.']);
+                }
+
             }
         }
-
+        session()->flash('succesDemande', 'Votre demande a bel et bien été envoyée. Vous recevrez des nouvelles prochainement!');
         return redirect()->route('decouverte');
     }
 

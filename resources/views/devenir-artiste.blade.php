@@ -1,5 +1,6 @@
 <x-app-layout>
-    <form action="{{ route('store-demande-artiste') }}" method="post" enctype="multipart/form-data" class="content-height py-16 px-12 flex flex-col justify-center">
+    <form action="{{ route('store-demande-artiste') }}" method="post" enctype="multipart/form-data"
+        class="content-height py-16 px-12 flex flex-col justify-center">
         @csrf
         <h1 class="text-center text-5xl">Devenir artiste-vendeur chez Terracium</h1>
         <div class="flex mt-20">
@@ -9,7 +10,8 @@
                     photos de vos créations. Cette étape nous permet d'éviter les faux comptes sur le site et nous
                     permet de nous assurer que les oeuvres vendues sont réelles et dignes d'être sur cette plateforme.
                 </p>
-                <p class="text-center {{ $errors->has('photo-preuve') ? 'text-red-500 font-bold' : '' }}" id="nb-photo-msg">Vous devez soumettre entre 1 et 5 photos.</p>
+                <p class="text-center {{ $errors->has('photo-preuve') ? 'text-red-500 font-bold' : '' }}"
+                    id="nb-photo-msg">Vous devez soumettre entre 1 et 5 photos.</p>
 
                 <button type="button" id="add-photo-preuve"
                     class="w-[200px] h-[40px] mt-6 shadow-inner rounded border border-[#3779A9] bg-[#8DC7FB] hover:bg-[#73BCFF] mx-auto flex">
@@ -74,7 +76,9 @@
                         <li>Vous (pour valider votre carte étudiante)</li>
                         <li>Votre horaire de la session (pour valider que vous avez des cours cette session)</li>
                     </ul>
-                    <p id="i-nb-photo-msg" class="mt-6 text-center {{ $errors->has('photo-identite') ? 'text-red-500 font-bold' : '' }}">Vous devez donc soumettre 3 photos au total.</p>
+                    <p id="i-nb-photo-msg"
+                        class="mt-6 text-center {{ $errors->has('photo-identite') ? 'text-red-500 font-bold' : '' }}">
+                        Vous devez donc soumettre 3 photos au total.</p>
                     <button type="button" id="add-photo-identite"
                         class="w-[200px] h-[40px] mt-6 shadow-inner rounded border border-[#3779A9] bg-[#8DC7FB] hover:bg-[#73BCFF] mx-auto flex">
                         <div class="m-auto flex gap-2">
@@ -133,5 +137,16 @@
             </button>
             <p class="text-center mt-6">Vous serez notifiés lorsqu'un administrateur passera en revue votre profil.</p>
         </div>
-    </div>
+        {{-- Erreur dans l'insertion de la demande en BD --}}
+        @if ($errors->has('msg'))
+            <div class="col-span-2 h-fit mt-2 fixed bottom-4 right-4" role="alert">
+                <div
+                    class="bg-[#F44336] border-t border-[2px] border-[#B71C1C] text-white font-bold rounded-t px-4 py-2">
+                    Erreur</div>
+                <div class="rounded-b border-[2px] border-[#B71C1C] bg-[#FFCDD2] px-4 py-2 text-[#D32F2F]">
+                    <p>{{ $errors->first('msg') }}</p>
+                </div>
+            </div>
+        @endif
+        </div>
 </x-app-layout>
