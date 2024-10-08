@@ -21,7 +21,7 @@
                     </div>
                 </a>
 
-                <a href="{{ route('admin-publications') }}" class="my-6 mx-4 min-w-[344px] w-[25%] min-h-[200px] h-[25%] border-2 border-black rounded-[14px] flex flex-col justify-around p-2 bg-lightGrey hover:bg-hoverGrey">
+                <a href="{{ route('admin-articles') }}" class="my-6 mx-4 min-w-[344px] w-[25%] min-h-[200px] h-[25%] border-2 border-black rounded-[14px] flex flex-col justify-around p-2 bg-lightGrey hover:bg-hoverGrey">
                     <svg class="w-16 h-16 mx-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                         height="24" fill="black" viewBox="0 0 24 24">
                         <path fill-rule="evenodd"
@@ -30,7 +30,7 @@
                     </svg>
                     <div class="mx-auto flex flex-col">
                         <p class="mx-auto text-2xl">{{$articles}}</p>
-                        <p class="mx-auto text-2xl">Publications</p>
+                        <p class="mx-auto text-2xl">Articles en ligne</p>
                     </div>
                 </a>
 
