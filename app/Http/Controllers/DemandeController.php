@@ -73,38 +73,38 @@ class DemandeController extends Controller
 
         // Stockage des photos d'identité, seulement si l'utilisateur sera étudiant / renouvellement étudiant
 
-        $files = $request->file('photo-identite');
-
+        $cpt = 0;
         if ($request->hasFile('photo-identite')  && $type != 3) {
+            $files = $request->file('photo-identite');
             foreach ($files as $file) {
-                $filename = time() . '.' . $file->getClientOriginalExtension();
-                $filePath = $file->storeAs('tests', $filename, 'public');
+                $filename = time() . '_' . $cpt . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('img/demandeIdentite'), $filename);
                 $newPhoto = new Photo_identite();
                 $newPhoto->id_demande = $id_demande;
-                $newPhoto->path = $filePath;
+                $newPhoto->path = $filename;
                 if(!$newPhoto->save())
                 {
                     return back()->withErrors(['msg' => 'Une erreur inattendue s\'est produite lors de l\'envoi de votre demande. Veuillez réessayer plus tard.']);
                 }
+                $cpt++;
             }
         }
 
         // Stockage des photos d'oeuvre
-
-        $files = $request->file('photo-preuve');
-
+        $cpt = 0;
         if ($request->hasFile('photo-preuve')) {
+            $files = $request->file('photo-preuve');
             foreach ($files as $file) {
-                $filename = time() . '.' . $file->getClientOriginalExtension();
-                $filePath = $file->storeAs('tests', $filename, 'public');
+                $filename = time() . '_'. $cpt . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('img/demandePreuve'), $filename);
                 $newPhoto = new Photo_oeuvre();
                 $newPhoto->id_demande = $id_demande;
-                $newPhoto->path = $filePath;
+                $newPhoto->path = $filename;
                 if(!$newPhoto->save())
                 {
                     return back()->withErrors(['msg' => 'Une erreur inattendue s\'est produite lors de l\'envoi de votre demande. Veuillez réessayer plus tard.']);
                 }
-
+                $cpt++;
             }
         }
         session()->flash('succesDemande', 'Votre demande a bel et bien été envoyée. Vous recevrez des nouvelles prochainement!');

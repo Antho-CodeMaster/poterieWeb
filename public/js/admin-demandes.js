@@ -17,6 +17,8 @@ if (document.baseURI.includes("admin/demandes")) {
 
             if(demandeIndex == demandes.length - 1)
                 evt.target.classList.add("invisible");
+
+            console.log(demandeIndex);
         }
     });
 
@@ -32,6 +34,8 @@ if (document.baseURI.includes("admin/demandes")) {
 
             if(demandeIndex == 0)
                 evt.target.classList.add("invisible");
+
+            console.log(demandeIndex);
         }
     });
 }
