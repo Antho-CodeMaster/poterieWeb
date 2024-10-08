@@ -10,6 +10,7 @@ use Illuminate\View\View;
 use App\Models\User;
 use App\Models\Question_securite;
 use Illuminate\Support\Facades\Hash;
+use Symfony\Component\Mailer\Exception\TransportException;
 
 class PasswordResetLinkController extends Controller
 {
@@ -61,15 +62,20 @@ class PasswordResetLinkController extends Controller
         // need to show to the user. Finally, we'll send out a proper response.
         if(Hash::check($request->reponse, $rep))
         {
+            try {
             $status = Password::sendResetLink(
                 $request->only('email')
-            );
-            back()->with('status', __($status));
+            );}
+            catch (TransportException $e) {
+                $status = "SERVER_ERROR";
+                return back()->withErrors(['reponse' => 'Une erreur s\'est produite au moment de l\'envoi du courriel. Veuillez contacter l\'administration à l\' aide du lien en bas de page.']);
+            }
+
         }
         else
         {
             return back()->withInput(['email' => $request->email, 'reponse' => $request->reponse])
-                            ->withErrors(['reponse' => __($status)]);
+                            ->withErrors(['reponse' => 'La réponse ne correspond pas à ce que nous avons dans notre système.']);
         }
         return $status == Password::RESET_LINK_SENT
                     ? back()->with('status', __($status))
