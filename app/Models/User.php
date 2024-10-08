@@ -10,6 +10,12 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
+    protected $table = "users";
+    protected $primaryKey = "id";
+
+    public function likes() {
+        return $this->hasMany(Like::class, 'id_user', 'id' );
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -43,6 +49,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function artistes(){
+        return $this->belongsTo(Artiste::class, "id_user", "id_user");
     }
 
     public function artiste()

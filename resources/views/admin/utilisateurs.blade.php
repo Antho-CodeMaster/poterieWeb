@@ -44,8 +44,7 @@
                                 <img src="../img/{{ $user->artiste->path_photo_profil }}" alt="Photo de profil"
                                     class="w-[150px] h-[150px] rounded-full mx-auto">
                                 <x-page-access-button
-                                    href="{{ #route('kiosque/' . $user->id)
-                                        route('decouverte') }}"></x-page-access-button>
+                                    href="{{ route('kiosque', ['idUser' => $user->id]) }}"></x-page-access-button>
                             @else
                                 @if ($user->moderateur != null)
                                     @if ($user->moderateur->is_admin != false)

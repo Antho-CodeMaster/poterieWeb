@@ -20,7 +20,8 @@ class CommandeSeeder extends Seeder
                 'no_civique' => fake()->buildingNumber(),
                 'rue' => fake()->streetName(),
                 'code_postal' => fake()->lexify('?X?X?X'),
-                'id_ville' => random_int(1, 233)
+                'id_ville' => random_int(1, 233),
+                'is_panier' => random_int(0,1)
             ]);
     }
 }
