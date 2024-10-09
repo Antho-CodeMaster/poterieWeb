@@ -215,8 +215,9 @@
                                     class="border-darkGrey border rounded-[24px] w-[100%] h-[30px] text-beige font-bold bg-darkGrey text-center">
                                     En rupture de stock</p>
                             @elseif ($article->quantite_disponible > 0)
-                                <form action="{{ route('decouverte') }}" method="GET">
-                                    <button type="submit" value="add" name="ajouterPanier"
+                                <form action="{{ '/addArticleToPanier' }}" method="POST">
+                                    @csrf
+                                    <button type="submit" value="{{$article->id_article}}" name="id_article"
                                         class="border-darkGrey border rounded-[24px] w-[100%] h-[30px] text-darkGrey font-bold">Ajouter
                                         au
                                         panier</button>
