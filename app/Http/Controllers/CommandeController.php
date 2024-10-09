@@ -121,7 +121,7 @@ class CommandeController extends Controller
             );
         else{
             //recupere les cookies
-            $cookie = $request->cookie('panier',[]);
+            $cookie = $request->cookie('panier','');
             $items = $cookie ? json_decode($cookie,true) : [];
 
             //cree pbj commande

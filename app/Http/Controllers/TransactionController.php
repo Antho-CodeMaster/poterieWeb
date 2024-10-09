@@ -55,7 +55,7 @@ class TransactionController extends Controller
         #Créé un cookie qui store le panier si l'utilisateur n'est pas connecté
         else{
             #récupère le cookie déja existant (sinon on en créé un vide)
-            $panier = json_decode($request->cookie('panier',[]),true);
+            $panier = json_decode($request->cookie('panier',''),true);
 
             $id_article = $request->input('id_article');
 
