@@ -27,7 +27,7 @@ class PhotoIdentiteSeeder extends Seeder
             */
             DB::table('photos_identite')->insert([
                 'id_demande' => $i,
-                'path' => 'tests/photo_identite_' . $j . '.jpg',
+                'path' => 'photo_identite_' . $j . '.jpg',
             ]);
         }
     }

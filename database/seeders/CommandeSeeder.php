@@ -19,7 +19,7 @@ class CommandeSeeder extends Seeder
                 'date' => now(),
                 'no_civique' => fake()->buildingNumber(),
                 'rue' => fake()->streetName(),
-                'code_postal' => fake()->lexify('?X?X?X'),
+                'code_postal' => fake()->bothify('?#?#?#'),
                 'id_ville' => random_int(1, 233),
                 'is_panier' => random_int(0,1)
             ]);
@@ -30,7 +30,7 @@ class CommandeSeeder extends Seeder
             'date' => now(),
             'no_civique' => fake()->buildingNumber(),
             'rue' => fake()->streetName(),
-            'code_postal' => fake()->lexify('?X?X?X'),
+            'code_postal' => fake()->bothify('?#?#?#'),
             'id_ville' => random_int(1, 233),
             'is_panier' => 0
         ]);
@@ -39,7 +39,7 @@ class CommandeSeeder extends Seeder
             'date' => now(),
             'no_civique' => fake()->buildingNumber(),
             'rue' => fake()->streetName(),
-            'code_postal' => fake()->lexify('?X?X?X'),
+            'code_postal' => fake()->bothify('?#?#?#'),
             'id_ville' => random_int(1, 233),
             'is_panier' => 0
         ]);

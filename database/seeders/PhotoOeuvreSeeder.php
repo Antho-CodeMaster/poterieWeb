@@ -28,7 +28,7 @@ class PhotoOeuvreSeeder extends Seeder
             */
             DB::table('photos_oeuvres')->insert([
                 'id_demande' => $i,
-                'path' => 'tests/pot_' . $j . '.jpg',
+                'path' => 'pot_' . $j . '.jpg',
             ]);
         }
     }
