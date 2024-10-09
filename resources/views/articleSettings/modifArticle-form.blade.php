@@ -239,7 +239,7 @@
                                 class="bg-[#F44336] border-t border-[2px] border-[#B71C1C] text-white font-bold rounded-t px-4 py-2">
                                 Erreur</div>
                             <div class="rounded-b border-[2px] border-[#B71C1C] bg-[#FFCDD2] px-4 py-2 text-[#D32F2F]">
-                                <p>{{ Session::get('succesPhotos') }}</p>
+                                <p>{{ Session::get('erreurPhotos') }}</p>
                             </div>
                         </div>
                     @endif
