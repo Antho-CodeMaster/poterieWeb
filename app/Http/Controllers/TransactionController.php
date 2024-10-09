@@ -38,19 +38,24 @@ class TransactionController extends Controller
     {
         #Créé une entrée transaction pour l'utilisateur connecté
         if(Auth::check()){
-            Transaction::create([
-                'id_commande' => $request->input('id_commande'),
-                'id_user' => Auth::id(),
-                'id_article' => $request->input('id_article'),
-                'quantite' => 1
-            ]);
+            //Get le panier ou on le créé
+            $commande = Commande::firstOrCreate(
+                ['id_user' => Auth::id(), 'is_panier' => true]
+            );
 
-            return response()->json(['message'=>'Article ajouté a la commande avec succes'], 200);
+            //get si la transaction existe deja ou en créé une nouvelle
+            Transaction::firstOrCreate([
+                'id_commande' => $commande->id_commande,
+                'id_article' => $request->input('id_article')],
+                ['quantite' => 0,'id_etat' => 2]);
+
+            //incémente la quantité (0+1 si nouvelle)
+            return Redirect::back(302,['message' => 'Succes: Article ajouté au panier']);
         }
         #Créé un cookie qui store le panier si l'utilisateur n'est pas connecté
         else{
             #récupère le cookie déja existant (sinon on en créé un vide)
-            $panier = $request->cookie('panier',[]);
+            $panier = json_decode($request->cookie('panier',[]),true);
 
             $id_article = $request->input('id_article');
 
@@ -61,9 +66,10 @@ class TransactionController extends Controller
 
 
             #Update le cookie pour un 30j d'activité après avoir ajouté un article
-            $biscuit = cookie('panier',$panier, 60*24*30);
+            $biscuit = cookie('panier',json_encode($panier), 60*24*30);
 
-            return response('Article ajouté au panier (biscuit)')->cookie($biscuit);
+            return Redirect::back()->withCookie($biscuit);
+           // return response('Article ajouté au panier (biscuit)')->cookie($biscuit);
         }
     }
 
@@ -96,7 +102,7 @@ class TransactionController extends Controller
      * works for connected users
      */
 
-    public function destroy(int $id)
+    public function destroy(int $id, Request $request)
     {
         if (Auth::check()){
             $transaction = Transaction::findOrFail($id);
@@ -112,8 +118,15 @@ class TransactionController extends Controller
                 return redirect('/panier')->with('error', 'Acces a une transaction non autorisé');
             }
         }
+        else{
+            $panier = json_decode($request->cookie('panier',[]),true);
+            unset($panier[$id]);
 
-        return Redirect::to('/panier');
+            $biscuit = cookie('panier',json_encode($panier), 60*24*30);
+
+            return redirect('/panier')->withCookie($biscuit);
+        }
+
     }
 
     /**

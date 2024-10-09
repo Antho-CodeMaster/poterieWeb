@@ -11,6 +11,14 @@ class Transaction extends Model
     protected $table = 'transactions';
     protected $primaryKey ='id_transaction';
 
+    protected $fillable = [
+        'id_commande',
+        'id_article',
+        'quantite',
+        'id_etat',
+        'prix_unitaire'
+    ];
+
 
     public function article_non_recu(){
         return $this->hasMany(Article_non_recu::class,'id_transaction','id_transaction');

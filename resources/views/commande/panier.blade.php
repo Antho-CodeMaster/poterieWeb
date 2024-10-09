@@ -9,7 +9,7 @@
         {{-- Container pour LES lignes d'articles --}}
         <div class="w-2/3 ml-[10%]">
 
-            @if($commande != [])
+
             {{-- Une ligne d'article --}}
             @foreach ($commande->transactions as $transaction)
 
@@ -46,7 +46,7 @@
                     </a>
                 </div>
             @endforeach
-            @endif
+
         </div>
 
         {{-- Le résumé/la facture  TODO: changer la couleur--}}

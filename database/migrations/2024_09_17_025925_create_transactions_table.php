@@ -19,7 +19,7 @@ return new class extends Migration
             $table->tinyInteger('id_etat')->unsigned();
             $table->smallInteger('id_compagnie')->unsigned()->nullable();
             $table->smallInteger('quantite');
-            $table->double('prix_unitaire');
+            $table->double('prix_unitaire')->nullable();
             $table->date('date_reception_prevue')->nullable();
             $table->date('date_reception_effective')->nullable();
             $table->string('code_ref_livraison')->nullable();
