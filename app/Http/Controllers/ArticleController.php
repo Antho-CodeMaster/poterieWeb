@@ -25,31 +25,31 @@ class ArticleController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(Request $request)
-    {
+
+
+    /* Form pour l'ajout d'un article */
+    public function create(){
         $artiste = Artiste::where('id_user', Auth::user()->id)->first();
 
-        /* Form pour l'ajout d'un article */
-        if ($request->routeIs("addArticleForm")) {
             return view("articleSettings.addArticle-form", [
                 'artiste' => $artiste
             ]);
-        }
-        /* Form pour la modification d'un article */ elseif ($request->routeIs("modifArticleForm")) {
-            $idArticle = $request->input("idArticle");
-            $article = Article::with("motCles")->where("id_article", $idArticle)->first();
-            $photoPath[] = $article->photosArticle->path;
-
-            return view("articleSettings.modifArticle-form", [
-                'article' => $article,
-                'artiste' => $artiste,
-                "photoPath" => $photoPath
-            ]);
-        }
     }
+
+    /* Form pour la modification d'un article */
+    public function showModifArticle($idArticle){
+        $article = Article::with("motCles")->where("id_article", $idArticle)->first();
+        $artiste = Artiste::where('id_user', Auth::user()->id)->first();
+        $photoPath[] = $article->photosArticle->path;
+
+        return view("articleSettings.modifArticle-form", [
+            'article' => $article,
+            'artiste' => $artiste,
+            "photoPath" => $photoPath
+        ]);
+    }
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -266,7 +266,6 @@ class ArticleController extends Controller
             $idUser = $request->input("idUser");
 
             return redirect()->route('kiosque', ['idUser' => $idUser]);
-
         } elseif ($request->routeIs('modifArticle')) {
             /* Validation des entrés */
             $validatedData = $request->validate([

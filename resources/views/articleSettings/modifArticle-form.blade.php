@@ -57,7 +57,6 @@
                                     @endif
                                 </button>
                             @endfor
-
                         </div>
                     </div>
 
@@ -84,7 +83,7 @@
                             <textarea id="motClesArticle" name="motClesArticle" rows="2"
                                 class="col-span-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 placeholder="#Funky#MeilleurArticleEver#Automne#Aussiété">{{ $article->motCles->isNotEmpty() ? '#' . $article->motCles->pluck('mot_cle')->implode('#') : '' }}
-                            </textarea></textarea>
+                            </textarea>
                         </div>
                     </div>
 

@@ -3,7 +3,7 @@
         Menu de navigation
     </h2>
     {{-- ArticleSettings sideMenu --}}
-    <a href="{{ route('addArticleForm') }}" id="ajouterArticle"
+    <a href="{{ route('addArticleForm', ['idArticle' => 1]) }}" id="ajouterArticle"
         class="font-medium text-[120%] flex items-center hover:bg-hoverBeige p-2">
         <svg class="w-6 h-6 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
             fill="currentColor" viewBox="0 0 24 24">
