@@ -8,6 +8,7 @@ import '../../public/js/devenir-artiste.js'
 import '../../public/js/decouverte.js'
 import '../../public/js/settingsArtiste.js';
 import '../../public/js/tousMesArticles.js';
+import '../../public/js/modifArticle.js';
 
 import './panier';
 

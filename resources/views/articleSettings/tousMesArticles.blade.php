@@ -169,11 +169,9 @@
                             </div>
 
                             {{-- Montré le nombre de like --}}
-
-                            <form action="{{ route('modifArticleForm') }}" method="post">
+                            <form action="{{ route('modifArticleForm', ['idArticle' => $article->id_article]) }}" method="get">
                                 @csrf
-                                <button type="submit" name="idArticle"
-                                    value="{{ $article->id_article }}">
+                                <button type="submit">
                                     <svg class="w-12 h-12 text-gray-800 dark:text-white" aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         fill="#444444" viewBox="0 0 24 24">

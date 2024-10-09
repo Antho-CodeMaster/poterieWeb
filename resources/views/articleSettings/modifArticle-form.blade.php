@@ -9,7 +9,7 @@
                 <form method="post" action="{{ route('modifArticle') }}" id="modifArticleForm"
                     enctype="multipart/form-data" class="col-span-5">
                     @csrf
-                    @method("PATCH")
+                    @method('PATCH')
 
                     {{-- Téléversement des photos --}}
                     <div class="grid gap-2 mb-6">
@@ -57,7 +57,6 @@
                                     @endif
                                 </button>
                             @endfor
-
                         </div>
                     </div>
 
@@ -77,14 +76,12 @@
                         <div class="grid grid-cols-4 gap-2">
                             <!-- Description de l'article -->
                             <textarea id="descriptionArticle" name="descriptionArticle"
-                                class="col-span-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                class="resize-none col-span-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 placeholder="Description" required>{{ $article->description }}</textarea>
 
-                            <!-- Mots-clés -->
                             <textarea id="motClesArticle" name="motClesArticle" rows="2"
-                                class="col-span-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                placeholder="#Funky#MeilleurArticleEver#Automne#Aussiété">{{ $article->motCles->isNotEmpty() ? '#' . $article->motCles->pluck('mot_cle')->implode('#') : '' }}
-                            </textarea></textarea>
+                                class="resize-none col-span-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                placeholder="#Funky#MeilleurArticleEver#Automne#Aussiété">{{ $article->motCles->isNotEmpty() ? '#' . $article->motCles->pluck('mot_cle')->implode('#') : '' }}</textarea>
                         </div>
                     </div>
 
@@ -200,7 +197,7 @@
                     </div>
 
                     <input type="hidden" name="idArtiste" value="{{ $artiste->id_artiste }}">
-                    <input type="hidden" name="idArticle" value="{{ $artiste->id_article }}">
+                    <input type="hidden" name="idArticle" value="{{ $article->id_article }}">
 
                     {{-- Boutons d'envoie --}}
                     <button type="submit" id="addArticleBtn" value="confirmer"
@@ -242,7 +239,7 @@
                                 class="bg-[#F44336] border-t border-[2px] border-[#B71C1C] text-white font-bold rounded-t px-4 py-2">
                                 Erreur</div>
                             <div class="rounded-b border-[2px] border-[#B71C1C] bg-[#FFCDD2] px-4 py-2 text-[#D32F2F]">
-                                <p>{{ Session::get('succesPhotos') }}</p>
+                                <p>{{ Session::get('erreurPhotos') }}</p>
                             </div>
                         </div>
                     @endif

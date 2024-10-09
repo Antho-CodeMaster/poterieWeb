@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+
 
 
 
@@ -25,31 +27,33 @@ class ArticleController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(Request $request)
+
+
+    /* Form pour l'ajout d'un article */
+    public function create()
     {
         $artiste = Artiste::where('id_user', Auth::user()->id)->first();
 
-        /* Form pour l'ajout d'un article */
-        if ($request->routeIs("addArticleForm")) {
-            return view("articleSettings.addArticle-form", [
-                'artiste' => $artiste
-            ]);
-        }
-        /* Form pour la modification d'un article */ elseif ($request->routeIs("modifArticleForm")) {
-            $idArticle = $request->input("idArticle");
-            $article = Article::with("motCles")->where("id_article", $idArticle)->first();
-            $photoPath[] = $article->photosArticle->path;
-
-            return view("articleSettings.modifArticle-form", [
-                'article' => $article,
-                'artiste' => $artiste,
-                "photoPath" => $photoPath
-            ]);
-        }
+        return view("articleSettings.addArticle-form", [
+            'artiste' => $artiste
+        ]);
     }
+
+    /* Form pour la modification d'un article */
+    public function showModifArticle($idArticle)
+    {
+        $article = Article::with("motCles")->where("id_article", $idArticle)->first();
+        $artiste = Artiste::where('id_user', Auth::user()->id)->first();
+        $photoPath[] = $article->photosArticle->path;
+
+        return view("articleSettings.modifArticle-form", [
+            'article' => $article,
+            'artiste' => $artiste,
+            "photoPath" => $photoPath
+        ]);
+    }
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -72,7 +76,7 @@ class ArticleController extends Controller
             "poidsArticle" => "required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0.01",
             "typePiece" => "required|in:0,1",
             "quantiteArticle" => "required|integer|min:1",
-            "motClesArticle" => "nullable|regex:/^#[a-zA-Z0-9]+(#[a-zA-Z0-9]+)*$/",
+            "motClesArticle" => "nullable|regex:/^#[a-zA-ZÀ-ÿ0-9]+(#[a-zA-ZÀ-ÿ0-9]+)*$/",
             "photo1" => "mimes:jpeg,png,jpg",
             "photo2" => "mimes:jpeg,png,jpg",
             "photo3" => "mimes:jpeg,png,jpg",
@@ -266,7 +270,6 @@ class ArticleController extends Controller
             $idUser = $request->input("idUser");
 
             return redirect()->route('kiosque', ['idUser' => $idUser]);
-
         } elseif ($request->routeIs('modifArticle')) {
             /* Validation des entrés */
             $validatedData = $request->validate([
@@ -284,7 +287,7 @@ class ArticleController extends Controller
                 "poidsArticle" => "required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0.01",
                 "typePiece" => "required|in:0,1",
                 "quantiteArticle" => "required|integer|min:1",
-                "motClesArticle" => "nullable|regex:/^#[a-zA-Z0-9]+(#[a-zA-Z0-9]+)*$/",
+                "motClesArticle" => "nullable|regex:/^#[a-zA-ZÀ-ÿ0-9]+(#[a-zA-ZÀ-ÿ0-9]+)*$/",
                 "photo1" => "mimes:jpeg,png,jpg",
                 "photo2" => "mimes:jpeg,png,jpg",
                 "photo3" => "mimes:jpeg,png,jpg",
@@ -337,7 +340,7 @@ class ArticleController extends Controller
             ]);
 
             /* Chercher l'article à modifier */
-            $article = Article::find($request->input("idArticle"));
+            $article = Article::where('id_article', $request->input("idArticle"))->first();
 
             /* Update de l'article*/
             if ($article->update([
@@ -385,11 +388,21 @@ class ArticleController extends Controller
             }
 
             // Gestion du téléchargement de l'image
-            /*  for ($i = 1; $i <= 5; $i++) {
+             for ($i = 1; $i <= 5; $i++) {
+
+            /*
+            Je dois vérifier quelle photo ont été modifié,
+                Je dois retrouvé le photo_article de ces photos et changer leur paths en téléchargeant la nouvelle photo
+                Je dois supprimer l'acienne photo de mon stockage en utilisant son ancien path
+
+
+            quelle photo Sont nouveau
+                Je dois ajouté cette path dans le photo_article et ensuite télécharger la nouvelle photo*/
+
                 if ($request->hasFile('photo' . $i)) {
                     $file = $request->file('photo' . $i);
                     $originalFilename = $file->getClientOriginalName(); // Récupérer le nom original
-                    $filePath = 'tests/' . $originalFilename; // Chemin de stockage
+                    $filePath = 'tests/' . $originalFilename; // C'est le chemin de la photo récupérer
 
                     // Vérifiez si le chemin de la photo existe déjà dans la base de données
                     $existingPhoto = Photo_article::where('path', $filePath)->first();
@@ -397,9 +410,11 @@ class ArticleController extends Controller
                     // Vérifiez également si le fichier existe déjà dans le stockage
                     $fileExistsInStorage = Storage::disk('public')->exists($filePath);
 
-                    if (!$existingPhoto && !$fileExistsInStorage) {
+                    if (!$existingPhoto && !$fileExistsInStorage) { //La photo n'existe pas dans la BD ni dans le stockage
                         // La photo n'existe pas encore, téléchargez-la
-                        $file->storeAs('tests', $originalFilename, 'public'); // Stocker dans le dossier 'tests' du disque public
+                        $filename = time() . Str::random(12) . '.' . $file->getClientOriginalExtension(); // Générer un nom de fichier unique pour eviter le conflit de nom similaire
+                        $file->storeAs('tests', $filename, 'public'); // Stocker dans le dossier 'tests' du disque public
+                        $file->move(public_path('img/tests'), $filename);
 
                         // Vérifiez si c'est une photo à remplacer
                         $photoId = $request->input('photoId' . $i); // Supposons que vous ayez des IDs de photos dans votre formulaire pour la suppression
@@ -410,7 +425,7 @@ class ArticleController extends Controller
 
                             if ($photoToUpdate) {
                                 // Mettre à jour le chemin de la photo
-                                $photoToUpdate->path = $filePath;
+                                $photoToUpdate->path = "tests/" . $filename;
 
                                 // Enregistrer les changements
                                 if (!$photoToUpdate->save()) {
@@ -422,7 +437,7 @@ class ArticleController extends Controller
                             // Si aucune ID n'est fournie, c'est une nouvelle photo
                             $newPhotoArticle = new Photo_article();
                             $newPhotoArticle->id_article = $article->id_article;
-                            $newPhotoArticle->path = $filePath;
+                            $newPhotoArticle->path = "tests/" . $filename;
 
                             // Stockage en BD de la nouvelle photo
                             if (!$newPhotoArticle->save()) {
@@ -430,9 +445,40 @@ class ArticleController extends Controller
                                # return back();
                             }
                         }
-                    } else {
-                        // La photo existe déjà soit dans la base de données soit dans le stockage
-                        session()->flash('infoPhotos', 'La photo "' . $originalFilename . '" existe déjà.');
+                    }
+                    elseif ($fileExistsInStorage) #Si la photo existe dans le disque dur
+                    {
+                        // Vérifiez si c'est une photo à remplacer
+                        $photoId = $request->input('photoId' . $i); // Supposons que vous ayez des IDs de photos dans votre formulaire pour la suppression
+
+                        if ($photoId) {
+                            // Récupérer l'instance de la photo à remplacer
+                            $photoToUpdate = Photo_article::find($photoId);
+
+                            if ($photoToUpdate) {
+                                // Mettre à jour le chemin de la photo
+                                $photoToUpdate->path = "tests/" . $originalFilename;
+
+                                // Enregistrer les changements
+                                if (!$photoToUpdate->save()) {
+                                    session()->flash('erreurPhotos', 'Un problème lors de la mise à jour des photos s\'est produit, veuillez réessayer.');
+                                    #return back();
+                                }
+                            }
+                        } else {
+                            $filename = time() . Str::random(12) . '.' . $file->getClientOriginalExtension(); // Générer un nom de fichier unique pour eviter le conflit de nom similaire
+
+                            // Si aucune ID n'est fournie, c'est une nouvelle photo
+                            $newPhotoArticle = new Photo_article();
+                            $newPhotoArticle->id_article = $article->id_article;
+                            $newPhotoArticle->path = "tests/" . $filename;
+
+                            // Stockage en BD de la nouvelle photo
+                            if (!$newPhotoArticle->save()) {
+                                session()->flash('erreurPhotos', 'Un problème lors de l\'ajout des photos s\'est produit, veuillez réessayer.');
+                               # return back();
+                            }
+                        }
                     }
                 } else {
                     // Vérifiez si une photo est à remplacer, même si aucune nouvelle photo n'est téléchargée
@@ -449,9 +495,9 @@ class ArticleController extends Controller
                         }
                     }
                 }
-            } */
+            }
 
-            return redirect()->route('addArticleForm', ['idArticle' => $article->id_article]);
+            return redirect()->route('modifArticleForm', ['idArticle' => $article->id_article]);
         }
     }
 
