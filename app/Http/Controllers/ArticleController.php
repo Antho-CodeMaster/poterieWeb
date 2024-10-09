@@ -28,16 +28,18 @@ class ArticleController extends Controller
 
 
     /* Form pour l'ajout d'un article */
-    public function create(){
+    public function create()
+    {
         $artiste = Artiste::where('id_user', Auth::user()->id)->first();
 
-            return view("articleSettings.addArticle-form", [
-                'artiste' => $artiste
-            ]);
+        return view("articleSettings.addArticle-form", [
+            'artiste' => $artiste
+        ]);
     }
 
     /* Form pour la modification d'un article */
-    public function showModifArticle($idArticle){
+    public function showModifArticle($idArticle)
+    {
         $article = Article::with("motCles")->where("id_article", $idArticle)->first();
         $artiste = Artiste::where('id_user', Auth::user()->id)->first();
         $photoPath[] = $article->photosArticle->path;
@@ -72,7 +74,7 @@ class ArticleController extends Controller
             "poidsArticle" => "required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0.01",
             "typePiece" => "required|in:0,1",
             "quantiteArticle" => "required|integer|min:1",
-            "motClesArticle" => "nullable|regex:/^#[a-zA-Z0-9]+(#[a-zA-Z0-9]+)*$/",
+            "motClesArticle" => "nullable|regex:/^#[a-zA-ZÀ-ÿ0-9]+(#[a-zA-ZÀ-ÿ0-9]+)*$/",
             "photo1" => "mimes:jpeg,png,jpg",
             "photo2" => "mimes:jpeg,png,jpg",
             "photo3" => "mimes:jpeg,png,jpg",
@@ -283,7 +285,7 @@ class ArticleController extends Controller
                 "poidsArticle" => "required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0.01",
                 "typePiece" => "required|in:0,1",
                 "quantiteArticle" => "required|integer|min:1",
-                "motClesArticle" => "nullable|regex:/^#[a-zA-Z0-9]+(#[a-zA-Z0-9]+)*$/",
+                "motClesArticle" => "nullable|regex:/^#[a-zA-ZÀ-ÿ0-9]+(#[a-zA-ZÀ-ÿ0-9]+)*$/",
                 "photo1" => "mimes:jpeg,png,jpg",
                 "photo2" => "mimes:jpeg,png,jpg",
                 "photo3" => "mimes:jpeg,png,jpg",
@@ -336,7 +338,7 @@ class ArticleController extends Controller
             ]);
 
             /* Chercher l'article à modifier */
-            $article = Article::find($request->input("idArticle"));
+            $article = Article::where('id_article', $request->input("idArticle"))->first();
 
             /* Update de l'article*/
             if ($article->update([
@@ -450,7 +452,7 @@ class ArticleController extends Controller
                 }
             } */
 
-            return redirect()->route('addArticleForm', ['idArticle' => $article->id_article]);
+            return redirect()->route('modifArticleForm', ['idArticle' => $article->id_article]);
         }
     }
 

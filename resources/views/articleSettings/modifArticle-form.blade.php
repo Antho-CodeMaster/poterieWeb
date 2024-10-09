@@ -9,7 +9,7 @@
                 <form method="post" action="{{ route('modifArticle') }}" id="modifArticleForm"
                     enctype="multipart/form-data" class="col-span-5">
                     @csrf
-                    @method("PATCH")
+                    @method('PATCH')
 
                     {{-- Téléversement des photos --}}
                     <div class="grid gap-2 mb-6">
@@ -79,11 +79,9 @@
                                 class="col-span-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 placeholder="Description" required>{{ $article->description }}</textarea>
 
-                            <!-- Mots-clés -->
                             <textarea id="motClesArticle" name="motClesArticle" rows="2"
                                 class="col-span-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                placeholder="#Funky#MeilleurArticleEver#Automne#Aussiété">{{ $article->motCles->isNotEmpty() ? '#' . $article->motCles->pluck('mot_cle')->implode('#') : '' }}
-                            </textarea>
+                                placeholder="#Funky#MeilleurArticleEver#Automne#Aussiété">{{ $article->motCles->isNotEmpty() ? '#' . $article->motCles->pluck('mot_cle')->implode('#') : '' }}</textarea>
                         </div>
                     </div>
 
@@ -199,7 +197,7 @@
                     </div>
 
                     <input type="hidden" name="idArtiste" value="{{ $artiste->id_artiste }}">
-                    <input type="hidden" name="idArticle" value="{{ $artiste->id_article }}">
+                    <input type="hidden" name="idArticle" value="{{ $article->id_article }}">
 
                     {{-- Boutons d'envoie --}}
                     <button type="submit" id="addArticleBtn" value="confirmer"
