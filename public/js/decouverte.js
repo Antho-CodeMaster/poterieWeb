@@ -1,5 +1,9 @@
 if (document.baseURI.includes("decouverte")) {
-    document.getElementById("closeThanksModal").addEventListener("click", function(){
-        document.getElementById("thanksModal").classList.add("hidden");
-    })
+    let closeThanks = document.getElementById("closeThanksModal");
+
+    if (closeThanks != null) {
+        closeThanks.addEventListener("click", function () {
+            document.getElementById("thanksModal").classList.add("hidden");
+        })
+    }
 }
