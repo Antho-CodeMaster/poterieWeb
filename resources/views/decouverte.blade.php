@@ -3,6 +3,102 @@
         <h1>Découvertes</h1>
         <h2>TEST H2</h2>
         <p>TEST P</p>
+        <div class="flex">
+            {{-- Possible d'ajouter des attributs --}}
+            <x-button.red.trash id="lol">
+                trash
+            </x-button.red.trash>
+            {{-- Possible d'override des attributs --}}
+            <x-button.red.x-v1 type="button">
+                x-v1
+            </x-button.red.x-v1>
+            <x-button.red.x-v2>
+                x-v2
+            </x-button.red.x-v2>
+            <x-button.red.exclamation>
+                exclamation
+            </x-button.red.exclamation>
+            <x-button.red.flag>
+                flag
+            </x-button.red.flag>
+        </div>
+        <div class="flex">
+            <x-button.blue.add-pic>
+                add-pic
+            </x-button.blue.add-pic>
+            <x-button.blue.upload>
+                upload
+            </x-button.blue.upload>
+            <x-button.blue.leave-v1>
+                leave-v1
+            </x-button.blue.leave-v1>
+            <x-button.blue.leave-v2>
+                leave-v2
+            </x-button.blue.leave-v2>
+            <x-button.blue.info>
+                info
+            </x-button.blue.info>
+            <x-button.blue.question>
+                question
+            </x-button.blue.question>
+            <x-button.blue.edit>
+                edit
+            </x-button.blue.edit>
+        </div>
+        <div class="flex">
+            <x-button.green.check-v1>
+                check-v1
+            </x-button.green.check-v1>
+            <x-button.green.check-v2>
+                check-v2
+            </x-button.green.check-v2>
+            <x-button.green.award>
+                award
+            </x-button.green.award>
+        </div>
+        <div class="flex">
+            <x-button.red.trash>
+            </x-button.red.trash>
+            <x-button.red.x-v1>
+            </x-button.red.x-v1>
+            <x-button.red.x-v2>
+            </x-button.red.x-v2>
+            <x-button.red.exclamation>
+            </x-button.red.exclamation>
+            <x-button.red.flag>
+            </x-button.red.flag>
+            <x-button.blue.add-pic>
+            </x-button.blue.add-pic>
+            <x-button.blue.upload>
+            </x-button.blue.upload>
+            <x-button.blue.leave-v1>
+            </x-button.blue.leave-v1>
+            <x-button.blue.leave-v2>
+            </x-button.blue.leave-v2>
+            <x-button.blue.info>
+            </x-button.blue.info>
+            <x-button.blue.question>
+            </x-button.blue.question>
+            <x-button.blue.edit>
+            </x-button.blue.edit>
+            <x-button.green.check-v1>
+            </x-button.green.check-v1>
+            <x-button.green.check-v2>
+            </x-button.green.check-v2>
+            <x-button.green.award>
+            </x-button.green.award>
+        </div>
+        <div class="flex">
+            <x-button.red.empty>empty</x-button.red.empty>
+            <x-button.blue.empty>empty</x-button.blue.empty>
+            <x-button.green.empty>empty</x-button.green.empty>
+        </div>
+        <div class="flex">
+            <x-button.red.empty></x-button.red.empty>
+            <x-button.blue.empty></x-button.blue.empty>
+            <x-button.green.empty></x-button.green.empty>
+        </div>
+
 
         @if (Session::all())
             {{-- Modal de remerciement d'avoir envoyé une demande --}}
