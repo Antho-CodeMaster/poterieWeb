@@ -150,7 +150,7 @@ class ArticleController extends Controller
 
         /* Stockage en BD du nouvelle article */
         if ($newArticle->save()) {
-            session()->flash('succesArticle', 'L\'article à bien été ajouté');
+            session()->flash('succesArticle', 'L\'article a bien été ajouté');
         } else {
             session()->flash('erreurArticle', 'Un problème lors de l\'ajout de l\'article s\'est produit');
         }
@@ -359,7 +359,7 @@ class ArticleController extends Controller
                 'is_unique' => $validatedData['pieceUnique'],
                 'couleur' => 'brun marde', // Vous pouvez le modifier selon vos besoins
             ])) {
-                session()->flash('succesArticle', 'L\'article à bien été modifié');
+                session()->flash('succesArticle', 'L\'article a bien été modifié');
             } else {
                 session()->flash('erreurArticle', 'Un problème lors de la modification de l\'article s\'est produit');
             }
