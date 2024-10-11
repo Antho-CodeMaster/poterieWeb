@@ -34,6 +34,11 @@ Route::get('/decouverte', function () {
     return view('decouverte');
 })->name('decouverte');
 
+Route::get('/buttons', function () {
+    return view('buttons');
+})->name('buttons');
+
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::get('/profile/facturation', [ProfileController::class, 'facturation'])->name('profile.facturation');
