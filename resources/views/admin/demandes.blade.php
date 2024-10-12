@@ -19,7 +19,8 @@
                 </svg>
                 <div class="flex whitespace-nowrap overflow-x-scroll scrollbar-hide w-full">
                     @foreach ($demandes as $demande)
-                        <div class="demande select-none hidden flex-col flex-shrink-0 bg-lightGrey rounded-xl w-full h-[90%] my-10">
+                        <div
+                            class="demande select-none hidden flex-col flex-shrink-0 bg-lightGrey rounded-xl w-full h-[90%] my-10">
                             <div class="flex h-[90%]">
                                 <div class="w-1/3 h-full text-center">
                                     <svg class="w-[150px] h-[150px] mx-auto text-gray-800 dark:text-white"
@@ -35,30 +36,34 @@
                                     <p>{{ $demande->type->type }}</p>
                                 </div>
                                 <div class="w-2/3 flex flex-col justify-evenly">
-                                    <h3 class="text-xl">Photos d'oeuvres réalisées</h3>
-                                    <div class="flex w-full">
-                                        @for ($i = 0; $i < 5; $i++)
-                                            @if (isset($demande->photos_oeuvres[$i]))
-                                                <img src="{{asset('img/demandePreuve/' . $demande->photos_oeuvres[$i]->path)}}"
-                                                    alt="Photo d'oeuvre"
-                                                    class="shadow-md rounded-[16px] cursor-pointer w-1/5 aspect-square object-cover">
-                                            @else
-                                                <div class="w-1/5"></div>
-                                            @endif
-                                        @endfor
-                                    </div>
-                                    @if ($demande->type->type != 'Nouveau professionnel')
-                                        <h3 class="text-xl">Photos d'identité</h3>
-                                        <div class="flex w-full">
-                                            @for ($i = 0; $i < 3; $i++)
-                                                @if (isset($demande->photos_identite[$i]))
-                                                    <img src="{{asset('img/demandeIdentite/' . $demande->photos_identite[$i]->path)}}"
-                                                        alt="Photo d'identité"
+                                    <div>
+                                        <h3 class="text-xl mb-4">Photos d'oeuvres réalisées</h3>
+                                        <div class="flex w-full flex-wrap">
+                                            @for ($i = 0; $i < 10; $i++)
+                                                @if (isset($demande->photos_oeuvres[$i]))
+                                                    <img src="{{ asset('img/demandePreuve/' . $demande->photos_oeuvres[$i]->path) }}"
+                                                        alt="Photo d'oeuvre"
                                                         class="shadow-md rounded-[16px] cursor-pointer w-1/5 aspect-square object-cover">
                                                 @else
                                                     <div class="w-1/5"></div>
                                                 @endif
                                             @endfor
+                                        </div>
+                                    </div>
+                                    @if ($demande->type->type != 'Nouveau professionnel')
+                                        <div>
+                                            <h3 class="text-xl mb-4">Photos d'identité</h3>
+                                            <div class="flex w-full">
+                                                @for ($i = 0; $i < 3; $i++)
+                                                    @if (isset($demande->photos_identite[$i]))
+                                                        <img src="{{ asset('img/demandeIdentite/' . $demande->photos_identite[$i]->path) }}"
+                                                            alt="Photo d'identité"
+                                                            class="shadow-md rounded-[16px] cursor-pointer w-1/5 aspect-square object-cover">
+                                                    @else
+                                                        <div class="w-1/5"></div>
+                                                    @endif
+                                                @endfor
+                                            </div>
                                         </div>
                                     @endif
                                 </div>

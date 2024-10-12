@@ -11,7 +11,7 @@
                     permet de nous assurer que les oeuvres vendues sont réelles et dignes d'être sur cette plateforme.
                 </p>
                 <p class="text-center {{ $errors->has('photo-preuve') ? 'text-red-500 font-bold' : '' }}"
-                    id="nb-photo-msg">Vous devez soumettre entre 1 et 5 photos.</p>
+                    id="nb-photo-msg">Vous devez soumettre entre 1 et 10 photos.</p>
 
                 <button type="button" id="add-photo-preuve"
                     class="w-[200px] h-[40px] mt-6 shadow-inner rounded border border-[#3779A9] bg-[#8DC7FB] hover:bg-[#73BCFF] mx-auto flex">
@@ -35,7 +35,7 @@
 
                 <input id="photo-preuve" name="photo-preuve[]" type="file" multiple="multiple" class="hidden"
                     accept="image/jpeg, image/jpg, image/png">
-                @for ($i = 0; $i < 5; $i++)
+                @for ($i = 0; $i < 10; $i++)
                     <div id="img-{{ $i }}" class="hidden justify-center">
                         <p class="my-auto mr-2">Image {{ $i + 1 }}</p>
                         <button type="button" id="remove-img-{{ $i }}"

@@ -50,7 +50,7 @@ if (document.baseURI.includes('devenir-artiste')) {
 
     document.getElementById("add-photo-preuve").addEventListener('click', function () {
         // Itérer dans les espaces du tableau de fichiers du input
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 10; i++) {
             // Si un emplacement est vide, on peut procéder à l'ajout des fichiers (plus de gestion d'erreurs est faite dans la fonction addImages())
             if (!document.getElementById('photo-preuve').files[i]) {
                 addImages();
@@ -58,7 +58,7 @@ if (document.baseURI.includes('devenir-artiste')) {
                 return;
             }
         }
-        // Si on a pas rencontré la condition "IF", c'est que les 5 emplacements sont occupés et qu'on essaie d'ajouter des images. On doit donc afficher le message d'erreur.
+        // Si on a pas rencontré la condition "IF", c'est que les 10 emplacements sont occupés et qu'on essaie d'ajouter des images. On doit donc afficher le message d'erreur.
         document.getElementById('nb-photo-msg').classList.add("text-red-500", "font-bold");
     });
 
@@ -92,8 +92,8 @@ if (document.baseURI.includes('devenir-artiste')) {
         newInput.onchange = function(event) {
             const newFiles = event.target.files;
 
-            // Si les nouveaux fichiers et les anciens dépassent 5, afficher le message d'erreur et ignorer les entrées
-            if(dt.items.length + newFiles.length > 5)
+            // Si les nouveaux fichiers et les anciens dépassent 10, afficher le message d'erreur et ignorer les entrées
+            if(dt.items.length + newFiles.length > 10)
                 document.getElementById('nb-photo-msg').classList.add("text-red-500", "font-bold");
 
             // Si on est en dessous ou égal à 5, procéder à l'ajout des nouvelles images
@@ -104,7 +104,7 @@ if (document.baseURI.includes('devenir-artiste')) {
 
                 // Ajout des images à l'objet DataTransfer
                 for (let i = 0; i < newFiles.length; i++)
-                    if(dt.items.length <= 5)
+                    if(dt.items.length <= 10)
                         dt.items.add(newFiles[i]);
             }
 
@@ -134,8 +134,8 @@ if (document.baseURI.includes('devenir-artiste')) {
         // Liste de fichiers
         let files = input.files;
 
-        // Pour 5 fichiers maximum
-        for (let i = 0; i < 5; i++)
+        // Pour 10 fichiers maximum
+        for (let i = 0; i < 10; i++)
         {
             // Si le fichier existe, afficher la zone prévue à cet effet et changer le texte interne pour le nom du fichier
             if (files[i]) {
@@ -150,8 +150,8 @@ if (document.baseURI.includes('devenir-artiste')) {
     /* Gestion de la suppression d'images de la liste (si l'utilisateur clique sur le X)*/
     /************************************************************************************/
 
-    // Pour chacune des 5 images, ajout du EventListener
-    for (let i = 0; i < 5; i++)
+    // Pour chacune des 10 images, ajout du EventListener
+    for (let i = 0; i < 10; i++)
     {
         // Cette fonction fera en sorte que les images seront décalées d'un emplacement si une image précédente est supprimée du tableau.
         document.getElementById('remove-img-' + i).addEventListener('click', function (){
@@ -183,7 +183,7 @@ if (document.baseURI.includes('devenir-artiste')) {
     /************************************************************************************/
 
     function hideAddedImages(){
-        for(let i = 0; i < 5; i++)
+        for(let i = 0; i < 10; i++)
             document.getElementById("img-" + i).classList.add("hidden");
     }
 

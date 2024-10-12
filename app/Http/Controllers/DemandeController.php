@@ -43,7 +43,7 @@ class DemandeController extends Controller
             return back()->withErrors(['msg' => 'Une erreur inattendue s\'est produite lors de l\'envoi de votre demande. Veuillez réessayer plus tard.']);
 
         // Validation de base
-        $rules = [ "photo-preuve" => "required|array|between:1,5" ];
+        $rules = [ "photo-preuve" => "required|array|between:1,10" ];
 
         // Valider qu'il y a bel et bien 3 photos si la demande est pour un étudiant
         if ($type == 2)
