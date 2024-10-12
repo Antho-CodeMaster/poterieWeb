@@ -12,8 +12,7 @@
                         <option selected value="tous">Tous</option>
                         <option value="Client">Clients</option>
                         <option value="Artiste">Artistes</option>
-                        <option value="Modérateur">Modérateurs</option>
-                        <option value="Administrateur">Administrateurs</option>
+                        <option value="Administration">Administration</option>
                     </select>
 
                     <!-- Barre de recherche -->
@@ -41,34 +40,59 @@
 
                             @if ($user->artiste != null)
                                 <p class="mx-auto">Artiste</p>
-                                <img src="../img/{{ $user->artiste->path_photo_profil }}" alt="Photo de profil"
-                                    class="w-[150px] h-[150px] rounded-full mx-auto">
-                                <x-page-access-button
-                                    href="{{ route('kiosque', ['idUser' => $user->id]) }}"></x-page-access-button>
+                                <img src="{{ asset($artiste->path_photo_profil ?? 'img/artistePFP/default_artiste.png') }}"
+                                    alt="Photo de profil" class="w-[150px] h-[150px] rounded-full mx-auto">
+                                <x-button.blue.leave class="w-full"
+                                    @click="window.location.href='{{ route('kiosque', ['idUser' => $user->id]) }}'">Accéder
+                                    au kiosque</x-button.blue.leave>
                             @else
                                 @if ($user->moderateur != null)
                                     @if ($user->moderateur->is_admin != false)
                                         <p class="mx-auto">Administrateur</p>
+                                        @if (Auth::User()->is_admin())
+                                            <x-button.red.x class="w-full"
+                                                @click="window.location.href='{{ route('admin-user-demote') }}?id={{ $user->id }}'">Rétrograder
+                                                modérateur</x-button.red.x>
+                                        @endif
                                     @else
                                         <p class="mx-auto">Modérateur</p>
+                                        @if (Auth::User()->is_admin())
+                                            <x-button.green.award class="w-full"
+                                                @click="window.location.href='{{ route('admin-user-promote') }}?id={{ $user->id }}'">Rendre
+                                                administrateur</x-button.green.award>
+                                            <x-button.red.x class="w-full"
+                                                @click="window.location.href='{{ route('admin-user-demote') }}?id={{ $user->id }}'">Rétrograder
+                                                client</x-button.red.x>
+                                        @endif
                                     @endif
                                 @else
                                     <p class="mx-auto">Client</p>
+                                    <p class="mx-auto">{{ $user->email }}</p>
+                                    <p class="mx-auto">Inscription: {{ $user->created_at }}</p>
+                                    <p class="mx-auto">{{ $user->commandes->count() }}
+                                        commande{{ $user->commandes->count() == 1 ? '' : 's' }}</p>
+                                    <p class="mx-auto">{{ $user->avertissements()->count() }}
+                                        avertissement{{ $user->avertissements()->count() == 1 ? '' : 's' }}</p>
+                                    @if (Auth::User()->is_admin())
+                                        <x-button.green.award class="w-full"
+                                            @click="window.location.href='{{ route('admin-user-promote') }}?id={{ $user->id }}'">Rendre
+                                            modérateur</x-button.green.award>
+                                    @endif
                                 @endif
-                                <svg class="mb-[3.25rem] w-[150px] h-[150px] mx-auto text-gray-800 dark:text-white"
-                                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    fill="currentColor" viewBox="0 0 24 24">
-                                    <path fill-rule="evenodd"
-                                        d="M12 20a7.966 7.966 0 0 1-5.002-1.756l.002.001v-.683c0-1.794 1.492-3.25 3.333-3.25h3.334c1.84 0 3.333 1.456 3.333 3.25v.683A7.966 7.966 0 0 1 12 20ZM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10c0 5.5-4.44 9.963-9.932 10h-.138C6.438 21.962 2 17.5 2 12Zm10-5c-1.84 0-3.333 1.455-3.333 3.25S10.159 13.5 12 13.5c1.84 0 3.333-1.455 3.333-3.25S13.841 7 12 7Z"
-                                        clip-rule="evenodd" />
-                                </svg>
                             @endif
-
-                            <div class="flex mx-auto gap-2">
-                                <x-avertir-button id="{{ $user->id }}" name="'{{ $user->name }}'">
-                                </x-avertir-button>
-                                <x-delete-user-button id="{{ $user->id }}" name="'{{ $user->name }}'">
-                                </x-delete-user-button>
+                            <div class="flex mx-auto gap-2 w-full">
+                                <div x-cloak x-data="{ openAvertir: {{ $errors->any() ? 'true' : 'false' }} }"
+                                    class='{{ Auth::User()->is_admin() ? 'w-[45%]' : 'w-full' }}'>
+                                    <x-button.red.exclamation class="w-full"
+                                        @click="openAvertir = true; $dispatch ('open-avertir-modal'); $dispatch('set-id', {{ $user->id }}); $dispatch('set-name', '{{ $user->name }}');">Avertir</x-button.red.exclamation>
+                                </div>
+                                @if (Auth::User()->is_admin())
+                                    <div x-cloak x-data="{ openDelete: {{ $errors->any() ? 'true' : 'false' }} }" class="w-[55%]">
+                                        <x-button.red.trash class="w-full"
+                                            @click="openDelete = true; $dispatch ('open-delete-modal'); $dispatch('set-id', {{ $user->id }}); $dispatch('set-name', '{{ $user->name }}');">Supprimer
+                                        </x-button.red.trash>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>

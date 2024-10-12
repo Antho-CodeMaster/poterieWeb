@@ -18,6 +18,12 @@ Route::post('/admin/delete', [UserController::class, 'destroy'])
 Route::post('/admin/avertir', [UserController::class, 'avertir'])
     ->name('admin-user-avertir')->middleware(EnsureUserIsModerateur::class);
 
+Route::get('/admin/promote', [UserController::class, 'promote'])
+    ->name('admin-user-promote')->middleware(EnsureUserIsModerateur::class);
+
+Route::get('/admin/demote', [UserController::class, 'demote'])
+    ->name('admin-user-demote')->middleware(EnsureUserIsModerateur::class);
+
 Route::get('/admin/articles', function() {
     return view('admin/articles');
 })->name('admin-articles')->middleware(EnsureUserIsModerateur::class);
