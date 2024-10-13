@@ -34,6 +34,11 @@ class DemandeController extends Controller
      */
     public function store(Request $request)
     {
+        // Si on a déjà une demande pending, on ne peut pas en faire une nouvelle
+        if(Demande::where('id_user', Auth::id())->where('id_etat', 1)->first() != null)
+            return back()->withErrors(['msg' => 'Vous avez déjà une demande en attente dans notre serveur. Veuillez attendre le verdict de l\'administration avant de réessayer.']);
+
+        // Assigner le bon type selon la demande
         $nomType = $request->input('type');
         if ($nomType == "etu")
             $type = 2;
@@ -42,12 +47,16 @@ class DemandeController extends Controller
         else
             return back()->withErrors(['msg' => 'Une erreur inattendue s\'est produite lors de l\'envoi de votre demande. Veuillez réessayer plus tard.']);
 
-        // Validation de base
-        $rules = [ "photo-preuve" => "required|array|between:1,10" ];
+        // Validation de base pour les photos de preuve
+        $rules = [ "photo-preuve" => "required|array|between:1,10",
+                    "photo-preuve.*" => "mimes:jpeg,png,jpg|max:2048" ];
 
-        // Valider qu'il y a bel et bien 3 photos si la demande est pour un étudiant
+        // Valider qu'il y a bel et bien 3 photos et qu'elles sont dans le bon format si la demande est pour un étudiant
         if ($type == 2)
+        {
             $rules['photo-identite'] = 'required|array|size:3';
+            $rules['photo-identite.*'] = 'mimes:jpeg,png,jpg|max:2048';
+        }
 
         // Performer la validation
         $validator = Validator::make($request->all(), $rules);

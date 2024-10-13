@@ -9,7 +9,7 @@
                 @include('components.devenir-artiste-succes-modal')
             @endif
             {{-- Span qui, s'il existe, va trigger l'ouvertur du modal de connexion --}}
-            @if (Session::has('succesRecupMdp'))
+            @if (Session::has('openLoginModal'))
                 <span id="showLoginModal" class="hidden"></span>
             @endif
         @endif

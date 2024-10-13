@@ -56,7 +56,7 @@ class NewPasswordController extends Controller
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
         if($status == Password::PASSWORD_RESET)
-            session()->flash('succesRecupMdp', 'Votre mot de passe a été réinitialisé avec succès!');
+            session()->flash('openLoginModal', 'Votre mot de passe a été réinitialisé avec succès!');
 
         return $status == Password::PASSWORD_RESET
                     ? redirect()->route('decouverte')->with('status', __($status))
