@@ -1,5 +1,5 @@
 <!-- Navigation Menu -->
-<div class="w-[250px] bg-beige h-full">
+<div class="bg-beige top-24 h-full">
     <!-- Boutons de droite -->
     <div class="items-center">
 

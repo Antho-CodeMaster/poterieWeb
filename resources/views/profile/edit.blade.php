@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="grid grid-cols-1 lg:grid-cols-6 relative">
         <!-- Hamburger Menu for Small Screens -->
-        <div class="lg:hidden p-4 fixed top-10 left-0 z-50">
+        <div class="lg:hidden w-full bg-beige fixed p-4 top-12 left-0">
             <!-- Button to toggle the menu -->
             <button id="hamburger" class="focus:outline-none">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -10,13 +10,13 @@
             </button>
         </div>
 
-        <!-- Left Menu -->
-        <div id="menu-gauche" class="lg:col-span-1 fixed lg:relative lg:top-0 h-full w-[250px] bg-white z-40 lg:h-auto lg:shadow-none lg:w-auto lg:static hidden lg:flex lg:flex-col overflow-y-auto">
+        <!-- Left Menu (Shows different on small vs big screens) -->
+        <div id="menu-gauche" class="lg:col-span-1 fixed lg:relative lg:top-0 w-full h-full z-40 lg:h-auto lg:shadow-none lg:w-auto lg:static hidden lg:flex lg:flex-col overflow-y-auto">
             @include('profile.partials.menu-gauche')
         </div>
 
         <!-- Main Content (Profile Information + Password Update + Accessibility + Delete User + Update Profile Picture) -->
-        <div class="lg:col-span-5 grid grid-cols-1 lg:grid-cols-4 gap-6 py-8 mx-4">
+        <div class="lg:col-span-5 grid grid-cols-1 lg:grid-cols-4 gap-6 py-8 mt-12 mx-4">
             <!-- Profile Information -->
             <div class="col-span-2 p-4 sm:p-8 bg-beige hover:shadow-lg sm:rounded-lg">
                 <div class="max-w-xl">
