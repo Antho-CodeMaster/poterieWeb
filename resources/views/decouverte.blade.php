@@ -14,14 +14,7 @@
 
     <div>
         @foreach($collections as $collection)
-            <div>
-                <h2 class="titre">{{ $collection->collection }}</h2>
-                <div class="flex w-[500px]">
-                    @foreach($collection->articles as $article)
-                        @include('recherche.partials.article-card', $article)
-                    @endforeach
-                </div>
-            </div>
+            <x-collection-articles :collection="$collection" />
         @endforeach
     </div>
 </x-app-layout>

@@ -12,9 +12,9 @@ use App\Http\Controllers\TransactionController;
 
 use Illuminate\Support\Facades\Route;
 
-#Route::get('/', function () {
-#    return view('decouverte');
-#});
+Route::get('/decouverte', function () {
+    return redirect('/');
+})->name('decouverte');
 
 Route::get('/', [CollectionController::class, 'index']);
 
@@ -32,10 +32,6 @@ Route::controller(ArticleController::class)->group(function(){
     Route::get('/addArticleForm', 'create')->name('addArticleForm');
     Route::patch('/modifArticle', 'update')->name('modifArticle');
 });
-
-Route::get('/decouverte', function () {
-    return view('decouverte');
-})->name('decouverte');
 
 Route::get('/buttons', function () {
     return view('buttons');
