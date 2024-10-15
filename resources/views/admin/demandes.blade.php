@@ -43,47 +43,47 @@
                                                 @if (isset($demande->photos_oeuvres[$i]))
                                                     <img src="{{ asset('img/demandePreuve/' . $demande->photos_oeuvres[$i]->path) }}"
                                                         alt="Photo d'oeuvre"
-                                                        class="shadow-md rounded-[16px] cursor-pointer w-1/5 aspect-square object-cover">
-                                                @else
-                                                    <div class="w-1/5"></div>
-                                                @endif
-                                            @endfor
+                                                        class="img shadow-md rounded-[16px] cursor-pointer w-1/5 aspect-square object-cover">
+                                                    @else <div class="w-1/5">
                                         </div>
-                                    </div>
-                                    @if ($demande->type->type != 'Nouveau professionnel')
-                                        <div>
-                                            <h3 class="text-xl mb-4">Photos d'identité</h3>
-                                            <div class="flex w-full">
-                                                @for ($i = 0; $i < 3; $i++)
-                                                    @if (isset($demande->photos_identite[$i]))
-                                                        <img src="{{ asset('img/demandeIdentite/' . $demande->photos_identite[$i]->path) }}"
-                                                            alt="Photo d'identité"
-                                                            class="shadow-md rounded-[16px] cursor-pointer w-1/5 aspect-square object-cover">
-                                                    @else
-                                                        <div class="w-1/5"></div>
-                                                    @endif
-                                                @endfor
-                                            </div>
-                                        </div>
-                                    @endif
-                                </div>
-
-                            </div>
-                            <div class="flex w-full gap-6 justify-center">
-                                @include('admin.components.accepter-button')
-                                @include('admin.components.refuser-button')
-                            </div>
-                        </div>
-                    @endforeach
+                    @endif
+                    @endfor
                 </div>
-                {{-- Flèche droite --}}
-
-                <svg id="nextBtn" class="text-darkGrey w-[10%] cursor-pointer my-auto" aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="none" viewBox="4 4 16 16">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="m9 5 7 7-7 7" />
-                </svg>
             </div>
+            @if ($demande->type->type != 'Nouveau professionnel')
+                <div>
+                    <h3 class="text-xl mb-4">Photos d'identité</h3>
+                    <div class="flex w-full">
+                        @for ($i = 0; $i < 3; $i++)
+                            @if (isset($demande->photos_identite[$i]))
+                                <img src="{{ asset('img/demandeIdentite/' . $demande->photos_identite[$i]->path) }}"
+                                    alt="Photo d'identité"
+                                    class="img shadow-md rounded-[16px] cursor-pointer w-1/5 aspect-square object-cover">
+                            @else
+                                <div class="w-1/5"></div>
+                            @endif
+                        @endfor
+                    </div>
+                </div>
+            @endif
         </div>
+
+    </div>
+    <div class="flex w-full gap-6 justify-center">
+        @include('admin.components.accepter-button')
+        @include('admin.components.refuser-button')
+    </div>
+    </div>
+    @endforeach
+    </div>
+    {{-- Flèche droite --}}
+
+    <svg id="nextBtn" class="text-darkGrey w-[10%] cursor-pointer my-auto" aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="none" viewBox="4 4 16 16">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7" />
+    </svg>
+    </div>
+    @include('admin.components.image-modal')
+    </div>
     </div>
 </x-app-layout>
