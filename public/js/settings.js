@@ -14,11 +14,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }
+    }
 
+    //Check if the path contains 'profile'
+    if (/profile/.test(window.location.pathname)) {
         document.getElementById('hamburger').addEventListener('click', function() {
             let menu = document.getElementById('menu-gauche');
             menu.classList.toggle('hidden'); // Just toggle visibility
             menu.classList.toggle('top-24');
         });
     }
+
 });
+
