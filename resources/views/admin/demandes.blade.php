@@ -3,7 +3,7 @@
     <div class="flex content-height">
         @include('admin.menu-gauche')
         <!-- Partie de droite (contenu de la page) -->
-        <div class="pt-20 px-20 h-[100%] w-4/5 flex flex-col">
+        <div class="pt-20 px-20 h-[100%] w-4/5 flex flex-col" x-data="{ openRefuser: false }">
             <!-- Titre, nombre de résultats, filtres-->
             <div id="header-info">
                 <h1 class="text-4xl text-black">Demandes d'inscription</h1>
@@ -19,7 +19,8 @@
                 </svg>
                 <div class="flex whitespace-nowrap overflow-x-scroll scrollbar-hide w-full">
                     @foreach ($demandes as $demande)
-                        <div class="demande select-none hidden flex-col flex-shrink-0 bg-lightGrey rounded-xl w-full h-[90%] my-10">
+                        <div
+                            class="demande select-none hidden flex-col flex-shrink-0 bg-lightGrey rounded-xl w-full h-[90%] my-10">
                             <div class="flex h-[90%]">
                                 <div class="w-1/3 h-full text-center">
                                     <svg class="w-[150px] h-[150px] mx-auto text-gray-800 dark:text-white"
@@ -35,38 +36,50 @@
                                     <p>{{ $demande->type->type }}</p>
                                 </div>
                                 <div class="w-2/3 flex flex-col justify-evenly">
-                                    <h3 class="text-xl">Photos d'oeuvres réalisées</h3>
-                                    <div class="flex w-full">
-                                        @for ($i = 0; $i < 5; $i++)
-                                            @if (isset($demande->photos_oeuvres[$i]))
-                                                <img src="{{asset('img/demandePreuve/' . $demande->photos_oeuvres[$i]->path)}}"
-                                                    alt="Photo d'oeuvre"
-                                                    class="shadow-md rounded-[16px] cursor-pointer w-1/5 aspect-square object-cover">
-                                            @else
-                                                <div class="w-1/5"></div>
-                                            @endif
-                                        @endfor
-                                    </div>
-                                    @if ($demande->type->type != 'Nouveau professionnel')
-                                        <h3 class="text-xl">Photos d'identité</h3>
-                                        <div class="flex w-full">
-                                            @for ($i = 0; $i < 3; $i++)
-                                                @if (isset($demande->photos_identite[$i]))
-                                                    <img src="{{asset('img/demandeIdentite/' . $demande->photos_identite[$i]->path)}}"
-                                                        alt="Photo d'identité"
-                                                        class="shadow-md rounded-[16px] cursor-pointer w-1/5 aspect-square object-cover">
+                                    <div>
+                                        <h3 class="text-xl mb-4">Photos d'oeuvres réalisées</h3>
+                                        <div class="flex w-full flex-wrap">
+                                            @for ($i = 0; $i < 10; $i++)
+                                                @if (isset($demande->photos_oeuvres[$i]))
+                                                    <img src="{{ asset('img/demandePreuve/' . $demande->photos_oeuvres[$i]->path) }}"
+                                                        alt="Photo d'oeuvre"
+                                                        class="img shadow-md rounded-[16px] cursor-pointer w-1/5 aspect-square object-cover">
                                                 @else
-                                                    <div class="w-1/5"></div>
+                                                    <div class="w-1/5">
+                                                    </div>
                                                 @endif
                                             @endfor
+                                        </div>
+                                    </div>
+                                    @if ($demande->type->type != 'Nouveau professionnel')
+                                        <div>
+                                            <h3 class="text-xl mb-4">Photos d'identité</h3>
+                                            <div class="flex w-full">
+                                                @for ($i = 0; $i < 3; $i++)
+                                                    @if (isset($demande->photos_identite[$i]))
+                                                        <img src="{{ asset('img/demandeIdentite/' . $demande->photos_identite[$i]->path) }}"
+                                                            alt="Photo d'identité"
+                                                            class="img shadow-md rounded-[16px] cursor-pointer w-1/5 aspect-square object-cover">
+                                                    @else
+                                                        <div class="w-1/5"></div>
+                                                    @endif
+                                                @endfor
+                                            </div>
                                         </div>
                                     @endif
                                 </div>
 
                             </div>
                             <div class="flex w-full gap-6 justify-center">
-                                @include('admin.components.accepter-button')
-                                @include('admin.components.refuser-button')
+                                <form method="POST"
+                                    action="{{ route('demande-accept') }}?id={{ $demande->id_demande }}">
+                                    @csrf
+                                    <x-button.green.check>Accepter</x-button.green.check>
+                                </form>
+                                <div x-data="{ openRefuser: {{ $errors->any() ? 'true' : 'false' }} }">
+                                    <x-button.red.x class="w-full"
+                                        @click="openRefuser = true; $dispatch ('open-refuser-modal'); $dispatch('set-id', {{ $demande->id_demande }}); $dispatch('set-name', '{{ $demande->user->name }}');">Refuser</x-button.red.x>
+                                </div>
                             </div>
                         </div>
                     @endforeach
@@ -79,6 +92,8 @@
                         d="m9 5 7 7-7 7" />
                 </svg>
             </div>
+            @include('admin.components.image-modal')
+            @include('admin.components.refuser-modal')
         </div>
     </div>
 </x-app-layout>

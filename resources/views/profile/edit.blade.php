@@ -1,7 +1,17 @@
 <x-app-layout>
-    <div class="grid grid-cols-1 lg:grid-cols-6">
+    <div class="grid grid-cols-1 lg:grid-cols-6 relative">
+        <!-- Hamburger Menu for Small Screens -->
+        <div class="lg:hidden p-4 fixed top-10 left-0 z-50">
+            <!-- Button to toggle the menu -->
+            <button id="hamburger" class="focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </div>
+
         <!-- Left Menu -->
-        <div class="lg:col-span-1">
+        <div id="menu-gauche" class="lg:col-span-1 fixed lg:relative lg:top-0 h-full w-[250px] bg-white z-40 lg:h-auto lg:shadow-none lg:w-auto lg:static hidden lg:flex lg:flex-col overflow-y-auto">
             @include('profile.partials.menu-gauche')
         </div>
 

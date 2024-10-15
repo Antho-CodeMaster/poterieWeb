@@ -14,5 +14,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }
+
+        document.getElementById('hamburger').addEventListener('click', function() {
+            let menu = document.getElementById('menu-gauche');
+            menu.classList.toggle('hidden'); // Just toggle visibility
+            menu.classList.toggle('top-24');
+        });
     }
 });
