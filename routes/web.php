@@ -4,6 +4,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ArtisteController;
 use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\LikeController;
 
 use App\Http\Controllers\CommandeController;
@@ -11,9 +12,11 @@ use App\Http\Controllers\TransactionController;
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('decouverte');
-});
+#Route::get('/', function () {
+#    return view('decouverte');
+#});
+
+Route::get('/', [CollectionController::class, 'index']);
 
 /* Route relié au kiosque */
 Route::controller(ArtisteController::class)->group(function(){
