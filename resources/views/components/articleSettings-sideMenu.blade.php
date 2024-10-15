@@ -1,6 +1,6 @@
 <div class="w-[16%] bg-beige h-full">
     <h2 class="text-[150%] font-bold p-2 border-b-2 border-darkGrey">
-        Menu de navigation
+        Menu
     </h2>
     {{-- ArticleSettings sideMenu --}}
     <a href="{{ route('addArticleForm', ['idArticle' => 1]) }}" id="ajouterArticle"

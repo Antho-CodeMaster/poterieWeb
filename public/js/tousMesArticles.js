@@ -44,16 +44,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         validateRange()
 
-    }
+    };
 
-
-    if (inputElements.length < 2) {
-        console.error("Les sliders ne sont pas correctement récupérés.");
-        return;
-    }
-
-    if (!minValue || !maxValue) {
-        console.error("Les éléments min-Value ou max-Value n'ont pas été trouvés dans le DOM.");
-        return;
-    }
 });
