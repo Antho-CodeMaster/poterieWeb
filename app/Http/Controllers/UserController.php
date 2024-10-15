@@ -73,7 +73,7 @@ class UserController extends Controller
     {
         $id = request()->query('id');
         $notif = Notification::create([
-            'id_type' => 2,
+            'id_type' => 1,
             'id_user' => $id,
             'date' => now(),
             'message' => request()->input('reason'),

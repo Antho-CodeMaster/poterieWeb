@@ -81,13 +81,13 @@
                                 @endif
                             @endif
                             <div class="flex mx-auto gap-2 w-full">
-                                <div x-cloak x-data="{ openAvertir: {{ $errors->any() ? 'true' : 'false' }} }"
+                                <div x-data="{ openAvertir: {{ $errors->any() ? 'true' : 'false' }} }"
                                     class='{{ Auth::User()->is_admin() ? 'w-[45%]' : 'w-full' }}'>
                                     <x-button.red.exclamation class="w-full"
                                         @click="openAvertir = true; $dispatch ('open-avertir-modal'); $dispatch('set-id', {{ $user->id }}); $dispatch('set-name', '{{ $user->name }}');">Avertir</x-button.red.exclamation>
                                 </div>
                                 @if (Auth::User()->is_admin())
-                                    <div x-cloak x-data="{ openDelete: {{ $errors->any() ? 'true' : 'false' }} }" class="w-[55%]">
+                                    <div x-data="{ openDelete: {{ $errors->any() ? 'true' : 'false' }} }" class="w-[55%]">
                                         <x-button.red.trash class="w-full"
                                             @click="openDelete = true; $dispatch ('open-delete-modal'); $dispatch('set-id', {{ $user->id }}); $dispatch('set-name', '{{ $user->name }}');">Supprimer
                                         </x-button.red.trash>

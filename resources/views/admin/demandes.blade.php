@@ -3,7 +3,7 @@
     <div class="flex content-height">
         @include('admin.menu-gauche')
         <!-- Partie de droite (contenu de la page) -->
-        <div class="pt-20 px-20 h-[100%] w-4/5 flex flex-col">
+        <div class="pt-20 px-20 h-[100%] w-4/5 flex flex-col" x-data="{ openRefuser: false }">
             <!-- Titre, nombre de résultats, filtres-->
             <div id="header-info">
                 <h1 class="text-4xl text-black">Demandes d'inscription</h1>
@@ -44,46 +44,56 @@
                                                     <img src="{{ asset('img/demandePreuve/' . $demande->photos_oeuvres[$i]->path) }}"
                                                         alt="Photo d'oeuvre"
                                                         class="img shadow-md rounded-[16px] cursor-pointer w-1/5 aspect-square object-cover">
-                                                    @else <div class="w-1/5">
+                                                @else
+                                                    <div class="w-1/5">
+                                                    </div>
+                                                @endif
+                                            @endfor
                                         </div>
-                    @endif
-                    @endfor
+                                    </div>
+                                    @if ($demande->type->type != 'Nouveau professionnel')
+                                        <div>
+                                            <h3 class="text-xl mb-4">Photos d'identité</h3>
+                                            <div class="flex w-full">
+                                                @for ($i = 0; $i < 3; $i++)
+                                                    @if (isset($demande->photos_identite[$i]))
+                                                        <img src="{{ asset('img/demandeIdentite/' . $demande->photos_identite[$i]->path) }}"
+                                                            alt="Photo d'identité"
+                                                            class="img shadow-md rounded-[16px] cursor-pointer w-1/5 aspect-square object-cover">
+                                                    @else
+                                                        <div class="w-1/5"></div>
+                                                    @endif
+                                                @endfor
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+
+                            </div>
+                            <div class="flex w-full gap-6 justify-center">
+                                <form method="POST"
+                                    action="{{ route('demande-accept') }}?id={{ $demande->id_demande }}">
+                                    @csrf
+                                    <x-button.green.check>Accepter</x-button.green.check>
+                                </form>
+                                <div x-data="{ openRefuser: {{ $errors->any() ? 'true' : 'false' }} }">
+                                    <x-button.red.x class="w-full"
+                                        @click="openRefuser = true; $dispatch ('open-refuser-modal'); $dispatch('set-id', {{ $demande->id_demande }}); $dispatch('set-name', '{{ $demande->user->name }}');">Refuser</x-button.red.x>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
+                {{-- Flèche droite --}}
+
+                <svg id="nextBtn" class="text-darkGrey w-[10%] cursor-pointer my-auto" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="none" viewBox="4 4 16 16">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m9 5 7 7-7 7" />
+                </svg>
             </div>
-            @if ($demande->type->type != 'Nouveau professionnel')
-                <div>
-                    <h3 class="text-xl mb-4">Photos d'identité</h3>
-                    <div class="flex w-full">
-                        @for ($i = 0; $i < 3; $i++)
-                            @if (isset($demande->photos_identite[$i]))
-                                <img src="{{ asset('img/demandeIdentite/' . $demande->photos_identite[$i]->path) }}"
-                                    alt="Photo d'identité"
-                                    class="img shadow-md rounded-[16px] cursor-pointer w-1/5 aspect-square object-cover">
-                            @else
-                                <div class="w-1/5"></div>
-                            @endif
-                        @endfor
-                    </div>
-                </div>
-            @endif
+            @include('admin.components.image-modal')
+            @include('admin.components.refuser-modal')
         </div>
-
-    </div>
-    <div class="flex w-full gap-6 justify-center">
-        @include('admin.components.accepter-button')
-        @include('admin.components.refuser-button')
-    </div>
-    </div>
-    @endforeach
-    </div>
-    {{-- Flèche droite --}}
-
-    <svg id="nextBtn" class="text-darkGrey w-[10%] cursor-pointer my-auto" aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="none" viewBox="4 4 16 16">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7" />
-    </svg>
-    </div>
-    @include('admin.components.image-modal')
-    </div>
     </div>
 </x-app-layout>
