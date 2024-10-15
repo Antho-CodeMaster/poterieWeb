@@ -11,7 +11,7 @@
         </div>
 
         <!-- Left Menu -->
-        <div id="menu-gauche" class="lg:col-span-1 fixed lg:relative top-0 h-full w-[250px] bg-white shadow-lg z-40 lg:h-auto lg:shadow-none lg:w-auto lg:static hidden lg:flex lg:flex-col overflow-y-auto">
+        <div id="menu-gauche" class="lg:col-span-1 fixed lg:relative lg:top-0 h-full w-[250px] bg-white z-40 lg:h-auto lg:shadow-none lg:w-auto lg:static hidden lg:flex lg:flex-col overflow-y-auto">
             @include('profile.partials.menu-gauche')
         </div>
 
