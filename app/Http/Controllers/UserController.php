@@ -18,6 +18,14 @@ class UserController extends Controller
     }
 
     /**
+     * TEMPORAIRE
+     */
+    public function indexv2()
+    {
+        return view('admin/utilisateurs-v2', ['users' => User::where('active', 1)->get()]);
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()

@@ -14,6 +14,9 @@ Route::middleware(EnsureUserIsModerateur::class)->group(function () {
     Route::get('/admin/utilisateurs', [UserController::class, 'index'])
         ->name('admin-utilisateurs');
 
+    Route::get('/admin/utilisateurs-v2', [UserController::class, 'indexv2'])
+        ->name('admin-utilisateurs-v2');
+
     Route::post('/admin/delete', [UserController::class, 'destroy'])
         ->name('admin-user-delete');
 
