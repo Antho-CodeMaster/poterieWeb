@@ -41,8 +41,28 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-        /* Fonctions pour gérer l'ajout des images de l'article déjà existant en input */
+        // Gestion de la quantité en fonction du type de pièce
+        document.getElementById("pieceUnique").addEventListener("change", function (event) {
+            quantiteByType(event);
+        });
 
+        function quantiteByType(event) {
+            let isUnique = document.getElementById("pieceUnique").value;
+            let quantiteElement = document.getElementById("quantiteArticle");
+            let titreQuantite = document.getElementById("titreQuantite");
+
+
+            if (isUnique == 1) {
+                quantiteElement.classList.add("hidden");
+                titreQuantite.classList.add("hidden")
+                quantiteElement.value = 1;
+            }
+            else {
+                quantiteElement.classList.remove("hidden");
+                titreQuantite.classList.remove("hidden")
+                quantiteElement.value = "";
+            }
+        }
 
     }
 });

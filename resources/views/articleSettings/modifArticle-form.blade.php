@@ -16,7 +16,17 @@
 
                     {{-- Téléversement des photos --}}
                     <div class="grid gap-2 mb-6">
-                        <h2 class="text-[120%]">Téléversez les photos de l'article</h2>
+                        <div class="flex items-center gap-6">
+                            <h2 class="text-[120%]">Téléversez les photos de l'article</h2>
+                            <x-tooltip
+                                text="<ul class='list-disc ml-5'>
+                                <li>La quantité de l'article en vente ne pourra pas être de 0.</li>
+                                <li>Une quantité de 1 ne signifie pas qu'il sera considérer en tant qu'article unique. Pour cela il faut ajuster le type de pièce.</li>
+                              </ul>"
+                                position="bottom" id="1">
+                                <p class="text-[200%]">&#9432;</p>
+                            </x-tooltip>
+                        </div>
                         <div class="flex gap-2">
                             @for ($i = 1; $i <= 5; $i++)
                                 {{-- Définir une classe pour la bordure en fonction des erreurs --}}
@@ -101,7 +111,14 @@
 
                         {{-- Dimensions et poids --}}
                         <div class="grid col-span-1 gap-2">
-                            <h2 class="text-[120%]">Dimensions et poids de l'article</h2>
+                            <div class="flex items-center justify-between">
+                                <h2 class="text-[120%]">Dimensions et poids de l'article</h2>
+                                <x-tooltip
+                                    text="Les dimensions doivent être inscrit en cm et ne peuvent être plus petit que 0,1cm."
+                                    position="left" id="1">
+                                    <p class="text-[200%]">&#9432</p>
+                                </x-tooltip>
+                            </div>
                             <div class="grid grid-cols-2 grid-rows-2 gap-2">
 
                                 {{-- Profondeur --}}
@@ -125,14 +142,24 @@
                                 {{-- Poids --}}
                                 <x-text-input id="poidsArticle"
                                     class="col-span-1 {{ $errors->has('poidsArticle') ? 'border-red-500 border-[2px]' : '' }}"
-                                    type="number" name="poidsArticle" placeholder="Poids (g)" min="0" required
-                                    value="{{ $article->poids }}" step="0.01" />
+                                    type="number" name="poidsArticle" placeholder="Poids (g)" min="0"
+                                    required value="{{ $article->poids }}" step="0.01" />
                             </div>
                         </div>
 
                         {{-- Type de pièce et usage alimentaire --}}
                         <div class="grid col-span-1 gap-2">
-                            <h2 class="text-[120%]">Type de pièce et usage alimentaire</h2>
+                            <div class="flex items-center justify-between w-full">
+                                <h2 class="text-[120%]">Type de pièce et usage alimentaire</h2>
+                                <x-tooltip
+                                    text="<ul class='list-disc ml-5'><li>Le type d'usage permet de déterminer si l'article peut être utilisé à des fins alimentaires.
+                                            </li><li>Le type de pièce permet de savoir si l'article est une œuvre d'art ou un article en série.
+                                            </li><li>Si la pièce est unique alors la quantité de l'article sera obligatoirement de 1.</li>
+                                          </ul>"
+                                    position="left" id="1">
+                                    <p class="text-[200%]">&#9432;</p>
+                                </x-tooltip>
+                            </div>
                             <div class="grid grid-cols-2 grid-rows-2 gap-2">
 
                                 <!-- IsAlimentaire -->
@@ -164,7 +191,18 @@
                     <div class="grid grid-cols-2 gap-4 mb-6">
 
                         <div class="grid col-span-1 gap-2">
-                            <h2 class="text-[120%]">Attributs de l'article</h2>
+                            <div class="flex items-center justify-between">
+                                <h2 class="text-[120%]">Attributs de l'article</h2>
+                                <x-tooltip
+                                    text="<ul class='list-disc ml-5'>
+                                            <li>Le bouton masqué empêche les utilisateurs clients d'avoir accès à cet article.</li>
+                                            <li>Le bouton en vedette permet à cet article d'être mis en avant sur votre kiosque personnel.</li>
+                                            <li>Le bouton flouté floutera cette image aux yeux des utilisateurs qui ont activé la sensibilité sur le site.</li>
+                                          </ul>"
+                                    position="left" id="1">
+                                    <p class="text-[200%]">&#9432;</p>
+                                </x-tooltip>
+                            </div>
                             <div class="grid grid-cols-2 gap-2">
 
                                 {{-- masquer --}}
@@ -201,8 +239,17 @@
 
                         {{-- Quantité --}}
                         <div class="grid col-span-1 gap-2">
-                            <h2 class="text-[120%]">Quantité d'article mise en vente</h2>
-
+                            <div class="flex items-center justify-between">
+                                <h2 class="text-[120%]" id="titreQuantite">Quantité d'article en vente</h2>
+                                <x-tooltip
+                                    text="<ul class='list-disc ml-5'>
+                                            <li>La quantité de l'article en vente ne pourra pas être de 0.</li>
+                                            <li>Une quantité de 1 ne signifie pas qu'il sera considérer en tant qu'article unique. Pour cela il faut ajuster le type de pièce.</li>
+                                          </ul>"
+                                    position="left" id="1">
+                                    <p class="text-[200%]">&#9432;</p>
+                                </x-tooltip>
+                            </div>
                             <div class="grid grid-cols-2 grid-rows-2 gap-2">
                                 <x-text-input id="quantiteArticle"
                                     class="col-span-2 {{ $errors->has('quantiteArticle') ? 'border-red-500 border-[2px]' : '' }}"

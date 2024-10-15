@@ -29,10 +29,10 @@ if (!function_exists('positionClasses')) {
     {{ $slot }}
 
     <!-- Tooltip content -->
-    <div class="absolute bg-gray-200 text-xs rounded py-5 px-6 shadow-lg
+    <div class="absolute bg-hoverBeige text-xs rounded-md p-2 shadow-lg sm:w-[100px] md:w-[150px] w-[250px]
     invisible opacity-0 group-hover:visible group-hover:opacity-100 transition duration-200 ease-in-out
     {{ positionClasses($position) }}">
-        {{ $text }}
+        {!! $text !!}
     </div>
 
 
