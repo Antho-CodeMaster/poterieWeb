@@ -57,7 +57,7 @@
     </section>
 
     {{-- Section En vedette --}}
-    <section class="mt-[32px]">
+    <section class="m-collection">
         <h2 class="titre2 mx-[16px]">En vedette</h2>
         <div class="bg-beige flex items-center justify-between realtive">
 
@@ -73,7 +73,8 @@
                 {{-- Affiche seulement les articles visibles, en stock et en vedette seulement --}}
                 @foreach ($articles as $article)
                     @if ($article->etat->etat == 'Visible client' && $article->quantite_disponible > 0 && $article->is_en_vedette == 1)
-                        <div class="w-[300px] m-[16px] flex-shrink-0 overflow-hidden whitespace-nowrap">
+                        {{-- Div de l'article --}}
+                        <div class="w-[300px] m-article flex-shrink-0 overflow-hidden whitespace-nowrap">
                             <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
                                 class="shadow-md rounded-[16px] cursor-pointer w-full h-[300px] object-cover">
                             <div class="flex justify-between items-center my-[10px]">
@@ -126,7 +127,7 @@
     </section>
 
     {{-- Section Tous les articles --}}
-    <section class="mt-[32px]" x-data='{openDeleteArticle: false}'>
+    <section class="m-collection" x-data='{openDeleteArticle: false}'>
         <div class="flex justify-between items-end my-[8px]">
             <div class="flex">
                 <h2 class="titre2 ml-[16px] mr-[2px]">Tous les articles</h2>
