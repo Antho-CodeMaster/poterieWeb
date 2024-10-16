@@ -14,19 +14,16 @@ Route::middleware(EnsureUserIsModerateur::class)->group(function () {
     Route::get('/admin/utilisateurs', [UserController::class, 'index'])
         ->name('admin-utilisateurs');
 
-    Route::get('/admin/utilisateurs-v2', [UserController::class, 'indexv2'])
-        ->name('admin-utilisateurs-v2');
-
     Route::post('/admin/delete', [UserController::class, 'destroy'])
         ->name('admin-user-delete');
 
     Route::post('/admin/avertir', [UserController::class, 'avertir'])
         ->name('admin-user-avertir');
 
-    Route::get('/admin/promote', [UserController::class, 'promote'])
+    Route::post('/admin/promote', [UserController::class, 'promote'])
         ->name('admin-user-promote');
 
-    Route::get('/admin/demote', [UserController::class, 'demote'])
+    Route::post('/admin/demote', [UserController::class, 'demote'])
         ->name('admin-user-demote');
 
     Route::get('/admin/articles', function () {
