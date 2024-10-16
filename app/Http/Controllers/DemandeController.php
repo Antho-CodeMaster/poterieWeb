@@ -7,6 +7,9 @@ use App\Models\Photo_oeuvre;
 use App\Models\Photo_identite;
 use App\Models\Notification;
 use App\Models\Artiste;
+use App\Models\User;
+use App\Notifications\Acceptation_demande;
+use App\Notifications\Refus_demande;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -177,6 +180,9 @@ class DemandeController extends Controller
 
         /* Aussi notifier par courriel. */
 
+        $usr = User::find($dem->id_user);
+        $usr->notify(new Acceptation_demande($dem->id_user));
+
         return redirect()->to(route('admin-demandes'));
     }
 
@@ -210,7 +216,8 @@ class DemandeController extends Controller
         ]);
         $notif->save();
 
-        /* Aussi notifier par courriel. */
+        $usr = User::find($dem->id_user);
+        $usr->notify(new Refus_demande(request()->input('reason')));
 
         return redirect()->to(route('admin-demandes'));
     }
