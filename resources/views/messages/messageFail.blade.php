@@ -7,10 +7,9 @@
 
     <div class="w-[85%]">
         <div class="flex items-baseline">
-            <p class="font-bold text-[26px]">Erreur :</p>
-            <p class="font-semibold text-[22px] ml-1">{{ $titreError }}</p>
+            <p class="font-bold text-[26px]">{{ $titre }}</p>
         </div>
 
-        <p class="text-[15px]">{{ $error }}</p>
+        <p class="text-[15px]">{{ $message }}</p>
     </div>
 </div>
