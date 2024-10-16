@@ -12,11 +12,9 @@ import '../../public/js/modifArticle.js';
 
 import './panier';
 
-
-import Alpine from 'alpinejs';
-
-window.Alpine = Alpine;
-
-Alpine.start();
+// Cause des problèmes de code Alpine qui run deux fois
+//import Alpine from 'alpinejs';
+//window.Alpine = Alpine;
+//Alpine.start();
 
 

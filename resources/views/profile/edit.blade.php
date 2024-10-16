@@ -21,16 +21,7 @@
                 </div>
             </div>
 
-            <!-- Update profile picture -->
-            @if ($artiste)
-                <div class="lg:col-span-1 p-4 sm:p-8 bg-beige hover:shadow-lg rounded-lg">
-                    <div class="max-w-xl">
-                        @include('profile.partials.update-picture-form')
-                    </div>
-                </div>
-            @else
-                <span class="col-span-1 p-4 sm:p-8"></span>
-            @endif
+            <span class="col-span-1 p-4 sm:p-8"></span>
 
             <!-- Password Update -->
             <div class="col-span-2 p-4 sm:p-8 bg-beige hover:shadow-lg rounded-lg">

@@ -1,7 +1,7 @@
 //Settings to show the artist's profile picture
 document.addEventListener('DOMContentLoaded', function() {
     // Check if we're on the profile edit page
-    if (window.location.pathname === '/profile/edit') {
+    if (document.baseURI.includes("profile/personnaliser")) {
         var imageInput = document.getElementById('image-input');
         var imagePreview = document.getElementById('image-preview');
 
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     //Check if the path contains 'profile'
-    if (/profile/.test(window.location.pathname)) {
+    if (document.baseURI.includes("profile")) {
         document.getElementById('hamburger').addEventListener('click', function() {
             let menu = document.getElementById('menu-gauche');
             menu.classList.toggle('hidden'); // Just toggle visibility

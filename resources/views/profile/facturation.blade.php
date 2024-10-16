@@ -1,8 +1,8 @@
 <x-app-layout>
     <div class="grid grid-cols-1 lg:grid-cols-6">
         <!-- Left Menu -->
-        <div class="lg:col-span-1">
-            @include('profile.partials.menu-gauche')
+        <div class="max-w-xl">
+            @include('components.mobile-left-menu')
         </div>
 
         <!-- Main Content -->

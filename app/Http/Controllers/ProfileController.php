@@ -26,7 +26,7 @@ class ProfileController extends Controller
         ]);
     }
 
-        /**
+    /**
      * Display the user's facturation form.
      */
     public function facturation(Request $request): View
@@ -34,6 +34,28 @@ class ProfileController extends Controller
         return view('profile.facturation', [
             'user' => $request->user(),
         ]);
+    }
+
+
+    /**
+     * Display the user's facturation form.
+     */
+    public function personnaliser(Request $request): View
+    {
+        $artiste = Artiste::where('id_user', $request->user()->id)->first();
+
+        if($artiste) {
+            return view('profile.personnaliser', [
+                'user' => $request->user(),
+                'artiste' => $artiste,
+            ]);
+        } else {
+            return view('profile.edit', [
+                'user' => $request->user(),
+                'artiste' => $artiste,
+            ]);
+        }
+
     }
 
     /**

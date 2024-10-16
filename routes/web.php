@@ -41,6 +41,7 @@ Route::get('/buttons', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::get('/profile/facturation', [ProfileController::class, 'facturation'])->name('profile.facturation');
+    Route::get('/profile/personnaliser', [ProfileController::class, 'personnaliser'])->name('profile.personnaliser');
     Route::post('/profile/edit', [ProfileController::class, 'updateBlur'])->name('profile.updateBlur');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
