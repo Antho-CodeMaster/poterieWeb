@@ -5,7 +5,7 @@
         {{-- Gestion des borders en fonctions des erreurs --}}
 
 
-        <div class=" w-[84%] p-3 grow overflow-auto">
+        <div class=" w-[84%] p-3 h-full flex flex-col">
             <h1 class="titre2 p-1 border-b-2 border-darkGrey mb-2">Modification d'un article</h1>
 
             <div class="grid grid-cols-7 gap-6 grow overflow-auto">
@@ -20,9 +20,9 @@
                             <h2 class="text-[120%]">Téléversez les photos de l'article</h2>
                             <x-tooltip
                                 text="<ul class='list-disc ml-5'>
-                                <li>La quantité de l'article en vente ne pourra pas être de 0.</li>
-                                <li>Une quantité de 1 ne signifie pas qu'il sera considérer en tant qu'article unique. Pour cela il faut ajuster le type de pièce.</li>
-                              </ul>"
+                                        <li>Les fichiers téléversés ne peuvent être que de format JPEG, JPG ou PNG</li>
+                                        <li>La photo ne doit pas avoir une résolution .</li>
+                                      </ul>"
                                 position="bottom" id="1">
                                 <p class="text-[200%]">&#9432;</p>
                             </x-tooltip>
@@ -31,7 +31,9 @@
                             @for ($i = 1; $i <= 5; $i++)
                                 {{-- Définir une classe pour la bordure en fonction des erreurs --}}
                                 @php
-                                    $erreurPhoto = $errors->has("photo{$i}") ? 'border-red-500' : 'border-darkGrey';
+                                    $erreurPhoto = $errors->has("photo{$i}")
+                                        ? 'border-jauneWarning'
+                                        : 'border-darkGrey';
                                 @endphp
 
                                 {{-- Input de fichier --}}
@@ -63,7 +65,7 @@
                                         <svg id="svg{{ $i }}" class="w-full h-full" viewBox="0 0 293 276"
                                             fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <rect x="2.5" y="3.33682" width="288" height="269.43" rx="13.5"
-                                                stroke="{{ $errors->has("photo{$i}") ? '#FF0000' : '#444444' }}"
+                                                stroke="{{ $errors->has("photo{$i}") ? '#E6AF00' : '#444444' }}"
                                                 stroke-width="5" />
                                             <g clip-path="url(#clip0_4003_30)">
                                                 <path
@@ -83,13 +85,13 @@
                         <div class="grid grid-cols-4 gap-2">
                             <!-- Nom Article -->
                             <x-text-input id="nomArticle"
-                                class="col-span-2 {{ $errors->has('nomArticle') ? 'border-red-500 border-[2px]' : '' }}"
+                                class="col-span-2 {{ $errors->has('nomArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
                                 type="text" name="nomArticle" placeholder="Nom de l'article"
                                 value="{{ $article->nom }}" />
 
                             <!-- Prix Article -->
                             <x-text-input id="prixArticle"
-                                class="col-span-2 {{ $errors->has('prixArticle') ? 'border-red-500 border-[2px]' : '' }}"
+                                class="col-span-2 {{ $errors->has('prixArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
                                 type="number" name="prixArticle" required step="0.01" min="0"
                                 placeholder="Prix ($)" value="{{ $article->prix }}" />
                         </div>
@@ -97,11 +99,11 @@
                         <div class="grid grid-cols-4 gap-2">
                             <!-- Description de l'article -->
                             <textarea id="descriptionArticle" name="descriptionArticle"
-                                class="resize-none col-span-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 {{ $errors->has('descriptionArticle') ? 'border-red-500 border-[2px]' : '' }}"
+                                class="resize-none col-span-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 {{ $errors->has('descriptionArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
                                 placeholder="Description">{{ $article->description }}</textarea>
 
                             <textarea id="motClesArticle" name="motClesArticle" rows="2"
-                                class="resize-none col-span-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 {{ $errors->has('motClesArticle') ? 'border-red-500 border-[2px]' : '' }}"
+                                class="resize-none col-span-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 {{ $errors->has('motClesArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
                                 placeholder="#Funky#MeilleurArticleEver#Automne#Aussiété">{{ $article->motCles->isNotEmpty() ? '#' . $article->motCles->pluck('mot_cle')->implode('#') : '' }}</textarea>
                         </div>
                     </div>
@@ -123,25 +125,25 @@
 
                                 {{-- Profondeur --}}
                                 <x-text-input id="profondeurArticle"
-                                    class="col-span-1 {{ $errors->has('profondeurArticle') ? 'border-red-500 border-[2px]' : '' }}"
+                                    class="col-span-1 {{ $errors->has('profondeurArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
                                     type="number" name="profondeurArticle" placeholder="Profondeur (cm)" min="0"
                                     required value="{{ $article->profondeur }}" step="0.01" />
 
                                 {{-- Hauteur --}}
                                 <x-text-input id="hauteurArticle"
-                                    class="col-span-1 {{ $errors->has('hauteurArticle') ? 'border-red-500 border-[2px]' : '' }}"
+                                    class="col-span-1 {{ $errors->has('hauteurArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
                                     type="number" name="hauteurArticle" placeholder="Hauteur (cm)" min="0"
                                     required value="{{ $article->hauteur }}" step="0.01" />
 
                                 {{-- Largeur --}}
                                 <x-text-input id="largeurArticle"
-                                    class="col-span-1 {{ $errors->has('largeurArticle') ? 'border-red-500 border-[2px]' : '' }}"
+                                    class="col-span-1 {{ $errors->has('largeurArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
                                     type="number" name="largeurArticle" placeholder="Largeur (cm)" min="0"
                                     required value="{{ $article->largeur }}" step="0.01" />
 
                                 {{-- Poids --}}
                                 <x-text-input id="poidsArticle"
-                                    class="col-span-1 {{ $errors->has('poidsArticle') ? 'border-red-500 border-[2px]' : '' }}"
+                                    class="col-span-1 {{ $errors->has('poidsArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
                                     type="number" name="poidsArticle" placeholder="Poids (g)" min="0"
                                     required value="{{ $article->poids }}" step="0.01" />
                             </div>
@@ -164,7 +166,7 @@
 
                                 <!-- IsAlimentaire -->
                                 <select id="typePiece" name="typePiece" required
-                                    class="col-span-2 row-span-1 {{ $errors->has('typePiece') ? 'border-red-500 border-[2px]' : '' }} border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                    class="col-span-2 row-span-1 {{ $errors->has('typePiece') ? 'border-jauneWarning border-[2px]' : '' }} border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                                     <option value="" disabled selected hidden>Sélectionner un type d'usage
                                     </option>
                                     <option value="1" {{ $article->typePiece == 1 ? 'selected' : '' }}>
@@ -175,7 +177,7 @@
 
                                 {{-- IsUnique --}}
                                 <select id="pieceUnique" name="pieceUnique"
-                                    class="col-span-2 {{ $errors->has('pieceUnique') ? 'border-red-500 border-[2px]' : '' }} border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    class="col-span-2 {{ $errors->has('pieceUnique') ? 'border-jauneWarning border-[2px]' : '' }} border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                     required>
                                     <option value="" disabled selected hidden>Sélectionner un type de pièce
                                     </option>
@@ -252,7 +254,7 @@
                             </div>
                             <div class="grid grid-cols-2 grid-rows-2 gap-2">
                                 <x-text-input id="quantiteArticle"
-                                    class="col-span-2 {{ $errors->has('quantiteArticle') ? 'border-red-500 border-[2px]' : '' }}"
+                                    class="col-span-2 {{ $errors->has('quantiteArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
                                     type="number" name="quantiteArticle" placeholder="Quantité en vente"
                                     step="1" min="1" required
                                     value="{{ $article->quantite_disponible }}" />
@@ -270,137 +272,123 @@
                     </button>
                 </form>
 
-                {{-- Message de succès ou d'erreur en BD --}}
-                @if (Session::all())
+                {{-- Affichage des erreurs/succes/fails --}}
+                <div class="col-span-2 mr-1">
+
                     {{-- Succes de l'ajout d'un article --}}
                     @if (Session::has('succesArticle'))
-                        <div class="col-span-2 h-fit mt-2" role="alert">
-                            <div
-                                class="bg-green-500 border-t border-[2px] border-green-900 text-white font-bold rounded-t px-4 py-2">
-                                Succes</div>
-                            <div class="rounded-b border-[2px] border-green-900 bg-green-100 px-4 py-2 text-green-700">
-                                <p>{{ Session::get('succesArticle') }}</p>
-                            </div>
-                        </div>
+                        @include('messages.messageSucces', [
+                            'message' => Session::get('succesArticle'),
+                            'titre' => 'Modification',
+                        ])
                     @endif
 
                     {{-- Erreur de l'ajout des mots clés --}}
                     @if (Session::has('erreurMotcles'))
-                        <div class="col-span-2 h-fit mt-2" role="alert">
-                            <div
-                                class="bg-[#F44336] border-t border-[2px] border-[#B71C1C] text-white font-bold rounded-t px-4 py-2">
-                                Erreur</div>
-                            <div class="rounded-b border-[2px] border-[#B71C1C] bg-[#FFCDD2] px-4 py-2 text-[#D32F2F]">
-                                <p>{{ Session::get('erreurMotcles') }}</p>
-                            </div>
-                        </div>
+                        @include('messages.messageFail', [
+                            'message' => Session::get('erreurMotcles'),
+                            'titre' => 'Mots Clés',
+                        ])
                     @endif
 
-                    {{-- Erreur de l'ajout des photo --}}
+                    {{-- Erreur de l'ajout des photos --}}
                     @if (Session::has('erreurPhotos'))
-                        <div class="col-span-2 h-fit mt-2" role="alert">
-                            <div
-                                class="bg-[#F44336] border-t border-[2px] border-[#B71C1C] text-white font-bold rounded-t px-4 py-2">
-                                Erreur</div>
-                            <div class="rounded-b border-[2px] border-[#B71C1C] bg-[#FFCDD2] px-4 py-2 text-[#D32F2F]">
-                                <p>{{ Session::get('erreurPhotos') }}</p>
-                            </div>
-                        </div>
+                        @include('messages.messageFail', [
+                            'message' => Session::get('erreurPhotos'),
+                            'titre' => 'Photos',
+                        ])
                     @endif
-                @endif
 
-                {{-- Affichage des erreurs regroupées par section --}}
-                @if ($errors->any())
-                    <div class="col-span-2 p-3 mt-2 rounded-md bg-[#ffe5e9] border-[2px] border-rouge">
-                        <ul class="list-disc ml-5">
+                    {{-- Erreur de photos --}}
+                    @for ($i = 1; $i <= 5; $i++)
+                        @if ($errors->has("photo{$i}"))
+                            @include('messages.messageError', [
+                                'message' => $errors->first("photo{$i}"),
+                                'titre' => "Photo $i",
+                            ])
+                        @endif
+                    @endfor
 
-                            {{-- Erreurs liées aux photos --}}
-                            @if (
-                                $errors->has('photo1') ||
-                                    $errors->has('photo2') ||
-                                    $errors->has('photo3') ||
-                                    $errors->has('photo4') ||
-                                    $errors->has('photo5'))
-                                <li class="font-bold text-rouge">Photos de l'article</li>
-                                <ul class="list-disc ml-5">
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        @if ($errors->has("photo{$i}"))
-                                            <li class="text-rouge">{{ $errors->first("photo{$i}") }}</li>
-                                        @endif
-                                    @endfor
-                                </ul>
-                            @endif
+                    {{-- Erreur dans le nom --}}
+                    @if ($errors->has('nomArticle'))
+                        @include('messages.messageError', [
+                            'message' => $errors->first('nomArticle'),
+                            'titre' => 'Nom',
+                        ])
+                    @endif
 
-                            {{-- Erreurs liées à l'identifiant de l'article --}}
-                            @if (
-                                $errors->has('nomArticle') ||
-                                    $errors->has('prixArticle') ||
-                                    $errors->has('quantiteArticle') ||
-                                    $errors->has('descriptionArticle') ||
-                                    $errors->has('motClesArticle'))
-                                <li class="font-bold text-rouge">Identifiant de l'article</li>
-                                <ul class="list-disc ml-5">
-                                    @if ($errors->has('nomArticle'))
-                                        <li class="text-rouge">{{ $errors->first('nomArticle') }}</li>
-                                    @endif
-                                    @if ($errors->has('prixArticle'))
-                                        <li class="text-rouge">{{ $errors->first('prixArticle') }}</li>
-                                    @endif
-                                    @if ($errors->has('descriptionArticle'))
-                                        <li class="text-rouge">{{ $errors->first('descriptionArticle') }}</li>
-                                    @endif
-                                    @if ($errors->has('motClesArticle'))
-                                        <li class="text-rouge">{{ $errors->first('motClesArticle') }}</li>
-                                    @endif
-                                </ul>
-                            @endif
+                    {{-- Erreur dans le prix --}}
+                    @if ($errors->has('prixArticle'))
+                        @include('messages.messageError', [
+                            'message' => $errors->first('prixArticle'),
+                            'titre' => 'Prix',
+                        ])
+                    @endif
 
-                            {{-- Erreurs liées aux dimensions et au poids --}}
-                            @if (
-                                $errors->has('hauteurArticle') ||
-                                    $errors->has('largeurArticle') ||
-                                    $errors->has('profondeurArticle') ||
-                                    $errors->has('poidsArticle'))
-                                <li class="font-bold text-rouge">Dimensions et poids de l'article</li>
-                                <ul class="list-disc ml-5">
-                                    @if ($errors->has('hauteurArticle'))
-                                        <li class="text-rouge">{{ $errors->first('hauteurArticle') }}</li>
-                                    @endif
-                                    @if ($errors->has('largeurArticle'))
-                                        <li class="text-rouge">{{ $errors->first('largeurArticle') }}</li>
-                                    @endif
-                                    @if ($errors->has('profondeurArticle'))
-                                        <li class="text-rouge">{{ $errors->first('profondeurArticle') }}</li>
-                                    @endif
-                                    @if ($errors->has('poidsArticle'))
-                                        <li class="text-rouge">{{ $errors->first('poidsArticle') }}</li>
-                                    @endif
-                                </ul>
-                            @endif
+                    @if ($errors->has('descriptionArticle'))
+                        {{-- Erreur dans la description --}}
+                        @include('messages.messageError', [
+                            'message' => $errors->first('descriptionArticle'),
+                            'titre' => 'Description',
+                        ])
+                    @endif
 
-                            {{-- Erreurs liées au type de pièce et usage alimentaire --}}
-                            @if ($errors->has('typePiece') || $errors->has('pieceUnique'))
-                                <li class="font-bold text-rouge">Type de pièce et usage alimentaire</li>
-                                <ul class="list-disc ml-5">
-                                    @if ($errors->has('typePiece'))
-                                        <li class="text-rouge">{{ $errors->first('typePiece') }}</li>
-                                    @endif
-                                    @if ($errors->has('pieceUnique'))
-                                        <li class="text-rouge">{{ $errors->first('pieceUnique') }}</li>
-                                    @endif
-                                </ul>
-                            @endif
+                    {{-- Erreur dans les mots clés --}}
+                    @if ($errors->has('motClesArticle'))
+                        @include('messages.messageError', [
+                            'message' => $errors->first('motClesArticle'),
+                            'titre' => 'Mots clés',
+                        ])
+                    @endif
 
-                            @if ($errors->has('quantiteArticle'))
-                                <li class="font-bold text-rouge">Quantité d'article mise en vente</li>
-                                <ul class="list-disc ml-5">
-                                    <li class="text-rouge">{{ $errors->first('quantiteArticle') }}</li>
-                                </ul>
-                            @endif
+                    {{-- Erreur dans la hauteur --}}
+                    @if ($errors->has('hauteurArticle'))
+                        @include('messages.messageError', [
+                            'message' => $errors->first('hauteurArticle'),
+                            'titre' => 'Hauteur',
+                        ])
+                    @endif
 
-                        </ul>
-                    </div>
-                @endif
+                    {{-- Erreur dans la largeur --}}
+                    @if ($errors->has('largeurArticle'))
+                        @include('messages.messageError', [
+                            'message' => $errors->first('largeurArticle'),
+                            'titre' => 'Largeur',
+                        ])
+                    @endif
+
+                    {{-- Erreur dans la profondeur --}}
+                    @if ($errors->has('profondeurArticle'))
+                        @include('messages.messageError', [
+                            'message' => $errors->first('profondeurArticle'),
+                            'titre' => 'Profondeur',
+                        ])
+                    @endif
+
+                    {{-- Erreur dans la largeur --}}
+                    @if ($errors->has('poidsArticle'))
+                        @include('messages.messageError', [
+                            'message' => $errors->first('poidsArticle'),
+                            'titre' => 'Poids',
+                        ])
+                    @endif
+
+                    {{-- Erreur dans la largeur --}}
+                    @if ($errors->has('typePiece'))
+                        @include('messages.messageError', [
+                            'message' => $errors->first('typePiece'),
+                            'titre' => 'Type d\'usage',
+                        ])
+                    @endif
+
+                    {{-- Erreur dans la largeur --}}
+                    @if ($errors->has('pieceUnique'))
+                        @include('messages.messageError', [
+                            'message' => $errors->first('pieceUnique'),
+                            'titre' => 'Type de pièce',
+                        ])
+                    @endif
+                </div>
             </div>
         </div>
 
