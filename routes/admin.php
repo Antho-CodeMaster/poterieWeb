@@ -37,6 +37,9 @@ Route::middleware(EnsureUserIsModerateur::class)->group(function () {
     Route::get('/admin/demandes', [DemandeController::class, 'index'])
         ->name('admin-demandes');
 
+    Route::get('/admin/demandes-traitees', [DemandeController::class, 'index_traitees'])
+        ->name('admin-demandes-traitees');
+
     Route::post('/admin/demandes/accept', [DemandeController::class, 'accept'])
         ->name('demande-accept');
 

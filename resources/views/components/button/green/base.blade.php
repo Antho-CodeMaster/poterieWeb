@@ -4,7 +4,7 @@
     <div class="h-full m-auto flex gap-2">
         {{ $slot }}
         @if ($p != '')
-            <p class="mr-1 my-auto text-[100%] text-[#C1EFD7]">{{ $p }}</p>
+            <p class="mr-1 my-auto text-[100%] text-[#C1EFD7] font-medium">{{ $p }}</p>
         @endif
     </div>
 </button>

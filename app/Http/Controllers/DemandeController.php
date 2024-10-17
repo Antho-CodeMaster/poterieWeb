@@ -23,7 +23,18 @@ class DemandeController extends Controller
     public function index()
     {
         return view('admin/demandes', [
-            'demandes' => Demande::where('id_etat', 1)->with('photos_oeuvres')->with('photos_identite')->get(),
+            'demandes' => Demande::where('id_etat', 1)->with(['photos_oeuvres','photos_identite'])->orderBy('date', 'asc')->get(),
+            'images' => Storage::disk('public')
+        ]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function index_traitees()
+    {
+        return view('admin/demandes-traitees', [
+            'demandes' => Demande::where('id_etat','!=', 1)->with(['photos_oeuvres','photos_identite'])->orderBy('updated_at', 'desc')->get(),
             'images' => Storage::disk('public')
         ]);
     }

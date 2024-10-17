@@ -35,6 +35,12 @@
             </div>
         </div>
         <div class="my-2 pl-2 border border-black">
+            <h1>yellow</h1>
+            <div class="flex">
+                <x-button.yellow.exclamation>exclamation</x-button.yellow.exclamation>
+            </div>
+        </div>
+        <div class="my-2 pl-2 border border-black">
             <h1>border</h1>
             <div class="flex">
                 <x-button.border.filter>filter</x-button.border.filter>
@@ -67,6 +73,7 @@
                 <x-button.green.card></x-button.green.card>
                 <x-button.green.pay></x-button.green.pay>
                 <x-button.green.plus></x-button.green.plus>
+                <x-button.yellow.exclamation></x-button.yellow.exclamation>
                 <x-button.border.filter></x-button.border.filter>
                 <x-button.border.cart></x-button.border.cart>
                 <x-button.none.filter></x-button.none.filter>
@@ -78,6 +85,7 @@
                 <x-button.red.empty>empty</x-button.red.empty>
                 <x-button.blue.empty>empty</x-button.blue.empty>
                 <x-button.green.empty>empty</x-button.green.empty>
+                <x-button.yellow.empty>empty</x-button.yellow.empty>
                 <x-button.border.empty>empty</x-button.border.empty>
                 <x-button.none.empty>empty</x-button.none.empty>
             </div>
@@ -88,6 +96,7 @@
                 <x-button.red.empty></x-button.red.empty>
                 <x-button.blue.empty></x-button.blue.empty>
                 <x-button.green.empty></x-button.green.empty>
+                <x-button.yellow.empty></x-button.yellow.empty>
                 <x-button.border.empty></x-button.border.empty>
                 <x-button.none.empty></x-button.none.empty>
             </div>

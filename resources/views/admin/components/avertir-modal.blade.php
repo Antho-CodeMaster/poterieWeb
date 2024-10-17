@@ -15,7 +15,7 @@
 
                 <p class="text-darkGrey text-xs w-full text-center"><span x-text="name">L'utilisateur</span> sera
                     immédiatement notifié de l'avertissement.</p>
-                <x-button.red.exclamation class="mx-auto mt-4">Avertir</x-button.red.exclamation>
+                <x-button.yellow.exclamation class="mx-auto mt-4">Avertir</x-button.yellow.exclamation>
             </form>
         </div>
     </div>
