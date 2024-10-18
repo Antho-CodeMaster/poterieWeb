@@ -11,7 +11,7 @@
 
         <!-- Barre de recherche -->
         <div class="w-[500px]">
-            <form action="{{ route('recherche.getSearch', ['search'])}}" method="GET" class="w-full h-[38px] py-auto"> {{-- Il faut remplir l'action --}}
+            <form action="{{ route('recherche.getSearch', ['search'])}}" method="GET" class="w-full h-[38px] py-auto">
                 <input class="w-full rounded h-full" type="text" placeholder="Search.." name="search">
                 <button type="submit"><i class="fa fa-search"></i></button>
             </form>

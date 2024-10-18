@@ -1,9 +1,9 @@
 <x-app-layout>
     <div class="flex content-height">
-        @include('components.articleSettings-sideMenu')
+        @include('articleSettings.articleSettings-sideMenu')
 
-        <div class=" w-[84%] p-3 h-full flex flex-col">
-            <h1 class="titre2 p-1 border-b-2 border-darkGrey mb-2">Tous mes articles</h1>
+        <div class="w-[84%] p-sectionX pb-2 h-full flex flex-col">
+            <h1 class="titre2-dark p-sectionY border-b-2 border-darkGrey">Tous mes articles</h1>
 
             {{-- Filtres de recherche --}}
             <form action="" method="post" class="flex justify-between">

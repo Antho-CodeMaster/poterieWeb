@@ -103,7 +103,7 @@ export default {
 
                 /* Classe pour les textes */
                 //Titre H1
-                '.titreH1-light': {
+                '.titre1-light': {
                     'line-height': '4rem',
                     'letter-spacing': '0.05rem',
                     'font-weight': '700',
@@ -111,10 +111,9 @@ export default {
                     'color': '#f4f0ec',
                     'font-family': 'Newsreader',
                     'margin-top': "4px",
-                    'margin-bottom': "4px",
-                    'padding': '0px'
+                    'margin-bottom': "8px",
                 },
-                '.titreH1-dark': {
+                '.titre1-dark': {
                     'line-height': '4rem',
                     'letter-spacing': '0.05rem',
                     'font-weight': '700',
@@ -122,23 +121,19 @@ export default {
                     'color': '#444444',
                     'font-family': 'Newsreader',
                     'margin-top': "4px",
-                    'margin-bottom': "4px",
-                    'padding': '0px'
+                    'margin-bottom': "8px",
                 },
 
                 //Titre H2
-                '.titreH2-light': {
+                '.titre2-light': {
                     'line-height': '2rem',
                     'letter-spacing': '0.05rem',
                     'font-weight': '500',
                     'font-size': 'calc(26px + 1vw)',
                     'color': '#f4f0ec',
                     'font-family': 'Newsreader',
-                    'margin-top': "4px",
-                    'margin-bottom': "4px",
-                    'padding': '0px'
                 },
-                '.titreH2-dark': {
+                '.titre2-dark': {
                     'line-height': '2rem',
                     'letter-spacing': '0.05rem',
                     'font-weight': '500',
@@ -146,8 +141,7 @@ export default {
                     'color': '#444444',
                     'font-family': 'Newsreader',
                     'margin-top': "4px",
-                    'margin-bottom': "4px",
-                    'padding': '0px'
+                    'margin-bottom': "8px",
                 },
 
                 //Titre text Grand
@@ -184,26 +178,6 @@ export default {
                     'color': '#444444',
                     'font-family': 'Inter',
                     'margin': '0px',
-                    'padding': '0px'
-                },
-
-                //Titre section
-                '.titreSection-light': {
-                    'line-height': '1.5rem',
-                    'font-size': 'calc(20px + 1vw)',
-                    'color': '#f4f0ec',
-                    'font-family': 'Inter',
-                    'margin-top': "2px",
-                    'margin-bottom': "2px",
-                    'padding': '0px'
-                },
-                '.titreSection-dark': {
-                    'line-height': '1.5rem',
-                    'font-size': 'calc(20px + 1vw)',
-                    'color': '#444444',
-                    'font-family': 'Inter',
-                    'margin-top': "2px",
-                    'margin-bottom': "2px",
                     'padding': '0px'
                 },
 
@@ -276,52 +250,87 @@ export default {
 
                 //Text de navigation SideMenu ou navBar
                 '.textNavigation-light': {
-                    'line-height': '1rem',
-                    'font-size': 'calc(20px + 0.3vw)',
+                    'line-height': '1.5rem',
+                    'font-size': 'calc(16px + 0.3vw)',
                     'color': '#f4f0ec',
                     'font-weight': '500',
                     'font-family': 'Inter',
-                    'margin-top': "2px",
-                    'margin-bottom': "2px",
-                    'padding': '2px'
                 },
                 '.textNavigation-dark': {
-                    'line-height': '1rem',
-                    'font-size': 'calc(20px + 0.3vw)',
+                    'line-height': '1.5rem',
+                    'font-size': 'calc(16px + 0.3vw)',
                     'color': '#444444',
                     'font-weight': '500',
                     'font-family': 'Inter',
-                    'margin-top': "2px",
-                    'margin-bottom': "2px",
-                    'padding': '2px'
                 },
 
                 /* Margin */
-                // Margin pour les sections
+                // Sections
                 '.m-section': {
                     'margin': 'calc(8px + 0.2vw) calc(12px + 0.3vw)',
                 },
 
+                '.p-sectionBottom': {
+                    'padding-bottom': 'calc(3px + 0.5vw)',
+                },
+
+                '.p-sectionX': {
+                    'padding-right': 'calc(3px + 0.5vw) ',
+                    'padding-left': 'calc(3px + 0.5vw) ',
+                },
+
+                '.p-sectionY': {
+                    'padding-top': 'calc(3px + 0.5vw)',
+                    'padding-bottom': 'calc(3px + 0.5vw)',
+                },
+
+
+                // Articles
                 '.m-article': {
                     'margin': 'calc(12px + 0.2vw) calc(6px + 0.9vw)',
                 },
 
+                // Collections
                 '.m-collection': {
                     'margin': 'calc(8px + 1.5vw) 0px',
                 },
 
-                //a finir
-                '.m-input': {
-                    'margin': 'calc(8px + 1.5vw) 0px',
+                // Forms
+                '.m-sectionFormY': {
+                    'margin-bottom': 'calc(6px + 1vw)',
                 },
 
-                '.m-searchBar': {
-                    'margin': 'calc(8px + 1.5vw) 0px',
+                '.m-sectionFormX': {
+                    'margin-right': 'calc(6px + 1vw)',
                 },
 
-                '.m-iconeNav': {
-                    'margin': 'calc(8px + 1.5vw) 0px',
+                '.gap-input': {
+                    'gap': 'calc(2px + 0.5vw)',
                 },
+
+                // SideBar
+                '.m-sidebar': {
+                    'margin': 'calc(4px + 1.5vw) 0px',
+                },
+
+                '.p-sidebar': {
+                    'padding': 'calc(4px + 0.5vw) 0.5rem',
+                },
+
+                '.p-sidebar-MD': {
+                    'padding': 'calc(7px + 0.45vw) 0.5rem',
+                },
+
+                '.p-sidebarNav': {
+                    'padding': 'calc(2px + 0.5vw) 0.5rem',
+                },
+
+                // Autres
+                '.m-submit': {
+                    'margin-top': 'calc(8px + 1vw)',
+                },
+
+                /* Couleurs */
             }
 
             addUtilities(newUtilities)
