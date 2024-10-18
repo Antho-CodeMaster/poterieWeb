@@ -132,6 +132,8 @@ export default {
                     'font-size': 'calc(26px + 1vw)',
                     'color': '#f4f0ec',
                     'font-family': 'Newsreader',
+                    'margin-top': "4px",
+                    'margin-bottom': "8px",
                 },
                 '.titre2-dark': {
                     'line-height': '2rem',
@@ -150,16 +152,12 @@ export default {
                     'font-size': 'calc(16px + 0.3vw)',
                     'color': '#f4f0ec',
                     'font-family': 'Inter',
-                    'margin': '0px',
-                    'padding': '0px'
                 },
                 '.textGrand-dark': {
                     'line-height': '1rem',
                     'font-size': 'calc(16px + 0.3vw)',
                     'color': '#444444',
                     'font-family': 'Inter',
-                    'margin': '0px',
-                    'padding': '0px'
                 },
 
 
@@ -183,47 +181,46 @@ export default {
 
                 //Titre article gros
                 '.articleGrand-light': {
-                    'line-height': '1rem',
-                    'font-size': 'calc(16px + 0.3vw)',
+                    'line-height': '1.5rem',
+                    'font-size': 'calc(18px + 0.2vw)',
                     'color': '#f4f0ec',
-                    'font-weight': '500',
+                    'font-weight': '700',
                     'font-family': 'Inter',
-                    'margin-top': "2px",
-                    'margin-bottom': "2px",
-                    'padding': '0px'
+                    'text-overflow': 'ellipsis',
+                    'overflow': 'hidden',
+                    'whitespace': 'nowrap'
                 },
                 '.articleGrand-dark': {
-                    'line-height': '1rem',
-                    'font-size': 'calc(16px + 0.3vw)',
-                    'font-weight': '500',
+                    'line-height': '1.5rem',
+                    'font-size': 'calc(18px + 0.2vw)',
+                    'font-weight': '700',
                     'color': '#444444',
                     'font-family': 'Inter',
-                    'margin-top': "2px",
-                    'margin-bottom': "2px",
-                    'padding': '0px'
+                    'text-overflow': 'ellipsis',
+                    'overflow': 'hidden',
+                    'whitespace': 'nowrap'
                 },
-
 
                 //Titre article petit
                 '.articlePetit-light': {
-                    'line-height': '1rem',
+                    'line-height': '1.5rem',
                     'font-size': 'calc(14px + 0.2vw)',
                     'color': '#f4f0ec',
-                    'font-weight': '500',
+                    'font-weight': '600',
                     'font-family': 'Inter',
-                    'margin-top': "2px",
-                    'margin-bottom': "2px",
-                    'padding': '0px'
+                    'text-overflow': 'ellipsis',
+                    'overflow': 'hidden',
+                    'whitespace': 'nowrap'
                 },
                 '.articlePetit-dark': {
-                    'line-height': '1rem',
+                    'line-height': '1.5rem',
                     'font-size': 'calc(14px + 0.2vw)',
                     'color': '#444444',
-                    'font-weight': '500',
+                    'font-weight': '600',
                     'font-family': 'Inter',
-                    'margin-top': "2px",
-                    'margin-bottom': "2px",
-                    'padding': '0px'
+                    'text-overflow': 'ellipsis',
+                    'overflow': 'hidden',
+                    'whitespace': 'nowrap'
                 },
 
                 //Text footer
@@ -283,7 +280,6 @@ export default {
                     'padding-top': 'calc(3px + 0.5vw)',
                     'padding-bottom': 'calc(3px + 0.5vw)',
                 },
-
 
                 // Articles
                 '.m-article': {
