@@ -4,7 +4,7 @@
     <section class="flex items-center justify-between p-[16px]" {{-- style="background-color: #{{ $artiste->couleur_banniere }}" --}}>
 
         {{-- Nom d'artiste --}}
-        <div class="flex-1 text-left titre2-dark">
+        <div class="flex-1 text-left titre1-dark">
             {{ $artiste->nom_artiste }}
         </div>
 
@@ -19,7 +19,7 @@
             @foreach ($reseaux as $reseau)
                 <div class="text-right">
                     <a href="{{ $reseau->url }}{{ $reseau->pivot->username }}" class="inline-flex items-center">
-                        <p class=" articleGrand-dark">{{ $reseau->pivot->username }}</p>
+                        <p class=" titre1-dark">{{ $reseau->pivot->username }}</p>
 
                         {{-- Si réseau youtube --}}
                         @if ($reseau->reseau == 'YouTube')
