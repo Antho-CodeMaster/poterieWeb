@@ -1,9 +1,9 @@
 <x-app-layout>
     <div class="flex content-height">
-        @include('components.articleSettings-sideMenu')
+        @include('articleSettings.articleSettings-sideMenu')
 
-        <div class=" w-[84%] p-3 h-full flex flex-col">
-            <h1 class="titre2 p-1 border-b-2 border-darkGrey mb-2">Ajout d'un nouvel article</h1>
+        <div class=" w-[84%] p-sectionX pb-2 h-full flex flex-col">
+            <h1 class="titre2-dark p-sectionY border-b-2 border-darkGrey ">Ajout d'un nouvel article</h1>
 
             <div class="grid grid-cols-7 gap-6 grow overflow-auto">
                 <form method="post" action="{{ route('addArticle') }}" id="addArticleForm" enctype="multipart/form-data"
@@ -11,9 +11,9 @@
                     @csrf
 
                     {{-- Téléversement des photos --}}
-                    <div class="grid gap-2 mb-6">
-                        <div class="flex items-center gap-6">
-                            <h2 class="text-[120%]">Téléversez les photos de l'article</h2>
+                    <div class="grid m-sectionFormY">
+                        <div class="flex items-center justify-between">
+                            <h2 class="textGrand-dark">Téléversez les photos de l'article</h2>
                             <x-tooltip
                                 text="<ul class='list-disc ml-5'>
                                         <li>Les fichiers téléversés ne peuvent être que de format JPEG, JPG ou PNG</li>
@@ -23,7 +23,7 @@
                                 <p class="text-[200%]">&#9432;</p>
                             </x-tooltip>
                         </div>
-                        <div class="flex gap-2">
+                        <div class="flex gap-input">
                             @for ($i = 1; $i <= 5; $i++)
                                 {{-- Image preview --}}
                                 <input type="file" name="photo{{ $i }}" id="photo{{ $i }}"
@@ -52,191 +52,194 @@
                     </div>
 
                     {{-- Identifiant de l'article --}}
-                    <div class="grid gap-2 mb-6">
-                        <h2 class="text-[120%]">Identifiant de l'article</h2>
-                        <div class="grid grid-cols-4 gap-2">
-                            <!-- Nom Article -->
-                            <x-text-input id="nomArticle"
-                                class="col-span-2 {{ $errors->has('nomArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
-                                type="text" name="nomArticle" required placeholder="Nom de l'article"
-                                value="{{ old('nomArticle') }}" />
-
-                            <!-- Prix Article -->
-                            <x-text-input id="prixArticle"
-                                class="col-span-2 {{ $errors->has('prixArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
-                                type="number" name="prixArticle" required step="0.01" min="0"
-                                placeholder="Prix ($)" value="{{ old('prixArticle') }}" />
+                    <div class="m-sectionFormY">
+                        <div class="flex items-center justify-between">
+                            <h2 class="textGrand-dark">Identifiant de l'article</h2>
+                            <x-tooltip
+                                text="<ul class='list-disc ml-5'><li>Le nom et le prix doivent être remplis.
+                                        </li><li>Les mots clés doivent commencés par un '#' et ne contenir aucun espace.
+                                        </li><li>La description n'est pas obligatoire mais fortement recommandée.</li>
+                                      </ul>"
+                                position="left" id="1">
+                                <p class="text-[200%]">&#9432</p>
+                            </x-tooltip>
                         </div>
+                        <div class="grid gap-input">
+                            <div class="grid grid-cols-4 gap-input">
+                                <!-- Nom Article -->
+                                <x-text-input id="nomArticle"
+                                    class="col-span-2 {{ $errors->has('nomArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
+                                    type="text" name="nomArticle" required placeholder="Nom de l'article"
+                                    value="{{ old('nomArticle') }}" />
 
-                        <div class="grid grid-cols-4 gap-2">
-                            <!-- Description de l'article -->
-                            <textarea id="descriptionArticle" name="descriptionArticle"
-                                class="resize-none {{ $errors->has('descriptionArticle') ? 'border-jauneWarning border-[2px]' : '' }} col-span-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                placeholder="Description" required>{{ old('descriptionArticle') }}</textarea>
+                                <!-- Prix Article -->
+                                <x-text-input id="prixArticle"
+                                    class="col-span-2 {{ $errors->has('prixArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
+                                    type="number" name="prixArticle" required step="0.01" min="0"
+                                    placeholder="Prix ($)" value="{{ old('prixArticle') }}" />
+                            </div>
 
-                            <!-- Mots-clés -->
-                            <textarea id="motClesArticle" name="motClesArticle" rows="2"
-                                class="resize-none col-span-2 {{ $errors->has('motClesArticle') ? 'border-jauneWarning border-[2px]' : '' }} border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                placeholder="#Funky#MeilleurArticleEver#Automne#Aussiété">{{ old('motClesArticle') }}</textarea>
+                            <div class="grid grid-cols-4 gap-input">
+                                <!-- Description de l'article -->
+                                <textarea id="descriptionArticle" name="descriptionArticle"
+                                    class="resize-none {{ $errors->has('descriptionArticle') ? 'border-jauneWarning border-[2px]' : '' }} col-span-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    placeholder="Description" required>{{ old('descriptionArticle') }}</textarea>
+
+                                <!-- Mots-clés -->
+                                <textarea id="motClesArticle" name="motClesArticle" rows="2"
+                                    class="resize-none col-span-2 {{ $errors->has('motClesArticle') ? 'border-jauneWarning border-[2px]' : '' }} border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    placeholder="#Funky#MeilleurArticleEver#Automne#Aussiété">{{ old('motClesArticle') }}</textarea>
+                            </div>
                         </div>
                     </div>
 
-
-                    <div class="grid grid-cols-2 gap-4 mb-6">
-
-                        {{-- Dimensions et poids --}}
-                        <div class="grid col-span-1 gap-2">
-                            <div class="flex items-center justify-between">
-                                <h2 class="text-[120%]">Dimensions et poids de l'article</h2>
-                                <x-tooltip
-                                    text="Les dimensions doivent être inscrit en cm et ne peuvent être plus petit que 0,1cm."
-                                    position="left" id="1">
-                                    <p class="text-[200%]">&#9432</p>
-                                </x-tooltip>
-                            </div>
-
-                            <div class="grid grid-cols-2 grid-rows-2 gap-2">
-
-                                {{-- Profondeur --}}
-                                <x-text-input id="profondeurArticle"
-                                    class="col-span-1 {{ $errors->has('profondeurArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
-                                    type="number" name="profondeurArticle" placeholder="Profondeur (cm)" min="0.1"
-                                    required value="{{ old('profondeurArticle') }}" step="0.01" />
-
-                                {{-- Hauteur --}}
-                                <x-text-input id="hauteurArticle"
-                                    class="col-span-1 {{ $errors->has('hauteurArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
-                                    type="number" name="hauteurArticle" placeholder="Hauteur (cm)" min="0.1"
-                                    required value="{{ old('hauteurArticle') }}" step="0.01" />
-
-                                {{-- Largeur --}}
-                                <x-text-input id="largeurArticle"
-                                    class="col-span-1 {{ $errors->has('largeurArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
-                                    type="number" name="largeurArticle" placeholder="Largeur (cm)" min="0.1"
-                                    required value="{{ old('largeurArticle') }}" step="0.01" />
-
-                                {{-- Poids --}}
-                                <x-text-input id="poidsArticle"
-                                    class="col-span-1 {{ $errors->has('poidsArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
-                                    type="number" name="poidsArticle" placeholder="Poids (g)" min="0.1"
-                                    required value="{{ old('poidsArticle') }}" step="0.01" />
-                            </div>
+                    {{-- Dimensions et poids --}}
+                    <div class="m-sectionFormY">
+                        <div class="flex items-center justify-between">
+                            <h2 class="textGrand-dark">Dimensions et poids de l'article</h2>
+                            <x-tooltip
+                                text="Les dimensions doivent être inscrit en cm et ne peuvent être plus petit que 0,1cm."
+                                position="left" id="1">
+                                <p class="text-[200%]">&#9432</p>
+                            </x-tooltip>
                         </div>
 
-                        {{-- Type de pièce et usage alimentaire --}}
-                        <div class="grid col-span-1 gap-2">
-                            <div class="flex items-center justify-between w-full">
-                                <h2 class="text-[120%]">Type de pièce et usage alimentaire</h2>
-                                <x-tooltip
-                                    text="<ul class='list-disc ml-5'><li>Le type d'usage permet de déterminer si l'article peut être utilisé à des fins alimentaires.
+                        <div class="grid grid-cols-2 grid-rows-2 gap-input">
+                            {{-- Profondeur --}}
+                            <x-text-input id="profondeurArticle"
+                                class="col-span-1 {{ $errors->has('profondeurArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
+                                type="number" name="profondeurArticle" placeholder="Profondeur (cm)" min="0.1"
+                                required value="{{ old('profondeurArticle') }}" step="0.01" />
+
+                            {{-- Hauteur --}}
+                            <x-text-input id="hauteurArticle"
+                                class="col-span-1 {{ $errors->has('hauteurArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
+                                type="number" name="hauteurArticle" placeholder="Hauteur (cm)" min="0.1" required
+                                value="{{ old('hauteurArticle') }}" step="0.01" />
+
+                            {{-- Largeur --}}
+                            <x-text-input id="largeurArticle"
+                                class="col-span-1 {{ $errors->has('largeurArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
+                                type="number" name="largeurArticle" placeholder="Largeur (cm)" min="0.1"
+                                required value="{{ old('largeurArticle') }}" step="0.01" />
+
+                            {{-- Poids --}}
+                            <x-text-input id="poidsArticle"
+                                class="col-span-1 {{ $errors->has('poidsArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
+                                type="number" name="poidsArticle" placeholder="Poids (g)" min="0.1" required
+                                value="{{ old('poidsArticle') }}" step="0.01" />
+                        </div>
+                    </div>
+
+                    {{-- Type de pièce et usage alimentaire --}}
+                    <div class="m-sectionFormY">
+                        <div class="flex items-center justify-between w-full">
+                            <h2 class="textGrand-dark">Type de pièce et usage alimentaire</h2>
+                            <x-tooltip
+                                text="<ul class='list-disc ml-5'><li>Le type d'usage permet de déterminer si l'article peut être utilisé à des fins alimentaires.
                                             </li><li>Le type de pièce permet de savoir si l'article est une œuvre d'art ou un article en série.
                                             </li><li>Si la pièce est unique alors la quantité de l'article sera obligatoirement de 1.</li>
                                           </ul>"
-                                    position="left" id="1">
-                                    <p class="text-[200%]">&#9432;</p>
-                                </x-tooltip>
-                            </div>
-                            <div class="grid grid-cols-2 grid-rows-2 gap-2">
-                                <!-- IsAlimentaire -->
-                                <select id="typePiece" name="typePiece" required
-                                    class="col-span-2 {{ $errors->has('typePiece') ? 'border-jauneWarning border-[2px]' : '' }} row-span-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                                    <option value="" disabled selected hidden>Sélectionner un type d'usage
-                                    </option>
-                                    <option value="1">Alimentaire</option>
-                                    <option value="0">Non-alimentaire</option>
-                                </select>
+                                position="left" id="1">
+                                <p class="text-[200%]">&#9432;</p>
+                            </x-tooltip>
+                        </div>
+                        <div class="grid grid-cols-2 grid-rows-2 gap-input">
+                            <!-- IsAlimentaire -->
+                            <select id="typePiece" name="typePiece" required
+                                class="col-span-2 {{ $errors->has('typePiece') ? 'border-jauneWarning border-[2px]' : '' }} row-span-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                <option value="" disabled selected hidden>Sélectionner un type d'usage
+                                </option>
+                                <option value="1">Alimentaire</option>
+                                <option value="0">Non-alimentaire</option>
+                            </select>
 
-                                {{-- IsUnique --}}
-                                <select id="pieceUnique" name="pieceUnique"
-                                    class="col-span-2 {{ $errors->has('pieceUnique') ? 'border-jauneWarning border-[2px]' : '' }} border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                    required>
-                                    <option value="" disabled selected hidden>Sélectionner un type de pièce
-                                    </option>
-                                    <option value="1">Unique</option>
-                                    <option value="0">En série</option>
-                                </select>
-                            </div>
+                            {{-- IsUnique --}}
+                            <select id="pieceUnique" name="pieceUnique"
+                                class="col-span-2 {{ $errors->has('pieceUnique') ? 'border-jauneWarning border-[2px]' : '' }} border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                required>
+                                <option value="" disabled selected hidden>Sélectionner un type de pièce
+                                </option>
+                                <option value="1">Unique</option>
+                                <option value="0">En série</option>
+                            </select>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4 mb-6">
-                        <div class="grid col-span-1 gap-2">
-                            <div class="flex items-center justify-between">
-                                <h2 class="text-[120%]">Attributs de l'article</h2>
-                                <x-tooltip
-                                    text="<ul class='list-disc ml-5'>
+                    {{-- Boutons --}}
+                    <div class=" m-sectionFormY">
+                        <div class="flex items-center justify-between">
+                            <h2 class="textGrand-dark">Attributs de l'article</h2>
+                            <x-tooltip
+                                text="<ul class='list-disc ml-5'>
                                             <li>Le bouton masqué empêche les utilisateurs clients d'avoir accès à cet article.</li>
                                             <li>Le bouton en vedette permet à cet article d'être mis en avant sur votre kiosque personnel.</li>
                                             <li>Le bouton flouté floutera cette image aux yeux des utilisateurs qui ont activé la sensibilité sur le site.</li>
                                           </ul>"
-                                    position="left" id="1">
-                                    <p class="text-[200%]">&#9432;</p>
-                                </x-tooltip>
-                            </div>
-                            <div class="grid grid-cols-2 gap-2">
-
-                                {{-- masquer --}}
-                                <input type="hidden" name="masquer" value="1" />
-                                <input type="checkbox" name="masquer" id="masquerBtn" value="2" class="hidden"
-                                    {{ old('masquer') == 2 ? 'checked' : '' }} />
-                                <label for="masquerBtn" title="Ceci permet de masquer l'article aux yeux des clients"
-                                    class="col-span-1 cursor-pointer border-[1px] shadow border-gray-200 text-darkGrey font-bold py-2 text-center rounded-[0.375rem] transition duration-200 ease-in-out hover:bg-beige checked:bg-[#ebe3dc] checked:text-darkGrey">
-                                    Masquer
-                                </label>
-
-                                {{-- flouter --}}
-                                <input type="hidden" name="flouter" value="0" />
-                                <input type="checkbox" name="flouter" id="flouterBtn" value="1" class="hidden"
-                                    {{ old('flouter') == 1 ? 'checked' : '' }} />
-                                <label for="flouterBtn"
-                                    title="Ceci floutera l'image de l'article aux yeux des clients sensibles"
-                                    class="col-span-1 cursor-pointer border-[1px] shadow border-gray-200 text-darkGrey font-bold py-2 text-center rounded-[0.375rem] transition duration-200 ease-in-out hover:bg-beige checked:bg-[#ebe3dc] checked:text-darkGrey">
-                                    Flouter (+18)
-                                </label>
-
-                                {{-- En vedette --}}
-                                <input type="hidden" name="enVedette" value="0" />
-                                <input type="checkbox" name="enVedette" id="enVedetteBtn" value="1"
-                                    class="hidden" {{ old('enVedette') == 1 ? 'checked' : '' }} />
-                                <label for="enVedetteBtn"
-                                    title="Ceci placera cette article dans votre section en vedette"
-                                    class="col-span-2 cursor-pointer border-[1px] shadow border-gray-200 text-darkGrey font-bold py-2 text-center rounded-[0.375rem] transition duration-200 ease-in-out hover:bg-beige checked:bg-[#ebe3dc] checked:text-darkGrey">
-                                    En vedette
-                                </label>
-                            </div>
+                                position="left" id="1">
+                                <p class="text-[200%]">&#9432;</p>
+                            </x-tooltip>
                         </div>
 
-                        {{-- Quantite --}}
-                        <div class="grid col-span-1 gap-2">
-                            <div class="flex items-center justify-between">
-                                <h2 class="text-[120%]" id="titreQuantite">Quantité d'article en vente</h2>
-                                <x-tooltip
-                                    text="<ul class='list-disc ml-5'>
+                        <div class="grid grid-cols-2 gap-input">
+                            {{-- masquer --}}
+                            <input type="hidden" name="masquer" value="1" />
+                            <input type="checkbox" name="masquer" id="masquerBtn" value="2" class="hidden"
+                                {{ old('masquer') == 2 ? 'checked' : '' }} />
+                            <label for="masquerBtn" title="Ceci permet de masquer l'article aux yeux des clients"
+                                class="col-span-1 cursor-pointer border-[1px] shadow border-gray-200 text-darkGrey font-bold py-2 text-center rounded-[0.375rem] transition duration-200 ease-in-out hover:bg-beige checked:bg-[#ebe3dc] checked:text-darkGrey">
+                                Masquer
+                            </label>
+
+                            {{-- flouter --}}
+                            <input type="hidden" name="flouter" value="0" />
+                            <input type="checkbox" name="flouter" id="flouterBtn" value="1" class="hidden"
+                                {{ old('flouter') == 1 ? 'checked' : '' }} />
+                            <label for="flouterBtn"
+                                title="Ceci floutera l'image de l'article aux yeux des clients sensibles"
+                                class="col-span-1 cursor-pointer border-[1px] shadow border-gray-200 text-darkGrey font-bold py-2 text-center rounded-[0.375rem] transition duration-200 ease-in-out hover:bg-beige checked:bg-[#ebe3dc] checked:text-darkGrey">
+                                Flouter (+18)
+                            </label>
+
+                            {{-- En vedette --}}
+                            <input type="hidden" name="enVedette" value="0" />
+                            <input type="checkbox" name="enVedette" id="enVedetteBtn" value="1" class="hidden"
+                                {{ old('enVedette') == 1 ? 'checked' : '' }} />
+                            <label for="enVedetteBtn" title="Ceci placera cette article dans votre section en vedette"
+                                class="col-span-2 cursor-pointer border-[1px] shadow border-gray-200 text-darkGrey font-bold py-2 text-center rounded-[0.375rem] transition duration-200 ease-in-out hover:bg-beige checked:bg-[#ebe3dc] checked:text-darkGrey">
+                                En vedette
+                            </label>
+                        </div>
+                    </div>
+
+                    {{-- Quantite --}}
+                    <div class="">
+                        <div class="flex items-center justify-between">
+                            <h2 class="textGrand-dark" id="titreQuantite">Quantité d'article en vente</h2>
+                            <x-tooltip
+                                text="<ul class='list-disc ml-5'>
                                             <li>La quantité de l'article en vente ne pourra pas être de 0.</li>
                                             <li>Une quantité de 1 ne signifie pas qu'il sera considérer en tant qu'article unique. Pour cela il faut ajuster le type de pièce.</li>
                                           </ul>"
-                                    position="left" id="infoQuantite">
-                                    <p class="text-[200%]">&#9432;</p>
-                                </x-tooltip>
-                            </div>
-
-                            <div class="grid grid-cols-2 grid-rows-2 gap-2">
-                                <x-text-input id="quantiteArticle"
-                                    class="col-span-2 {{ $errors->has('quantiteArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
-                                    type="number" name="quantiteArticle" placeholder="Quantité en vente"
-                                    step="1" min="1" max="9999" required
-                                    value="{{ old('quantiteArticle') }}" />
-                            </div>
+                                position="left" id="infoQuantite">
+                                <p class="text-[200%]">&#9432;</p>
+                            </x-tooltip>
                         </div>
+
+                        <x-text-input id="quantiteArticle"
+                            class="w-full {{ $errors->has('quantiteArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
+                            type="number" name="quantiteArticle" placeholder="Quantité en vente" step="1"
+                            min="1" max="9999" required value="{{ old('quantiteArticle') }}" />
+
                     </div>
 
                     <input type="hidden" name="idArtiste" value="{{ $artiste->id_artiste }}">
 
                     {{-- Boutons d'envoie --}}
-                    <button type="submit" id="addArticleBtn" value="confirmer"
-                        class="w-full mt-3 cursor-pointer bg-vert text-beige text-[36px] font-bold py-[10px] text-center rounded-md transition duration-200 ease-in-out hover:bg-[#00ba5c]">
-                        Ajouter article
-                    </button>
+                    <x-button.green.empty type="submit" id="addArticleBtn" value="confirmer"
+                        class="w-full h-[64px] m-submit cursor-pointer bg-vert text-[36px] font-bold text-center">
+                        Modifier article
+                    </x-button.green.empty>
                 </form>
 
                 {{-- Affichage des erreurs/succes/fails --}}
