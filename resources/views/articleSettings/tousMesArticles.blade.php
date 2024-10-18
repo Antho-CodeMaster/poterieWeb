@@ -143,27 +143,27 @@
                                         Visible</p>
                                 @elseif($article->id_etat == 2)
                                     <p
-                                        class="border border-darkGrey articleGrand-light px-[10px] py-[3px] bg-darkGrey text-white">
+                                        class="border border-darkGrey articleGrand-light px-[10px] py-[3px] bg-darkGrey">
                                         Masqué</p>
                                 @endif
 
                                 @if ($article->is_en_vedette == 1)
                                     <p
-                                        class="border border-darkGrey articleGrand-dark px-[10px] py-[3px] bg-white text-darkGrey">
+                                        class="border border-darkGrey articleGrand-dark px-[10px] py-[3px] bg-white">
                                         En vedette</p>
                                 @elseif($article->is_en_vedette == 0)
                                     <p
-                                        class="border border-darkGrey articleGrand-light px-[10px] py-[3px] bg-darkGrey text-white">
+                                        class="border border-darkGrey articleGrand-light px-[10px] py-[3px] bg-darkGrey">
                                         En vedette</p>
                                 @endif
 
                                 @if ($article->is_sensible == 1)
                                     <p
-                                        class="border border-darkGrey articleGrand-dark px-[10px] py-[3px] bg-white text-darkGrey">
+                                        class="border border-darkGrey articleGrand-dark px-[10px] py-[3px] bg-white">
                                         Sensible</p>
                                 @elseif($article->is_sensible == 0)
                                     <p
-                                        class="border border-darkGrey articleGrand-light px-[10px] py-[3px] bg-darkGrey text-white">
+                                        class="border border-darkGrey articleGrand-light px-[10px] py-[3px] bg-darkGrey">
                                         Sensible</p>
                                 @endif
                             </div>
