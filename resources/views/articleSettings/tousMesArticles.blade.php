@@ -80,7 +80,7 @@
                                 <p class=" articleGrand-dark">{{ $article->nom }}</p>
                                 <p class=" articlePetit-dark mt-[2px]">Prix: {{ $article->prix }}$
                                 </p>
-                                <p class="text-[14px] mt-[4px]">{{ $article->description }}</p>
+                                <p class="textPetit-dark mt-1">{{ $article->description }}</p>
                                 {{-- <p class="text-[14px] mt-[4px]">{{ $article->mot_cle->motCles }}</p> --}}
                             </div>
 

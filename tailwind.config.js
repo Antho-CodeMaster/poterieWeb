@@ -167,16 +167,12 @@ export default {
                     'font-size': 'calc(12px + 0.2vw)',
                     'color': '#f4f0ec',
                     'font-family': 'Inter',
-                    'margin': '0px',
-                    'padding': '0px'
                 },
                 '.textPetit-dark': {
                     'line-height': '1rem',
                     'font-size': 'calc(12px + 0.2vw)',
                     'color': '#444444',
                     'font-family': 'Inter',
-                    'margin': '0px',
-                    'padding': '0px'
                 },
 
                 //Titre article gros
