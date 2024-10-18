@@ -2,7 +2,7 @@
     <div class="flex content-height">
         @include('articleSettings.articleSettings-sideMenu')
 
-        <div class="w-[84%] p-sectionX pb-2 h-full flex flex-col">
+        <div class="w-[84%] p-sectionX h-full flex flex-col">
             <h1 class="titre2-dark p-sectionY border-b-2 border-darkGrey">Tous mes articles</h1>
 
             {{-- Filtres de recherche --}}
@@ -67,60 +67,60 @@
             </form>
 
             {{-- Affichage de tous les articles de l'artiste --}}
-            <div class="rounded-[12px] mt-[13px] flex flex-wrap gap-3 grow overflow-auto">
+            <div class="rounded-[12px] m-sectionY flex flex-wrap gap-input overflow-auto">
                 @foreach ($articles as $article)
                     @if ($article->id_etat != 3)
-                        <div class="bg-beige rounded-[12px] w-full h-[110px] flex items-center px-[5px] gap-2 mr-2">
+                        <div class="bg-beige rounded-[12px] w-full h-[110px] flex items-center p-sectionX p-sectionY mr-2">
                             {{-- Image de l'article --}}
                             <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
                                 class="z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer h-[100px] w-[100px] object-cover">
 
                             {{-- Nom, prix et description --}}
                             <div class="w-[400px] h-[100px] mx-[5px]">
-                                <p class="article">{{ $article->nom }}</p>
-                                <p class="font-bold text-[13px] mt-[2px] whitespace-nowrap">Prix: {{ $article->prix }}$
+                                <p class=" articleGrand-dark">{{ $article->nom }}</p>
+                                <p class=" articlePetit-dark mt-[2px]">Prix: {{ $article->prix }}$
                                 </p>
                                 <p class="text-[14px] mt-[4px]">{{ $article->description }}</p>
                                 {{-- <p class="text-[14px] mt-[4px]">{{ $article->mot_cle->motCles }}</p> --}}
                             </div>
 
                             {{-- Dimensions et poids --}}
-                            <div class="w-[150px] h-[100px] mx-[5px]">
+                            <div class="w-[180px] h-[100px] m-sectionX">
                                 <div class="flex items-center gap-1 h-[25%]">
-                                    <p class="text-[14px] font-semibold">Hauteur:</p>
-                                    <p class="text-[14px]">{{ $article->hauteur }} cm</p>
+                                    <p class="textPetit-dark font-bold">Hauteur:</p>
+                                    <p class="textPetit-dark">{{ $article->hauteur }} cm</p>
                                 </div>
                                 <div class="flex items-center gap-1 h-[25%]">
-                                    <p class="text-[14px] font-semibold">Largeur:</p>
-                                    <p class="text-[14px]">{{ $article->largeur }} cm</p>
+                                    <p class="textPetit-dark font-bold">Largeur:</p>
+                                    <p class="textPetit-dark">{{ $article->largeur }} cm</p>
                                 </div>
                                 <div class="flex items-center gap-1 h-[25%]">
-                                    <p class="text-[14px] font-semibold">Profondeur:</p>
-                                    <p class="text-[14px]">{{ $article->profondeur }} cm</p>
+                                    <p class="textPetit-dark font-bold">Profondeur:</p>
+                                    <p class="textPetit-dark">{{ $article->profondeur }} cm</p>
                                 </div>
                                 <div class="flex items-center gap-1 h-[25%] ">
-                                    <p class="text-[14px] font-semibold">Poids:</p>
-                                    <p class="text-[14px]">{{ $article->poids }} cm</p>
+                                    <p class="textPetit-dark font-bold">Poids:</p>
+                                    <p class=" textPetit-dark">{{ $article->poids }} cm</p>
                                 </div>
                             </div>
 
                             {{-- Type et quantité --}}
-                            <div class="h-[100px] flex flex-wrap w-[250px]">
-                                <div>
-                                    <div class="flex gap-1">
-                                        <p class="text-[14px] font-semibold">Type d'usage: </p>
+                            <div class="h-[100px] flex flex-wrap w-[275px]">
+                                <div class="flex flex-wrap gap-1">
+                                    <div class="flex gap-input">
+                                        <p class="textPetit-dark font-bold">Type d'usage: </p>
                                         @if ($article->is_alimentaire)
-                                            <p class="text-[14px]">Alimetaire</p>
+                                            <p class="textPetit-dark">Alimetaire</p>
                                         @else
-                                            <p class="text-[14px]">Non-alimetaire</p>
+                                            <p class="textPetit-dark">Non-alimetaire</p>
                                         @endif
                                     </div>
-                                    <div class="flex gap-1">
-                                        <p class="text-[14px] font-semibold">Type de pièce: </p>
+                                    <div class="flex gap-input">
+                                        <p class="textPetit-dark font-bold">Type de pièce: </p>
                                         @if ($article->is_unique)
-                                            <p class="text-[14px]">Unique</p>
+                                            <p class="textPetit-dark">Unique</p>
                                         @else
-                                            <p class="text-[14px]">En série</p>
+                                            <p class="textPetit-dark">En série</p>
                                         @endif
                                     </div>
                                 </div>
@@ -136,34 +136,34 @@
                             </div>
 
                             {{-- Masqué, floutter, en vedette A DEBUGGUER --}}
-                            <div>
+                            <div class=" m-sectionX">
                                 @if ($article->id_etat == 1)
                                     <p
-                                        class="border border-darkGrey font-bold text-12px px-[10px] py-[3px] bg-white text-darkGrey">
+                                        class="border border-darkGrey articleGrand-dark px-[10px] py-[3px] bg-white">
                                         Visible</p>
                                 @elseif($article->id_etat == 2)
                                     <p
-                                        class="border border-darkGrey font-bold text-12px px-[10px] py-[3px] bg-darkGrey text-white">
+                                        class="border border-darkGrey articleGrand-light px-[10px] py-[3px] bg-darkGrey text-white">
                                         Masqué</p>
                                 @endif
 
                                 @if ($article->is_en_vedette == 1)
                                     <p
-                                        class="border border-darkGrey font-bold text-12px px-[10px] py-[3px] bg-white text-darkGrey">
+                                        class="border border-darkGrey articleGrand-dark px-[10px] py-[3px] bg-white text-darkGrey">
                                         En vedette</p>
                                 @elseif($article->is_en_vedette == 0)
                                     <p
-                                        class="border border-darkGrey font-bold text-12px px-[10px] py-[3px] bg-darkGrey text-white">
+                                        class="border border-darkGrey articleGrand-light px-[10px] py-[3px] bg-darkGrey text-white">
                                         En vedette</p>
                                 @endif
 
                                 @if ($article->is_sensible == 1)
                                     <p
-                                        class="border border-darkGrey font-bold text-12px px-[10px] py-[3px] bg-white text-darkGrey">
+                                        class="border border-darkGrey articleGrand-dark px-[10px] py-[3px] bg-white text-darkGrey">
                                         Sensible</p>
                                 @elseif($article->is_sensible == 0)
                                     <p
-                                        class="border border-darkGrey font-bold text-12px px-[10px] py-[3px] bg-darkGrey text-white">
+                                        class="border border-darkGrey articleGrand-light px-[10px] py-[3px] bg-darkGrey text-white">
                                         Sensible</p>
                                 @endif
                             </div>

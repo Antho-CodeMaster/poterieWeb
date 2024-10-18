@@ -17,7 +17,7 @@
                     {{-- Téléversement des photos --}}
                     <div class="m-sectionFormY">
                         <div class="flex items-center justify-between">
-                            <h2 class="text-[120%]">Téléversez les photos de l'article</h2>
+                            <h2 class="textGrand-dark">Téléversez les photos de l'article</h2>
                             <x-tooltip
                                 text="<ul class='list-disc ml-5'>
                                         <li>Les fichiers téléversés ne peuvent être que de format JPEG, JPG ou PNG</li>
@@ -82,7 +82,7 @@
                     {{-- Identifiant de l'article --}}
                     <div class="m-sectionFormY">
                         <div class="flex items-center justify-between">
-                            <h2 class="text-[120%]">Identifiant de l'article</h2>
+                            <h2 class="textGrand-dark">Identifiant de l'article</h2>
                             <x-tooltip
                                 text="<ul class='list-disc ml-5'><li>Le nom et le prix doivent être remplis.
                                         </li><li>Les mots clés doivent commencés par un '#' et ne contenir aucun espace.
@@ -123,7 +123,7 @@
                     {{-- Dimensions et poids --}}
                     <div class="m-sectionFormY">
                         <div class="flex items-center justify-between">
-                            <h2 class="text-[120%]">Dimensions et poids de l'article</h2>
+                            <h2 class="textGrand-dark">Dimensions et poids de l'article</h2>
                             <x-tooltip
                                 text="Les dimensions doivent être inscrit en cm et ne peuvent être plus petit que 0,1cm."
                                 position="left" id="1">
@@ -161,7 +161,7 @@
                     {{-- Type de pièce et usage alimentaire --}}
                     <div class="m-sectionFormY">
                         <div class="flex items-center justify-between w-full">
-                            <h2 class="text-[120%]">Type de pièce et usage alimentaire</h2>
+                            <h2 class="textGrand-dark">Type de pièce et usage alimentaire</h2>
                             <x-tooltip
                                 text="<ul class='list-disc ml-5'><li>Le type d'usage permet de déterminer si l'article peut être utilisé à des fins alimentaires.
                                             </li><li>Le type de pièce permet de savoir si l'article est une œuvre d'art ou un article en série.
@@ -203,7 +203,7 @@
                     {{-- Boutons --}}
                     <div class=" m-sectionFormY">
                         <div class="flex items-center justify-between">
-                            <h2 class="text-[120%]">Attributs de l'article</h2>
+                            <h2 class="textGrand-dark">Attributs de l'article</h2>
                             <x-tooltip
                                 text="<ul class='list-disc ml-5'>
                                             <li>Le bouton masqué empêche les utilisateurs clients d'avoir accès à cet article.</li>
@@ -249,7 +249,7 @@
                     {{-- Quantité --}}
                     <div class="">
                         <div class="flex items-center justify-between">
-                            <h2 class="text-[120%]" id="titreQuantite">Quantité d'article en vente</h2>
+                            <h2 class="textGrand-dark" id="titreQuantite">Quantité d'article en vente</h2>
                             <x-tooltip
                                 text="<ul class='list-disc ml-5'>
                                             <li>La quantité de l'article en vente ne pourra pas être de 0.</li>

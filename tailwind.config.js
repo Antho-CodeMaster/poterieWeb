@@ -267,6 +267,16 @@ export default {
                     'margin': 'calc(8px + 0.2vw) calc(12px + 0.3vw)',
                 },
 
+                '.m-sectionX': {
+                    'margin-right': 'calc(12px + 0.3vw) ',
+                    'margin-left': 'calc(12px + 0.3vw) ',
+                },
+
+                '.m-sectionY': {
+                    'margin-top': 'calc(8px + 0.2vw) ',
+                    'margin-bottom': 'calc(8px + 0.2vw) ',
+                },
+
                 '.p-sectionBottom': {
                     'padding-bottom': 'calc(3px + 0.5vw)',
                 },
