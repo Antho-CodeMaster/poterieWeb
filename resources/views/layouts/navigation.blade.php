@@ -95,7 +95,7 @@
             </a>
 
             <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center ml-[15px]">
+            <div class="sm:flex sm:items-center ml-[15px]">
                 @auth
                     <!-- Authenticated User: Show Dropdown -->
                     <x-dropdown align="right" width="48">
@@ -145,6 +145,7 @@
             </div>
         </div>
 
+        {{--
         <!-- Responsive Navigation Menu -->
         <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
             <div class="pt-2 pb-3 space-y-1">
@@ -173,4 +174,6 @@
                 </div>
             </div>
         </div>
+        --}}
+    </div>
 </nav>

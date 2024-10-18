@@ -22,16 +22,6 @@
         </div>
     </div>
 
-    <script>
-        window.addEventListener('resize', () => {
-            document.querySelectorAll('[x-data]').forEach(el => {
-                const alpineComponent = el.__x.$data;
-                alpineComponent.height = window.innerHeight;
-            });
-        });
-    </script>
-
-
     <div>
         @foreach($collections as $collection)
             <x-collection-articles :collection="$collection" />
