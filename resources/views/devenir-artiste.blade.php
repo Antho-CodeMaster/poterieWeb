@@ -13,7 +13,8 @@
                 <p class="text-center {{ $errors->has('photo-preuve') ? 'text-red-500 font-bold' : '' }}"
                     id="nb-photo-msg">Vous devez soumettre entre 1 et 10 photos.</p>
 
-                    <x-button.blue.add-pic class="mx-auto mt-6" type="button" id="add-photo-preuve">Téléverser</x-button.blue.add-pic>
+                <x-button.blue.add-pic class="mx-auto mt-6" type="button"
+                    id="add-photo-preuve">Téléverser</x-button.blue.add-pic>
 
                 <input id="photo-preuve" name="photo-preuve[]" type="file" multiple="multiple" class="hidden"
                     accept="image/jpeg, image/jpg, image/png">
@@ -61,7 +62,8 @@
                     <p id="i-nb-photo-msg"
                         class="mt-6 text-center {{ $errors->has('photo-identite') ? 'text-red-500 font-bold' : '' }}">
                         Vous devez donc soumettre 3 photos au total.</p>
-                    <x-button.blue.add-pic class="mx-auto mt-6" type="button" id="add-photo-identite">Téléverser</x-button.blue.add-pic>
+                    <x-button.blue.add-pic class="mx-auto mt-6" type="button"
+                        id="add-photo-identite">Téléverser</x-button.blue.add-pic>
 
 
                     <input id="photo-identite" name="photo-identite[]" type="file" multiple="multiple" class="hidden"
@@ -91,16 +93,71 @@
             <x-button.green.send class="mx-auto mt-6">Envoyer</x-button.green.send>
             <p class="text-center mt-6">Vous serez notifiés lorsqu'un administrateur passera en revue votre profil.</p>
         </div>
-        {{-- Erreur dans l'insertion de la demande en BD --}}
-        @if ($errors->has('msg'))
-            <div class="col-span-2 h-fit mt-2 fixed bottom-4 right-4" role="alert">
-                <div
-                    class="bg-[#F44336] border-t border-[2px] border-[#B71C1C] text-white font-bold rounded-t px-4 py-2">
-                    Erreur</div>
-                <div class="rounded-b border-[2px] border-[#B71C1C] bg-[#FFCDD2] px-4 py-2 text-[#D32F2F]">
-                    <p>{{ $errors->first('msg') }}</p>
+
+        <div class="fixed bottom-10 right-5">
+            {{-- Erreur de l'ajout des photos --}}
+            @if ($errors->has('photo-identite'))
+                <div class="w-fit">
+                    @include('messages.messageError', [
+                        'message' => $errors->first('photo-identite'),
+                        'titre' => 'Photos',
+                    ])
                 </div>
-            </div>
+            @endif
+
+            @for ($i = 0; $i < 10; $i++)
+                @if ($errors->has('photo-preuve.' . $i))
+                    <div class="w-fit">
+                        @include('messages.messageError', [
+                            'message' => $errors->first('photo-preuve.' . $i),
+                            'titre' => 'Photos',
+                        ])
+                    </div>
+                @break
+            @endif
+        @endfor
+
+        @for ($i = 0; $i < 3; $i++)
+            @if ($errors->has('photo-identite.' . $i))
+                <div class="w-fit">
+                    @include('messages.messageError', [
+                        'message' => $errors->first('photo-identite.' . $i),
+                        'titre' => 'Photos',
+                    ])
+                </div>
+            @break
         @endif
+    @endfor
+
+    @if ($errors->has('photo-preuve'))
+        <div class="w-fit">
+            @include('messages.messageError', [
+                'message' => $errors->first('photo-preuve'),
+                'titre' => 'Photos',
+            ])
         </div>
+    @endif
+
+    {{-- Erreur de demande déjà effectuée mais en attente --}}
+    @if ($errors->has('alreadyPending'))
+        <div class="w-fit">
+            @include('messages.messageError', [
+                'message' => $errors->first('alreadyPending'),
+                'titre' => 'Demande en attente',
+            ])
+        </div>
+    @endif
+
+    {{-- Si toute autre erreur --}}
+    @if ($errors->has('msg'))
+        <div class="w-fit">
+            @include('messages.messageFail', [
+                'message' => $errors->first('msg'),
+                'titre' => 'Demande en attente',
+            ])
+        </div>
+    @endif
+</div>
+</form>
+
 </x-app-layout>

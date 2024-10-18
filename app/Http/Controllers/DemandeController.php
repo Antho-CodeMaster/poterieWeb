@@ -54,7 +54,7 @@ class DemandeController extends Controller
     {
         // Si on a déjà une demande pending, on ne peut pas en faire une nouvelle
         if (Demande::where('id_user', Auth::id())->where('id_etat', 1)->first() != null)
-            return back()->withErrors(['msg' => 'Vous avez déjà une demande en attente dans notre serveur. Veuillez attendre le verdict de l\'administration avant de réessayer.']);
+            return back()->withErrors(['alreadyPending' => 'Vous avez déjà une demande en attente dans notre serveur. Veuillez attendre le verdict de l\'administration avant de réessayer.']);
 
         // Assigner le bon type selon la demande
         $nomType = $request->input('type');
@@ -71,14 +71,29 @@ class DemandeController extends Controller
             "photo-preuve.*" => "mimes:jpeg,png,jpg|max:2048"
         ];
 
+        $messages = [
+            "photo-preuve.required" => "Vous devez soumettre entre 1 et 10 photos à l'étape 1.",
+            "photo-preuve.array" => "Vous devez soumettre entre 1 et 10 photos à l'étape 1.",
+            "photo-preuve.between" => "Vous devez soumettre entre 1 et 10 photos à l'étape 1.",
+
+            "photo-preuve.*.mimes" => "Toutes les photos doivent être des fichiers .jpeg, .png ou .jpg.",
+            "photo-preuve.*.max" => "Toutes les photos doivent être moins lourdes que 2048 Ko.",
+        ];
+
         // Valider qu'il y a bel et bien 3 photos et qu'elles sont dans le bon format si la demande est pour un étudiant
         if ($type == 2) {
             $rules['photo-identite'] = 'required|array|size:3';
             $rules['photo-identite.*'] = 'mimes:jpeg,png,jpg|max:2048';
+
+            $messages['photo-identite.required'] = "Vous devez soumettre 3 photos à l'étape 2.";
+            $messages['photo-identite.array'] = "Vous devez soumettre 3 photos à l'étape 2.";
+            $messages['photo-identite.between'] = "Vous devez soumettre 3 photos à l'étape 2.";
+            $messages['photo-identite.*.mimes'] = "Toutes les photos doivent être des fichiers .jpeg, .png ou .jpg.";
+            $messages['photo-identite.*.max'] = "Toutes les photos doivent être moins lourdes que 2048 Ko.";
         }
 
         // Performer la validation
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
             return redirect()->back()
