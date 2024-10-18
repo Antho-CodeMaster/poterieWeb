@@ -1,4 +1,4 @@
-<div class="collection my-8 px-4" data-collection-id="{{ $collection->id }}">
+<div class="collection my-20 px-4" data-collection-id="{{ $collection->id }}">
     <h2 class="titre font-semibold mt-8 mb-4">{{ $collection->collection }}</h2>
 
     @if ($collection->articles->isEmpty())
@@ -23,46 +23,42 @@
                             <h3 class="text-lg font-bold">{{ $article->nom }}</h3>
                             <p class="text-gray-600">{{ $article->prix }}$</p>
 
-                            {{-- Vérifie chaque like du user avec l'article --}}
-                            @if ($article->isLikedByUser(Auth::id()))
-                                <svg class="w-10 h-10 text-darkGery" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#ff0000"
-                                    viewBox="0 0 24 24">
-                                    <path stroke="#444444" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="m12.75 20.66 6.184-7.098c2.677-2.884 2.559-6.506.754-8.705-.898-1.095-2.206-1.816-3.72-1.855-1.293-.034-2.652.43-3.963 1.442-1.315-1.012-2.678-1.476-3.973-1.442-1.515.04-2.825.76-3.724 1.855-1.806 2.201-1.915 5.823.772 8.706l6.183 7.097c.19.216.46.34.743.34a.985.985 0 0 0 .743-.34Z" />
-                                </svg>
-                            @else
-                                <svg class="w-10 h-10 text-gray-800 dark:text-white mb-[2px]" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                    viewBox="0 0 24 24">
-                                    <path stroke="#444444" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
-                                </svg>
-                            @endif
-                        </div>
-                        <div class="flex items-end">
-                            <div class="flex justify-center items-end w-[75%]">
-                                @if ($article->quantite_disponible == 0)
-                                    <p class="border-darkGrey border rounded-[24px] w-full h-[32px] text-beige font-bold bg-darkGrey text-center">
-                                        En rupture de stock
-                                    </p>
-                                @else
-                                    <form action="{{ route('addArticleToPanier') }}" method="POST" class="w-full">
-                                        @csrf
-                                        <button type="submit" value="{{$article->id_article}}" name="id_article"
-                                            class="border-darkGrey border rounded-[24px] w-full h-[32px] text-darkGrey font-bold">
-                                            Ajouter au panier
-                                        </button>
-                                    </form>
-                                @endif
-                            </div>
+                            <div class="flex items-end justify-between m-2">
+                                <div class="flex justify-center items-end w-[75%]">
+                                    @if ($article->quantite_disponible == 0)
+                                        <p class="border-darkGrey border rounded-[24px] w-full h-[32px] text-beige font-bold bg-darkGrey text-center">
+                                            En rupture de stock
+                                        </p>
+                                    @else
+                                        <form action="{{ route('addArticleToPanier') }}" method="POST" class="w-full">
+                                            @csrf
+                                            <button type="submit" value="{{$article->id_article}}" name="id_article"
+                                                class="border-darkGrey border rounded-[24px] w-full h-[32px] text-darkGrey font-bold">
+                                                Ajouter au panier
+                                            </button>
+                                        </form>
+                                    @endif
+                                </div>
 
-                            {{-- Artist photo section --}}
-                            <div class="flex justify-end mx-2">
-                                <img src="{{ asset($article->getArtiste->path_photo_profil ?? 'img/artistePFP/default_artiste.png') }}"
-                                    alt="{{$article->getArtiste->nom_artiste}}" class="rounded-full w-[48px] h-[48px]">
+                                {{-- Stack Heart Icon Above Profile Picture --}}
+                                <div class="flex flex-col items-center justify-end mx-2">
+                                    {{-- Heart icon --}}
+                                    @if ($article->isLikedByUser(Auth::id()))
+                                        <svg class="w-6 h-6 mb-1 text-red-500" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="m12.75 20.66 6.184-7.098c2.677-2.884 2.559-6.506.754-8.705-.898-1.095-2.206-1.816-3.72-1.855-1.293-.034-2.652.43-3.963 1.442-1.315-1.012-2.678-1.476-3.973-1.442-1.515.04-2.825.76-3.724 1.855-1.806 2.201-1.915 5.823.772 8.706l6.183 7.097c.19.216.46.34.743.34a.985.985 0 0 0 .743-.34Z"/>
+                                        </svg>
+                                    @else
+                                        <svg class="w-6 h-6 mb-1 text-gray-800 dark:text-white" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="#444444" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z"/>
+                                        </svg>
+                                    @endif
+
+                                    {{-- Profile picture --}}
+                                    <img src="{{ asset($article->getArtiste->path_photo_profil ?? 'img/artistePFP/default_artiste.png') }}"
+                                         alt="{{ $article->getArtiste->nom_artiste }}"
+                                         class="rounded-full w-[48px] h-[48px]">
+                                </div>
                             </div>
                         </div>
                     </div>

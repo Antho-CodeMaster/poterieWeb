@@ -1,4 +1,22 @@
-<nav x-data="{ open: false }" class="z-50 h-[48px] fixed w-full bg-darkGrey border-gray-100">
+<nav x-data="{ showNav: true }"
+    x-init="
+        if (window.location.pathname === '{{ route('decouverte') }}' || window.location.pathname === '/') {
+            showNav = false;
+        }
+        window.addEventListener('scroll', () => {
+            showNav = window.scrollY >= document.querySelector('#parallax-img').offsetHeight;
+        });
+    "
+    :class="{ 'hidden': !showNav, 'block': showNav }"
+    class="fixed top-0 left-0 w-full h-[48px] z-50 bg-darkGrey border-gray-100 shadow-md transition-all duration-300 ease-in-out"
+    x-show="showNav"
+    x-transition:enter="transition ease-in duration-500"
+    x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-100"
+    x-transition:leave="transition ease-out duration-500"
+    x-transition:leave-start="opacity-100"
+    x-transition:leave-end="opacity-0">
+
     <!-- Navigation Menu -->
     <div class="flex h-nav justify-between items-center">
 
@@ -12,7 +30,7 @@
         <!-- Barre de recherche -->
         <div class="w-[500px]">
             <form action="{{ route('recherche.getSearch', ['search'])}}" method="GET" class="w-full h-[38px] py-auto"> {{-- Il faut remplir l'action --}}
-                <input class="w-full rounded h-full" type="text" placeholder="Search.." name="search">
+                <input class="w-full rounded h-full" type="text" placeholder="Rechercher..." name="search">
                 <button type="submit"><i class="fa fa-search"></i></button>
             </form>
         </div>
