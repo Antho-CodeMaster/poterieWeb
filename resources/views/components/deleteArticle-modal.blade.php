@@ -29,7 +29,7 @@
             {{-- Boutons --}}
             <div class="w-full flex justify-center gap-3  mt-6">
                 <!-- Close Button -->
-                <x-button.grey.empty @click="openDeleteArticle = false" class="font-bold" name="idArticle" x-bind:value="id">
+                <x-button.grey.empty @click="openDeleteArticle = false" class="font-bold" name="idArticle">
                     Annuler la suppression
                 </x-button.grey.empty>
 

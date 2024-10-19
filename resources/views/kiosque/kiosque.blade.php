@@ -19,7 +19,7 @@
             @foreach ($reseaux as $reseau)
                 <div class="text-right">
                     <a href="{{ $reseau->url }}{{ $reseau->pivot->username }}" class="inline-flex items-center">
-                        <p class=" titre1-dark">{{ $reseau->pivot->username }}</p>
+                        <p class=" articleGrand-dark">{{ $reseau->pivot->username }}</p>
 
                         {{-- Si réseau youtube --}}
                         @if ($reseau->reseau == 'YouTube')
@@ -57,7 +57,7 @@
     </section>
 
     {{-- Section En vedette --}}
-    <section class="m-collection">
+    <section class="m-collection" x-data='{openArticleModal: false}'>
         <h2 class="titre2-dark mx-[16px]">En vedette</h2>
         <div class="bg-beige flex items-center justify-between relative">
 
@@ -69,14 +69,17 @@
             </svg>
 
 
-            <div id="carousel" class="flex overflow-x-scroll scroll-smooth whitespace-nowrap scrollbar-hide w-full">
+            <div id="carousel" class="flex overflow-x-scroll scroll-smooth whitespace-nowrap scrollbar-hide w-full ">
                 {{-- Affiche seulement les articles visibles, en stock et en vedette seulement --}}
                 @foreach ($articles as $article)
                     @if ($article->etat->etat == 'Visible client' && $article->quantite_disponible > 0 && $article->is_en_vedette == 1)
                         {{-- Div de l'article --}}
-                        <div class="w-[300px] m-article flex-shrink-0 overflow-hidden whitespace-nowrap">
+                        <div class="w-[300px] m-article flex-shrink-0  whitespace-nowrap"
+                            x-data="{ openArticleModal: false }">
                             <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
-                                class="shadow-md rounded-[16px] cursor-pointer w-full h-[300px] object-cover">
+                                class="shadow-md rounded-[16px] cursor-pointer w-full h-[300px] object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200"
+                                @click=" $dispatch('open-article-modal');
+                                         $dispatch('set-article', {{ $article }});">
                             <div class="flex justify-between items-center my-[10px]">
                                 <div class="w-[80%]">
                                     <p class=" articleGrand-dark ">{{ $article->nom }}</p>
@@ -119,16 +122,19 @@
             {{-- Flèche droite --}}
 
             <svg id="nextBtn" class="text-darkGrey absolute right-0 cursor-pointer z-0" aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="none" viewBox="4 4 16 16">
+                xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="none"
+                viewBox="4 4 16 16">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="m9 5 7 7-7 7" />
             </svg>
 
         </div>
+
+        @include('kiosque.article-modal')
     </section>
 
     {{-- Section Tous les articles --}}
-    <section class="m-collection" x-data='{openDeleteArticle: false}'>
+    <section class="m-collection" x-data='{openDeleteArticle: false}' x-data='{openArticleModal: false}'>
         <div class="flex justify-between items-end">
             <div class="flex">
                 <h2 class=" titre2-dark mx-[16px] mr-[2px]">Tous les articles</h2>
@@ -160,7 +166,7 @@
             {{-- Affichage de tous les articles --}}
             @foreach ($articles as $article)
                 @if ($article->etat->etat == 'Visible client' || $article->etat->etat == 'Masqué client')
-                    <div class="w-[160px] m-article whitespace-nowrap">
+                    <div class="w-[170px] m-article whitespace-nowrap">
 
                         <div class="w-[160px] h-[160px] relative">
                             @if ($article->id_etat == 2)
@@ -247,7 +253,7 @@
 
         </div>
 
-        {{-- Le modal --}}
+        {{-- Les modals --}}
         @include('components.deleteArticle-modal')
     </section>
 
