@@ -4,7 +4,7 @@
     <section class="flex items-center justify-between p-[16px]" {{-- style="background-color: #{{ $artiste->couleur_banniere }}" --}}>
 
         {{-- Nom d'artiste --}}
-        <div class="flex-1 text-left titre1-dark">
+        <div class="flex-1 text-left titre1-dark m-titreY">
             {{ $artiste->nom_artiste }}
         </div>
 
@@ -58,7 +58,7 @@
 
     {{-- Section En vedette --}}
     <section class="m-collection" x-data='{openArticleModal: false}'>
-        <h2 class="titre2-dark mx-[16px]">En vedette</h2>
+        <h2 class="titre2-dark mx-[16px] m-titreY">En vedette</h2>
         <div class="bg-beige flex items-center justify-between relative">
 
             {{-- Flèche gauche --}}
@@ -136,8 +136,8 @@
     {{-- Section Tous les articles --}}
     <section class="m-collection" x-data='{openDeleteArticle: false}' x-data='{openArticleModal: false}'>
         <div class="flex justify-between items-end">
-            <div class="flex">
-                <h2 class=" titre2-dark mx-[16px] mr-[2px]">Tous les articles</h2>
+            <div class="flex items-center">
+                <h2 class=" titre2-dark mx-[16px] mr-[2px] m-titreY">Tous les articles</h2>
 
                 {{-- Bouton de filtre --}}
                 <svg class="w-8 h-8 cursor-pointer" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"

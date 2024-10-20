@@ -6,7 +6,7 @@
 
 
         <div class=" w-[84%] p-sectionX p-sectionBottom h-full flex flex-col">
-            <h1 class="titre2-dark p-sectionY border-b-2 border-darkGrey ">Modification d'un article</h1>
+            <h1 class=" m-titreY titre2-dark p-sectionY border-b-2 border-darkGrey ">Modification d'un article</h1>
 
             <div class="grid grid-cols-7 gap-6 grow overflow-auto">
                 <form method="post" action="{{ route('modifArticle') }}" id="modifArticleForm"

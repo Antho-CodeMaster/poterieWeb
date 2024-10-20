@@ -1,5 +1,5 @@
 <div class="w-[16%] bg-beige h-full">
-    <h2 class=" titre2-dark border-b-2 p-sectionX p-sectionY border-darkGrey">
+    <h2 class=" m-titreY titre2-dark border-b-2 p-sectionX p-sectionY border-darkGrey">
         Menu
     </h2>
     {{-- ArticleSettings sideMenu --}}

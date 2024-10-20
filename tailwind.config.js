@@ -104,46 +104,38 @@ export default {
                 /* Classe pour les textes */
                 //Titre H1
                 '.titre1-light': {
-                    'line-height': '4rem',
+                    'line-height': '3rem',
                     'letter-spacing': '0.05rem',
                     'font-weight': '700',
                     'font-size': 'calc(32px + 1.5vw)',
                     'color': '#f4f0ec',
                     'font-family': 'Newsreader',
-                    'margin-top': "4px",
-                    'margin-bottom': "8px",
                 },
                 '.titre1-dark': {
-                    'line-height': '4rem',
+                    'line-height': '3rem',
                     'letter-spacing': '0.05rem',
                     'font-weight': '700',
                     'font-size': 'calc(32px + 1.5vw)',
                     'color': '#444444',
                     'font-family': 'Newsreader',
-                    'margin-top': "4px",
-                    'margin-bottom': "8px",
                 },
 
                 //Titre H2
                 '.titre2-light': {
-                    'line-height': '2rem',
+                    'line-height': '1.5rem',
                     'letter-spacing': '0.05rem',
                     'font-weight': '500',
                     'font-size': 'calc(26px + 1vw)',
                     'color': '#f4f0ec',
                     'font-family': 'Newsreader',
-                    'margin-top': "4px",
-                    'margin-bottom': "8px",
                 },
                 '.titre2-dark': {
-                    'line-height': '2rem',
+                    'line-height': '1.5rem',
                     'letter-spacing': '0.05rem',
                     'font-weight': '500',
                     'font-size': 'calc(26px + 1vw)',
                     'color': '#444444',
                     'font-family': 'Newsreader',
-                    'margin-top': "4px",
-                    'margin-bottom': "8px",
                 },
 
                 //Titre text Grand
@@ -325,6 +317,12 @@ export default {
 
                 '.p-sidebarNav': {
                     'padding': 'calc(2px + 0.5vw) 0.5rem',
+                },
+
+                // Titre
+                '.m-titreY': {
+                    'margin-top': 'calc(2px + 0.2vw) ',
+                    'margin-bottom': 'calc(2px + 0.2vw) ',
                 },
 
                 // Autres

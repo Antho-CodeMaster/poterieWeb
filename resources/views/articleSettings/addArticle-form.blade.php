@@ -3,7 +3,7 @@
         @include('articleSettings.articleSettings-sideMenu')
 
         <div class=" w-[84%] p-sectionX pb-2 h-full flex flex-col">
-            <h1 class="titre2-dark p-sectionY border-b-2 border-darkGrey ">Ajout d'un nouvel article</h1>
+            <h1 class="titre2-dark m-titreY p-sectionY border-b-2 border-darkGrey ">Ajout d'un nouvel article</h1>
 
             <div class="grid grid-cols-7 gap-6 grow overflow-auto">
                 <form method="post" action="{{ route('addArticle') }}" id="addArticleForm" enctype="multipart/form-data"
