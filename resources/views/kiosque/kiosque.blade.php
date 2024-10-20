@@ -185,7 +185,7 @@
         </div>
 
         {{-- Les modals --}}
-        @include('components.deleteArticle-modal')
+        @include('kiosque.deleteArticle-modal')
     </section>
 
     {{-- Message de Session --}}

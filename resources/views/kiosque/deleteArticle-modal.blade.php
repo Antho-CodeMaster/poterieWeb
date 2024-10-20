@@ -38,7 +38,7 @@
 
                     <input type="hidden" name="idUser" value="{{ Auth::user()->id }}">
 
-                    <x-button.red.empty class="font-bold" name="idArticle" x-bind:value="id">
+                    <x-button.red.empty class=" font-black" name="idArticle" x-bind:value="id">
                         Confirmer la suppression
                     </x-button.red.empty>
                 </form>
