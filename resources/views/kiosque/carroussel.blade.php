@@ -1,7 +1,7 @@
 <div class="bg-beige flex items-center justify-between relative">
 
     {{-- Flèche gauche --}}
-    <svg id="prevBtn" class="text-darkGrey absolute cursor-pointer z-0" aria-hidden="true"
+    <svg id="prevBtn" class="text-darkGrey absolute cursor-pointer z-[99]" aria-hidden="true"
         xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="none" viewBox="4 4 16 16">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="m15 19-7-7 7-7" />
