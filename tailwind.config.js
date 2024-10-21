@@ -331,6 +331,19 @@ export default {
                 },
 
                 /* Couleurs */
+                // SideBar
+                '.color-sideBar': {
+                    'backgroud-color': '#f4f0ec',
+                },
+
+                '.color-hover-sideBar': {
+                    'backgroud-color': '#d8c9bb',
+                },
+
+                //Message erreur
+                '.error': {
+                    'border-color': '#E6AF00',
+                },
             }
 
             addUtilities(newUtilities)
