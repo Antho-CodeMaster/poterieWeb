@@ -333,15 +333,15 @@ export default {
                 /* Couleurs */
                 // SideBar
                 '.color-sideBar': {
-                    'backgroud-color': '#f4f0ec',
+                    'background-color': '#f4f0ec',
                 },
 
-                '.color-hover-sideBar': {
-                    'backgroud-color': '#d8c9bb',
+                '.color-sideBar-hover:hover': {
+                    'background-color': '#ebe3dc',
                 },
 
                 //Message erreur
-                '.error': {
+                '.color-borderError': {
                     'border-color': '#E6AF00',
                 },
             }

@@ -68,13 +68,13 @@
                             <div class="grid grid-cols-4 gap-input">
                                 <!-- Nom Article -->
                                 <x-text-input id="nomArticle"
-                                    class="col-span-2 {{ $errors->has('nomArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
+                                    class="col-span-2 {{ $errors->has('nomArticle') ? 'color-borderError border-[2px]' : '' }}"
                                     type="text" name="nomArticle" required placeholder="Nom de l'article"
                                     value="{{ old('nomArticle') }}" />
 
                                 <!-- Prix Article -->
                                 <x-text-input id="prixArticle"
-                                    class="col-span-2 {{ $errors->has('prixArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
+                                    class="col-span-2 {{ $errors->has('prixArticle') ? 'color-borderError border-[2px]' : '' }}"
                                     type="number" name="prixArticle" required step="0.01" min="0"
                                     placeholder="Prix ($)" value="{{ old('prixArticle') }}" />
                             </div>
@@ -82,12 +82,12 @@
                             <div class="grid grid-cols-4 gap-input">
                                 <!-- Description de l'article -->
                                 <textarea id="descriptionArticle" name="descriptionArticle"
-                                    class="resize-none {{ $errors->has('descriptionArticle') ? 'border-jauneWarning border-[2px]' : '' }} col-span-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    class="resize-none {{ $errors->has('descriptionArticle') ? 'color-borderError border-[2px]' : '' }} col-span-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                     placeholder="Description" required>{{ old('descriptionArticle') }}</textarea>
 
                                 <!-- Mots-clés -->
                                 <textarea id="motClesArticle" name="motClesArticle" rows="2"
-                                    class="resize-none col-span-2 {{ $errors->has('motClesArticle') ? 'border-jauneWarning border-[2px]' : '' }} border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    class="resize-none col-span-2 {{ $errors->has('motClesArticle') ? 'color-borderError border-[2px]' : '' }} border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                     placeholder="#Funky#MeilleurArticleEver#Automne#Aussiété">{{ old('motClesArticle') }}</textarea>
                             </div>
                         </div>
@@ -107,25 +107,25 @@
                         <div class="grid grid-cols-2 grid-rows-2 gap-input">
                             {{-- Profondeur --}}
                             <x-text-input id="profondeurArticle"
-                                class="col-span-1 {{ $errors->has('profondeurArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
+                                class="col-span-1 {{ $errors->has('profondeurArticle') ? 'color-borderError border-[2px]' : '' }}"
                                 type="number" name="profondeurArticle" placeholder="Profondeur (cm)" min="0.1"
                                 required value="{{ old('profondeurArticle') }}" step="0.01" />
 
                             {{-- Hauteur --}}
                             <x-text-input id="hauteurArticle"
-                                class="col-span-1 {{ $errors->has('hauteurArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
+                                class="col-span-1 {{ $errors->has('hauteurArticle') ? 'color-borderError border-[2px]' : '' }}"
                                 type="number" name="hauteurArticle" placeholder="Hauteur (cm)" min="0.1" required
                                 value="{{ old('hauteurArticle') }}" step="0.01" />
 
                             {{-- Largeur --}}
                             <x-text-input id="largeurArticle"
-                                class="col-span-1 {{ $errors->has('largeurArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
+                                class="col-span-1 {{ $errors->has('largeurArticle') ? 'color-borderError border-[2px]' : '' }}"
                                 type="number" name="largeurArticle" placeholder="Largeur (cm)" min="0.1"
                                 required value="{{ old('largeurArticle') }}" step="0.01" />
 
                             {{-- Poids --}}
                             <x-text-input id="poidsArticle"
-                                class="col-span-1 {{ $errors->has('poidsArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
+                                class="col-span-1 {{ $errors->has('poidsArticle') ? 'color-borderError border-[2px]' : '' }}"
                                 type="number" name="poidsArticle" placeholder="Poids (g)" min="0.1" required
                                 value="{{ old('poidsArticle') }}" step="0.01" />
                         </div>
@@ -147,7 +147,7 @@
                         <div class="grid grid-cols-2 grid-rows-2 gap-input">
                             <!-- IsAlimentaire -->
                             <select id="typePiece" name="typePiece" required
-                                class="col-span-2 {{ $errors->has('typePiece') ? 'border-jauneWarning border-[2px]' : '' }} row-span-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                class="col-span-2 {{ $errors->has('typePiece') ? 'color-borderError border-[2px]' : '' }} row-span-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                                 <option value="" disabled selected hidden>Sélectionner un type d'usage
                                 </option>
                                 <option value="1">Alimentaire</option>
@@ -156,7 +156,7 @@
 
                             {{-- IsUnique --}}
                             <select id="pieceUnique" name="pieceUnique"
-                                class="col-span-2 {{ $errors->has('pieceUnique') ? 'border-jauneWarning border-[2px]' : '' }} border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                class="col-span-2 {{ $errors->has('pieceUnique') ? 'color-borderError border-[2px]' : '' }} border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 required>
                                 <option value="" disabled selected hidden>Sélectionner un type de pièce
                                 </option>
@@ -227,7 +227,7 @@
                         </div>
 
                         <x-text-input id="quantiteArticle"
-                            class="w-full {{ $errors->has('quantiteArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
+                            class="w-full {{ $errors->has('quantiteArticle') ? 'color-borderError border-[2px]' : '' }}"
                             type="number" name="quantiteArticle" placeholder="Quantité en vente" step="1"
                             min="1" max="9999" required value="{{ old('quantiteArticle') }}" />
 
@@ -238,7 +238,7 @@
                     {{-- Boutons d'envoie --}}
                     <x-button.green.empty type="submit" id="addArticleBtn" value="confirmer"
                         class="w-full h-[64px] m-submit cursor-pointer bg-vert text-[36px] font-bold text-center">
-                        Modifier article
+                        Confirmer
                     </x-button.green.empty>
                 </form>
 

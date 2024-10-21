@@ -1,11 +1,11 @@
-<div class="w-[16%] bg-beige h-full">
+<div class="w-[16%] color-sideBar h-full">
     <h2 class=" m-titreY titre2-dark border-b-2 p-sectionX p-sectionY border-darkGrey">
         Menu
     </h2>
     {{-- ArticleSettings sideMenu --}}
     <div class="">
         <a href="{{ route('addArticleForm', ['idArticle' => 1]) }}" id="ajouterArticle"
-            class="textNavigation-dark flex items-center hover:bg-hoverBeige p-sidebarNav">
+            class="textNavigation-dark flex items-center color-sideBar-hover p-sidebarNav">
             <svg class="w-6 h-6 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                 fill="currentColor" viewBox="0 0 24 24">
                 <path fill-rule="evenodd"
@@ -15,7 +15,7 @@
             Ajouter un
             article </a>
         <a href="{{ route('tousMesArticles') }}" id="tousMesArticles"
-            class="textNavigation-dark flex items-center hover:bg-hoverBeige p-sidebarNav">
+            class="textNavigation-dark flex items-center color-sideBar-hover p-sidebarNav">
             <svg class="w-6 h-6 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                 height="24" fill="currentColor" viewBox="0 0 24 24">
                 <path fill-rule="evenodd"
@@ -25,7 +25,7 @@
             Tous mes
             articles </a>
         <a href="{{ route('decouverte') }}" id="articlesEnVedette"
-            class="textNavigation-dark flex items-center hover:bg-hoverBeige p-sidebarNav">
+            class="textNavigation-dark flex items-center color-sideBar-hover p-sidebarNav">
             <svg class="w-6 h-6 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                 height="24" fill="currentColor" viewBox="0 0 24 24">
                 <path
@@ -35,7 +35,7 @@
             Articles en
             vedette </a>
         <a href="{{ route('decouverte') }}" id="personnalisation"
-            class="textNavigation-dark flex items-center hover:bg-hoverBeige p-sidebarNav">
+            class="textNavigation-dark flex items-center color-sideBar-hover p-sidebarNav">
             <svg class="w-6 h-6 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                 width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                 <path fill-rule="evenodd"
@@ -49,7 +49,7 @@
             Collections</a>
 
         <a href="{{ route('decouverte') }}" id="personnalisation"
-            class="textNavigation-dark flex items-center hover:bg-hoverBeige p-sidebarNav">
+            class="textNavigation-dark flex items-center color-sideBar-hover p-sidebarNav">
             <svg class="w-6 h-6 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                 height="24" fill="currentColor" viewBox="0 0 24 24">
                 <path fill-rule="evenodd"

@@ -32,7 +32,7 @@
                                 {{-- Définir une classe pour la bordure en fonction des erreurs --}}
                                 @php
                                     $erreurPhoto = $errors->has("photo{$i}")
-                                        ? 'border-jauneWarning'
+                                        ? 'color-borderError'
                                         : 'border-darkGrey';
                                 @endphp
 
@@ -96,13 +96,13 @@
                             <div class="grid grid-cols-4 gap-input">
                                 <!-- Nom Article -->
                                 <x-text-input id="nomArticle"
-                                    class="col-span-2 {{ $errors->has('nomArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
+                                    class="col-span-2 {{ $errors->has('nomArticle') ? 'color-borderError border-[2px]' : '' }}"
                                     type="text" name="nomArticle" placeholder="Nom de l'article"
                                     value="{{ $article->nom }}" />
 
                                 <!-- Prix Article -->
                                 <x-text-input id="prixArticle"
-                                    class="col-span-2 {{ $errors->has('prixArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
+                                    class="col-span-2 {{ $errors->has('prixArticle') ? 'color-borderError border-[2px]' : '' }}"
                                     type="number" name="prixArticle" required step="0.01" min="0"
                                     placeholder="Prix ($)" value="{{ $article->prix }}" />
                             </div>
@@ -110,11 +110,11 @@
                             <div class="grid grid-cols-4 gap-input">
                                 <!-- Description de l'article -->
                                 <textarea id="descriptionArticle" name="descriptionArticle"
-                                    class="resize-none col-span-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 {{ $errors->has('descriptionArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
+                                    class="resize-none col-span-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 {{ $errors->has('descriptionArticle') ? 'color-borderError border-[2px]' : '' }}"
                                     placeholder="Description">{{ $article->description }}</textarea>
 
                                 <textarea id="motClesArticle" name="motClesArticle" rows="2"
-                                    class="resize-none col-span-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 {{ $errors->has('motClesArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
+                                    class="resize-none col-span-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 {{ $errors->has('motClesArticle') ? 'color-borderError border-[2px]' : '' }}"
                                     placeholder="#Funky#MeilleurArticleEver#Automne#Aussiété">{{ $article->motCles->isNotEmpty() ? '#' . $article->motCles->pluck('mot_cle')->implode('#') : '' }}</textarea>
                             </div>
                         </div>
@@ -134,25 +134,25 @@
                         <div class="grid grid-cols-2 grid-rows-2 gap-input">
                             {{-- Profondeur --}}
                             <x-text-input id="profondeurArticle"
-                                class="col-span-1 {{ $errors->has('profondeurArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
+                                class="col-span-1 {{ $errors->has('profondeurArticle') ? 'color-borderError border-[2px]' : '' }}"
                                 type="number" name="profondeurArticle" placeholder="Profondeur (cm)" min="0"
                                 required value="{{ $article->profondeur }}" step="0.01" />
 
                             {{-- Hauteur --}}
                             <x-text-input id="hauteurArticle"
-                                class="col-span-1 {{ $errors->has('hauteurArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
+                                class="col-span-1 {{ $errors->has('hauteurArticle') ? 'color-borderError border-[2px]' : '' }}"
                                 type="number" name="hauteurArticle" placeholder="Hauteur (cm)" min="0" required
                                 value="{{ $article->hauteur }}" step="0.01" />
 
                             {{-- Largeur --}}
                             <x-text-input id="largeurArticle"
-                                class="col-span-1 {{ $errors->has('largeurArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
+                                class="col-span-1 {{ $errors->has('largeurArticle') ? 'color-borderError border-[2px]' : '' }}"
                                 type="number" name="largeurArticle" placeholder="Largeur (cm)" min="0"
                                 required value="{{ $article->largeur }}" step="0.01" />
 
                             {{-- Poids --}}
                             <x-text-input id="poidsArticle"
-                                class="col-span-1 {{ $errors->has('poidsArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
+                                class="col-span-1 {{ $errors->has('poidsArticle') ? 'color-borderError border-[2px]' : '' }}"
                                 type="number" name="poidsArticle" placeholder="Poids (g)" min="0" required
                                 value="{{ $article->poids }}" step="0.01" />
                         </div>
@@ -175,7 +175,7 @@
 
                             <!-- IsAlimentaire -->
                             <select id="typePiece" name="typePiece" required
-                                class="col-span-2 row-span-1 {{ $errors->has('typePiece') ? 'border-jauneWarning border-[2px]' : '' }} border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                class="col-span-2 row-span-1 {{ $errors->has('typePiece') ? 'color-borderError border-[2px]' : '' }} border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                                 <option value="" disabled selected hidden>Sélectionner un type d'usage
                                 </option>
                                 <option value="1" {{ $article->typePiece == 1 ? 'selected' : '' }}>
@@ -186,7 +186,7 @@
 
                             {{-- IsUnique --}}
                             <select id="pieceUnique" name="pieceUnique"
-                                class="col-span-2 {{ $errors->has('pieceUnique') ? 'border-jauneWarning border-[2px]' : '' }} border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                class="col-span-2 {{ $errors->has('pieceUnique') ? 'color-borderError border-[2px]' : '' }} border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 required>
                                 <option value="" disabled selected hidden>Sélectionner un type de pièce
                                 </option>
@@ -261,7 +261,7 @@
                         </div>
 
                         <x-text-input id="quantiteArticle"
-                            class="w-full {{ $errors->has('quantiteArticle') ? 'border-jauneWarning border-[2px]' : '' }}"
+                            class="w-full {{ $errors->has('quantiteArticle') ? 'color-borderError border-[2px]' : '' }}"
                             type="number" name="quantiteArticle" placeholder="Quantité en vente" step="1"
                             min="1" max="9999" required value="{{ $article->quantite_disponible }}" />
 
