@@ -3,9 +3,14 @@ document.addEventListener('DOMContentLoaded', function () {
     // Vérifie si on est sur la bonne page
     if (document.baseURI.includes("modifArticle")) {
 
+        // Tableau pour stocker les clones du SVG initial
+        let svgCache = [];
+
         function previewImage(event, index) {
             var fileInput = document.getElementById('photo' + index);
             var previewContainer = document.getElementById('previewContainer' + index);
+            var deleteButton = document.getElementById('suppressionBtn' + index);
+            var biggerContainer = document.getElementById('biggerContainer');
 
             if (fileInput.files && fileInput.files[0]) {
                 var reader = new FileReader();
@@ -25,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         // Remplacer le contenu du conteneur par l'image
                         previewContainer.innerHTML = '';
                         previewContainer.appendChild(img);
+                        biggerContainer.appendChild(deleteButton);
                     }
                 };
 
@@ -32,11 +38,38 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
+        // Fonction pour réinitialiser l'aperçu (remettre le SVG)
+        function removeImage(index) {
+            // Réinitialiser l'input file
+            let fileInput = document.getElementById('photo' + index);
+            fileInput.value = ''; // Réinitialise le champ de fichier sans le supprimer
+
+            // Récupérer le conteneur d'aperçu et réinsérer le clone du SVG
+            let previewContainer = document.getElementById('previewContainer' + index);
+            let deleteButton = document.getElementById('suppressionBtn' + index);
+
+            // Réinitialiser le contenu du conteneur et réinsérer le SVG cloné
+            previewContainer.innerHTML = '';
+            if (svgCache[index]) {
+                previewContainer.innerHTML = svgCache[index];
+            }
+            previewContainer.appendChild(deleteButton); // Réinsérer le bouton de suppression
+        }
+
         // Ajouter un gestionnaire d'événements 'change' pour chaque input file généré dans la boucle
         for (let i = 1; i <= 5; i++) {
             document.getElementById('photo' + i).addEventListener('change', function (event) {
                 previewImage(event, i);
             });
+
+            document.getElementById("suppressionBtn" + i).addEventListener("click", function (event) {
+                removeImage(i);
+            });
+
+            let svgElement = document.getElementById('svg' + i);
+            if (svgElement) {
+                svgCache[i] = svgElement.outerHTML; // Stocker le SVG sous forme de string
+            }
         }
 
         // Gestion de la quantité en fonction du type de pièce

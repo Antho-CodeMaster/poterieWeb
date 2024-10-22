@@ -77,7 +77,7 @@ class ArticleController extends Controller
             "typePiece" => "required|in:0,1",
             "quantiteArticle" => "required|integer|min:1",
             "motClesArticle" => "nullable|regex:/^#[a-zA-ZÀ-ÿ0-9]+(#[a-zA-ZÀ-ÿ0-9]+)*$/",
-            "photo1" => "mimes:jpeg,png,jpg",
+            "photo1" => "required|mimes:jpeg,png,jpg",
             "photo2" => "mimes:jpeg,png,jpg",
             "photo3" => "mimes:jpeg,png,jpg",
             "photo4" => "mimes:jpeg,png,jpg",
@@ -122,6 +122,7 @@ class ArticleController extends Controller
             "motClesArticle.regex" => "Les mots clés de l'article doivent commencer par '#' et contenir aucun espacement.",
 
             'photo1.mimes' => 'La photo 1 doit être au format JPEG, PNG ou JPG.',
+            'photo1.required' => 'Il doit y avoir au moins 1 photo afin d\'ajouter un nouvel article',
             'photo2.mimes' => 'La photo 2 doit être au format JPEG, PNG ou JPG.',
             'photo3.mimes' => 'La photo 3 doit être au format JPEG, PNG ou JPG.',
             'photo4.mimes' => 'La photo 4 doit être au format JPEG, PNG ou JPG.',
