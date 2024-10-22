@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
             quantiteByType2();
         });
 
+        let quantiteTampon;
 
         function quantiteByType(event) {
             let isUnique = document.getElementById("pieceUnique").value;
@@ -58,13 +59,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 quantiteElement.classList.add("hidden");
                 titreQuantite.classList.add("hidden");
                 infoQuantite.classList.add("hidden");
+                quantiteTampon = quantiteElement.value;
                 quantiteElement.value = 1;
             }
             else {
                 quantiteElement.classList.remove("hidden");
                 titreQuantite.classList.remove("hidden");
                 infoQuantite.classList.remove("hidden");
-                quantiteElement.value = "";
+                quantiteElement.value = quantiteTampon;
             }
         }
 
@@ -73,6 +75,8 @@ document.addEventListener('DOMContentLoaded', function () {
             let quantiteElement = document.getElementById("quantiteArticle");
             let titreQuantite = document.getElementById("titreQuantite");
             let infoQuantite = document.getElementById("infoQuantite");
+
+            let quantiteValue = document.getElementById("quantiteArticle").value;
 
             if (isUnique == 1) {
                 quantiteElement.classList.add("hidden");
@@ -84,6 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 quantiteElement.classList.remove("hidden");
                 titreQuantite.classList.remove("hidden");
                 infoQuantite.classList.remove("hidden");
+                quantiteTampon = quantiteValue;
             }
         }
     }
