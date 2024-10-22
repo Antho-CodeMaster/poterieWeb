@@ -179,7 +179,7 @@ export default {
                     'whitespace': 'nowrap'
                 },
                 '.articleGrand-dark': {
-                    'line-height': '1.5rem',
+                    'line-height': '2rem',
                     'font-size': 'calc(18px + 0.2vw)',
                     'font-weight': '700',
                     'color': '#444444',

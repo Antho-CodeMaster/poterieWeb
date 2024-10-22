@@ -255,7 +255,7 @@
                                             <li>La quantité de l'article en vente ne pourra pas être de 0.</li>
                                             <li>Une quantité de 1 ne signifie pas qu'il sera considérer en tant qu'article unique. Pour cela il faut ajuster le type de pièce.</li>
                                           </ul>"
-                                position="left" id="1">
+                                position="left" id="infoQuantite">
                                 <p class="text-[200%]">&#9432;</p>
                             </x-tooltip>
                         </div>

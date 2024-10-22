@@ -39,30 +39,52 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
-
-
         // Gestion de la quantité en fonction du type de pièce
         document.getElementById("pieceUnique").addEventListener("change", function (event) {
             quantiteByType(event);
         });
+        window.addEventListener("load", function () {
+            quantiteByType2();
+        });
+
 
         function quantiteByType(event) {
             let isUnique = document.getElementById("pieceUnique").value;
             let quantiteElement = document.getElementById("quantiteArticle");
             let titreQuantite = document.getElementById("titreQuantite");
-
+            let infoQuantite = document.getElementById("infoQuantite");
 
             if (isUnique == 1) {
                 quantiteElement.classList.add("hidden");
-                titreQuantite.classList.add("hidden")
+                titreQuantite.classList.add("hidden");
+                infoQuantite.classList.add("hidden");
                 quantiteElement.value = 1;
             }
             else {
                 quantiteElement.classList.remove("hidden");
-                titreQuantite.classList.remove("hidden")
+                titreQuantite.classList.remove("hidden");
+                infoQuantite.classList.remove("hidden");
                 quantiteElement.value = "";
             }
         }
 
+        function quantiteByType2(event) {
+            let isUnique = document.getElementById("pieceUnique").value;
+            let quantiteElement = document.getElementById("quantiteArticle");
+            let titreQuantite = document.getElementById("titreQuantite");
+            let infoQuantite = document.getElementById("infoQuantite");
+
+            if (isUnique == 1) {
+                quantiteElement.classList.add("hidden");
+                titreQuantite.classList.add("hidden");
+                infoQuantite.classList.add("hidden");
+                quantiteElement.value = 1;
+            }
+            else {
+                quantiteElement.classList.remove("hidden");
+                titreQuantite.classList.remove("hidden");
+                infoQuantite.classList.remove("hidden");
+            }
+        }
     }
 });
