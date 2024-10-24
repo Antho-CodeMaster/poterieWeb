@@ -69,7 +69,7 @@ class ArticleController extends Controller
             "prixArticle" => "required",
             "nomArticle" => "required|max:255",
             "pieceUnique" => "required|in:0,1",
-            "descriptionArticle" => "required|max:512",
+            "descriptionArticle" => "required|max:255",
             "hauteurArticle" => "required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0.01",
             "largeurArticle" => "required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0.01",
             "profondeurArticle" => "required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0.01",
@@ -90,7 +90,7 @@ class ArticleController extends Controller
             "pieceUnique.in" => "La valeur du champ pièce unique doit être soit 'Unique' soit 'En série'.",
 
             "descriptionArticle.required" => "La description de l'article est obligatoire.",
-            "descriptionArticle.max" => "La description de l'article ne peut pas dépasser 512 caractères.",
+            "descriptionArticle.max" => "La description de l'article ne peut pas dépasser 255 caractères.",
 
             "hauteurArticle.required" => "La hauteur de l'article est obligatoire.",
             "hauteurArticle.numeric" => "La hauteur de l'article doit être un nombre.",
@@ -281,7 +281,7 @@ class ArticleController extends Controller
                 "prixArticle" => "required",
                 "nomArticle" => "required|max:255",
                 "pieceUnique" => "required|in:0,1",
-                "descriptionArticle" => "required|max:512",
+                "descriptionArticle" => "required|max:255",
                 "hauteurArticle" => "required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0.01",
                 "largeurArticle" => "required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0.01",
                 "profondeurArticle" => "required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0.01",
@@ -302,7 +302,7 @@ class ArticleController extends Controller
                 "pieceUnique.in" => "La valeur du champ pièce unique doit être soit 'Unique' soit 'En série'.",
 
                 "descriptionArticle.required" => "La description de l'article est obligatoire.",
-                "descriptionArticle.max" => "La description de l'article ne peut pas dépasser 512 caractères.",
+                "descriptionArticle.max" => "La description de l'article ne peut pas dépasser 255 caractères.",
 
                 "hauteurArticle.required" => "La hauteur de l'article est obligatoire.",
                 "hauteurArticle.numeric" => "La hauteur de l'article doit être un nombre.",

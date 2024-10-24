@@ -138,15 +138,33 @@ export default {
                     'font-family': 'Newsreader',
                 },
 
+                //Titre H2
+                '.titre3-light': {
+                    'line-height': '1.5rem',
+                    'letter-spacing': '0.05rem',
+                    'font-weight': '500',
+                    'font-size': 'calc(20px + 1vw)',
+                    'color': '#f4f0ec',
+                    'font-family': 'Newsreader',
+                },
+                '.titre3-dark': {
+                    'line-height': '1.5rem',
+                    'letter-spacing': '0.05rem',
+                    'font-weight': '500',
+                    'font-size': 'calc(20px + 1vw)',
+                    'color': '#444444',
+                    'font-family': 'Newsreader',
+                },
+
                 //Titre text Grand
                 '.textGrand-light': {
-                    'line-height': '1rem',
+                    'line-height': '1.5rem',
                     'font-size': 'calc(16px + 0.3vw)',
                     'color': '#f4f0ec',
                     'font-family': 'Inter',
                 },
                 '.textGrand-dark': {
-                    'line-height': '1rem',
+                    'line-height': '1.5rem',
                     'font-size': 'calc(16px + 0.3vw)',
                     'color': '#444444',
                     'font-family': 'Inter',
