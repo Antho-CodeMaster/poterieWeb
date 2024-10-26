@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
         function previewImage(event, index) {
             var fileInput = document.getElementById('photo' + index);
             var previewContainer = document.getElementById('previewContainer' + index);
-            var deleteButton = document.getElementById('suppressionBtn' + index);
+//            var deleteButton = document.getElementById('suppressionBtn' + index);
             var biggerContainer = document.getElementById('biggerContainer');
 
             if (fileInput.files && fileInput.files[0]) {
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         // Remplacer le contenu du conteneur par l'image
                         previewContainer.innerHTML = '';
                         previewContainer.appendChild(img);
-                        biggerContainer.appendChild(deleteButton);
+//                        biggerContainer.appendChild(deleteButton);
                     }
                 };
 
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        // Fonction pour réinitialiser l'aperçu (remettre le SVG)
+       /*  // Fonction pour réinitialiser l'aperçu (remettre le SVG)
         function removeImage(index) {
             // Réinitialiser l'input file
             let fileInput = document.getElementById('photo' + index);
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 previewContainer.innerHTML = svgCache[index];
             }
             previewContainer.appendChild(deleteButton); // Réinsérer le bouton de suppression
-        }
+        } */
 
         // Ajouter un gestionnaire d'événements 'change' pour chaque input file généré dans la boucle
         for (let i = 1; i <= 5; i++) {

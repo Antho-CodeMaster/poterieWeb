@@ -2,9 +2,6 @@
     <div class="flex content-height">
         @include('articleSettings.articleSettings-sideMenu')
 
-        {{-- Gestion des borders en fonctions des erreurs --}}
-
-
         <div class=" w-[84%] p-sectionX p-sectionBottom h-full flex flex-col">
             <h1 class=" m-titreY titre2-dark p-sectionY border-b-2 border-darkGrey ">Modification d'un article</h1>
 
@@ -98,28 +95,6 @@
                                             @endif
                                         </button>
                                     </div>
-
-                                    @if (isset($article->photo_article[$i - 1]->path))
-                                        <!-- Bouton de suppression -->
-                                        <button type="button" id="suppressionBtn{{ $i }}"
-                                            class="hover:scale-125 transition-all duration-[0.2s]">
-                                            <svg class="w-7 h-7" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                                width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                <path stroke="#e60000" stroke-linecap="round" stroke-linejoin="round"
-                                                    stroke-width="3" d="M6 18 17.94 6M18 18 6.06 6" />
-                                            </svg>
-                                        </button>
-                                    @else
-                                        <!-- Bouton de suppression -->
-                                        <button type="button" id="suppressionBtn{{ $i }}"
-                                            class=" hidden hover:scale-125 transition-all duration-[0.2s]">
-                                            <svg class="w-7 h-7" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                                width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                <path stroke="#e60000" stroke-linecap="round" stroke-linejoin="round"
-                                                    stroke-width="3" d="M6 18 17.94 6M18 18 6.06 6" />
-                                            </svg>
-                                        </button>
-                                    @endif
                                 </div>
                             @endfor
                         </div>

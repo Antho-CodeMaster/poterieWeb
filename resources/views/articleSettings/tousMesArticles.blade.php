@@ -70,17 +70,17 @@
             <div class="rounded-[12px] m-sectionY flex flex-wrap gap-input overflow-auto">
                 @foreach ($articles as $article)
                     @if ($article->id_etat != 3)
-                        <div class="bg-beige rounded-[12px] w-full h-[110px] flex items-center p-sectionX p-sectionY mr-2">
+                        <div class="bg-beige rounded-[12px] w-full h-[130px] flex items-center p-sectionX p-sectionY mr-2">
                             {{-- Image de l'article --}}
                             <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
                                 class="z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer h-[100px] w-[100px] object-cover">
 
                             {{-- Nom, prix et description --}}
                             <div class="w-[400px] h-[100px] mx-[5px]">
-                                <p class=" articleGrand-dark">{{ $article->nom }}</p>
+                                <p class=" articleGrand-dark whitespace-nowrap overflow-hidden">{{ $article->nom }}</p>
                                 <p class=" articlePetit-dark mt-[2px]">Prix: {{ $article->prix }}$
                                 </p>
-                                <p class="textPetit-dark mt-1">{{ $article->description }}</p>
+                                <p class="textPetit-dark mt-1 text-ellipsis overflow-y-hidden ">{{ $article->description }}</p>
                                 {{-- <p class="text-[14px] mt-[4px]">{{ $article->mot_cle->motCles }}</p> --}}
                             </div>
 

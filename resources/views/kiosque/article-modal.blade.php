@@ -107,23 +107,22 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col justify-between w-[500px] m-sectionY">
-                    <div class="w-full flex flex-wrap gap-input border">
+                <div class="flex flex-col justify-between w-[490px] ml-2  m-sectionY">
+                    <div class="w-full flex flex-wrap gap-input">
                         {{-- Description --}}
-                        <div class="flex flex-wrap w-full">
+                        <div class="flex flex-wrap w-full m-titreY">
                             <p class="titre3-dark w-full ">Description</p>
                             <p class="textGrand-dark " x-text="article.description"></p>
                         </div>
 
                         {{-- Mots clés --}}
-                        <div class="flex flex-wrap w-full">
+                        <div class="flex flex-wrap w-full m-titreY">
                             <p class="titre3-dark w-full ">Mots clés</p>
                             <template x-if="motsCles.length > 0">
                                 <div class="flex gap-2">
                                     <template x-for="(motCle, index) in motsCles" :key="index">
                                         <div class="flex">
-                                            <p class=" textGrand-dark">#</p>
-                                            <p class=" textGrand-dark" x-text="motCle.mot_cle"></p>
+                                            <p class=" textGrand-dark bg-beigeFoncé rounded-md p-2" x-text="motCle.mot_cle"></p>
                                         </div>
                                     </template>
                                 </div>
@@ -133,30 +132,30 @@
                             </template>
                         </div>
 
-                        {{-- Type --}}
+                        {{-- Types --}}
                         <div class="flex flex-wrap gap-1 m-titreY w-full items-baseline">
                             <p class="titre3-dark mr-1 ">Type de pièce :</p>
                             <template x-if="article.is_unique == 1">
-                                <p class="textGrand-dark">Unique</p>
+                                <p class="textGrand-dark bg-beigeFoncé rounded-md p-2">Unique</p>
                             </template>
 
                             <template x-if="article.is_unique == 0">
-                                <p class="textGrand-dark">En série</p>
+                                <p class="textGrand-dark bg-beigeFoncé rounded-md p-2">En série</p>
                             </template>
                         </div>
                         <div class="flex flex-wrap w-full gap-1 m-titreY items-baseline">
                             <p class="titre3-dark mr-1 ">Type d'usage :</p>
                             <template x-if="article.is_alimentaire == 1">
-                                <p class="textGrand-dark">Alimentaire</p>
+                                <p class="textGrand-dark bg-beigeFoncé rounded-md p-2">Alimentaire</p>
                             </template>
 
                             <template x-if="article.is_alimentaire == 0">
-                                <p class="textGrand-dark">Non-Alimentaire</p>
+                                <p class="textGrand-dark bg-beigeFoncé rounded-md p-2">Non-Alimentaire</p>
                             </template>
                         </div>
 
-                        {{-- Type --}}
-                        <div class="flex flex-wrap w-full gap-1  items-baseline">
+                        {{-- Quantite --}}
+                        <div class="flex flex-wrap w-full gap-1 m-titreY items-baseline">
                             <p class="titre3-dark ">Quantite</p>
                             <p class=" articleGrand-dark bg-beigeFoncé rounded-md py-[1px] px-[14px]"
                                 x-text="article.quantite_disponible"></p>
@@ -164,7 +163,7 @@
                     </div>
 
                     {{-- Boutons dajout au panier --}}
-                    <div class="w-full border">
+                    <div class="w-full">
                         <x-button.green.empty type="submit" id="addArticleBtn" value="confirmer"
                             class="w-full h-[64px] cursor-pointer bg-vert text-[36px] font-bold text-center">
                             Confirmer

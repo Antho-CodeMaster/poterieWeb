@@ -67,7 +67,7 @@ class ArticleController extends Controller
             "enVedette" => "required|in:0,1",
             "flouter" => "required|in:0,1",
             "prixArticle" => "required",
-            "nomArticle" => "required|max:255",
+            "nomArticle" => "required|max:128",
             "pieceUnique" => "required|in:0,1",
             "descriptionArticle" => "required|max:255",
             "hauteurArticle" => "required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0.01",
@@ -84,7 +84,7 @@ class ArticleController extends Controller
             "photo5" => "mimes:jpeg,png,jpg",
         ], [
             "nomArticle.required" => "Le nom de l'article est obligatoire.",
-            "nomArticle.max" => "Le nom de l'article ne peut pas dépasser 255 caractères.",
+            "nomArticle.max" => "Le nom de l'article ne peut pas dépasser 128 caractères.",
 
             "pieceUnique.required" => "Le champ pièce unique est obligatoire.",
             "pieceUnique.in" => "La valeur du champ pièce unique doit être soit 'Unique' soit 'En série'.",
@@ -177,24 +177,29 @@ class ArticleController extends Controller
         }
 
 
-        // Gestion du téléchargement de l'image
-        for ($i = 1; $i <= 5; $i++) {
-            if ($request->hasFile('photo' . $i)) {
-                $file = $request->file('photo' . $i);
-                $filename = time() . '.' . $file->getClientOriginalExtension(); // Générer un nom de fichier unique pour eviter le conflit de nom similaire
-                $filePath = $file->storeAs('tests', $filename, 'public'); // Stocker dans le dossier 'photos' du disque public
-                $file->move(public_path('img/tests'), $filename);
-                $newPhotoArticle = new Photo_article();   /* Création de l'instance photo_article*/
-                // Attribuer les données à l'instance
-                $newPhotoArticle->id_article = $newArticle->id_article;
-                $newPhotoArticle->path = $filePath;
-                /* Stockage en BD de la nouvelle photo */
-                if (!$newPhotoArticle->save()) {
-                    session()->flash('erreurPhotos', 'Un problème lors de l\'ajout des photos s\'est produit, veuillez réessayer.');
-                    #return->back();??
-                }
-            }
+for ($i = 1; $i <= 5; $i++) {
+    if ($request->hasFile('photo' . $i)) {
+        $file = $request->file('photo' . $i);
+
+        // Créer un nom de fichier unique avec un identifiant aléatoire
+        $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+
+        // Stocker le fichier dans le répertoire public
+        $filePath = $file->storeAs('tests', $filename, 'public');
+
+        // Déplacer le fichier vers le dossier public (optionnel, dépendant de votre configuration)
+        $file->move(public_path('img/tests'), $filename);
+
+        $newPhotoArticle = new Photo_article();
+        $newPhotoArticle->id_article = $newArticle->id_article;
+        $newPhotoArticle->path = $filePath; // Stockage du chemin exact en base de données
+
+        if (!$newPhotoArticle->save()) {
+            session()->flash('erreurPhotos', 'Un problème lors de l\'ajout des photos s\'est produit, veuillez réessayer.');
         }
+    }
+}
+
 
         $idUser = Auth::user()->id;
 
@@ -279,7 +284,7 @@ class ArticleController extends Controller
                 "enVedette" => "required|in:0,1",
                 "flouter" => "required|in:0,1",
                 "prixArticle" => "required",
-                "nomArticle" => "required|max:255",
+                "nomArticle" => "required|max:128",
                 "pieceUnique" => "required|in:0,1",
                 "descriptionArticle" => "required|max:255",
                 "hauteurArticle" => "required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0.01",
@@ -296,7 +301,7 @@ class ArticleController extends Controller
                 "photo5" => "mimes:jpeg,png,jpg",
             ], [
                 "nomArticle.required" => "Le nom de l'article est obligatoire.",
-                "nomArticle.max" => "Le nom de l'article ne peut pas dépasser 255 caractères.",
+                "nomArticle.max" => "Le nom de l'article ne peut pas dépasser 128 caractères.",
 
                 "pieceUnique.required" => "Le champ pièce unique est obligatoire.",
                 "pieceUnique.in" => "La valeur du champ pièce unique doit être soit 'Unique' soit 'En série'.",
