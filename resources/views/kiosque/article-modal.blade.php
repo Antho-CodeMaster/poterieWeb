@@ -168,10 +168,13 @@
                     {{-- Boutons d'ajout au panier --}}
                     <div class="w-full flex flex-wrap justify-center">
                         <template x-if="article.quantite_disponible > 0 && article.id_etat == 1">
-                            <x-button.green.empty type="submit" id="addArticleBtn" value="confirmer"
-                                class="w-full h-[64px] cursor-pointer text-[36px] font-bold text-center">
-                                Confirmer
-                            </x-button.green.empty>
+                            <form action="{{ '/addArticleToPanier' }}" method="POST" class="w-full h-[64px] ">
+                                @csrf
+                                <x-button.green.empty type="submit" id="addArticleBtn" x-bind:value="article.id_article" name="id_article"
+                                    class="w-full h-[64px] text-[36px] font-bold text-center">
+                                    Ajouter au panier
+                                </x-button.green.empty>
+                            </form>
                         </template>
 
                         <template x-if="article.quantite_disponible == 0 && article.id_etat == 2">
