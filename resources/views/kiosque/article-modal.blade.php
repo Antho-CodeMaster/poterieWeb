@@ -1,6 +1,7 @@
-<div x-cloak @open-article-modal.window="openArticleModal = true;" class="z-[1000]" x-data="{ article: {}, photos: [], motsCles: [], currentIndex: 0 }">
+<div x-cloak @open-article-modal.window="openArticleModal = true;" class="z-[1000]" x-data="{ article: {}, photos: [], motsCles: [], currentIndex: 0, openArticleModal: false }">
     {{-- Fond gris --}}
-    <div x-show="openArticleModal" @set-article.window="article = JSON.parse($event.detail); console.log('Modal ouvert');"
+    <div x-show="openArticleModal"
+        @set-article.window="article = JSON.parse($event.detail); console.log('Modal ouvert'); currentIndex = 0;"
         @set-photos.window="photos = JSON.parse($event.detail)"
         @set-mots-cles.window="motsCles = JSON.parse($event.detail); console.log('Mots-clés mis à jour : ', this.motsCles);"
         class="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
@@ -10,11 +11,11 @@
 
             <section class="relative flex justify-center w-full h-[50px] items-center">
                 <!-- Titre centré -->
-                <h1 class="titre2-dark absolute left-1/2 transform -translate-x-1/2 w-full text-center"
-                    x-text="article.nom"></h1>
+                <p class="titre2-dark absolute left-1/2 transform -translate-x-1/2 w-full text-center"
+                    x-text="article.nom" class="text-ellipsis overflow-hidden text-nowrap"></p>
 
                 <!-- Bouton de fermeture -->
-                <button @click="openArticleModal = false" class="ml-auto absolute right-0">
+                <button @click="openArticleModal = false" class="ml-auto absolute right-0 hover:scale-110 duration-200">
                     <svg class="w-9 h-9" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                         height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -42,7 +43,8 @@
                             <template x-for="(photo, index) in photos" :key="photo.id_photo">
                                 <img :src="'/../img/' + photo.path" alt="Photo d'article"
                                     class="absolute w-[450px] h-[400px] object-cover transition-opacity duration-300 rounded shadow-lg"
-                                    :class="article.quantite_disponible < 2 ? 'brightness-[35%]' : ''"
+                                    :class="(article.quantite_disponible < 1 ? 'brightness-[35%]' : '') +
+                                    (article.id_etat == 2 ? ' brightness-[35%]' : '')"
                                     x-show="currentIndex === index"
                                     x-transition:enter="transition-opacity ease-in duration-400"
                                     x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
@@ -122,7 +124,8 @@
                                 <div class="flex gap-2">
                                     <template x-for="(motCle, index) in motsCles" :key="index">
                                         <div class="flex">
-                                            <p class=" textGrand-dark bg-beigeFoncé rounded-md p-2" x-text="motCle.mot_cle"></p>
+                                            <p class=" textGrand-dark bg-beigeFoncé rounded-md p-2"
+                                                x-text="motCle.mot_cle"></p>
                                         </div>
                                     </template>
                                 </div>
@@ -133,7 +136,7 @@
                         </div>
 
                         {{-- Types --}}
-                        <div class="flex flex-wrap gap-1 m-titreY w-full items-baseline">
+                        <div class="flex flex-wrap gap-1 w-full items-baseline">
                             <p class="titre3-dark mr-1 ">Type de pièce :</p>
                             <template x-if="article.is_unique == 1">
                                 <p class="textGrand-dark bg-beigeFoncé rounded-md p-2">Unique</p>
@@ -143,7 +146,7 @@
                                 <p class="textGrand-dark bg-beigeFoncé rounded-md p-2">En série</p>
                             </template>
                         </div>
-                        <div class="flex flex-wrap w-full gap-1 m-titreY items-baseline">
+                        <div class="flex flex-wrap w-full gap-1 items-baseline">
                             <p class="titre3-dark mr-1 ">Type d'usage :</p>
                             <template x-if="article.is_alimentaire == 1">
                                 <p class="textGrand-dark bg-beigeFoncé rounded-md p-2">Alimentaire</p>
@@ -162,16 +165,43 @@
                         </div>
                     </div>
 
-                    {{-- Boutons dajout au panier --}}
-                    <div class="w-full">
-                        <x-button.green.empty type="submit" id="addArticleBtn" value="confirmer"
-                            class="w-full h-[64px] cursor-pointer bg-vert text-[36px] font-bold text-center">
-                            Confirmer
-                        </x-button.green.empty>
+                    {{-- Boutons d'ajout au panier --}}
+                    <div class="w-full flex flex-wrap justify-center">
+                        <template x-if="article.quantite_disponible > 0 && article.id_etat == 1">
+                            <x-button.green.empty type="submit" id="addArticleBtn" value="confirmer"
+                                class="w-full h-[64px] cursor-pointer text-[36px] font-bold text-center">
+                                Confirmer
+                            </x-button.green.empty>
+                        </template>
+
+                        <template x-if="article.quantite_disponible == 0 && article.id_etat == 2">
+                            <x-button.grey.empty type="submit" id="addArticleBtn" value="confirmer"
+                                class="w-full h-[64px] cursor-pointer text-[36px] font-bold text-center">
+                                Masqué
+                            </x-button.grey.empty>
+                        </template>
+
+                        <template x-if="article.id_etat == 2 && article.quantite_disponible > 0">
+                            <x-button.grey.empty type="submit" id="addArticleBtn" value="confirmer"
+                                class="w-full h-[64px] cursor-pointer  text-[36px] font-bold text-center">
+                                Masqué
+                            </x-button.grey.empty>
+                        </template>
+
+                        <template x-if="article.quantite_disponible == 0">
+                            <x-button.grey.empty type="submit" id="addArticleBtn" value="confirmer"
+                                class="w-full h-[64px] cursor-pointer text-[36px] font-bold text-center">
+                                En rupture de stock
+                            </x-button.grey.empty>
+                        </template>
+
+                        {{-- Bouton de signalement --}}
+                        <p class="cursor-pointer textFooter-dark hover:text-blue-500 underline">
+                            Signalé cet article
+                        </p>
                     </div>
                 </div>
             </section>
-
         </div>
     </div>
 </div>

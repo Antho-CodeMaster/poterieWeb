@@ -33,29 +33,25 @@ document.addEventListener('DOMContentLoaded', function () {
             let fileInput = document.getElementById('photo' + index);
             fileInput.value = ''; // Réinitialiser le champ de fichier
 
-            // Réinitialiser le conteneur d'aperçu
+            // Récupérer le conteneur d'aperçu
             let previewContainer = document.getElementById('previewContainer' + index);
             let deleteButton = document.getElementById('suppressionBtn' + index);
 
-            // Créer une nouvelle instance du SVG en le clonant à partir de l'original
-            let svgClone = boutonsInputClone[0].cloneNode(true);
+            // Créer une nouvelle instance du SVG en le clonant
+            let svgClone = boutonsInputClone[index].cloneNode(true);
 
-            // Réinitialiser le contenu du conteneur et réinsérer le nouveau clone du SVG
+            // Remplacer le contenu du conteneur et ajouter le SVG cloné
             previewContainer.innerHTML = '';
             previewContainer.appendChild(svgClone); // Ajouter un nouveau clone du SVG
             previewContainer.appendChild(deleteButton); // Réinsérer le bouton de suppression
-
-            // Ajouter de nouveau l'événement pour le clone fraîchement ajouté
-            svgClone.addEventListener("click", function () {
-                document.getElementById('photo' + index).click();
-            });
         }
 
-        // Tableau pour stocker le modèle SVG initial
-        let boutonsInputClone = [document.getElementById('boutonInput1').cloneNode(true)];
-
-        // Ajouter un gestionnaire d'événements 'change' pour chaque input file généré dans la boucle
+        // Stocker chaque bouton SVG original
+        let boutonsInputClone = [];
         for (let i = 1; i <= 5; i++) {
+            boutonsInputClone[i] = document.getElementById('boutonInput' + i).cloneNode(true);
+
+            // Ajouter un gestionnaire d'événements 'change' pour chaque input file généré dans la boucle
             document.getElementById('photo' + i).addEventListener('change', function (event) {
                 previewImage(event, i);
             });
@@ -64,6 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 removeImage(i);
             });
         }
+
 
 
         // Gestion de la quantité en fonction du type de pièce

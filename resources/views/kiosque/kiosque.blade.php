@@ -103,16 +103,33 @@
                     <div class="w-[170px] m-article whitespace-nowrap">
 
                         <div class="w-[160px] h-[160px] relative">
-                            @if ($article->id_etat == 2)
-                                <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
-                                    class="z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover">
-                            @elseif ($article->quantite_disponible == 0 && $article->id_etat == 1)
-                                <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
-                                    class="z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover">
-                            @else
-                                <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
-                                    class="z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer h-[160px] w-full object-cover">
-                            @endif
+                            <div x-data="{ openArticleModal: false }">
+                                @if ($article->id_etat == 2)
+                                    <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
+                                        class="z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover"
+                                        @click=" $dispatch('open-article-modal');
+                                        console.log('Dispatching set-article');
+                                        $dispatch('set-article', '{{ $article }}');
+                                        $dispatch('set-photos', '{{ $article->photo_article }}');
+                                        $dispatch('set-mots-cles', '{{ $article->motCles }}'); ">
+                                @elseif ($article->quantite_disponible == 0 && $article->id_etat == 1)
+                                    <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
+                                        class="z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover"
+                                        @click=" $dispatch('open-article-modal');
+                                        console.log('Dispatching set-article');
+                                        $dispatch('set-article', '{{ $article }}');
+                                        $dispatch('set-photos', '{{ $article->photo_article }}');
+                                        $dispatch('set-mots-cles', '{{ $article->motCles }}'); ">
+                                @else
+                                    <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
+                                        class="z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer h-[160px] w-full object-cover"
+                                        @click=" $dispatch('open-article-modal');
+                                        console.log('Dispatching set-article');
+                                        $dispatch('set-article', '{{ $article }}');
+                                        $dispatch('set-photos', '{{ $article->photo_article }}');
+                                        $dispatch('set-mots-cles', '{{ $article->motCles }}'); ">
+                                @endif
+                            </div>
 
                             {{-- Changer l'image selon l'état de l'article --}}
                             @if (Auth::id() == $artiste->id_user)
@@ -143,9 +160,8 @@
 
                             {{-- Vérifie chaque like du user avec l'article --}}
                             @if ($article->isLikedByUser(Auth::id()))
-                                <svg class="w-10 h-10" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#ff0000"
-                                    viewBox="0 0 24 24">
+                                <svg class="w-10 h-10" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    width="24" height="24" fill="#ff0000" viewBox="0 0 24 24">
                                     <path stroke="#444444" stroke-linecap="round" stroke-linejoin="round"
                                         stroke-width="2"
                                         d="m12.75 20.66 6.184-7.098c2.677-2.884 2.559-6.506.754-8.705-.898-1.095-2.206-1.816-3.72-1.855-1.293-.034-2.652.43-3.963 1.442-1.315-1.012-2.678-1.476-3.973-1.442-1.515.04-2.825.76-3.724 1.855-1.806 2.201-1.915 5.823.772 8.706l6.183 7.097c.19.216.46.34.743.34a.985.985 0 0 0 .743-.34Z" />

@@ -168,7 +168,7 @@
                                 @endif
                             </div>
 
-                            {{-- Montré le nombre de like --}}
+                            {{-- Lien vers modifArticle --}}
                             <form action="{{ route('modifArticleForm', ['idArticle' => $article->id_article]) }}" method="get">
                                 @csrf
                                 <button type="submit">
