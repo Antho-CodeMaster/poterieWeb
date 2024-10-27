@@ -3,57 +3,52 @@ document.addEventListener('DOMContentLoaded', function () {
     // Vérifie si on est sur la bonne page
     if (document.baseURI.includes("modifArticle")) {
 
-        // Tableau pour stocker les clones du SVG initial
-        let svgCache = [];
+/*         let svgCache = []; // Tableau pour stocker les clones du SVG initial */
 
         function previewImage(event, index) {
             var fileInput = document.getElementById('photo' + index);
             var previewContainer = document.getElementById('previewContainer' + index);
-//            var deleteButton = document.getElementById('suppressionBtn' + index);
-            var biggerContainer = document.getElementById('biggerContainer');
 
             if (fileInput.files && fileInput.files[0]) {
                 var reader = new FileReader();
 
                 reader.onload = function (e) {
+                    // Recherchez une image d'aperçu existante
                     var existingImage = document.getElementById('imgPreview' + index);
 
                     if (existingImage) {
-                        // Mettre à jour la source de l'image existante
+                        // Met à jour la source de l'image si elle existe déjà
                         existingImage.src = e.target.result;
                     } else {
-                        // Créer une nouvelle image si elle n'existe pas encore
+                        // Crée une nouvelle image si elle n'existe pas
                         var img = document.createElement('img');
-                        img.src = e.target.result; // Utiliser l'URL générée par FileReader
-                        img.classList.add('w-[100px]', 'h-[96px]', 'object-cover', "border-[2px]", "border-darkGrey", "rounded-[0.375rem]");
+                        img.src = e.target.result;
+                        img.id = 'imgPreview' + index; // Ajout d'un ID unique
+                        img.classList.add('w-[100px]', 'h-[96px]', 'object-cover', 'border-[2px]', 'border-darkGrey', 'rounded-[0.375rem]');
 
-                        // Remplacer le contenu du conteneur par l'image
+                        // Remplace uniquement le contenu du conteneur sans supprimer les autres éléments
                         previewContainer.innerHTML = '';
                         previewContainer.appendChild(img);
-//                        biggerContainer.appendChild(deleteButton);
                     }
                 };
 
-                reader.readAsDataURL(fileInput.files[0]); // Lire le fichier et générer l'URL temporaire
+                reader.readAsDataURL(fileInput.files[0]); // Lire le fichier comme URL temporaire
             }
         }
 
-       /*  // Fonction pour réinitialiser l'aperçu (remettre le SVG)
+/*         // Fonction pour réinitialiser l'aperçu en remettant le SVG
         function removeImage(index) {
-            // Réinitialiser l'input file
             let fileInput = document.getElementById('photo' + index);
-            fileInput.value = ''; // Réinitialise le champ de fichier sans le supprimer
+            fileInput.value = ''; // Réinitialise le champ de fichier
 
-            // Récupérer le conteneur d'aperçu et réinsérer le clone du SVG
+            // Récupérer le conteneur d'aperçu
             let previewContainer = document.getElementById('previewContainer' + index);
-            let deleteButton = document.getElementById('suppressionBtn' + index);
 
-            // Réinitialiser le contenu du conteneur et réinsérer le SVG cloné
+            // Réinitialiser le contenu et réinsérer le SVG du cache
             previewContainer.innerHTML = '';
             if (svgCache[index]) {
                 previewContainer.innerHTML = svgCache[index];
             }
-            previewContainer.appendChild(deleteButton); // Réinsérer le bouton de suppression
         } */
 
         // Ajouter un gestionnaire d'événements 'change' pour chaque input file généré dans la boucle
@@ -61,16 +56,18 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('photo' + i).addEventListener('change', function (event) {
                 previewImage(event, i);
             });
-
+/*
             document.getElementById("suppressionBtn" + i).addEventListener("click", function (event) {
                 removeImage(i);
-            });
-
+            }); */
+/*
+            // Sauvegarde du SVG d'origine dans le cache
             let svgElement = document.getElementById('svg' + i);
             if (svgElement) {
-                svgCache[i] = svgElement.outerHTML; // Stocker le SVG sous forme de string
-            }
+                svgCache[i] = svgElement.outerHTML;
+            } */
         }
+
 
         // Gestion de la quantité en fonction du type de pièce
         document.getElementById("pieceUnique").addEventListener("change", function (event) {

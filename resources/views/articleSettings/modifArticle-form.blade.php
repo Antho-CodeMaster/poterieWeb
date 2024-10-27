@@ -7,7 +7,7 @@
 
             <div class="grid grid-cols-7 gap-6 grow overflow-auto">
                 <form method="post" action="{{ route('modifArticle') }}" id="modifArticleForm"
-                    enctype="multipart/form-data" class="col-span-5">
+                    enctype="multipart/form-data" class=" col-span-5">
                     @csrf
                     @method('PATCH')
 
@@ -24,7 +24,7 @@
                                 <p class="text-[200%]">&#9432;</p>
                             </x-tooltip>
                         </div>
-                        <div class="flex gap-input " >
+                        <div class="flex gap-input ">
                             @for ($i = 1; $i <= 5; $i++)
                                 <div id="biggerContainer">
                                     {{-- Définir une classe pour la bordure en fonction des erreurs --}}
@@ -298,127 +298,126 @@
                             Modifier article
                         </x-button.green.empty>
                 </form>
+            </div>
 
-                {{-- Affichage des erreurs/succes/fails --}}
-                <div class="col-span-2 mr-1">
+            {{-- Affichage des erreurs/succes/fails --}}
+            <div class=" col-span-2 mr-1">
 
-                    {{-- Succes de l'ajout d'un article --}}
-                    @if (Session::has('succesArticle'))
-                        @include('messages.messageSucces', [
-                            'message' => Session::get('succesArticle'),
-                            'titre' => 'Modification',
-                        ])
-                    @endif
+                {{-- Succes de l'ajout d'un article --}}
+                @if (Session::has('succesArticle'))
+                    @include('messages.messageSucces', [
+                        'message' => Session::get('succesArticle'),
+                        'titre' => 'Modification',
+                    ])
+                @endif
 
-                    {{-- Erreur de l'ajout des mots clés --}}
-                    @if (Session::has('erreurMotcles'))
-                        @include('messages.messageFail', [
-                            'message' => Session::get('erreurMotcles'),
-                            'titre' => 'Mots Clés',
-                        ])
-                    @endif
+                {{-- Erreur de l'ajout des mots clés --}}
+                @if (Session::has('erreurMotcles'))
+                    @include('messages.messageFail', [
+                        'message' => Session::get('erreurMotcles'),
+                        'titre' => 'Mots Clés',
+                    ])
+                @endif
 
-                    {{-- Erreur de l'ajout des photos --}}
-                    @if (Session::has('erreurPhotos'))
-                        @include('messages.messageFail', [
-                            'message' => Session::get('erreurPhotos'),
-                            'titre' => 'Photos',
-                        ])
-                    @endif
+                {{-- Erreur de l'ajout des photos --}}
+                @if (Session::has('erreurPhotos'))
+                    @include('messages.messageFail', [
+                        'message' => Session::get('erreurPhotos'),
+                        'titre' => 'Photos',
+                    ])
+                @endif
 
-                    {{-- Erreur de photos --}}
-                    @for ($i = 1; $i <= 5; $i++)
-                        @if ($errors->has("photo{$i}"))
-                            @include('messages.messageError', [
-                                'message' => $errors->first("photo{$i}"),
-                                'titre' => "Photo $i",
-                            ])
-                        @endif
-                    @endfor
-
-                    {{-- Erreur dans le nom --}}
-                    @if ($errors->has('nomArticle'))
+                {{-- Erreur de photos --}}
+                @for ($i = 1; $i <= 5; $i++)
+                    @if ($errors->has("photo{$i}"))
                         @include('messages.messageError', [
-                            'message' => $errors->first('nomArticle'),
-                            'titre' => 'Nom',
+                            'message' => $errors->first("photo{$i}"),
+                            'titre' => "Photo $i",
                         ])
                     @endif
+                @endfor
 
-                    {{-- Erreur dans le prix --}}
-                    @if ($errors->has('prixArticle'))
-                        @include('messages.messageError', [
-                            'message' => $errors->first('prixArticle'),
-                            'titre' => 'Prix',
-                        ])
-                    @endif
+                {{-- Erreur dans le nom --}}
+                @if ($errors->has('nomArticle'))
+                    @include('messages.messageError', [
+                        'message' => $errors->first('nomArticle'),
+                        'titre' => 'Nom',
+                    ])
+                @endif
 
-                    @if ($errors->has('descriptionArticle'))
-                        {{-- Erreur dans la description --}}
-                        @include('messages.messageError', [
-                            'message' => $errors->first('descriptionArticle'),
-                            'titre' => 'Description',
-                        ])
-                    @endif
+                {{-- Erreur dans le prix --}}
+                @if ($errors->has('prixArticle'))
+                    @include('messages.messageError', [
+                        'message' => $errors->first('prixArticle'),
+                        'titre' => 'Prix',
+                    ])
+                @endif
 
-                    {{-- Erreur dans les mots clés --}}
-                    @if ($errors->has('motClesArticle'))
-                        @include('messages.messageError', [
-                            'message' => $errors->first('motClesArticle'),
-                            'titre' => 'Mots clés',
-                        ])
-                    @endif
+                @if ($errors->has('descriptionArticle'))
+                    {{-- Erreur dans la description --}}
+                    @include('messages.messageError', [
+                        'message' => $errors->first('descriptionArticle'),
+                        'titre' => 'Description',
+                    ])
+                @endif
 
-                    {{-- Erreur dans la hauteur --}}
-                    @if ($errors->has('hauteurArticle'))
-                        @include('messages.messageError', [
-                            'message' => $errors->first('hauteurArticle'),
-                            'titre' => 'Hauteur',
-                        ])
-                    @endif
+                {{-- Erreur dans les mots clés --}}
+                @if ($errors->has('motClesArticle'))
+                    @include('messages.messageError', [
+                        'message' => $errors->first('motClesArticle'),
+                        'titre' => 'Mots clés',
+                    ])
+                @endif
 
-                    {{-- Erreur dans la largeur --}}
-                    @if ($errors->has('largeurArticle'))
-                        @include('messages.messageError', [
-                            'message' => $errors->first('largeurArticle'),
-                            'titre' => 'Largeur',
-                        ])
-                    @endif
+                {{-- Erreur dans la hauteur --}}
+                @if ($errors->has('hauteurArticle'))
+                    @include('messages.messageError', [
+                        'message' => $errors->first('hauteurArticle'),
+                        'titre' => 'Hauteur',
+                    ])
+                @endif
 
-                    {{-- Erreur dans la profondeur --}}
-                    @if ($errors->has('profondeurArticle'))
-                        @include('messages.messageError', [
-                            'message' => $errors->first('profondeurArticle'),
-                            'titre' => 'Profondeur',
-                        ])
-                    @endif
+                {{-- Erreur dans la largeur --}}
+                @if ($errors->has('largeurArticle'))
+                    @include('messages.messageError', [
+                        'message' => $errors->first('largeurArticle'),
+                        'titre' => 'Largeur',
+                    ])
+                @endif
 
-                    {{-- Erreur dans la largeur --}}
-                    @if ($errors->has('poidsArticle'))
-                        @include('messages.messageError', [
-                            'message' => $errors->first('poidsArticle'),
-                            'titre' => 'Poids',
-                        ])
-                    @endif
+                {{-- Erreur dans la profondeur --}}
+                @if ($errors->has('profondeurArticle'))
+                    @include('messages.messageError', [
+                        'message' => $errors->first('profondeurArticle'),
+                        'titre' => 'Profondeur',
+                    ])
+                @endif
 
-                    {{-- Erreur dans la largeur --}}
-                    @if ($errors->has('typePiece'))
-                        @include('messages.messageError', [
-                            'message' => $errors->first('typePiece'),
-                            'titre' => 'Type d\'usage',
-                        ])
-                    @endif
+                {{-- Erreur dans la largeur --}}
+                @if ($errors->has('poidsArticle'))
+                    @include('messages.messageError', [
+                        'message' => $errors->first('poidsArticle'),
+                        'titre' => 'Poids',
+                    ])
+                @endif
 
-                    {{-- Erreur dans la largeur --}}
-                    @if ($errors->has('pieceUnique'))
-                        @include('messages.messageError', [
-                            'message' => $errors->first('pieceUnique'),
-                            'titre' => 'Type de pièce',
-                        ])
-                    @endif
-                </div>
+                {{-- Erreur dans la largeur --}}
+                @if ($errors->has('typePiece'))
+                    @include('messages.messageError', [
+                        'message' => $errors->first('typePiece'),
+                        'titre' => 'Type d\'usage',
+                    ])
+                @endif
+
+                {{-- Erreur dans la largeur --}}
+                @if ($errors->has('pieceUnique'))
+                    @include('messages.messageError', [
+                        'message' => $errors->first('pieceUnique'),
+                        'titre' => 'Type de pièce',
+                    ])
+                @endif
             </div>
         </div>
-
     </div>
 
 </x-app-layout>
