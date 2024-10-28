@@ -26,7 +26,7 @@
                             <select name="quantite" class="w-1/2 quantite-select quantite">
 
                                 @for ($i= 1; $i <= $transaction->article->quantite_disponible ; $i++)
-                                    <option value="{{$i}}"> {{$i}} </option>
+                                    <option value="{{$i}}" {{$i === $transaction->quantite ? 'selected' : ''}}> {{$i}} </option>
                                 @endfor
 
                             </select>
@@ -70,7 +70,7 @@
                 <p class="grow">Estimé total</p>
                 <p class="" id="total">NNN $</p>
             </div>
-            <button class="bg-[#009b4d] w-[80%] mx-auto mb-[5%] rounded-lg">Passer la commande</button>
+            <a href="{{route('checkout')}}"><button class="bg-[#009b4d] w-[80%] mx-auto mb-[5%] rounded-lg">Passer la commande</button></a>
 
 
         </div>

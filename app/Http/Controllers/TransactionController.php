@@ -44,12 +44,14 @@ class TransactionController extends Controller
             );
 
             //get si la transaction existe deja ou en créé une nouvelle
-            Transaction::firstOrCreate([
+            $transaction = Transaction::firstOrCreate([
                 'id_commande' => $commande->id_commande,
                 'id_article' => $request->input('id_article')],
-                ['quantite' => 0,'id_etat' => 2]);
+                ['quantite' => 1,'id_etat' => 2]);
 
-            //incémente la quantité (0+1 si nouvelle)
+            #
+            $transaction->update(['prix_unitaire' => $transaction->article->prix]);
+
             return Redirect::back(302,['message' => 'Succes: Article ajouté au panier']);
         }
         #Créé un cookie qui store le panier si l'utilisateur n'est pas connecté
@@ -92,9 +94,11 @@ class TransactionController extends Controller
     /**
      * Update rien pour l'instant
      */
-    public function update(Request $request, transaction $transaction)
+    public function update(Request $request)
     {
+        if(Auth::check()){
 
+        }
     }
 
     /**
