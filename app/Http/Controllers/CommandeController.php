@@ -163,4 +163,59 @@ class CommandeController extends Controller
     }
 
 
+    /**Gestion de Checkout */
+
+    public function checkoutCommande(Request $request){
+
+        $commande = $this->getPanier($request);
+
+        #On formate les transactions du panier en Items lisible pour Stripe Checkout
+        $cartItems = $this->FormatPanier($commande);
+
+
+        #Set de la clé d'api pour stripe
+        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+
+        $checkoutSession = \Stripe\Checkout\Session::create([
+            'payment_method_types' => ['card'],
+            'line_items' => $cartItems,
+            'mode' => 'payment', // Paiement unique
+            'success_url' => route('checkout-success'),
+            'cancel_url' => route('checkout-cancel'),
+        ]);
+
+        $commande->update(['checkout_session_id' => $checkoutSession->id]);
+
+        return redirect($checkoutSession->url);
+    }
+
+    public function success(){
+
+    }
+    public function cancel(){
+
+    }
+
+    public function FormatPanier(Commande $panier){
+        $items =[];
+        foreach($panier->transactions as $transaction){
+
+            $item = [
+                'price_data' => [
+                    'currency' => 'cad',
+                    'product_data' => [
+                        'name' => $transaction->article->nom,
+                    ],
+                    'unit_amount' => $transaction->prix_unitaire * 100, // Prix en cenne (Prix en dollards * 100)
+                ],
+                'quantity' => $transaction->quantite,
+            ];
+
+            /**Ajoute l'item a l'array */
+            array_push($items, $item);
+        }
+
+        return $items;
+    }
+
 }
