@@ -59,7 +59,7 @@
     {{-- Section En vedette --}}
     <section class="m-collection" x-data='{openArticleModal: false}'>
         <div class="flex justify-between items-end">
-            <h2 class="titre2-dark mx-[16px] m-titreY">En vedette</h2>
+            <h2 class="titre2-dark mx-[16px] m-titreY select-none">En vedette</h2>
             {{-- Vérification si l'utilisateur qui visite la page est le propriétaire du kiosque --}}
             @if (Auth::id() == $artiste->id_user)
                 {{-- Boutons d'artistes --}}
@@ -82,10 +82,10 @@
     <section class="m-collection" x-data='{openDeleteArticle: false}' x-data='{openArticleModal: false}'>
         <div class="flex justify-between items-end">
             <div class="flex items-center">
-                <h2 class=" titre2-dark mx-[16px] mr-[2px] m-titreY">Tous les articles</h2>
+                <h2 class=" titre2-dark mx-[16px] mr-[2px] m-titreY select-none">Tous les articles</h2>
 
                 {{-- Bouton de filtre --}}
-                <svg class="w-8 h-8 cursor-pointer" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                <svg class="w-8 h-8 cursor-pointer select-none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                     height="24" fill="#444444" viewBox="0 0 24 24">
                     <path
                         d="M10.83 5a3.001 3.001 0 0 0-5.66 0H4a1 1 0 1 0 0 2h1.17a3.001 3.001 0 0 0 5.66 0H20a1 1 0 1 0 0-2h-9.17ZM4 11h9.17a3.001 3.001 0 0 1 5.66 0H20a1 1 0 1 1 0 2h-1.17a3.001 3.001 0 0 1-5.66 0H4a1 1 0 1 1 0-2Zm1.17 6H4a1 1 0 1 0 0 2h1.17a3.001 3.001 0 0 0 5.66 0H20a1 1 0 1 0 0-2h-9.17a3.001 3.001 0 0 0-5.66 0Z" />
@@ -106,7 +106,7 @@
                             <div x-data="{ openArticleModal: false }">
                                 @if ($article->id_etat == 2)
                                     <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
-                                        class="z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover"
+                                        class="select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200"
                                         @click=" $dispatch('open-article-modal');
                                         console.log('Dispatching set-article');
                                         $dispatch('set-article', '{{ $article }}');
@@ -114,7 +114,7 @@
                                         $dispatch('set-mots-cles', '{{ $article->motCles }}'); ">
                                 @elseif ($article->quantite_disponible == 0 && $article->id_etat == 1)
                                     <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
-                                        class="z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover"
+                                        class="select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200"
                                         @click=" $dispatch('open-article-modal');
                                         console.log('Dispatching set-article');
                                         $dispatch('set-article', '{{ $article }}');
@@ -122,7 +122,7 @@
                                         $dispatch('set-mots-cles', '{{ $article->motCles }}'); ">
                                 @else
                                     <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
-                                        class="z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer h-[160px] w-full object-cover"
+                                        class="select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200"
                                         @click=" $dispatch('open-article-modal');
                                         console.log('Dispatching set-article');
                                         $dispatch('set-article', '{{ $article }}');

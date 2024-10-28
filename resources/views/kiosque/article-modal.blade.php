@@ -30,19 +30,32 @@
                     <div x-data="{ currentIndex: 0 }" class="w-full h-[400px] flex items-center justify-between m-sectionY">
 
                         {{-- Flèche gauche --}}
-                        <svg id="prevBtn" @click="currentIndex = (currentIndex - 1 + photos.length) % photos.length"
-                            class="text-darkGrey cursor-pointer transition-transform duration-300 hover:scale-110"
-                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="64" height="64"
-                            fill="none" viewBox="4 4 16 16">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m15 19-7-7 7-7" />
-                        </svg>
+                        <template x-if="photos.length == 1">
+                            <svg id="prevBtn"
+                                @click="currentIndex = (currentIndex - 1 + photos.length) % photos.length"
+                                class="text-darkGrey cursor-pointer transition-transform duration-300 hover:scale-110"
+                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="64" height="64"
+                                fill="none" viewBox="4 4 16 16">
+                                <path stroke="#c7c7c7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="m15 19-7-7 7-7" />
+                            </svg>
+                        </template>
+                        <template x-if="photos.length > 1">
+                            <svg id="prevBtn"
+                                @click="currentIndex = (currentIndex - 1 + photos.length) % photos.length"
+                                class="text-darkGrey cursor-pointer transition-transform duration-300 hover:scale-110"
+                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="64" height="64"
+                                fill="none" viewBox="4 4 16 16">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="m15 19-7-7 7-7" />
+                            </svg>
+                        </template>
 
                         {{-- Conteneur d'images --}}
                         <div class="flex relative w-full h-full justify-center">
                             <template x-for="(photo, index) in photos" :key="photo.id_photo">
                                 <img :src="'/../img/' + photo.path" alt="Photo d'article"
-                                    class="absolute w-[450px] h-[400px] object-cover transition-opacity duration-300 rounded shadow-lg"
+                                    class="absolute w-[450px] h-[400px] object-cover transition-opacity duration-300 rounded shadow-lg select-none"
                                     :class="(article.quantite_disponible < 1 ? 'brightness-[35%]' : '') +
                                     (article.id_etat == 2 ? ' brightness-[35%]' : '')"
                                     x-show="currentIndex === index"
@@ -54,13 +67,26 @@
                         </div>
 
                         {{-- Flèche droite --}}
-                        <svg id="nextBtn" @click="currentIndex = (currentIndex + 1) % photos.length"
-                            class="text-darkGrey cursor-pointer transition-transform duration-300 hover:scale-110"
-                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="64" height="64"
-                            fill="none" viewBox="4 4 16 16">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m9 5 7 7-7 7" />
-                        </svg>
+                        <template x-if="photos.length == 1">
+                            <svg id="nextBtn" @click="currentIndex = (currentIndex + 1) % photos.length"
+                                class="text-darkGrey cursor-pointer transition-transform duration-300 hover:scale-110"
+                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="64" height="64"
+                                fill="none" viewBox="4 4 16 16">
+                                <path stroke="#c7c7c7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="m9 5 7 7-7 7" />
+                            </svg>
+                        </template>
+                        <template x-if="photos.length > 1">
+                            <svg id="nextBtn" @click="currentIndex = (currentIndex + 1) % photos.length"
+                                class="text-darkGrey cursor-pointer transition-transform duration-300 hover:scale-110"
+                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="64" height="64"
+                                fill="none" viewBox="4 4 16 16">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m9 5 7 7-7 7" />
+                            </svg>
+                        </template>
+
+
                     </div>
 
                     {{-- Dimension --}}
@@ -170,7 +196,8 @@
                         <template x-if="article.quantite_disponible > 0 && article.id_etat == 1">
                             <form action="{{ '/addArticleToPanier' }}" method="POST" class="w-full h-[64px] ">
                                 @csrf
-                                <x-button.green.empty type="submit" id="addArticleBtn" x-bind:value="article.id_article" name="id_article"
+                                <x-button.green.empty type="submit" id="addArticleBtn"
+                                    x-bind:value="article.id_article" name="id_article"
                                     class="w-full h-[64px] text-[36px] font-bold text-center">
                                     Ajouter au panier
                                 </x-button.green.empty>
