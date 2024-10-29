@@ -34,6 +34,34 @@ class TransactionSeeder extends Seeder
                     'date_reception_effective' => $etat == 3 ? now() : null,
                 ]);
             }
+        //Générer transactions prédéfinies pour tests
+        for($i = 0; $i <= 5; $i++)
+        {
+            $id_article = random_int(0, 50);
+            $article = Article::where('id_article', $id_article)->get();
 
+            DB::table('transactions')->insert([
+                'id_commande' => 11,
+                'id_article' => $id_article,
+                'id_etat' => 4,
+                'id_compagnie' => random_int(1, 3),
+                'quantite' => $article->unique ? 1 : random_int(1, $article->quantite_disponible),
+                'prix_unitaire' => fake()->randomFloat(2, 1, 999),
+                'date_reception_prevue' => now(),
+                'date_reception_effective' => $etat == 3 ? now() : null,
+            ]);
+
+            DB::table('transactions')->insert([
+                'id_commande' => 12,
+                'id_article' => $id_article,
+                'id_etat' => rand(2,5),
+                'id_compagnie' => random_int(1, 3),
+                'quantite' => $article->unique ? 1 : random_int(1, $article->quantite_disponible),
+                'prix_unitaire' => fake()->randomFloat(2, 1, 999),
+                'date_reception_prevue' => now(),
+                'date_reception_effective' => $etat == 3 ? now() : null,
+            ]);
+        }
     }
+
 }

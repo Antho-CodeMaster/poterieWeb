@@ -47,8 +47,9 @@
                     En rupture de stock
                 </p>
             @else
-                <form action="{{ route('decouverte') }}" method="GET" class="w-full">
-                    <button type="submit" value="add" name="ajouterPanier"
+                <form action="{{ route('addArticleToPanier') }}" method="POST" class="w-full">
+                    @csrf
+                    <button type="submit" value="{{$article->id_article}}" name="id_article"
                         class="border-darkGrey border rounded-[24px] w-full h-[32px] text-darkGrey font-bold">
                         Ajouter au panier
                     </button>

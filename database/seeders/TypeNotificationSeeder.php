@@ -14,15 +14,15 @@ class TypeNotificationSeeder extends Seeder
     public function run(): void
     {
         DB::table('types_notification')->insert([
-            'description' => '[1] a publié un nouvel article!',
-        ]);
-
-        DB::table('types_notification')->insert([
             'description' => 'ATTENTION: un administrateur vous a averti pour la raison suivante: [1]',
         ]);
 
         DB::table('types_notification')->insert([
-            'description' => 'Votre commande est prête! Cliquez pour visualiser la commande.',
+            'description' => 'Votre demande pour devenir vendeur a été refusée. Raison: [1]',
+        ]);
+
+        DB::table('types_notification')->insert([
+            'description' => 'Votre demande pour devenir vendeur a été acceptée! Vous avez maintenant accès à votre kiosque dans la barre de navigation.',
         ]);
 
         DB::table('types_notification')->insert([

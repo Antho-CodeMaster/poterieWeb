@@ -1,7 +1,37 @@
 <x-app-layout>
-<div>
-    <h1>Découvertes</h1>
-    <h2>TEST H2</h2>
-    <p>TEST P</p>
-</div>
+    <div class="bg-beigeFoncé m-section">
+        <h1 class="titreH1-dark">Terracium H1</h1>
+        <h2 class="titreH2-dark">Terracium H2</h2>
+        <p class="textGrand-dark">Terracium textNormal Gros</p>
+        <p class="titreSection-dark">Terracium titreSection</p>
+        <p class="articleGrand-dark">Terracium titreArticleGros</p>
+        <p class="articlePetit-dark">Terracium titreArticlePetit</p>
+        <p class="textFooter-dark">Terracium footer</p>
+        <p class="textNavigation-dark">Terracium navigation</p>
+
+        <div class="bg-darkGrey">
+            <h1 class="titreH1-light">Terracium H1</h1>
+            <h2 class="titreH2-light">Terracium H2</h2>
+            <p class="textPetit-light">Terracium textNormal petit</p>
+            <p class="titreSection-light">Terracium titreSection</p>
+            <p class="articleGrand-light">Terracium titreArticleGros</p>
+            <p class="articlePetit-light">Terracium titreArticlePetit</p>
+            <p class="textFooter-light">Terracium footer</p>
+            <p class="textNavigation-light">Terracium navigation</p>
+        </div>
+
+
+
+        @if (Session::all())
+            {{-- Modal de remerciement d'avoir envoyé une demande --}}
+            @if (Session::has('succesDemande'))
+                @include('components.devenir-artiste-succes-modal')
+            @endif
+            {{-- Span qui, s'il existe, va trigger l'ouvertur du modal de connexion --}}
+            @if (Session::has('openLoginModal'))
+                <span id="showLoginModal" class="hidden"></span>
+            @endif
+        @endif
+
+    </div>
 </x-app-layout>

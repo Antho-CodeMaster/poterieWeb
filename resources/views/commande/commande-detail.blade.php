@@ -20,17 +20,17 @@
 
 <div class="hidden text-[#FF0000] text-[#ffb700] text-[#009b4d] text-[#0000FF] rotate-180"></div>
 
-    <h1 class="my-8 w-full text-center text-4xl leading-none tracking-tight md:text-5xl lg:text-6xl ">Informations</h1>
-    <h1 class="my-8 w-full text-center text-4xl leading-none tracking-tight md:text-5xl lg:text-6xl ">Date : {{$commande->date}}</h1>
+    <h1 class="my-4 w-full text-center text-4xl leading-none tracking-tight md:text-5xl lg:text-6xl ">Détails</h1>
+    <h1 class="my-4 w-full text-center text-2xl leading-none tracking-tight md:text-5xl lg:text-6xl ">Date : {{$commande->date}}</h1>
 
 
     @foreach ($articleParArtiste as $nomArtiste => $transactions)
         {{-- ex layout une commande --}}
-    <div class="w-3/4 m-auto my-14 border-black border-2 rounded-3xl flex">
+    <div class="w-3/4 m-auto my-6 border-black border-2 rounded-3xl flex">
         <div class="w-3/4">
         @php $totalArtiste = 0.0 @endphp
         @foreach ($transactions as $transaction)
-            <div class="flex my-24 ml-24 w-full">
+            <div class="flex my-10 ml-24 w-full">
                 {{--images--}}
                 <div class="w-1/6 flex relative space-x-0">
                     <img src="{{'../img/' . $transaction->article->photo_article[0]->path}}" alt="image d'article" class="rounded-[12px] shadow-xl shadow-black">

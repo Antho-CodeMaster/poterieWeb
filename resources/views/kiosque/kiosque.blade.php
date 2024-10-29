@@ -4,7 +4,7 @@
     <section class="flex items-center justify-between p-[16px]" {{-- style="background-color: #{{ $artiste->couleur_banniere }}" --}}>
 
         {{-- Nom d'artiste --}}
-        <div class="flex-1 text-left reseaux">
+        <div class="flex-1 text-left titre1-dark">
             {{ $artiste->nom_artiste }}
         </div>
 
@@ -19,7 +19,7 @@
             @foreach ($reseaux as $reseau)
                 <div class="text-right">
                     <a href="{{ $reseau->url }}{{ $reseau->pivot->username }}" class="inline-flex items-center">
-                        <p class="reseaux">{{ $reseau->pivot->username }}</p>
+                        <p class=" titre1-dark">{{ $reseau->pivot->username }}</p>
 
                         {{-- Si réseau youtube --}}
                         @if ($reseau->reseau == 'YouTube')
@@ -57,9 +57,9 @@
     </section>
 
     {{-- Section En vedette --}}
-    <section class="mt-[32px]">
-        <h2 class="titre2 mx-[16px]">En vedette</h2>
-        <div class="bg-beige flex items-center justify-between realtive">
+    <section class="m-collection">
+        <h2 class="titre2-dark mx-[16px]">En vedette</h2>
+        <div class="bg-beige flex items-center justify-between relative">
 
             {{-- Flèche gauche --}}
             <svg id="prevBtn" class="text-darkGrey absolute cursor-pointer z-0" aria-hidden="true"
@@ -73,13 +73,14 @@
                 {{-- Affiche seulement les articles visibles, en stock et en vedette seulement --}}
                 @foreach ($articles as $article)
                     @if ($article->etat->etat == 'Visible client' && $article->quantite_disponible > 0 && $article->is_en_vedette == 1)
-                        <div class="w-[300px] m-[16px] flex-shrink-0 overflow-hidden whitespace-nowrap">
+                        {{-- Div de l'article --}}
+                        <div class="w-[300px] m-article flex-shrink-0 overflow-hidden whitespace-nowrap">
                             <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
                                 class="shadow-md rounded-[16px] cursor-pointer w-full h-[300px] object-cover">
                             <div class="flex justify-between items-center my-[10px]">
                                 <div class="w-[80%]">
-                                    <p class="article mb-[3px]">{{ $article->nom }}</p>
-                                    <p id="prix" class="text-[15px] font-bold text-darkGrey">{{ $article->prix }}$
+                                    <p class=" articleGrand-dark ">{{ $article->nom }}</p>
+                                    <p id="prix" class="articlePetit-dark">{{ $article->prix }}$
                                     </p>
                                 </div>
 
@@ -104,7 +105,8 @@
                             </div>
                             <form action="{{ route('decouverte') }}" method="GET">
                                 <button type="submit" value="add" name="ajouterPanier"
-                                    class="border-darkGrey border rounded-[24px] w-[100%] h-[40px] article">Ajouter au
+                                    class="border-darkGrey border rounded-[24px] w-[100%] h-[40px] articleGrand-dark">Ajouter
+                                    au
                                     panier
                                 </button>
                             </form>
@@ -126,10 +128,10 @@
     </section>
 
     {{-- Section Tous les articles --}}
-    <section class="mt-[32px]">
-        <div class="flex justify-between items-end my-[8px]">
+    <section class="m-collection" x-data='{openDeleteArticle: false}'>
+        <div class="flex justify-between items-end">
             <div class="flex">
-                <h2 class="titre2 ml-[16px] mr-[2px]">Tous les articles</h2>
+                <h2 class=" titre2-dark mx-[16px] mr-[2px]">Tous les articles</h2>
 
                 {{-- Bouton de filtre --}}
                 <svg class="w-8 h-8 cursor-pointer" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -142,7 +144,7 @@
             {{-- Boutons d'artistes --}}
             {{-- Vérification si l'utilisateur qui visite la page est le propriétaire du kiosque --}}
             @if (Auth::id() == $artiste->id_user)
-                <a href="{{ route('addArticleForm') }}" class="">
+                <a href="{{ route('addArticleForm') }}" class="mb-2">
                     <svg width="50" height="50" viewBox="0 0 126 126" fill="none"
                         xmlns="http://www.w3.org/2000/svg" class="mx-[16px]">
                         <path
@@ -152,12 +154,13 @@
                 </a>
             @endif
         </div>
+
         <div class="bg-beige flex flex-wrap justify-between">
 
             {{-- Affichage de tous les articles --}}
             @foreach ($articles as $article)
                 @if ($article->etat->etat == 'Visible client' || $article->etat->etat == 'Masqué client')
-                    <div class="w-[160px] mx-[16px] my-[16px] whitespace-nowrap">
+                    <div class="w-[160px] m-article whitespace-nowrap">
 
                         <div class="w-[160px] h-[160px] relative">
                             @if ($article->id_etat == 2)
@@ -173,14 +176,28 @@
 
                             {{-- Changer l'image selon l'état de l'article --}}
                             @if (Auth::id() == $artiste->id_user)
-                                @include('components.deleteArticle-modal', $article)
+                                <!-- Trigger Button for DeleteArticle Modal -->
+                                <div class="w-fit" x-data="{ openDeleteArticle: false }">
+                                    <button
+                                        @click=" $dispatch('open-delete-article-modal');
+                                                 $dispatch('set-id', {{ $article->id_article }});">
+                                        <svg class="w-9 h-9 text-blue-900 hover:text-red-600  absolute top-0 right-0"
+                                            width="40" height="44" viewBox="0 0 40 44" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M2 10H6M6 10H38M6 10V38C6 39.0609 6.42143 40.0783 7.17157 40.8284C7.92172 41.5786 8.93913 42 10 42H30C31.0609 42 32.0783 41.5786 32.8284 40.8284C33.5786 40.0783 34 39.0609 34 38V10M12 10V6C12 4.93913 12.4214 3.92172 13.1716 3.17157C13.9217 2.42143 14.9391 2 16 2H24C25.0609 2 26.0783 2.42143 26.8284 3.17157C27.5786 3.92172 28 4.93913 28 6V10M16 20V32M24 20V32"
+                                                stroke="#FC6262" stroke-width="4" stroke-linecap="round"
+                                                stroke-linejoin="round" class="" />
+                                        </svg>
+                                    </button>
+                                </div>
                             @endif
                         </div>
 
                         <div class="flex justify-between items-center my-[4px]">
                             <div class="w-[75%]">
-                                <p class="smallArticle">{{ $article->nom }}</p>
-                                <p class="text-[11px] font-bold text-darkGrey ">{{ $article->prix }}$
+                                <p class=" articlePetit-dark">{{ $article->nom }}</p>
+                                <p class="textPetit-dark">{{ $article->prix }}$
                                 </p>
                             </div>
 
@@ -207,17 +224,18 @@
                         {{-- Changer le bouton selon l'état de l'article --}}
                         @if ($article->id_etat == 2)
                             <p
-                                class="border-darkGrey border rounded-[24px] w-[100%] h-[30px] text-beige font-bold bg-darkGrey text-center">
+                                class="border-darkGrey border rounded-[24px] w-[100%] h-[30px] articlePetit-light bg-darkGrey text-center">
                                 Masqué</p>
                         @elseif ($article->id_etat == 1)
                             @if ($article->quantite_disponible == 0)
                                 <p
-                                    class="border-darkGrey border rounded-[24px] w-[100%] h-[30px] text-beige font-bold bg-darkGrey text-center">
+                                    class="border-darkGrey border rounded-[24px] w-[100%] h-[30px] articlePetit-light bg-darkGrey text-center">
                                     En rupture de stock</p>
                             @elseif ($article->quantite_disponible > 0)
-                                <form action="{{ route('decouverte') }}" method="GET">
-                                    <button type="submit" value="add" name="ajouterPanier"
-                                        class="border-darkGrey border rounded-[24px] w-[100%] h-[30px] text-darkGrey font-bold">Ajouter
+                                <form action="{{ '/addArticleToPanier' }}" method="POST">
+                                    @csrf
+                                    <button type="submit" value="{{ $article->id_article }}" name="id_article"
+                                        class="border-darkGrey border rounded-[24px] w-[100%] h-[30px] articlePetit-dark">Ajouter
                                         au
                                         panier</button>
                                 </form>
@@ -229,21 +247,20 @@
 
         </div>
 
-        {{-- Message de Session --}}
-        @if (Session::all())
-            {{-- Succes de la suppression d'un article --}}
-            @if (Session::has('succesDeleteArticle'))
-                <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1" role="alert">
-                    <div
-                        class="bg-green-500 border-t border-[2px] border-green-900 text-white font-bold rounded-t px-4 py-2">
-                        Succes</div>
-                    <div class="rounded-b border-[2px] border-green-900 bg-green-100 px-4 py-2 text-green-700">
-                        <p>{{ Session::get('succesDeleteArticle') }}</p>
-                    </div>
-                </div>
-            @endif
-        @endif
+        {{-- Le modal --}}
+        @include('components.deleteArticle-modal')
     </section>
+
+    {{-- Message de Session --}}
+    {{-- Succes de la suppression d'un article --}}
+    @if (Session::has('succesDeleteArticle'))
+        <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1" role="alert">
+            @include('messages.messageSucces', [
+                'message' => Session::get('succesDeleteArticle'),
+                'titre' => 'Suppression',
+            ])
+        </div>
+    @endif
 </x-app-layout>
 
 {{-- TODO: La partie responsive --}}

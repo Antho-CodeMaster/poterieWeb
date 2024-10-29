@@ -119,8 +119,30 @@ class CommandeController extends Controller
             return Commande::firstOrCreate(
                 ['id_user' => Auth::id(), 'is_panier' => true]
             );
-        else
-            return $request->cookie('panier', []);
+        else{
+            //recupere les cookies
+            $cookie = $request->cookie('panier','');
+            $items = $cookie ? json_decode($cookie,true) : [];
+
+            //cree pbj commande
+            $commande = new Commande();
+            $commande->transactions->collect();
+
+            foreach($items as $item){
+                $article = Article::find($item['id_article']);
+                if($article){
+                    $transaction = new Transaction();
+                    $transaction->article = $article;
+                    $transaction->quantite = $item['quantite'];
+                    $transaction->prix_unitaire = $article->prix;
+                    $transaction->id_transaction = $item['id_article'];
+
+                    $commande->transactions->push($transaction);
+                }
+            }
+            return $commande;
+        }
+
     }
 
     /**
@@ -134,12 +156,6 @@ class CommandeController extends Controller
         }
         else{
             $commande = $this->getPanier($request);
-
-            $articles = [];
-            foreach($commande as $id_article){
-                $articles[] = Article::where('id_article', '=', $id_article)->first();
-            }
-
         }
 
         return view( 'commande/panier',

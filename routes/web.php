@@ -23,7 +23,7 @@ Route::controller(ArtisteController::class)->group(function(){
 /* Route lié à Article */
 Route::controller(ArticleController::class)->group(function(){
     Route::post('/addArticle', 'store')->name('addArticle');
-    Route::post('/modifArticleForm', 'create')->name('modifArticleForm');
+    Route::get('/modifArticleForm/{idArticle}', 'showModifArticle')->name('modifArticleForm');
     Route::get('/tousMesArticles', 'show')->name('tousMesArticles');
     Route::patch('/deleteArticle', 'update')->name('deleteArticle');
     Route::get('/addArticleForm', 'create')->name('addArticleForm');
@@ -33,6 +33,11 @@ Route::controller(ArticleController::class)->group(function(){
 Route::get('/decouverte', function () {
     return view('decouverte');
 })->name('decouverte');
+
+Route::get('/buttons', function () {
+    return view('buttons');
+})->name('buttons');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -60,6 +65,7 @@ Route::controller(CommandeController::class)->group(function(){
 
 Route::controller(TransactionController::class)->group(function(){
     Route::get('/deleteThisArticle/{id}','destroy');
+    Route::post('/addArticleToPanier', 'store')->name('addArticleToPanier');
 });
 
 

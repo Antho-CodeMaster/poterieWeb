@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Vérifie si on est sur la bonne page
     if (document.baseURI.includes("modifArticle")) {
 
-        // Fonction qui va gérer l'aperçu de l'image
         function previewImage(event, index) {
             var fileInput = document.getElementById('photo' + index);
             var previewContainer = document.getElementById('previewContainer' + index);
@@ -12,17 +11,24 @@ document.addEventListener('DOMContentLoaded', function () {
                 var reader = new FileReader();
 
                 reader.onload = function (e) {
-                    // Créer une balise img et remplacer le SVG
-                    var img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.classList.add('w-[100px]', 'h-[96px]', 'object-cover', "border-[2px]", "border-darkGrey", "rounded-[0.375rem]"); // Ajouter les classes CSS si nécessaire
+                    var existingImage = document.getElementById('imgPreview' + index);
 
-                    // Remplacer le SVG par l'image
-                    previewContainer.innerHTML = ''; // On vide le conteneur du SVG
-                    previewContainer.appendChild(img); // Ajoute l'image téléversée
-                }
+                    if (existingImage) {
+                        // Mettre à jour la source de l'image existante
+                        existingImage.src = e.target.result;
+                    } else {
+                        // Créer une nouvelle image si elle n'existe pas encore
+                        var img = document.createElement('img');
+                        img.src = e.target.result; // Utiliser l'URL générée par FileReader
+                        img.classList.add('w-[100px]', 'h-[96px]', 'object-cover', "border-[2px]", "border-darkGrey", "rounded-[0.375rem]");
 
-                reader.readAsDataURL(fileInput.files[0]); // Lire le fichier comme une URL
+                        // Remplacer le contenu du conteneur par l'image
+                        previewContainer.innerHTML = '';
+                        previewContainer.appendChild(img);
+                    }
+                };
+
+                reader.readAsDataURL(fileInput.files[0]); // Lire le fichier et générer l'URL temporaire
             }
         }
 
@@ -33,7 +39,30 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
-        /* Fonctions pour gérer l'ajout des images de l'article déjà existant en input */
+
+
+        // Gestion de la quantité en fonction du type de pièce
+        document.getElementById("pieceUnique").addEventListener("change", function (event) {
+            quantiteByType(event);
+        });
+
+        function quantiteByType(event) {
+            let isUnique = document.getElementById("pieceUnique").value;
+            let quantiteElement = document.getElementById("quantiteArticle");
+            let titreQuantite = document.getElementById("titreQuantite");
+
+
+            if (isUnique == 1) {
+                quantiteElement.classList.add("hidden");
+                titreQuantite.classList.add("hidden")
+                quantiteElement.value = 1;
+            }
+            else {
+                quantiteElement.classList.remove("hidden");
+                titreQuantite.classList.remove("hidden")
+                quantiteElement.value = "";
+            }
+        }
 
     }
 });

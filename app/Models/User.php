@@ -13,8 +13,9 @@ class User extends Authenticatable
     protected $table = "users";
     protected $primaryKey = "id";
 
-    public function likes() {
-        return $this->hasMany(Like::class, 'id_user', 'id' );
+    public function likes()
+    {
+        return $this->hasMany(Like::class, 'id_user', 'id');
     }
 
     /**
@@ -51,7 +52,8 @@ class User extends Authenticatable
         ];
     }
 
-    public function artistes(){
+    public function artistes()
+    {
         return $this->belongsTo(Artiste::class, "id_user", "id_user");
     }
 
@@ -65,8 +67,26 @@ class User extends Authenticatable
         return $this->hasOne(Moderateur::class, 'id_user');
     }
 
-    public function active() : bool
+    public function active(): bool
     {
         return $this->active;
+    }
+
+    public function commandes()
+    {
+        return $this->hasMany(Commande::class, 'id_user', 'id');
+    }
+
+    public function avertissements()
+    {
+        return Notification::where('id_user', $this->id)->where('id_type', 2)->get();
+    }
+
+    public function is_admin(): bool
+    {
+        if (Moderateur::where('id_user', '=', $this->id)->first()->is_admin)
+            return true;
+
+        return false;
     }
 }

@@ -3,6 +3,9 @@
 /public/build
 /public/hot
 /public/storage
+/public/img/ArtistePFP
+/public/img/demandeIdentite
+/public/img/demandePreuve
 /storage/*.key
 .env
 .env.backup

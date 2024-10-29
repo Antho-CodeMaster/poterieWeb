@@ -61,12 +61,14 @@ export default {
                 'beige': '#f4f0ec',
                 'beigeFoncé': '#d8c9bb',
                 'hoverBeige': '#ebe3dc',
-                'lightGrey' : '#c7c7c7',
-                'hoverGrey' : '#A3A3A3',
-                'vert' : '#009b4d',
-                'lightVert' : '#00CE66',
-                'beige' : '#f4f0ec',
+                'lightGrey': '#c7c7c7',
+                'hoverGrey': '#A3A3A3',
+                'vert': '#009b4d',
+                'lightVert': '#00CE66',
                 'rouge': '#ff0000',
+                'jauneWarning': '#E6AF00',
+                'vertSucces': "#3c9035",
+                'rougeFail': "#e60000"
             },
 
             height: {
@@ -94,5 +96,246 @@ export default {
         "rounded-[0.375rem]"
     ],
 
-    plugins: [forms],
+    plugins: [
+        forms,
+        function ({ addUtilities }) {
+            const newUtilities = {
+
+                /* Classe pour les textes */
+                //Titre H1
+                '.titre1-light': {
+                    'line-height': '4rem',
+                    'letter-spacing': '0.05rem',
+                    'font-weight': '700',
+                    'font-size': 'calc(32px + 1.5vw)',
+                    'color': '#f4f0ec',
+                    'font-family': 'Newsreader',
+                    'margin-top': "4px",
+                    'margin-bottom': "8px",
+                },
+                '.titre1-dark': {
+                    'line-height': '4rem',
+                    'letter-spacing': '0.05rem',
+                    'font-weight': '700',
+                    'font-size': 'calc(32px + 1.5vw)',
+                    'color': '#444444',
+                    'font-family': 'Newsreader',
+                    'margin-top': "4px",
+                    'margin-bottom': "8px",
+                },
+
+                //Titre H2
+                '.titre2-light': {
+                    'line-height': '2rem',
+                    'letter-spacing': '0.05rem',
+                    'font-weight': '500',
+                    'font-size': 'calc(26px + 1vw)',
+                    'color': '#f4f0ec',
+                    'font-family': 'Newsreader',
+                    'margin-top': "4px",
+                    'margin-bottom': "8px",
+                },
+                '.titre2-dark': {
+                    'line-height': '2rem',
+                    'letter-spacing': '0.05rem',
+                    'font-weight': '500',
+                    'font-size': 'calc(26px + 1vw)',
+                    'color': '#444444',
+                    'font-family': 'Newsreader',
+                    'margin-top': "4px",
+                    'margin-bottom': "8px",
+                },
+
+                //Titre text Grand
+                '.textGrand-light': {
+                    'line-height': '1rem',
+                    'font-size': 'calc(16px + 0.3vw)',
+                    'color': '#f4f0ec',
+                    'font-family': 'Inter',
+                },
+                '.textGrand-dark': {
+                    'line-height': '1rem',
+                    'font-size': 'calc(16px + 0.3vw)',
+                    'color': '#444444',
+                    'font-family': 'Inter',
+                },
+
+
+                //Titre text Petit
+                '.textPetit-light': {
+                    'line-height': '1rem',
+                    'font-size': 'calc(12px + 0.2vw)',
+                    'color': '#f4f0ec',
+                    'font-family': 'Inter',
+                },
+                '.textPetit-dark': {
+                    'line-height': '1rem',
+                    'font-size': 'calc(12px + 0.2vw)',
+                    'color': '#444444',
+                    'font-family': 'Inter',
+                },
+
+                //Titre article gros
+                '.articleGrand-light': {
+                    'line-height': '1.5rem',
+                    'font-size': 'calc(18px + 0.2vw)',
+                    'color': '#f4f0ec',
+                    'font-weight': '700',
+                    'font-family': 'Inter',
+                    'text-overflow': 'ellipsis',
+                    'overflow': 'hidden',
+                    'whitespace': 'nowrap'
+                },
+                '.articleGrand-dark': {
+                    'line-height': '1.5rem',
+                    'font-size': 'calc(18px + 0.2vw)',
+                    'font-weight': '700',
+                    'color': '#444444',
+                    'font-family': 'Inter',
+                    'text-overflow': 'ellipsis',
+                    'overflow': 'hidden',
+                    'whitespace': 'nowrap'
+                },
+
+                //Titre article petit
+                '.articlePetit-light': {
+                    'line-height': '1.5rem',
+                    'font-size': 'calc(14px + 0.2vw)',
+                    'color': '#f4f0ec',
+                    'font-weight': '600',
+                    'font-family': 'Inter',
+                    'text-overflow': 'ellipsis',
+                    'overflow': 'hidden',
+                    'whitespace': 'nowrap'
+                },
+                '.articlePetit-dark': {
+                    'line-height': '1.5rem',
+                    'font-size': 'calc(14px + 0.2vw)',
+                    'color': '#444444',
+                    'font-weight': '600',
+                    'font-family': 'Inter',
+                    'text-overflow': 'ellipsis',
+                    'overflow': 'hidden',
+                    'whitespace': 'nowrap'
+                },
+
+                //Text footer
+                '.textFooter-light': {
+                    'line-height': '1rem',
+                    'font-size': 'calc(11px + 0.2vw)',
+                    'color': '#f4f0ec',
+                    'font-weight': '300',
+                    'font-family': 'Inter',
+                    'margin-top': "2px",
+                    'margin-bottom': "2px",
+                    'padding': '2px'
+                },
+                '.textFooter-dark': {
+                    'line-height': '1rem',
+                    'font-size': 'calc(11px + 0.2vw)',
+                    'color': '#444444',
+                    'font-weight': '300',
+                    'font-family': 'Inter',
+                    'margin-top': "2px",
+                    'margin-bottom': "2px",
+                    'padding': '2px'
+                },
+
+                //Text de navigation SideMenu ou navBar
+                '.textNavigation-light': {
+                    'line-height': '1.5rem',
+                    'font-size': 'calc(16px + 0.3vw)',
+                    'color': '#f4f0ec',
+                    'font-weight': '500',
+                    'font-family': 'Inter',
+                },
+                '.textNavigation-dark': {
+                    'line-height': '1.5rem',
+                    'font-size': 'calc(16px + 0.3vw)',
+                    'color': '#444444',
+                    'font-weight': '500',
+                    'font-family': 'Inter',
+                },
+
+                /* Margin */
+                // Sections
+                '.m-section': {
+                    'margin': 'calc(8px + 0.2vw) calc(12px + 0.3vw)',
+                },
+
+                '.m-sectionX': {
+                    'margin-right': 'calc(12px + 0.3vw) ',
+                    'margin-left': 'calc(12px + 0.3vw) ',
+                },
+
+                '.m-sectionY': {
+                    'margin-top': 'calc(8px + 0.2vw) ',
+                    'margin-bottom': 'calc(8px + 0.2vw) ',
+                },
+
+                '.p-sectionBottom': {
+                    'padding-bottom': 'calc(3px + 0.5vw)',
+                },
+
+                '.p-sectionX': {
+                    'padding-right': 'calc(3px + 0.5vw) ',
+                    'padding-left': 'calc(3px + 0.5vw) ',
+                },
+
+                '.p-sectionY': {
+                    'padding-top': 'calc(3px + 0.5vw)',
+                    'padding-bottom': 'calc(3px + 0.5vw)',
+                },
+
+                // Articles
+                '.m-article': {
+                    'margin': 'calc(12px + 0.2vw) calc(6px + 0.9vw)',
+                },
+
+                // Collections
+                '.m-collection': {
+                    'margin': 'calc(8px + 1.5vw) 0px',
+                },
+
+                // Forms
+                '.m-sectionFormY': {
+                    'margin-bottom': 'calc(6px + 1vw)',
+                },
+
+                '.m-sectionFormX': {
+                    'margin-right': 'calc(6px + 1vw)',
+                },
+
+                '.gap-input': {
+                    'gap': 'calc(2px + 0.5vw)',
+                },
+
+                // SideBar
+                '.m-sidebar': {
+                    'margin': 'calc(4px + 1.5vw) 0px',
+                },
+
+                '.p-sidebar': {
+                    'padding': 'calc(4px + 0.5vw) 0.5rem',
+                },
+
+                '.p-sidebar-MD': {
+                    'padding': 'calc(7px + 0.45vw) 0.5rem',
+                },
+
+                '.p-sidebarNav': {
+                    'padding': 'calc(2px + 0.5vw) 0.5rem',
+                },
+
+                // Autres
+                '.m-submit': {
+                    'margin-top': 'calc(8px + 1vw)',
+                },
+
+                /* Couleurs */
+            }
+
+            addUtilities(newUtilities)
+        }
+    ]
 };
