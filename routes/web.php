@@ -43,6 +43,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile', [ArtisteController::class, 'updatePicture'])->name('artiste.updatePicture');
     Route::get('/devenir-artiste', [DemandeController::class, 'create'])->name('devenir-artiste');
     Route::post('/devenir-artiste', [DemandeController::class, 'store'])->name('store-demande-artiste');
+    Route::get('/renouvellement', [DemandeController::class, 'create'])->name('renouvellement-artiste');
+    Route::post('/devenir-artiste', [DemandeController::class, 'storeRenouvellement'])->name('store-renouvellement-artiste');
 });
 
 

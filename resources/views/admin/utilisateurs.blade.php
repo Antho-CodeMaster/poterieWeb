@@ -33,11 +33,43 @@
             </div>
             <div class="flex flex-wrap grow justify-evenly py-4 overflow-auto">
                 @foreach ($users as $user)
-                    <div class="user my-6 mx-4">
-                        <div class="w-[320px] h-[360px] bg-lightGrey rounded-[14px] flex flex-col p-3 gap-3">
-                            <h3 title="{{ $user->name }}"
-                                class="w-[90%] text-center text-2xl mx-auto text-ellipsis overflow-hidden whitespace-nowrap">
-                                {{ $user->name }}</h3>
+                    <div class="user px-4 my-2 w-full h-1/5 bg-lightGrey rounded-[14px] flex p-1 gap-3 shrink-0">
+                        <div class="flex justify-stretch items-center w-9/12">
+                            <div class="flex flex-col w-1/3">
+                                <h3 title="{{ $user->name }}"
+                                    class="text-center text-2xl mx-auto text-ellipsis overflow-hidden whitespace-nowrap">
+                                    {{ $user->name }}</h3>
+                                @if ($user->artiste != null)
+                                    <div class="flex w-fit mx-auto" x-data="{ openArtist: {{ $errors->any() ? 'true' : 'false' }} }">
+                                        <x-button.blue.leave
+                                            @click="
+                                            $dispatch('open-artist-modal');
+                                            $dispatch('set-name', '{{ $user->name }}');
+                                            $dispatch('set-link', '{{ route('kiosque', ['idUser' => $user->id]) }}');
+                                            $dispatch('set-artist', '{{ $user->artiste }}');
+                                            $dispatch('set-src', '{{ asset($user->artiste->path_photo_profil ?? 'img/artistePFP/default_artiste.png') }}');
+                                            ">Artiste</x-button.blue.leave>
+                                    </div>
+                                @else
+                                    {{-- Si objet modérateur existe --}}
+                                    @if ($user->moderateur != null)
+                                        {{-- Si utilisateur est admin --}}
+                                        @if ($user->moderateur->is_admin)
+                                            <p class="m-auto">Administrateur</p>
+                                        @else
+                                            <p class="m-auto">Modérateur</p>
+                                        @endif
+                                    @else
+                                        <p class="m-auto">Client</p>
+                                    @endif
+                                @endif
+                                <p class="mx-auto">{{ $user->email }}</p>
+                            </div>
+                            <p class="text-center w-3/12">{{ $user->created_at }}</p>
+                            <a href="{{ route('admin-transactions') }}"
+                                class="text-center w-1/6">{{ $user->commandes->count() }}</a>
+                            <p class="text-center w-1/6">{{ $user->avertissements()->count() }}</p>
+                        </div>
 
                             @if ($user->artiste != null)
                                 <p class="mx-auto">Artiste</p>

@@ -24,5 +24,9 @@ class TypeNotificationSeeder extends Seeder
         DB::table('types_notification')->insert([
             'description' => 'Votre commande est prête! Cliquez pour visualiser la commande.',
         ]);
+
+        DB::table('types_notification')->insert([
+            'description' => 'ATTENTION: À partir d\'aujourd\'hui, vous avez un mois pour renouveler votre statut d\'étudiant. Un courriel vous a été envoyé avec plus d\'informations.',
+        ]);
     }
 }

@@ -5,7 +5,8 @@
     <div class="items-center">
 
         {{-- Bouton Utilisateurs --}}
-        <a href="{{ route('admin-utilisateurs') }}" class="p-4 flex hover:bg-hoverGrey items-center {{ Request::path() ==  'admin/utilisateurs' ? 'bg-hoverGrey' : ''  }}">
+        <a href="{{ route('admin-utilisateurs') }}"
+            class="p-4 flex hover:bg-hoverGrey items-center {{ Request::path() == 'admin/utilisateurs' ? 'bg-hoverGrey' : '' }}">
             <svg class="mr-4 w-12 h-12" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                 fill="#444444" viewBox="0 0 24 24">
                 <path fill-rule="evenodd"
@@ -16,7 +17,8 @@
         </a>
 
         {{-- Bouton Articles en ligne --}}
-        <a href="{{ route('admin-articles') }}" class="p-4 flex hover:bg-hoverGrey items-center {{ Request::path() ==  'admin/articles' ? 'bg-hoverGrey' : ''  }}">
+        <a href="{{ route('admin-articles') }}"
+            class="p-4 flex hover:bg-hoverGrey items-center {{ Request::path() == 'admin/articles' ? 'bg-hoverGrey' : '' }}">
             <svg class="mr-4 w-12 h-12 text-gray-800 dark:text-white" aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#444444" viewBox="0 0 24 24">
                 <path fill-rule="evenodd"
@@ -28,7 +30,8 @@
         </a>
 
         {{-- Bouton Signalements --}}
-        <a href="{{ route('admin-signalements') }}" class="p-4 flex hover:bg-hoverGrey items-center {{ Request::path() ==  'admin/signalements' ? 'bg-hoverGrey' : ''  }}">
+        <a href="{{ route('admin-signalements') }}"
+            class="p-4 flex hover:bg-hoverGrey items-center {{ Request::path() == 'admin/signalements' ? 'bg-hoverGrey' : '' }}">
             <svg class="mr-4 w-12 h-12 text-gray-800 dark:text-white" aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                 <path stroke="#444444" stroke-linecap="round" stroke-width="2"
@@ -39,7 +42,8 @@
         </a>
 
         {{-- Bouton Demandes d'inscription --}}
-        <a href="{{ route('admin-demandes') }}" class="p-4 flex hover:bg-hoverGrey items-center {{ Request::path() ==  'admin/demandes' ? 'bg-hoverGrey' : ''  }}">
+        <a href="{{ route('admin-demandes') }}"
+            class="p-4 flex hover:bg-hoverGrey items-center {{ Request::path() == 'admin/demandes' ? 'bg-hoverGrey' : '' }}">
             <svg class="mr-4 w-12 h-12 text-gray-800 dark:text-white" aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#444444" viewBox="0 0 24 24">
                 <path fill-rule="evenodd"
@@ -51,7 +55,8 @@
         </a>
 
         {{-- Bouton Articles non reçus --}}
-        <a href="{{ route('admin-articles-non-recus') }}" class="p-4 flex hover:bg-hoverGrey items-center {{ Request::path() ==  'admin/articles-non-recus' ? 'bg-hoverGrey' : ''  }}">
+        <a href="{{ route('admin-articles-non-recus') }}"
+            class="p-4 flex hover:bg-hoverGrey items-center {{ Request::path() == 'admin/articles-non-recus' ? 'bg-hoverGrey' : '' }}">
             <svg class="mr-4 w-12 h-12 text-gray-800 dark:text-white" aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#444444" viewBox="0 0 24 24">
                 <path fill-rule="evenodd"
@@ -63,15 +68,30 @@
         </a>
 
         {{-- Bouton Transactions --}}
-        <a href="{{ route('admin-transactions') }}" class="p-4 flex hover:bg-hoverGrey items-center {{ Request::path() ==  'admin/transactions' ? 'bg-hoverGrey' : ''  }}">
-            <svg class="mr-4 w-12 h-12 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                width="24" height="24" fill="#444444" viewBox="0 0 24 24">
+        <a href="{{ route('admin-transactions') }}"
+            class="p-4 flex hover:bg-hoverGrey items-center {{ Request::path() == 'admin/transactions' ? 'bg-hoverGrey' : '' }}">
+            <svg class="mr-4 w-12 h-12 text-gray-800 dark:text-white" aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#444444" viewBox="0 0 24 24">
                 <path fill-rule="evenodd"
                     d="M5.617 2.076a1 1 0 0 1 1.09.217L8 3.586l1.293-1.293a1 1 0 0 1 1.414 0L12 3.586l1.293-1.293a1 1 0 0 1 1.414 0L16 3.586l1.293-1.293A1 1 0 0 1 19 3v18a1 1 0 0 1-1.707.707L16 20.414l-1.293 1.293a1 1 0 0 1-1.414 0L12 20.414l-1.293 1.293a1 1 0 0 1-1.414 0L8 20.414l-1.293 1.293A1 1 0 0 1 5 21V3a1 1 0 0 1 .617-.924ZM9 7a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2H9Zm0 4a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Zm0 4a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Z"
                     clip-rule="evenodd" />
             </svg>
 
             <p class="text-2xl text-darkGrey">Transactions</p>
+        </a>
+
+        {{-- Bouton pour Renouvellement des abonnements étudiants --}}
+        <a href="{{ route('admin-display-renouvellement') }}"
+            class="p-4 flex hover:bg-hoverGrey items-center {{ Request::path() == 'admin/renouvellement' ? 'bg-hoverGrey' : '' }}">
+            <svg class="mr-4 w-12 h-12 text-gray-800 dark:text-white" aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#444444"
+                viewBox="0 0 24 24">
+                <path fill-rule="evenodd"
+                    d="M5 5a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1 2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a2 2 0 0 1 2-2ZM3 19v-7a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm6.01-6a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm-10 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z"
+                    clip-rule="evenodd" />
+            </svg>
+
+            <p class="text-2xl text-darkGrey">Renouvellement</p>
         </a>
 
     </div>
