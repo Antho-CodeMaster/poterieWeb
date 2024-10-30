@@ -15,15 +15,16 @@ if (document.baseURI.includes('admin/utilisateurs')) {
         let resultats = "";                                         // Cette string affichera "résultat" si 1 user, "résultats" si plusieurs users
 
         for (let i = 0; i < users.length; i++) {
-            let user_name = users[i].firstChild.nextElementSibling.firstChild.nextElementSibling.innerHTML; // Nom de l'utilisateur
-            let user_type = users[i].firstChild.nextElementSibling.firstChild.nextElementSibling.nextElementSibling.innerHTML; // Type d'utilisateur
+            let user_name = users[i].firstChild.nextElementSibling.firstChild.nextElementSibling.firstChild.nextElementSibling.innerHTML; // Nom de l'utilisateur
+            let user_type = users[i].firstChild.nextElementSibling.firstChild.nextElementSibling.firstChild.nextElementSibling.nextElementSibling; // Type d'utilisateur
             // Il faut vérifier que le type soit celui sélectionné.
             // Ensuite, il faut vérifier si le nom d'utilisateur inclut la string mise tans la recherche, puis mettre ces deux filtres ensemble avec un ET.
             if (
                 (
                     (type == "tous") || // Si on veut afficher tous les utilisateurs
-                    (user_type.toUpperCase() == type.toUpperCase()) || //Si le type de l'utilisateur est égal à celui du filtre
-                    (type == "Administration" && (user_type == "Modérateur" || user_type == "Administrateur")) // Si le type choisi est Administration, on veut afficher Modérateurs et administrateurs
+                    (user_type.innerHTML.toUpperCase() == type.toUpperCase()) || //Si le type de l'utilisateur est égal à celui du filtre
+                    (user_type.querySelector('button') !== null && type == "Artiste") ||
+                    (type == "Administration" && (user_type.innerHTML == "Modérateur" || user_type.innerHTML == "Administrateur")) // Si le type choisi est Administration, on veut afficher Modérateurs et administrateurs
                 ) && // Et on veut aussi que la recherche fonctionne:
                 user_name.toUpperCase().includes(search.toUpperCase())) {
                 cpt++; // Un utilisateur de plus sera affiché

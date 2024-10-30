@@ -20,10 +20,10 @@ Route::middleware(EnsureUserIsModerateur::class)->group(function () {
     Route::post('/admin/avertir', [UserController::class, 'avertir'])
         ->name('admin-user-avertir');
 
-    Route::get('/admin/promote', [UserController::class, 'promote'])
+    Route::post('/admin/promote', [UserController::class, 'promote'])
         ->name('admin-user-promote');
 
-    Route::get('/admin/demote', [UserController::class, 'demote'])
+    Route::post('/admin/demote', [UserController::class, 'demote'])
         ->name('admin-user-demote');
 
     Route::get('/admin/articles', function () {
@@ -36,6 +36,9 @@ Route::middleware(EnsureUserIsModerateur::class)->group(function () {
 
     Route::get('/admin/demandes', [DemandeController::class, 'index'])
         ->name('admin-demandes');
+
+    Route::get('/admin/demandes-traitees', [DemandeController::class, 'index_traitees'])
+        ->name('admin-demandes-traitees');
 
     Route::post('/admin/demandes/accept', [DemandeController::class, 'accept'])
         ->name('demande-accept');

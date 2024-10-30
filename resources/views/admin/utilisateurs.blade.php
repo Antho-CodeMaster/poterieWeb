@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="flex content-height">
         @include('admin.menu-gauche')
-        <div class="pt-20 px-20 w-[90%] h-[100%] flex flex-col" x-data="{ openAvertir: false, openDelete: false }">
+        <div class="pt-20 px-20 w-[90%] h-[100%] flex flex-col" x-data="{ openAvertir: false, openDelete: false, openPromote: false, openDemote: false, openArtist: false }">
             <div id="header-info">
                 <h1 class="text-4xl text-black">Utilisateurs</h1>
                 <h2 class="text-2xl text-darkGrey">{{ sizeof($users) }} résultats</h2>
@@ -30,76 +30,142 @@
                     </div>
                 </div>
             </div>
-            <div class="flex flex-wrap grow justify-evenly py-4 overflow-auto">
+            <!-- Header -->
+            <div class="w-[calc(100%-18px)] px-4 rounded-[14px] flex items-center p-1 gap-3 mt-4">
+                <div class="flex justify-stretch items-center w-9/12">
+                    <p class="w-1/3 text-center">Utilisateur</p>
+                    <p class="w-3/12 text-center">Inscription</p>
+                    <p class="w-1/6 text-center">Commandes</p>
+                    <p class="w-1/6 text-center">Avertissements</p>
+                </div>
+                <p class="w-1/12 text-center">Rôle</p>
+                <p class="w-1/6 text-center">Actions</p>
+            </div>
+            <div class="flex flex-col grow overflow-auto">
                 @foreach ($users as $user)
-                    <div class="user my-6 mx-4">
-                        <div class="w-[320px] h-[360px] bg-lightGrey rounded-[14px] flex flex-col p-3 gap-3">
-                            <h3 title="{{ $user->name }}"
-                                class="w-[90%] text-center text-2xl mx-auto text-ellipsis overflow-hidden whitespace-nowrap">
-                                {{ $user->name }}</h3>
-
-                            @if ($user->artiste != null)
-                                <p class="mx-auto">Artiste</p>
-                                <img src="{{ asset($artiste->path_photo_profil ?? 'img/artistePFP/default_artiste.png') }}"
-                                    alt="Photo de profil" class="w-[150px] h-[150px] rounded-full mx-auto">
-                                <x-button.blue.leave class="w-full"
-                                    @click="window.location.href='{{ route('kiosque', ['idUser' => $user->id]) }}'">Accéder
-                                    au kiosque</x-button.blue.leave>
-                            @else
-                                @if ($user->moderateur != null)
-                                    @if ($user->moderateur->is_admin != false)
-                                        <p class="mx-auto">Administrateur</p>
-                                        @if (Auth::User()->is_admin())
-                                            <x-button.red.x class="w-full"
-                                                @click="window.location.href='{{ route('admin-user-demote') }}?id={{ $user->id }}'">Rétrograder
-                                                modérateur</x-button.red.x>
+                    <div class="user px-4 my-2 w-full h-1/5 bg-lightGrey rounded-[14px] flex p-1 gap-3 shrink-0">
+                        <div class="flex justify-stretch items-center w-9/12">
+                            <div class="flex flex-col w-1/3">
+                                <h3 title="{{ $user->name }}"
+                                    class="text-center text-2xl mx-auto text-ellipsis overflow-hidden whitespace-nowrap">
+                                    {{ $user->name }}</h3>
+                                @if ($user->artiste != null)
+                                    <div class="flex w-fit mx-auto x-data="{ openArtist: {{ $errors->any() ? 'true' : 'false' }} }">
+                                        <x-button.blue.leave
+                                            @click="
+                                            $dispatch('open-artist-modal');
+                                            $dispatch('set-name', '{{ $user->name }}');
+                                            $dispatch('set-link', '{{ route('kiosque', ['idUser' => $user->id]) }}');
+                                            $dispatch('set-artist', '{{ $user->artiste }}');
+                                            $dispatch('set-src', '{{ asset($user->artiste->path_photo_profil ?? 'img/artistePFP/default_artiste.png') }}');
+                                            ">Artiste</x-button.blue.leave>
+                                    </div>
+                                @else
+                                    {{-- Si objet modérateur existe --}}
+                                    @if ($user->moderateur != null)
+                                        {{-- Si utilisateur est admin --}}
+                                        @if ($user->moderateur->is_admin)
+                                            <p class="m-auto">Administrateur</p>
+                                        @else
+                                            <p class="m-auto">Modérateur</p>
                                         @endif
                                     @else
-                                        <p class="mx-auto">Modérateur</p>
-                                        @if (Auth::User()->is_admin())
-                                            <x-button.green.award class="w-full"
-                                                @click="window.location.href='{{ route('admin-user-promote') }}?id={{ $user->id }}'">Rendre
-                                                administrateur</x-button.green.award>
-                                            <x-button.red.x class="w-full"
-                                                @click="window.location.href='{{ route('admin-user-demote') }}?id={{ $user->id }}'">Rétrograder
-                                                client</x-button.red.x>
-                                        @endif
-                                    @endif
-                                @else
-                                    <p class="mx-auto">Client</p>
-                                    <p class="mx-auto">{{ $user->email }}</p>
-                                    <p class="mx-auto">Inscription: {{ $user->created_at }}</p>
-                                    <p class="mx-auto">{{ $user->commandes->count() }}
-                                        commande{{ $user->commandes->count() == 1 ? '' : 's' }}</p>
-                                    <p class="mx-auto">{{ $user->avertissements()->count() }}
-                                        avertissement{{ $user->avertissements()->count() == 1 ? '' : 's' }}</p>
-                                    @if (Auth::User()->is_admin())
-                                        <x-button.green.award class="w-full"
-                                            @click="window.location.href='{{ route('admin-user-promote') }}?id={{ $user->id }}'">Rendre
-                                            modérateur</x-button.green.award>
+                                        <p class="m-auto">Client</p>
                                     @endif
                                 @endif
-                            @endif
-                            <div class="flex mx-auto gap-2 w-full">
-                                <div x-data="{ openAvertir: {{ $errors->any() ? 'true' : 'false' }} }"
-                                    class='{{ Auth::User()->is_admin() ? 'w-[45%]' : 'w-full' }}'>
-                                    <x-button.red.exclamation class="w-full"
-                                        @click="openAvertir = true; $dispatch ('open-avertir-modal'); $dispatch('set-id', {{ $user->id }}); $dispatch('set-name', '{{ $user->name }}');">Avertir</x-button.red.exclamation>
-                                </div>
+                                <p class="mx-auto">{{ $user->email }}</p>
+                            </div>
+                            <p class="text-center w-3/12">{{ $user->created_at }}</p>
+                            <a href="{{ route('admin-transactions') }}"
+                                class="text-center w-1/6">{{ $user->commandes->count() }}</a>
+                            <p class="text-center w-1/6">{{ $user->avertissements()->count() }}</p>
+                        </div>
+
+                            {{-- Div pour les boutons de promotion/rétrogradation --}}
+                            <div class="w-1/12 flex flex-col h-full justify-evenly">
+                                {{-- Si utilisateur qui consulte est admin --}}
                                 @if (Auth::User()->is_admin())
-                                    <div x-data="{ openDelete: {{ $errors->any() ? 'true' : 'false' }} }" class="w-[55%]">
+                                    {{-- Si utilisateur affiché est client, il sera possible de le promouvoir. --}}
+                                    @if ($user->moderateur == null && $user->artiste == null)
+                                        <div class="h-fit" x-data="{ openPromote: {{ $errors->any() ? 'true' : 'false' }} }">
+                                            <x-button.green.award class="w-1/2 mx-auto"
+                                                @click="
+                                            $dispatch('open-promote-modal');
+                                            $dispatch('set-id', {{ $user->id }});
+                                            $dispatch('set-name', '{{ $user->name }}');
+                                            $dispatch('set-role', 0);
+                                            ">
+                                            </x-button.green.award>
+                                        </div>
+                                        <div class="h-10"></div>
+                                    @endif
+                                    {{-- Si l'utilisateur affiché fait partie de l'administration --}}
+                                    @if ($user->moderateur != null)
+                                        {{-- Si utilisateur affiché n'est pas admin, il sera possible de le promouvoir. --}}
+                                        @if (!$user->moderateur->is_admin)
+                                            <div class="h-fit" x-data="{ openPromote: {{ $errors->any() ? 'true' : 'false' }} }">
+                                                <x-button.green.award class="w-1/2 mx-auto"
+                                                    @click="
+                                                $dispatch('open-promote-modal');
+                                                $dispatch('set-id', {{ $user->id }});
+                                                $dispatch('set-name', '{{ $user->name }}');
+                                                $dispatch('set-role', 1);
+                                                ">
+                                                </x-button.green.award>
+                                            </div>
+                                        @else
+                                            <div class="h-10"></div>
+                                        @endif
+                                        {{-- Dans tous les cas, il est possible de rétrograder un admin. --}}
+                                        <div class="h-fit" x-data="{ openDemote: {{ $errors->any() ? 'true' : 'false' }} }">
+                                            <x-button.red.down class="w-1/2 mx-auto"
+                                                @click="
+                                            $dispatch('open-demote-modal');
+                                            $dispatch('set-id', {{ $user->id }});
+                                            $dispatch('set-name', '{{ $user->name }}');
+                                            $dispatch('set-role', {{ $user->moderateur->is_admin }});
+                                            ">
+                                            </x-button.red.down>
+                                        </div>
+                                    @endif
+                                @endif
+                            </div>
+                        {{-- Si l'utilisateur affiché == utilisateur connecté, on ne peut pas  avertir/supprimer --}}
+                        @if (Auth::id() != $user->id)
+                            {{-- Div pour les boutons de avertir/supprimer --}}
+                            <div class="w-1/6 flex flex-col h-full justify-evenly">
+                                <div class="h-fit" x-data="{ openAvertir: {{ $errors->any() ? 'true' : 'false' }} }">
+                                    <x-button.yellow.exclamation class="w-full"
+                                        @click="
+                                    $dispatch('open-avertir-modal');
+                                    $dispatch('set-id', {{ $user->id }});
+                                    $dispatch('set-name', '{{ $user->name }}');
+                                    ">Avertir</x-button.yellow.exclamation>
+                                </div>
+                                {{-- Si utilisateur qui consulte est admin --}}
+                                @if (Auth::User()->is_admin())
+                                    <div class="h-fit" x-data="{ openDelete: {{ $errors->any() ? 'true' : 'false' }} }">
                                         <x-button.red.trash class="w-full"
-                                            @click="openDelete = true; $dispatch ('open-delete-modal'); $dispatch('set-id', {{ $user->id }}); $dispatch('set-name', '{{ $user->name }}');">Supprimer
+                                            @click="
+                                        $dispatch('open-delete-modal');
+                                        $dispatch('set-id', {{ $user->id }});
+                                        $dispatch('set-name', '{{ $user->name }}');
+                                        ">Supprimer
                                         </x-button.red.trash>
                                     </div>
                                 @endif
                             </div>
-                        </div>
+                            @else
+                            <div class="w-1/6 h-full flex items-center justify-center"><p class="text-center">Vous</p></div>
+                        @endif
                     </div>
                 @endforeach
             </div>
             @include('admin.components.avertir-modal')
             @include('admin.components.delete-modal')
+            @include('admin.components.promote-modal')
+            @include('admin.components.demote-modal')
+            @include('admin.components.artist-modal')
         </div>
     </div>
 </x-app-layout>
