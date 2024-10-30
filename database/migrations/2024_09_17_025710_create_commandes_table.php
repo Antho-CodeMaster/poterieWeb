@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('commandes', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->bigIncrements('id_commande');
-            $table->bigInteger('id_user')->unsigned();
+            $table->bigInteger('id_user')->unsigned()->nullable(); #A verifier avec l'équipe
             $table->dateTime('date')->nullable();
             $table->string('no_civique', 6)->nullable();
             $table->string('rue')->nullable();
@@ -22,6 +22,8 @@ return new class extends Migration
             $table->smallInteger('id_ville')->unsigned()->nullable();
             $table->timestamps();
             $table->boolean('is_panier');
+            $table->string('checkout_id', 255)->nullable();
+            $table->string('payment_intent_id', 255)->nullable();
         });
 
         Schema::table('commandes', function (Blueprint $table) {

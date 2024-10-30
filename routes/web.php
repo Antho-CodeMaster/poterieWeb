@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ArtisteController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CollectionController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Middleware\EnsureUserIsArtist;
 use App\Http\Middleware\EnsureUserCanBecomeArtist;
 use Illuminate\Support\Facades\Route;
+use Laravel\Cashier\Checkout;
 
 Route::get('/decouverte', function () {
     return redirect('/');
@@ -65,13 +67,17 @@ Route::controller(CommandeController::class)->group(function(){
     Route::get('/commandes', [CommandeController::class, 'index']);
     Route::get('/commande/{id}', 'show');
 
+    /**Route pour Cashier */
+    Route::get('/checkout','checkoutCommande')->name('checkout');
+    Route::get('/checkout/success', 'success')->name('checkout-success');
+    Route::get('/checkout/cancel', 'cancel')->name('checkout-cancel');
+
 });
 
 Route::controller(TransactionController::class)->group(function(){
     Route::get('/deleteThisArticle/{id}','destroy');
     Route::post('/addArticleToPanier', 'store')->name('addArticleToPanier');
 });
-
 
 require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';

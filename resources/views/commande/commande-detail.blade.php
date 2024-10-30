@@ -52,7 +52,8 @@
                         <div class="text-3xl m-auto ">
                             <x-tooltip text="{!! $tooltips[$transaction->etat_transaction->etat] !!}" position="right" id="{{$transaction->id_transaction}}">
                                 <p class="hover:text-4xl {{$transaction->etat_transaction->etat === "Annulé" ? "text-[#FF0000] rotate-180" : ""}}">&#9432</p>
-                            </x-tooltip></div>
+                            </x-tooltip>
+                        </div>
 
                     @php
                         $totalItem = $transaction->prix_unitaire * $transaction->quantite;

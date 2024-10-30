@@ -58,7 +58,7 @@ class CommandeController extends Controller
      */
     public function create()
     {
-        //
+        return view('commande.formInfos');
     }
 
     /**
@@ -66,7 +66,6 @@ class CommandeController extends Controller
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**
@@ -116,31 +115,9 @@ class CommandeController extends Controller
         # returns the panier of the connected user
         # or the disconnected user
         if (Auth::check())
-            return Commande::firstOrCreate(
-                ['id_user' => Auth::id(), 'is_panier' => true]
-            );
+            return $this->saveCookieToDb($request);
         else{
-            //recupere les cookies
-            $cookie = $request->cookie('panier','');
-            $items = $cookie ? json_decode($cookie,true) : [];
-
-            //cree pbj commande
-            $commande = new Commande();
-            $commande->transactions->collect();
-
-            foreach($items as $item){
-                $article = Article::find($item['id_article']);
-                if($article){
-                    $transaction = new Transaction();
-                    $transaction->article = $article;
-                    $transaction->quantite = $item['quantite'];
-                    $transaction->prix_unitaire = $article->prix;
-                    $transaction->id_transaction = $item['id_article'];
-
-                    $commande->transactions->push($transaction);
-                }
-            }
-            return $commande;
+            return $this->cookieToCommande($request);
         }
 
     }
@@ -151,16 +128,117 @@ class CommandeController extends Controller
     public function showPanier(Request $request){
 
         #Prend les valeurs dans la bd si connecté ou dans le cookie si non connecté
-        if(Auth::check()){
-            $commande = $this->getPanier($request);
-        }
-        else{
-            $commande = $this->getPanier($request);
-        }
+        $commande = $this->getPanier($request);
 
+        if(Auth::check()){
+            return response()->view('commande/panier',
+                ['commande' => $commande])->withCookie(Cookie::forget('panier'));
+        }
+        else
         return view( 'commande/panier',
                 ['commande' => $commande]);
     }
 
+
+    /**Gestion de Checkout */
+
+    public function checkoutCommande(Request $request){
+
+        $commande = $this->getPanier($request);
+
+        #On formate les transactions du panier en Items lisible pour Stripe Checkout
+        $cartItems = $this->FormatPanier($commande);
+
+
+        #Set de la clé d'api pour stripe
+        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+
+        $checkoutSession = \Stripe\Checkout\Session::create([
+            'payment_method_types' => ['card'],
+            'line_items' => $cartItems,
+            'mode' => 'payment', // Paiement unique
+            'success_url' => route('checkout-success'),
+            'cancel_url' => route('checkout-cancel'),
+        ]);
+
+        $commande->update(['checkout_session_id' => $checkoutSession->id]);
+
+        $commande->save();
+
+        return redirect($checkoutSession->url);
+    }
+
+    public function success(){
+
+    }
+    public function cancel(){
+
+    }
+
+    public function FormatPanier(Commande $panier){
+        $items =[];
+        foreach($panier->transactions as $transaction){
+
+            $item = [
+                'price_data' => [
+                    'currency' => 'cad',
+                    'product_data' => [
+                        'name' => $transaction->article->nom,
+                    ],
+                    'unit_amount' => $transaction->prix_unitaire * 100, // Prix en cenne (Prix en dollards * 100)
+                ],
+                'quantity' => $transaction->quantite,
+            ];
+
+            /**Ajoute l'item a l'array */
+            array_push($items, $item);
+        }
+
+        return $items;
+    }
+
+    public function saveCookieToDb(Request $request){
+        $commandeUnsaved = $this->cookieToCommande($request);
+
+        $commande = Commande::firstOrCreate(
+            ['id_user' => Auth::id(), 'is_panier' => true]
+        );
+
+        foreach($commandeUnsaved->transactions as $transaction){
+            if(!$commande->transactions->contains('id_article',$transaction->id_article)){
+                $commande->transactions()->save($transaction);
+            }
+        }
+
+        $commande->save();
+
+        return $commande;
+    }
+
+    public function cookieToCommande(Request $request){
+        //recupere les cookies
+        $cookie = $request->cookie('panier','');
+        $items = $cookie ? json_decode($cookie,true) : [];
+
+        //cree pbj commande
+        $commande = new Commande();
+        $commande->transactions->collect();
+
+        foreach($items as $item){
+            $article = Article::find($item['id_article']);
+            if($article){
+                $transaction = new Transaction();
+                #$transaction->id_article = $article->id_article;
+                $transaction->quantite = $item['quantite'];
+                $transaction->prix_unitaire = $article->prix;
+                $transaction->id_article = $item['id_article'];
+                $transaction->id_etat = 2;
+
+                $commande->transactions->push($transaction);
+            }
+        }
+
+        return $commande;
+    }
 
 }
