@@ -58,7 +58,7 @@ class CommandeController extends Controller
      */
     public function create()
     {
-        //
+        return view('commande.formInfos');
     }
 
     /**
@@ -66,7 +66,6 @@ class CommandeController extends Controller
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**
@@ -212,8 +211,6 @@ class CommandeController extends Controller
         }
 
         $commande->save();
-
-        Cookie::forget('panier');
 
         return $commande;
     }
