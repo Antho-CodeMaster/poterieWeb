@@ -2,6 +2,7 @@
     x-cloak
     x-data="{ openLogin: {{ $errors->any() ? 'true' : 'false' }} }"
     @close-login-modal.window="openLogin = false"
+    @open-login-modal.window="openLogin = true"
 >
     <!-- Trigger Button for Login Modal -->
     <button @click="openLogin = true">

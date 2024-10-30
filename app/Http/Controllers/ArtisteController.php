@@ -122,8 +122,27 @@ class ArtisteController extends Controller
         $artiste->save();
 
         // Redirect back with a success message
-        return redirect()->route('profile.edit')
+        return redirect()->route('profile.personnaliser')
             ->with('status', 'picture-updated');
+    }
+
+    public function updateName(Request $request)
+    {
+        // Validate the input
+        $request->validate([
+            'name' => 'required|string|max:255', // Customize validation rules as needed
+        ]);
+
+        $artiste = $request->user()->artiste;
+
+        $artiste->nom_artiste = $request->input('name');
+
+        // Save any other updates (you can add other fields you want to update here)
+        $artiste->save();
+
+        // Redirect back with a success message
+        return redirect()->route('profile.personnaliser')
+            ->with('status', 'artiste-name-updated');
     }
 
     /**
