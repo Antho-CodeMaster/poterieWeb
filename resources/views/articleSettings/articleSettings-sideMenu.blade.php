@@ -34,10 +34,10 @@
 
             Articles en
             vedette </a>
-        <a href="{{ route('decouverte') }}" id="personnalisation"
+        <a href="{{ route('decouverte') }}" id="collections"
             class="textNavigation-dark flex items-center color-sideBar-hover p-sidebarNav">
-            <svg class="w-6 h-6 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+            <svg class="w-6 h-6 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                height="24" fill="currentColor" viewBox="0 0 24 24">
                 <path fill-rule="evenodd"
                     d="M5.005 10.19a1 1 0 0 1 1 1v.233l5.998 3.464L18 11.423v-.232a1 1 0 1 1 2 0V12a1 1 0 0 1-.5.866l-6.997 4.042a1 1 0 0 1-1 0l-6.998-4.042a1 1 0 0 1-.5-.866v-.81a1 1 0 0 1 1-1ZM5 15.15a1 1 0 0 1 1 1v.232l5.997 3.464 5.998-3.464v-.232a1 1 0 1 1 2 0v.81a1 1 0 0 1-.5.865l-6.998 4.042a1 1 0 0 1-1 0L4.5 17.824a1 1 0 0 1-.5-.866v-.81a1 1 0 0 1 1-1Z"
                     clip-rule="evenodd" />
@@ -48,7 +48,7 @@
 
             Collections</a>
 
-        <a href="{{ route('decouverte') }}" id="personnalisation"
+        <a href="{{ route('decouverte') }}" id="thèmes"
             class="textNavigation-dark flex items-center color-sideBar-hover p-sidebarNav">
             <svg class="w-6 h-6 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                 height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -61,5 +61,17 @@
             </svg>
 
             Thèmes </a>
+
+        <a href="{{ route('mesCommandes', ['idUser' => Auth::user()->id]) }}" id="commandes"
+            class="textNavigation-dark flex items-center color-sideBar-hover p-sidebarNav">
+            <svg class="w-6 h-6 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                    d="M12.013 6.175 7.006 9.369l5.007 3.194-5.007 3.193L2 12.545l5.006-3.193L2 6.175l5.006-3.194 5.007 3.194ZM6.981 17.806l5.006-3.193 5.006 3.193L11.987 21l-5.006-3.194Z" />
+                <path
+                    d="m12.013 12.545 5.006-3.194-5.006-3.176 4.98-3.194L22 6.175l-5.007 3.194L22 12.562l-5.007 3.194-4.98-3.211Z" />
+            </svg>
+
+            Mes commandes </a>
     </div>
 </div>

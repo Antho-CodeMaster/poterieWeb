@@ -16,12 +16,12 @@ Route::get('/', function () {
 });
 
 /* Route relié au kiosque */
-Route::controller(ArtisteController::class)->group(function(){
+Route::controller(ArtisteController::class)->group(function () {
     Route::get('/kiosque/{idUser}', 'show')->name('kiosque');
 });
 
-/* Route lié à Article */
-Route::controller(ArticleController::class)->group(function(){
+/* Routes liés à Article */
+Route::controller(ArticleController::class)->group(function () {
     Route::post('/addArticle', 'store')->name('addArticle');
     Route::get('/modifArticleForm/{idArticle}', 'showModifArticle')->name('modifArticleForm');
     Route::get('/tousMesArticles', 'show')->name('tousMesArticles');
@@ -31,6 +31,16 @@ Route::controller(ArticleController::class)->group(function(){
     Route::post('/signaleArticle', 'store')->name('signaleArticle');
 });
 
+/* Routes lié aux commandes*/
+Route::controller(CommandeController::class)->group(function () {
+    Route::get('/mesCommandes/{idUser}', [CommandeController::class, 'commandesTraiter'])->name('mesCommandes');
+    #Route pour afficher le panier en cours de l'utilisateur
+    Route::get('/panier', [CommandeController::class, 'showPanier'])->name('panier');
+    Route::get('/commandes', [CommandeController::class, 'index']);
+    Route::get('/commande/{id}', 'show');
+});
+
+
 Route::get('/decouverte', function () {
     return view('decouverte');
 })->name('decouverte');
@@ -38,7 +48,6 @@ Route::get('/decouverte', function () {
 Route::get('/buttons', function () {
     return view('buttons');
 })->name('buttons');
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -51,22 +60,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/devenir-artiste', [DemandeController::class, 'store'])->name('store-demande-artiste');
 });
 
-
 Route::get('/recherche/{search}', [ArticleController::class, 'getSearch'])->name('recherche.getSearch');
 
-Route::controller(CommandeController::class)->group(function(){
-    #Route pour afficher le panier en cours de l'utilisateur
-    Route::get('/panier', [CommandeController::class, 'showPanier'])->name('panier');
-    Route::get('/commandes', [CommandeController::class, 'index']);
-    Route::get('/commande/{id}', 'show');
-
-});
-
-Route::controller(TransactionController::class)->group(function(){
-    Route::get('/deleteThisArticle/{id}','destroy');
+Route::controller(TransactionController::class)->group(function () {
+    Route::get('/deleteThisArticle/{id}', 'destroy');
     Route::post('/addArticleToPanier', 'store')->name('addArticleToPanier');
 });
 
-
-require __DIR__.'/auth.php';
-require __DIR__.'/admin.php';
+require __DIR__ . '/auth.php';
+require __DIR__ . '/admin.php';
