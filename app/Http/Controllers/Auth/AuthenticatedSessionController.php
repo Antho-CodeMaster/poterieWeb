@@ -39,8 +39,10 @@ class AuthenticatedSessionController extends Controller
 
             return redirect('/');
         }
-        else
-            return redirect()->intended(route('decouverte', absolute: false));
+        else{
+            return back();
+            #return redirect()->intended(route('decouverte', absolute: false));
+        }
     }
 
     /**

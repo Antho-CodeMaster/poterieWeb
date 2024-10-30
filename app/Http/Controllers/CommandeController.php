@@ -116,9 +116,7 @@ class CommandeController extends Controller
         # returns the panier of the connected user
         # or the disconnected user
         if (Auth::check())
-            return Commande::firstOrCreate(
-                ['id_user' => Auth::id(), 'is_panier' => true]
-            );
+            return $this->saveCookieToDb($request);
         else{
             return $this->cookieToCommande($request);
         }
@@ -131,13 +129,13 @@ class CommandeController extends Controller
     public function showPanier(Request $request){
 
         #Prend les valeurs dans la bd si connecté ou dans le cookie si non connecté
-        if(Auth::check()){
-            $commande = $this->getPanier($request);
-        }
-        else{
-            $commande = $this->getPanier($request);
-        }
+        $commande = $this->getPanier($request);
 
+        if(Auth::check()){
+            return response()->view('commande/panier',
+                ['commande' => $commande])->withCookie(Cookie::forget('panier'));
+        }
+        else
         return view( 'commande/panier',
                 ['commande' => $commande]);
     }
@@ -214,6 +212,10 @@ class CommandeController extends Controller
         }
 
         $commande->save();
+
+        Cookie::forget('panier');
+
+        return $commande;
     }
 
     public function cookieToCommande(Request $request){
@@ -229,10 +231,10 @@ class CommandeController extends Controller
             $article = Article::find($item['id_article']);
             if($article){
                 $transaction = new Transaction();
-                $transaction->article = $article;
+                #$transaction->id_article = $article->id_article;
                 $transaction->quantite = $item['quantite'];
                 $transaction->prix_unitaire = $article->prix;
-                $transaction->id_transaction = $item['id_article'];
+                $transaction->id_article = $item['id_article'];
                 $transaction->id_etat = 2;
 
                 $commande->transactions->push($transaction);

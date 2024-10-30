@@ -70,7 +70,16 @@
                 <p class="grow">Estimé total</p>
                 <p class="" id="total">NNN $</p>
             </div>
-            <a href="{{route('checkout')}}"><button class="bg-[#009b4d] w-[80%] mx-auto mb-[5%] rounded-lg">Passer la commande</button></a>
+            @if (Auth::check())
+                <a><button class="bg-[#009b4d] w-[80%] mx-auto mb-[5%] rounded-lg">Passer la commande</div></a>
+            @else
+                <div x-data>
+                    <button class="bg-[#009b4d] w-[80%] mx-auto mb-[5%] rounded-lg" @click="$dispatch('open-login-modal')">
+                        Passer la commande
+                    </button>
+                </div>
+            @endif
+
 
 
         </div>
