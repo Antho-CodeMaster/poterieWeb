@@ -122,7 +122,7 @@ export default {
 
                 //Titre H2
                 '.titre2-light': {
-                    'line-height': '1.5rem',
+                    'line-height': '2rem',
                     'letter-spacing': '0.05rem',
                     'font-weight': '500',
                     'font-size': 'calc(26px + 1vw)',
@@ -130,7 +130,7 @@ export default {
                     'font-family': 'Newsreader',
                 },
                 '.titre2-dark': {
-                    'line-height': '1.5rem',
+                    'line-height': '2rem',
                     'letter-spacing': '0.05rem',
                     'font-weight': '500',
                     'font-size': 'calc(26px + 1vw)',

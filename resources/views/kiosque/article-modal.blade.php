@@ -9,13 +9,13 @@
         {{-- modal card --}}
         <div class="bg-white p-sectionX p-sectionY rounded-[12px] shadow-lg w-full max-w-[1080px]">
 
-            <section class="relative flex justify-center w-full h-[50px] items-center">
+            <section class="relative flex w-full h-[50px] items-center m-sectionY">
                 <!-- Titre centré -->
-                <p class="titre2-dark absolute left-1/2 transform -translate-x-1/2 w-full text-center"
-                    x-text="article.nom" class="text-ellipsis overflow-hidden text-nowrap"></p>
+                <p class="titre2-dark w-full text-center text-ellipsis text-wrap px-7"
+                    x-text="article.nom"></p>
 
                 <!-- Bouton de fermeture -->
-                <button @click="openArticleModal = false" class="ml-auto absolute right-0 hover:scale-110 duration-200">
+                <button @click="openArticleModal = false" class="absolute right-0 hover:scale-110 duration-200">
                     <svg class="w-9 h-9" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                         height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -27,7 +27,7 @@
             <section class="flex h-full p-sectionX">
                 {{-- Affichage des photos --}}
                 <div class="w-[580px] h-fit m-sectionY">
-                    <div x-data="{ currentIndex: 0 }" class="w-full h-[400px] flex items-center justify-between m-sectionY">
+                    <div x-data="{ currentIndex: 0 }" class="w-full h-[400px] flex items-center justify-between">
 
                         {{-- Flèche gauche --}}
                         <template x-if="photos.length == 1">
@@ -46,8 +46,8 @@
                                 class="text-darkGrey cursor-pointer transition-transform duration-300 hover:scale-110"
                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="64" height="64"
                                 fill="none" viewBox="4 4 16 16">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="m15 19-7-7 7-7" />
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m15 19-7-7 7-7" />
                             </svg>
                         </template>
 
@@ -135,7 +135,7 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col justify-between w-[490px] ml-2  m-sectionY">
+                <div class="flex flex-col justify-between w-[490px] ml-2 m-sectionY" x-data="{ openSignalArticleModal: false }">
                     <div class="w-full flex flex-wrap gap-input">
                         {{-- Description --}}
                         <div class="flex flex-wrap w-full m-titreY">
@@ -147,7 +147,7 @@
                         <div class="flex flex-wrap w-full m-titreY">
                             <p class="titre3-dark w-full ">Mots clés</p>
                             <template x-if="motsCles.length > 0">
-                                <div class="flex gap-2">
+                                <div class="flex gap-2 overflow-auto">
                                     <template x-for="(motCle, index) in motsCles" :key="index">
                                         <div class="flex">
                                             <p class=" textGrand-dark bg-beigeFoncé rounded-md p-2"
@@ -192,7 +192,7 @@
                     </div>
 
                     {{-- Boutons d'ajout au panier --}}
-                    <div class="w-full flex flex-wrap justify-center">
+                    <div class="w-full flex flex-wrap justify-center" x-data="{ openSignalArticleModal: false }">
                         <template x-if="article.quantite_disponible > 0 && article.id_etat == 1">
                             <form action="{{ '/addArticleToPanier' }}" method="POST" class="w-full h-[64px] ">
                                 @csrf
@@ -226,9 +226,11 @@
                         </template>
 
                         {{-- Bouton de signalement --}}
-                        <p class="cursor-pointer textFooter-dark hover:text-blue-500 underline">
+                        <p class="cursor-pointer textFooter-dark hover:text-blue-500 underline" @click=" $dispatch('open-signal-article-modal'); $dispatch('set-article-signal', JSON.stringify(article))">
                             Signalé cet article
                         </p>
+
+                        @include("kiosque.article-signal-modal")
                     </div>
                 </div>
             </section>

@@ -28,6 +28,7 @@ Route::controller(ArticleController::class)->group(function(){
     Route::patch('/deleteArticle', 'update')->name('deleteArticle');
     Route::get('/addArticleForm', 'create')->name('addArticleForm');
     Route::patch('/modifArticle', 'update')->name('modifArticle');
+    Route::post('/signaleArticle', 'store')->name('signaleArticle');
 });
 
 Route::get('/decouverte', function () {

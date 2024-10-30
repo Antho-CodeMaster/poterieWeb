@@ -75,7 +75,6 @@
         </div>
 
         @include('kiosque.carroussel')
-        @include('kiosque.article-modal')
     </section>
 
     {{-- Section Tous les articles --}}
@@ -85,8 +84,8 @@
                 <h2 class=" titre2-dark mx-[16px] mr-[2px] m-titreY select-none">Tous les articles</h2>
 
                 {{-- Bouton de filtre --}}
-                <svg class="w-8 h-8 cursor-pointer select-none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                    height="24" fill="#444444" viewBox="0 0 24 24">
+                <svg class="w-8 h-8 cursor-pointer select-none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    width="24" height="24" fill="#444444" viewBox="0 0 24 24">
                     <path
                         d="M10.83 5a3.001 3.001 0 0 0-5.66 0H4a1 1 0 1 0 0 2h1.17a3.001 3.001 0 0 0 5.66 0H20a1 1 0 1 0 0-2h-9.17ZM4 11h9.17a3.001 3.001 0 0 1 5.66 0H20a1 1 0 1 1 0 2h-1.17a3.001 3.001 0 0 1-5.66 0H4a1 1 0 1 1 0-2Zm1.17 6H4a1 1 0 1 0 0 2h1.17a3.001 3.001 0 0 0 5.66 0H20a1 1 0 1 0 0-2h-9.17a3.001 3.001 0 0 0-5.66 0Z" />
                 </svg>
@@ -205,6 +204,7 @@
 
         {{-- Les modals --}}
         @include('kiosque.deleteArticle-modal')
+        @include('kiosque.article-modal')
     </section>
 
     {{-- Message de Session --}}
@@ -214,6 +214,26 @@
             @include('messages.messageSucces', [
                 'message' => Session::get('succesDeleteArticle'),
                 'titre' => 'Suppression',
+            ])
+        </div>
+    @endif
+
+    {{-- Succes d'un signalement d'article --}}
+    @if (Session::has('succesSignalement'))
+        <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1" role="alert">
+            @include('messages.messageSucces', [
+                'message' => Session::get('succesSignalement'),
+                'titre' => 'Signalement',
+            ])
+        </div>
+    @endif
+
+    {{-- Échec d'un signalement d'article --}}
+    @if (Session::has('echecSignalement'))
+        <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1" role="alert">
+            @include('messages.messageFail', [
+                'message' => Session::get('echecSignalement'),
+                'titre' => 'Signalement',
             ])
         </div>
     @endif

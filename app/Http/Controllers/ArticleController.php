@@ -7,6 +7,7 @@ use App\Models\Artiste;
 use App\Models\Mot_cle;
 use App\Models\Mot_cle_article;
 use App\Models\Photo_article;
+use App\Models\Signalement;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -60,150 +61,178 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        /* Validation des entrés */
-        $validatedData = $request->validate([
-            "idArtiste" => "required",
-            "masquer" => "required|",
-            "enVedette" => "required|in:0,1",
-            "flouter" => "required|in:0,1",
-            "prixArticle" => "required",
-            "nomArticle" => "required|max:128",
-            "pieceUnique" => "required|in:0,1",
-            "descriptionArticle" => "required|max:255",
-            "hauteurArticle" => "required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0.01",
-            "largeurArticle" => "required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0.01",
-            "profondeurArticle" => "required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0.01",
-            "poidsArticle" => "required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0.01",
-            "typePiece" => "required|in:0,1",
-            "quantiteArticle" => "required|integer|min:1",
-            "motClesArticle" => "nullable|regex:/^#[a-zA-ZÀ-ÿ0-9]+(#[a-zA-ZÀ-ÿ0-9]+)*$/",
-            "photo1" => "required|mimes:jpeg,png,jpg",
-            "photo2" => "mimes:jpeg,png,jpg",
-            "photo3" => "mimes:jpeg,png,jpg",
-            "photo4" => "mimes:jpeg,png,jpg",
-            "photo5" => "mimes:jpeg,png,jpg",
-        ], [
-            "nomArticle.required" => "Le nom de l'article est obligatoire.",
-            "nomArticle.max" => "Le nom de l'article ne peut pas dépasser 128 caractères.",
+        if ($request->routeIs('addArticle')) {
+            /* Validation des entrés */
+            $validatedData = $request->validate([
+                "idArtiste" => "required",
+                "masquer" => "required|",
+                "enVedette" => "required|in:0,1",
+                "flouter" => "required|in:0,1",
+                "prixArticle" => "required",
+                "nomArticle" => "required|max:128",
+                "pieceUnique" => "required|in:0,1",
+                "descriptionArticle" => "required|max:255",
+                "hauteurArticle" => "required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0.01",
+                "largeurArticle" => "required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0.01",
+                "profondeurArticle" => "required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0.01",
+                "poidsArticle" => "required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0.01",
+                "typePiece" => "required|in:0,1",
+                "quantiteArticle" => "required|integer|min:1",
+                "motClesArticle" => "nullable|regex:/^#[a-zA-ZÀ-ÿ0-9]+(#[a-zA-ZÀ-ÿ0-9]+)*$/",
+                "photo1" => "required|mimes:jpeg,png,jpg",
+                "photo2" => "mimes:jpeg,png,jpg",
+                "photo3" => "mimes:jpeg,png,jpg",
+                "photo4" => "mimes:jpeg,png,jpg",
+                "photo5" => "mimes:jpeg,png,jpg",
+            ], [
+                "nomArticle.required" => "Le nom de l'article est obligatoire.",
+                "nomArticle.max" => "Le nom de l'article ne peut pas dépasser 128 caractères.",
 
-            "pieceUnique.required" => "Le champ pièce unique est obligatoire.",
-            "pieceUnique.in" => "La valeur du champ pièce unique doit être soit 'Unique' soit 'En série'.",
+                "pieceUnique.required" => "Le champ pièce unique est obligatoire.",
+                "pieceUnique.in" => "La valeur du champ pièce unique doit être soit 'Unique' soit 'En série'.",
 
-            "descriptionArticle.required" => "La description de l'article est obligatoire.",
-            "descriptionArticle.max" => "La description de l'article ne peut pas dépasser 255 caractères.",
+                "descriptionArticle.required" => "La description de l'article est obligatoire.",
+                "descriptionArticle.max" => "La description de l'article ne peut pas dépasser 255 caractères.",
 
-            "hauteurArticle.required" => "La hauteur de l'article est obligatoire.",
-            "hauteurArticle.numeric" => "La hauteur de l'article doit être un nombre.",
-            "hauteurArticle.regex" => "La hauteur de l'article doit être un nombre valide avec au maximum deux décimales.",
-            "hauteurArticle.min" => "La hauteur de l'article doit être supérieure à 0.01.",
+                "hauteurArticle.required" => "La hauteur de l'article est obligatoire.",
+                "hauteurArticle.numeric" => "La hauteur de l'article doit être un nombre.",
+                "hauteurArticle.regex" => "La hauteur de l'article doit être un nombre valide avec au maximum deux décimales.",
+                "hauteurArticle.min" => "La hauteur de l'article doit être supérieure à 0.01.",
 
-            "largeurArticle.required" => "La largeur de l'article est obligatoire.",
-            "largeurArticle.numeric" => "La largeur de l'article doit être un nombre.",
-            "largeurArticle.regex" => "La largeur de l'article doit être un nombre valide avec au maximum deux décimales.",
-            "largeurArticle.min" => "La largeur de l'article doit être supérieure ou égale à 0.01.",
+                "largeurArticle.required" => "La largeur de l'article est obligatoire.",
+                "largeurArticle.numeric" => "La largeur de l'article doit être un nombre.",
+                "largeurArticle.regex" => "La largeur de l'article doit être un nombre valide avec au maximum deux décimales.",
+                "largeurArticle.min" => "La largeur de l'article doit être supérieure ou égale à 0.01.",
 
-            "profondeurArticle.required" => "La profondeur de l'article est obligatoire.",
-            "profondeurArticle.numeric" => "La profondeur de l'article doit être un nombre.",
-            "profondeurArticle.regex" => "La profondeur de l'article doit être un nombre valide avec au maximum deux décimales.",
-            "profondeurArticle.min" => "La profondeur de l'article doit être supérieure ou égale à 0.01.",
+                "profondeurArticle.required" => "La profondeur de l'article est obligatoire.",
+                "profondeurArticle.numeric" => "La profondeur de l'article doit être un nombre.",
+                "profondeurArticle.regex" => "La profondeur de l'article doit être un nombre valide avec au maximum deux décimales.",
+                "profondeurArticle.min" => "La profondeur de l'article doit être supérieure ou égale à 0.01.",
 
-            "poidsArticle.required" => "Le poids de l'article est obligatoire.",
-            "poidsArticle.numeric" => "Le poids de l'article doit être un nombre.",
-            "poidsArticle.regex" => "Le poids de l'article doit être un nombre valide avec au maximum deux décimales.",
-            "poidsArticle.min" => "Le poids de l'article doit être supérieur ou égal à 0.01.",
+                "poidsArticle.required" => "Le poids de l'article est obligatoire.",
+                "poidsArticle.numeric" => "Le poids de l'article doit être un nombre.",
+                "poidsArticle.regex" => "Le poids de l'article doit être un nombre valide avec au maximum deux décimales.",
+                "poidsArticle.min" => "Le poids de l'article doit être supérieur ou égal à 0.01.",
 
-            "typePiece.required" => "Le type de pièce est obligatoire.",
-            "typePiece.in" => "La valeur du type de pièce doit être soit 'Non-alimentaire' soit 'Alimentaire'.",
+                "typePiece.required" => "Le type de pièce est obligatoire.",
+                "typePiece.in" => "La valeur du type de pièce doit être soit 'Non-alimentaire' soit 'Alimentaire'.",
 
-            "quantiteArticle.required" => "La quantité de l'article est obligatoire.",
-            "quantiteArticle.integer" => "La quantité de l'article doit être un nombre entier.",
-            "quantiteArticle.min" => "La quantité de l'article doit être au moins 1.",
+                "quantiteArticle.required" => "La quantité de l'article est obligatoire.",
+                "quantiteArticle.integer" => "La quantité de l'article doit être un nombre entier.",
+                "quantiteArticle.min" => "La quantité de l'article doit être au moins 1.",
 
-            "motClesArticle.regex" => "Les mots clés de l'article doivent commencer par '#' et contenir aucun espacement.",
+                "motClesArticle.regex" => "Les mots clés de l'article doivent commencer par '#' et contenir aucun espacement.",
 
-            'photo1.mimes' => 'La photo 1 doit être au format JPEG, PNG ou JPG.',
-            'photo1.required' => 'Il doit y avoir au moins 1 photo afin d\'ajouter un nouvel article',
-            'photo2.mimes' => 'La photo 2 doit être au format JPEG, PNG ou JPG.',
-            'photo3.mimes' => 'La photo 3 doit être au format JPEG, PNG ou JPG.',
-            'photo4.mimes' => 'La photo 4 doit être au format JPEG, PNG ou JPG.',
-            'photo5.mimes' => 'La photo 5 doit être au format JPEG, PNG ou JPG.',
-        ]);
+                'photo1.mimes' => 'La photo 1 doit être au format JPEG, PNG ou JPG.',
+                'photo1.required' => 'Il doit y avoir au moins 1 photo afin d\'ajouter un nouvel article',
+                'photo2.mimes' => 'La photo 2 doit être au format JPEG, PNG ou JPG.',
+                'photo3.mimes' => 'La photo 3 doit être au format JPEG, PNG ou JPG.',
+                'photo4.mimes' => 'La photo 4 doit être au format JPEG, PNG ou JPG.',
+                'photo5.mimes' => 'La photo 5 doit être au format JPEG, PNG ou JPG.',
+            ]);
 
-        /* Création de l'article */
-        $newArticle = Article::create([
-            'id_artiste' => $validatedData['idArtiste'],
-            'id_etat' => $validatedData['masquer'],
-            'nom' => $validatedData['nomArticle'],
-            'description' => $validatedData['descriptionArticle'],
-            'prix' => $validatedData['prixArticle'],
-            'hauteur' => $validatedData['hauteurArticle'],
-            'largeur' => $validatedData['largeurArticle'],
-            'profondeur' => $validatedData['profondeurArticle'],
-            'poids' => $validatedData['poidsArticle'],
-            'quantite_disponible' => $validatedData['quantiteArticle'],
-            'date_publication' => now(), // Utiliser now() pour obtenir la date actuelle
-            'is_en_vedette' => $validatedData['enVedette'],
-            'is_sensible' => $validatedData['flouter'],
-            'is_alimentaire' => $validatedData['typePiece'],
-            'is_unique' => $validatedData['pieceUnique'],
-            'couleur' => 'brun marde', // Vous pouvez le modifier selon vos besoins
-        ]);
+            /* Création de l'article */
+            $newArticle = Article::create([
+                'id_artiste' => $validatedData['idArtiste'],
+                'id_etat' => $validatedData['masquer'],
+                'nom' => $validatedData['nomArticle'],
+                'description' => $validatedData['descriptionArticle'],
+                'prix' => $validatedData['prixArticle'],
+                'hauteur' => $validatedData['hauteurArticle'],
+                'largeur' => $validatedData['largeurArticle'],
+                'profondeur' => $validatedData['profondeurArticle'],
+                'poids' => $validatedData['poidsArticle'],
+                'quantite_disponible' => $validatedData['quantiteArticle'],
+                'date_publication' => now(), // Utiliser now() pour obtenir la date actuelle
+                'is_en_vedette' => $validatedData['enVedette'],
+                'is_sensible' => $validatedData['flouter'],
+                'is_alimentaire' => $validatedData['typePiece'],
+                'is_unique' => $validatedData['pieceUnique'],
+                'couleur' => 'brun marde', // Vous pouvez le modifier selon vos besoins
+            ]);
 
-        /* Stockage en BD du nouvelle article */
-        if ($newArticle->save()) {
-            session()->flash('succesArticle', 'L\'article a bien été ajouté');
-        } else {
-            session()->flash('erreurArticle', 'Un problème lors de l\'ajout de l\'article s\'est produit');
-        }
-
-        /* Gestion des mots clés*/
-        $motsClesString = $validatedData['motClesArticle'];
-
-        $motsClesArray = array_filter(array_map('trim', explode('#', $motsClesString)));
-        foreach ($motsClesArray as $motCle) {
-            /* Vérifie si le mot clé existe dans la table "Mot_Cle", si non il le crée et si oui, il y accède */
-            $instanceMotCle = Mot_cle::where("mot_cle", $motCle)->firstOrCreate(["mot_cle" => $motCle]);
-            if ($instanceMotCle == null) {
-                session()->flash('erreurMotsCles', 'Un problème lors de l\'ajout des mots clés s\'est produit, veuillez réessayer.');
-                #return->back();??
+            /* Stockage en BD du nouvelle article */
+            if ($newArticle->save()) {
+                session()->flash('succesArticle', 'L\'article a bien été ajouté');
+            } else {
+                session()->flash('erreurArticle', 'Un problème lors de l\'ajout de l\'article s\'est produit');
             }
-            /* Vérifie si le mot clé existe dans la table "Mot_Cle_article", si non il le crée et si oui, il y accède */
-            Mot_cle_article::where("id_mot_cle", $instanceMotCle->id_mot_cle)
-                ->where("id_article", $newArticle->id_article)
-                ->firstOrCreate([
-                    "id_mot_cle" => $instanceMotCle->id_mot_cle,
-                    "id_article" => $newArticle->id_article
-                ]);
+
+            /* Gestion des mots clés*/
+            $motsClesString = $validatedData['motClesArticle'];
+
+            $motsClesArray = array_filter(array_map('trim', explode('#', $motsClesString)));
+            foreach ($motsClesArray as $motCle) {
+                /* Vérifie si le mot clé existe dans la table "Mot_Cle", si non il le crée et si oui, il y accède */
+                $instanceMotCle = Mot_cle::where("mot_cle", $motCle)->firstOrCreate(["mot_cle" => $motCle]);
+                if ($instanceMotCle == null) {
+                    session()->flash('erreurMotsCles', 'Un problème lors de l\'ajout des mots clés s\'est produit, veuillez réessayer.');
+                    #return->back();??
+                }
+                /* Vérifie si le mot clé existe dans la table "Mot_Cle_article", si non il le crée et si oui, il y accède */
+                Mot_cle_article::where("id_mot_cle", $instanceMotCle->id_mot_cle)
+                    ->where("id_article", $newArticle->id_article)
+                    ->firstOrCreate([
+                        "id_mot_cle" => $instanceMotCle->id_mot_cle,
+                        "id_article" => $newArticle->id_article
+                    ]);
+            }
+
+
+            for ($i = 1; $i <= 5; $i++) {
+                if ($request->hasFile('photo' . $i)) {
+                    $file = $request->file('photo' . $i);
+
+                    // Créer un nom de fichier unique avec un identifiant aléatoire
+                    $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+
+                    // Stocker le fichier dans le répertoire public
+                    $filePath = $file->storeAs('tests', $filename, 'public');
+
+                    // Déplacer le fichier vers le dossier public (optionnel, dépendant de votre configuration)
+                    $file->move(public_path('img/tests'), $filename);
+
+                    $newPhotoArticle = new Photo_article();
+                    $newPhotoArticle->id_article = $newArticle->id_article;
+                    $newPhotoArticle->path = $filePath; // Stockage du chemin exact en base de données
+
+                    if (!$newPhotoArticle->save()) {
+                        session()->flash('erreurPhotos', 'Un problème lors de l\'ajout des photos s\'est produit, veuillez réessayer.');
+                    }
+                }
+            }
+
+
+            $idUser = Auth::user()->id;
+
+            return redirect()->route('addArticleForm', ['idUser' => $idUser]);
+
+        } elseif ($request->routeIs('signaleArticle')) { /* Fonction pour ajouter un signalement */
+            /* Validation des entrées */
+            $validatedData = $request->validate([
+                "idArticle" => "required",
+                "signaleDescription" => "required|max:255",
+            ], [
+                "signaleDescription.required" => "La description du signalement est obligatoire.",
+                "signaleDescription.max" => "La description du signalement ne peut pas dépasser 255 caractères.",
+            ]);
+
+            $newsignalement = Signalement::create([
+                "id_user" => Auth::user()->id,
+                "id_article" => $validatedData["idArticle"],
+                "date" => date('Y-m-d'),
+                "description" => $validatedData["signaleDescription"]
+            ]);
+
+            /* Stockage en BD du nouvelle article */
+            if ($newsignalement->save()) {
+                session()->flash('succesSignalement', 'Le signalement à été envoyé');
+            } else {
+                session()->flash('echecSignalement', 'Un problème lors du signalement de l\'article s\'est produit.');
+            }
+
+            return back();
         }
-
-
-for ($i = 1; $i <= 5; $i++) {
-    if ($request->hasFile('photo' . $i)) {
-        $file = $request->file('photo' . $i);
-
-        // Créer un nom de fichier unique avec un identifiant aléatoire
-        $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-
-        // Stocker le fichier dans le répertoire public
-        $filePath = $file->storeAs('tests', $filename, 'public');
-
-        // Déplacer le fichier vers le dossier public (optionnel, dépendant de votre configuration)
-        $file->move(public_path('img/tests'), $filename);
-
-        $newPhotoArticle = new Photo_article();
-        $newPhotoArticle->id_article = $newArticle->id_article;
-        $newPhotoArticle->path = $filePath; // Stockage du chemin exact en base de données
-
-        if (!$newPhotoArticle->save()) {
-            session()->flash('erreurPhotos', 'Un problème lors de l\'ajout des photos s\'est produit, veuillez réessayer.');
-        }
-    }
-}
-
-
-        $idUser = Auth::user()->id;
-
-        return redirect()->route('addArticleForm', ['idUser' => $idUser]);
     }
 
     /**
@@ -394,9 +423,9 @@ for ($i = 1; $i <= 5; $i++) {
             }
 
             // Gestion du téléchargement de l'image
-             for ($i = 1; $i <= 5; $i++) {
+            for ($i = 1; $i <= 5; $i++) {
 
-            /*
+                /*
             Je dois vérifier quelle photo ont été modifié,
                 Je dois retrouvé le photo_article de ces photos et changer leur paths en téléchargeant la nouvelle photo
                 Je dois supprimer l'acienne photo de mon stockage en utilisant son ancien path
@@ -448,11 +477,10 @@ for ($i = 1; $i <= 5; $i++) {
                             // Stockage en BD de la nouvelle photo
                             if (!$newPhotoArticle->save()) {
                                 session()->flash('erreurPhotos', 'Un problème lors de l\'ajout des photos s\'est produit, veuillez réessayer.');
-                               # return back();
+                                # return back();
                             }
                         }
-                    }
-                    elseif ($fileExistsInStorage) #Si la photo existe dans le disque dur
+                    } elseif ($fileExistsInStorage) #Si la photo existe dans le disque dur
                     {
                         // Vérifiez si c'est une photo à remplacer
                         $photoId = $request->input('photoId' . $i); // Supposons que vous ayez des IDs de photos dans votre formulaire pour la suppression
@@ -482,7 +510,7 @@ for ($i = 1; $i <= 5; $i++) {
                             // Stockage en BD de la nouvelle photo
                             if (!$newPhotoArticle->save()) {
                                 session()->flash('erreurPhotos', 'Un problème lors de l\'ajout des photos s\'est produit, veuillez réessayer.');
-                               # return back();
+                                # return back();
                             }
                         }
                     }
