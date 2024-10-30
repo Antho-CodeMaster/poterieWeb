@@ -40,5 +40,15 @@ class DemandeSeeder extends Seeder
             'id_user' => 8,
             'date' => now()
         ]);
+
+        for($i = 0; $i < 50; $i++)
+        {
+            DB::table('demandes')->insert([
+                'id_type' => random_int(1, 3),
+                'id_etat' => 1,
+                'id_user' => random_int(1, 9),
+                'date' => now()
+            ]);
+        }
     }
 }

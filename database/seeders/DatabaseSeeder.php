@@ -48,7 +48,9 @@ class DatabaseSeeder extends Seeder
             TransactionSeeder::class,
             PhotoOeuvreSeeder::class,
             PhotoIdentiteSeeder::class,
-            PhotoLivraisonSeeder::class
+            PhotoLivraisonSeeder::class,
+            CollectionSeeder::class,
+            CollectionArticleSeeder::class,
             ]);
     }
 }

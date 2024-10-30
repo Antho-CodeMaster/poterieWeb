@@ -76,4 +76,9 @@ class Article extends Model
     public function mot_cle(){
         return $this->belongsToMany(Mot_cle::class,'mot_cle_article','id_article', 'id_mot_cle');
     }
+
+    public function collections()
+    {
+        return $this->belongsToMany(Collection::class, 'collections_articles', 'id_article', 'id_collection');
+    }
 }

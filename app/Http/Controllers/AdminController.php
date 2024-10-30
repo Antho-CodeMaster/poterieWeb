@@ -23,6 +23,7 @@ class AdminController extends Controller
             'articles' => Article::All()->count(),
             'signalements' => Signalement::All()->count(),
             'demandes' => Demande::All()->count(),
+            'newDemandes' => Demande::where('id_etat', 1)->count(),
             'articles_non_recus' => Article_non_recu::All()->count(),
             'transactions' => Transaction::All()->count()
         ]);

@@ -68,7 +68,7 @@ class PasswordResetLinkController extends Controller
             );}
             catch (TransportException $e) {
                 $status = "SERVER_ERROR";
-                return back()->withErrors(['reponse' => 'Une erreur s\'est produite au moment de l\'envoi du courriel. Veuillez contacter l\'administration à l\' aide du lien en bas de page.']);
+                return back()->withErrors(['reponse' => 'Une erreur s\'est produite lors de l\'envoi du courriel. Veuillez contacter l\'administration à l\'aide du lien au bas de la page.']);
             }
 
         }

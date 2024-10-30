@@ -28,7 +28,7 @@ class PhotoArticleSeeder extends Seeder
             */
             DB::table('photos_article')->insert([
                 'id_article' => $i,
-                'path' => 'tests/pot_' . $j . '.jpg',
+                'path' => 'tests/pot_' . random_int(1, 14) . '.jpg',
             ]);
         }
     }

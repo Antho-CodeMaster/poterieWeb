@@ -5,17 +5,21 @@ use App\Http\Controllers\ArtisteController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\LikeController;
 
 use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\TransactionController;
-
+use App\Http\Middleware\EnsureUserIsArtist;
+use App\Http\Middleware\EnsureUserCanBecomeArtist;
 use Illuminate\Support\Facades\Route;
 use Laravel\Cashier\Checkout;
 
-Route::get('/', function () {
-    return view('decouverte');
-});
+Route::get('/decouverte', function () {
+    return redirect('/');
+})->name('decouverte');
+
+Route::get('/', [CollectionController::class, 'index']);
 
 /* Route relié au kiosque */
 Route::controller(ArtisteController::class)->group(function(){
@@ -30,21 +34,27 @@ Route::controller(ArticleController::class)->group(function(){
     Route::patch('/deleteArticle', 'update')->name('deleteArticle');
     Route::get('/addArticleForm', 'create')->name('addArticleForm');
     Route::patch('/modifArticle', 'update')->name('modifArticle');
+    Route::post('/signaleArticle', 'store')->name('signaleArticle');
 });
 
-Route::get('/decouverte', function () {
-    return view('decouverte');
-})->name('decouverte');
+Route::get('/buttons', function () {
+    return view('buttons');
+})->name('buttons');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::get('/profile/facturation', [ProfileController::class, 'facturation'])->name('profile.facturation');
+    Route::get('/profile/personnaliser', [ProfileController::class, 'personnaliser'])->name('profile.personnaliser');
     Route::post('/profile/edit', [ProfileController::class, 'updateBlur'])->name('profile.updateBlur');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::post('/profile', [ArtisteController::class, 'updatePicture'])->name('artiste.updatePicture');
-    Route::get('/devenir-artiste', [DemandeController::class, 'create'])->name('devenir-artiste');
+    Route::post('/profile/update-picture', [ArtisteController::class, 'updatePicture'])->name('artiste.updatePicture');
+    Route::post('/profile/update-name', [ArtisteController::class, 'updateName'])->name('artiste.updateName');
+    Route::get('/devenir-artiste', [DemandeController::class, 'create'])->name('devenir-artiste')->middleware(EnsureUserCanBecomeArtist::class);
     Route::post('/devenir-artiste', [DemandeController::class, 'store'])->name('store-demande-artiste');
+    Route::get('/renouvellement', [DemandeController::class, 'create'])->name('renouvellement-artiste')->middleware(EnsureUserIsArtist::class);;
+    Route::post('/devenir-artiste', [DemandeController::class, 'storeRenouvellement'])->name('store-renouvellement-artiste');
 });
 
 

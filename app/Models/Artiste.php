@@ -12,6 +12,16 @@ class Artiste extends Model
     use HasFactory;
     protected $table = "artistes";
     protected $primaryKey = "id_artiste";
+    protected $fillable = [
+        'id_user',
+        'id_theme',
+        'nom_artiste',
+        'path_photo_profil',
+        'is_etudiant',
+        'actif',
+        'description',
+        'couleur_banniere'
+    ];
 
     public function reseaux() {
         return $this->belongsToMany(Reseau::class, "reseaux_artistes", 'id_artiste', 'id_reseau')->withPivot('username');

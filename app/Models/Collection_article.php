@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class Collection_article extends Model
+class Collection_article extends Pivot
 {
     use HasFactory;
+
+    protected $table = 'collections_articles';
 }

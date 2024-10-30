@@ -10,6 +10,7 @@ body {
     font-family: "Inter", sans-serif;
     font-weight: 400;
     color: #444444;
+    margin: 0;
 }
 
 /* Classe pour styliser un titre */
@@ -127,3 +128,10 @@ body {
     margin-top: -2px;
     margin-left: -2px;
 }
+
+#parallax-img {
+    top: -48px;
+    margin: 0;
+    padding: 0;
+}
+

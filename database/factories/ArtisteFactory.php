@@ -22,6 +22,7 @@ class ArtisteFactory extends Factory
             'nom_artiste' => fake()->name(),
             'path_photo_profil' => 'img/artistePFP/default_artiste.png',
             'is_etudiant' => random_int(0, 1),
+            'actif' => 1,
             'description' => fake()->sentence(random_int(5, 10), true),
             'couleur_banniere' => '808080'
         ];
