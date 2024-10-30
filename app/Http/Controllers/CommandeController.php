@@ -120,27 +120,7 @@ class CommandeController extends Controller
                 ['id_user' => Auth::id(), 'is_panier' => true]
             );
         else{
-            //recupere les cookies
-            $cookie = $request->cookie('panier','');
-            $items = $cookie ? json_decode($cookie,true) : [];
-
-            //cree pbj commande
-            $commande = new Commande();
-            $commande->transactions->collect();
-
-            foreach($items as $item){
-                $article = Article::find($item['id_article']);
-                if($article){
-                    $transaction = new Transaction();
-                    $transaction->article = $article;
-                    $transaction->quantite = $item['quantite'];
-                    $transaction->prix_unitaire = $article->prix;
-                    $transaction->id_transaction = $item['id_article'];
-
-                    $commande->transactions->push($transaction);
-                }
-            }
-            return $commande;
+            return $this->cookieToCommande($request);
         }
 
     }
@@ -186,6 +166,8 @@ class CommandeController extends Controller
 
         $commande->update(['checkout_session_id' => $checkoutSession->id]);
 
+        $commande->save();
+
         return redirect($checkoutSession->url);
     }
 
@@ -216,6 +198,48 @@ class CommandeController extends Controller
         }
 
         return $items;
+    }
+
+    public function saveCookieToDb(Request $request){
+        $commandeUnsaved = $this->cookieToCommande($request);
+
+        $commande = Commande::firstOrCreate(
+            ['id_user' => Auth::id(), 'is_panier' => true]
+        );
+
+        foreach($commandeUnsaved->transactions as $transaction){
+            if(!$commande->transactions->contains('id_article',$transaction->id_article)){
+                $commande->transactions()->save($transaction);
+            }
+        }
+
+        $commande->save();
+    }
+
+    public function cookieToCommande(Request $request){
+        //recupere les cookies
+        $cookie = $request->cookie('panier','');
+        $items = $cookie ? json_decode($cookie,true) : [];
+
+        //cree pbj commande
+        $commande = new Commande();
+        $commande->transactions->collect();
+
+        foreach($items as $item){
+            $article = Article::find($item['id_article']);
+            if($article){
+                $transaction = new Transaction();
+                $transaction->article = $article;
+                $transaction->quantite = $item['quantite'];
+                $transaction->prix_unitaire = $article->prix;
+                $transaction->id_transaction = $item['id_article'];
+                $transaction->id_etat = 2;
+
+                $commande->transactions->push($transaction);
+            }
+        }
+
+        return $commande;
     }
 
 }
