@@ -10,10 +10,12 @@ use App\Models\Artiste;
 use App\Models\User;
 use App\Notifications\Acceptation_demande;
 use App\Notifications\Refus_demande;
+use App\Notifications\Renouvellement_refuse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Session;
 
 class DemandeController extends Controller
 {
@@ -23,7 +25,7 @@ class DemandeController extends Controller
     public function index()
     {
         return view('admin/demandes', [
-            'demandes' => Demande::where('id_etat', 1)->with(['photos_oeuvres','photos_identite'])->orderBy('date', 'asc')->get(),
+            'demandes' => Demande::where('id_etat', 1)->with(['photos_oeuvres', 'photos_identite'])->orderBy('date', 'asc')->get(),
             'images' => Storage::disk('public')
         ]);
     }
@@ -34,7 +36,7 @@ class DemandeController extends Controller
     public function index_traitees()
     {
         return view('admin/demandes-traitees', [
-            'demandes' => Demande::where('id_etat','!=', 1)->with(['photos_oeuvres','photos_identite'])->orderBy('updated_at', 'desc')->get(),
+            'demandes' => Demande::where('id_etat', '!=', 1)->with(['photos_oeuvres', 'photos_identite'])->orderBy('updated_at', 'desc')->get(),
             'images' => Storage::disk('public')
         ]);
     }
@@ -42,9 +44,9 @@ class DemandeController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('devenir-artiste');
+        return $request->getRequestUri() == "/renouvellement" ? view('demande.renouvellement') : view('demande.devenir-artiste');
     }
 
     /**
@@ -153,6 +155,74 @@ class DemandeController extends Controller
         return redirect()->route('decouverte');
     }
 
+    public function storeRenouvellement(Request $request)
+    {
+        // Si on a déjà une demande pending, on ne peut pas en faire une nouvelle
+        if (Demande::where('id_user', Auth::id())->where('id_etat', 1)->first() != null)
+            return back()->withErrors(['alreadyPending' => 'Vous avez déjà une demande en attente dans notre serveur. Veuillez attendre le verdict de l\'administration avant de réessayer.']);
+
+        // Assigner le bon type selon la demande
+        $nomType = $request->input('type');
+
+        if ($nomType == "etu") {
+            // Valider qu'il y a bel et bien 3 photos et qu'elles sont dans le bon format si la demande est pour un étudiant
+            $rules['photo-identite'] = 'required|array|size:3';
+            $rules['photo-identite.*'] = 'mimes:jpeg,png,jpg|max:2048';
+
+            $messages['photo-identite.required'] = "Vous devez soumettre 3 photos à l'étape 2.";
+            $messages['photo-identite.array'] = "Vous devez soumettre 3 photos à l'étape 2.";
+            $messages['photo-identite.between'] = "Vous devez soumettre 3 photos à l'étape 2.";
+            $messages['photo-identite.*.mimes'] = "Toutes les photos doivent être des fichiers .jpeg, .png ou .jpg.";
+            $messages['photo-identite.*.max'] = "Toutes les photos doivent être moins lourdes que 2048 Ko.";
+
+            // Performer la validation
+            $validator = Validator::make($request->all(), $rules, $messages);
+
+            if ($validator->fails()) {
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+
+            // Stockage de la demande
+
+            $newDemande = Demande::create([
+                'id_type' => 1,
+                'id_etat' => 1, // En attente
+                'id_user' => Auth::id(),
+                'date' => now()
+            ]);
+            if (!$newDemande->save()) {
+                return back()->withErrors(['msg' => 'Une erreur inattendue s\'est produite lors de l\'envoi de votre demande. Veuillez réessayer plus tard.']);
+            }
+
+            $id_demande = $newDemande->id_demande;
+
+            // Stockage des photos d'identité, seulement si l'utilisateur sera étudiant / renouvellement étudiant
+
+            $cpt = 0;
+            if ($request->hasFile('photo-identite')) {
+                $files = $request->file('photo-identite');
+                foreach ($files as $file) {
+                    $filename = time() . '_' . $cpt . '.' . $file->getClientOriginalExtension();
+                    $file->move(public_path('img/demandeIdentite'), $filename);
+                    $newPhoto = new Photo_identite();
+                    $newPhoto->id_demande = $id_demande;
+                    $newPhoto->path = $filename;
+                    if (!$newPhoto->save()) {
+                        return back()->withErrors(['msg' => 'Une erreur inattendue s\'est produite lors de l\'envoi de votre demande. Veuillez réessayer plus tard.']);
+                    }
+                    $cpt++;
+                }
+            }
+            session()->flash('succesDemande', 'Votre demande a bel et bien été envoyée. Vous recevrez des nouvelles prochainement!');
+            return redirect()->route('decouverte');
+        } else if ($nomType == "pro") {
+            // Ne pas créer de demande. Procéder au paiement.
+        } else
+            return back()->withErrors(['msg' => 'Une erreur inattendue s\'est produite lors de l\'envoi de votre demande. Veuillez réessayer plus tard.']);
+    }
+
     /**
      * Accepter une demande.
      */
@@ -177,19 +247,20 @@ class DemandeController extends Controller
                 'nom_artiste' => null,
                 'path_photo_profil' => 'img/artistePFP/default_artiste.png',
                 'is_etudiant' => $dem->id_type == 2 ? true : false,
+                'actif' => 1,
                 'description' => null,
                 'couleur_banniere' => '808080'
             ]);
             $artiste->save();
 
-            if($dem->id_type == 3)
-            {
+            if ($dem->id_type == 3) {
                 /* Effectuer le paiement si pro. */
             }
-        }
-        else
-        {
+        } else {
             /* Traiter différemment s'il s'agit d'un renouvellement. */
+            $artiste = Artiste::where("id_user", $dem->id_user)->first();
+            $artiste->actif = 1;
+            $artiste->save();
         }
 
         // Notifier user
@@ -209,6 +280,7 @@ class DemandeController extends Controller
         $usr = User::find($dem->id_user);
         $usr->notify(new Acceptation_demande($dem->id_user));
 
+        Session::flash("succes", "L'utilisateur a bel et bien été accepté !");
         return redirect()->to(route('admin-demandes'));
     }
 
@@ -217,6 +289,9 @@ class DemandeController extends Controller
      */
     public function deny()
     {
+        if(request()->input('reason') == "" || request()->input('reason') == null)
+            return back()->withErrors(['error' => "Veuillez spécifier une raison pour le refus."]);
+
         // Changer état demande
         $id = request()->query('id');
 
@@ -226,10 +301,18 @@ class DemandeController extends Controller
 
         $dem->id_etat = 3;
         $dem->save();
+        $usr = User::find($dem->id_user);
 
-        if($dem->id_type == 1)
-        {
+        if ($dem->id_type == 1) {
             /* Traiter différemment s'il s'agit d'un renouvellement refusé. */
+            $usr->notify(new Renouvellement_refuse(request()->input('reason')));
+            $artiste = Artiste::where("id_user", $dem->id_user)->first();
+            $artiste->actif = 0;
+            $artiste->save();
+        }
+        else
+        {
+            $usr->notify(new Refus_demande(request()->input('reason')));
         }
 
         $notif = Notification::create([
@@ -242,9 +325,7 @@ class DemandeController extends Controller
         ]);
         $notif->save();
 
-        $usr = User::find($dem->id_user);
-        $usr->notify(new Refus_demande(request()->input('reason')));
-
+        Session::flash("succes", "L'utilisateur a bel et bien été refusé !");
         return redirect()->to(route('admin-demandes'));
     }
 

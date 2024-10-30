@@ -18,6 +18,7 @@ class Artiste extends Model
         'nom_artiste',
         'path_photo_profil',
         'is_etudiant',
+        'actif',
         'description',
         'couleur_banniere'
     ];

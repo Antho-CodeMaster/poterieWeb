@@ -50,7 +50,7 @@
                                     class="text-center text-2xl mx-auto text-ellipsis overflow-hidden whitespace-nowrap">
                                     {{ $user->name }}</h3>
                                 @if ($user->artiste != null)
-                                    <div class="flex w-fit mx-auto x-data="{ openArtist: {{ $errors->any() ? 'true' : 'false' }} }">
+                                    <div class="flex w-fit mx-auto" x-data="{ openArtist: {{ $errors->any() ? 'true' : 'false' }} }">
                                         <x-button.blue.leave
                                             @click="
                                             $dispatch('open-artist-modal');

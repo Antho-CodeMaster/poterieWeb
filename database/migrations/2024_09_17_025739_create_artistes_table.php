@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('nom_artiste')->nullable();
             $table->string('path_photo_profil')->nullable()->default('default_artiste.png');
             $table->boolean('is_etudiant');
+            $table->boolean('actif');
             $table->string('description')->nullable();
             $table->char('couleur_banniere', 6);
             $table->timestamps();

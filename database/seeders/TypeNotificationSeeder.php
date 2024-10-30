@@ -24,5 +24,9 @@ class TypeNotificationSeeder extends Seeder
         DB::table('types_notification')->insert([
             'description' => 'Votre demande pour devenir vendeur a été acceptée! Vous avez maintenant accès à votre kiosque dans la barre de navigation.',
         ]);
+
+        DB::table('types_notification')->insert([
+            'description' => 'ATTENTION: À partir d\'aujourd\'hui, vous avez un mois pour renouveler votre statut d\'étudiant. Un courriel vous a été envoyé avec plus d\'informations.',
+        ]);
     }
 }
