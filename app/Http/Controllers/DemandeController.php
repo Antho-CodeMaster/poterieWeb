@@ -10,10 +10,12 @@ use App\Models\Artiste;
 use App\Models\User;
 use App\Notifications\Acceptation_demande;
 use App\Notifications\Refus_demande;
+use App\Notifications\Renouvellement_refuse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Session;
 
 class DemandeController extends Controller
 {
@@ -245,6 +247,7 @@ class DemandeController extends Controller
                 'nom_artiste' => null,
                 'path_photo_profil' => 'img/artistePFP/default_artiste.png',
                 'is_etudiant' => $dem->id_type == 2 ? true : false,
+                'actif' => 1,
                 'description' => null,
                 'couleur_banniere' => '808080'
             ]);
@@ -255,6 +258,9 @@ class DemandeController extends Controller
             }
         } else {
             /* Traiter différemment s'il s'agit d'un renouvellement. */
+            $artiste = Artiste::where("id_user", $dem->id_user)->first();
+            $artiste->actif = 1;
+            $artiste->save();
         }
 
         // Notifier user
@@ -274,6 +280,7 @@ class DemandeController extends Controller
         $usr = User::find($dem->id_user);
         $usr->notify(new Acceptation_demande($dem->id_user));
 
+        Session::flash("succes", "L'utilisateur a bel et bien été accepté !");
         return redirect()->to(route('admin-demandes'));
     }
 
@@ -282,6 +289,9 @@ class DemandeController extends Controller
      */
     public function deny()
     {
+        if(request()->input('reason') == "" || request()->input('reason') == null)
+            return back()->withErrors(['error' => "Veuillez spécifier une raison pour le refus."]);
+
         // Changer état demande
         $id = request()->query('id');
 
@@ -291,104 +301,18 @@ class DemandeController extends Controller
 
         $dem->id_etat = 3;
         $dem->save();
+        $usr = User::find($dem->id_user);
 
         if ($dem->id_type == 1) {
             /* Traiter différemment s'il s'agit d'un renouvellement refusé. */
-        }
-
-        $notif = Notification::create([
-            'id_type' => 2,
-            'id_user' => $dem->id_user,
-            'date' => now(),
-            'message' => request()->input('reason'),
-            'lien' => null,
-            'visible' => 1
-        ]);
-        $notif->save();
-
-        $usr = User::find($dem->id_user);
-        $usr->notify(new Refus_demande(request()->input('reason')));
-
-        return redirect()->to(route('admin-demandes'));
-    }
-
-    /**
-     * Accepter une demande.
-     */
-    public function accept()
-    {
-        // Changer état demande
-        $id = request()->query('id');
-
-        $dem = Demande::where([
-            'id_demande' => $id,
-        ])->first();
-
-        $dem->id_etat = 2;
-        $dem->save();
-
-        if ($dem->id_type != 1) {
-            // Créer instance d'artiste
-
-            $artiste = Artiste::create([
-                'id_user' => $dem->id_user,
-                'id_theme' => 1,
-                'nom_artiste' => null,
-                'path_photo_profil' => 'img/artistePFP/default_artiste.png',
-                'is_etudiant' => $dem->id_type == 2 ? true : false,
-                'description' => null,
-                'couleur_banniere' => '808080'
-            ]);
+            $usr->notify(new Renouvellement_refuse(request()->input('reason')));
+            $artiste = Artiste::where("id_user", $dem->id_user)->first();
+            $artiste->actif = 0;
             $artiste->save();
-
-            if($dem->id_type == 3)
-            {
-                /* Effectuer le paiement si pro. */
-            }
         }
         else
         {
-            /* Traiter différemment s'il s'agit d'un renouvellement. */
-        }
-
-        // Notifier user
-
-        $notif = Notification::create([
-            'id_type' => 3,
-            'id_user' => $dem->id_user,
-            'date' => now(),
-            'message' => '',
-            'lien' => null,
-            'visible' => 1
-        ]);
-        $notif->save();
-
-        /* Aussi notifier par courriel. */
-
-        $usr = User::find($dem->id_user);
-        $usr->notify(new Acceptation_demande($dem->id_user));
-
-        return redirect()->to(route('admin-demandes'));
-    }
-
-    /**
-     * Refuser une demande.
-     */
-    public function deny()
-    {
-        // Changer état demande
-        $id = request()->query('id');
-
-        $dem = Demande::where([
-            'id_demande' => $id,
-        ])->first();
-
-        $dem->id_etat = 3;
-        $dem->save();
-
-        if($dem->id_type == 1)
-        {
-            /* Traiter différemment s'il s'agit d'un renouvellement refusé. */
+            $usr->notify(new Refus_demande(request()->input('reason')));
         }
 
         $notif = Notification::create([
@@ -401,9 +325,7 @@ class DemandeController extends Controller
         ]);
         $notif->save();
 
-        $usr = User::find($dem->id_user);
-        $usr->notify(new Refus_demande(request()->input('reason')));
-
+        Session::flash("succes", "L'utilisateur a bel et bien été refusé !");
         return redirect()->to(route('admin-demandes'));
     }
 

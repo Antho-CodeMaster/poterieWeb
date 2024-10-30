@@ -8,7 +8,8 @@ use App\Http\Controllers\LikeController;
 
 use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\TransactionController;
-
+use App\Http\Middleware\EnsureUserIsArtist;
+use App\Http\Middleware\EnsureUserCanBecomeArtist;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -46,9 +47,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/profile', [ArtisteController::class, 'updatePicture'])->name('artiste.updatePicture');
-    Route::get('/devenir-artiste', [DemandeController::class, 'create'])->name('devenir-artiste');
+    Route::get('/devenir-artiste', [DemandeController::class, 'create'])->name('devenir-artiste')->middleware(EnsureUserCanBecomeArtist::class);
     Route::post('/devenir-artiste', [DemandeController::class, 'store'])->name('store-demande-artiste');
-    Route::get('/renouvellement', [DemandeController::class, 'create'])->name('renouvellement-artiste');
+    Route::get('/renouvellement', [DemandeController::class, 'create'])->name('renouvellement-artiste')->middleware(EnsureUserIsArtist::class);;
     Route::post('/devenir-artiste', [DemandeController::class, 'storeRenouvellement'])->name('store-renouvellement-artiste');
 });
 

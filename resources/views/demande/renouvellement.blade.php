@@ -65,7 +65,7 @@
         </div>
         <div>
             <x-button.green.send class="mx-auto mt-6">Envoyer</x-button.green.send>
-            <p class="text-center mt-6">Vous serez notifiés lorsqu'un administrateur passera en revue votre profil.</p>
+            <p id="also-variable-message-etu" class="text-center mt-6">Vous serez notifiés lorsqu'un administrateur passera en revue votre profil.</p>
         </div>
 
         <div class="fixed bottom-10 right-5">

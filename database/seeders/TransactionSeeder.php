@@ -20,7 +20,7 @@ class TransactionSeeder extends Seeder
             for($j = 0; $j <= random_int(1, 10); $j++)
             {
                 $etat = random_int(1, 5);
-                $id_article = random_int(0, 50);
+                $id_article = random_int(1, 50);
                 $article = Article::where('id_article', $id_article)->get();
 
                 DB::table('transactions')->insert([
