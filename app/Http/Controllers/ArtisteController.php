@@ -169,6 +169,12 @@ class ArtisteController extends Controller
         return redirect()->to(route('admin-display-renouvellement'));
     }
 
+    public function subscribe(Request $request){
+        $request->user()->newSubscription(
+            'pro', 'price_monthly'
+        )->create($request->paymentMethodId, ['email' => Auth::user()->email]);
+    }
+
     /**
      * Remove the specified resource from storage.
      */
