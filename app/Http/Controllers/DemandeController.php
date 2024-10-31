@@ -67,6 +67,21 @@ class DemandeController extends Controller
         else
             return back()->withErrors(['msg' => 'Une erreur inattendue s\'est produite lors de l\'envoi de votre demande. Veuillez réessayer plus tard.']);
 
+        // Si l'user veut un abonnement pro mais n'a pas défini de méthode de paiement, on ne peut pas lui créer de demande.
+        if($type == 3)
+        {
+            $customer = \Stripe\Customer::retrieve(Auth::user()->stripe_id);
+
+            // Retrieve the customer's payment methods
+            $paymentMethods = \Stripe\PaymentMethod::all([
+                'customer' => $customer->id,
+                'type' => 'card',
+            ]);
+
+            if($paymentMethods->data[0] == null)
+                return back()->withErrors(['msg' => 'Vous devez définir une méthode de paiement dans vos paramètres afin de pouvoir payer votre abonnement si les administrateurs acceptent votre demande.']);
+        }
+
         // Validation de base pour les photos de preuve
         $rules = [
             "photo-preuve" => "required|array|between:1,10",
@@ -218,9 +233,56 @@ class DemandeController extends Controller
             session()->flash('succesDemande', 'Votre demande a bel et bien été envoyée. Vous recevrez des nouvelles prochainement!');
             return redirect()->route('decouverte');
         } else if ($nomType == "pro") {
-            // Ne pas créer de demande. Procéder au paiement.
+            if(DemandeController::subscribe(Auth::id()))
+            {
+                session()->flash('succes', 'Votre abonnement a été confirmé. Vos accès à Terracium demeurent les mêmes. Merci!');
+                //TODO: ENVOYER UN COURRIEL AVEC MODALITÉS D'ABONNEMENT
+            }
+            else{
+                return back()->withErrors(['msg' => 'Une erreur inattendue s\'est produite lors du processus de votre abonnement. Veuillez confirmer la validité de votre carte ou réessayer plus tard.']);
+            }
         } else
             return back()->withErrors(['msg' => 'Une erreur inattendue s\'est produite lors de l\'envoi de votre demande. Veuillez réessayer plus tard.']);
+    }
+
+
+    public function subscribe(int $uid) : bool{
+        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+        // Retrieve the customer
+        $user = User::where("id", $uid)->first();
+        $customer = \Stripe\Customer::retrieve($user->stripe_id);
+
+        //S'assurer que le stripe customer existe
+        if($customer == false)
+            return false;
+
+        // Retrieve the customer's payment methods
+        $paymentMethods = \Stripe\PaymentMethod::all([
+            'customer' => $customer->id,
+            'type' => 'card',
+        ]);
+
+        // Choose the payment method you want to use
+        $paymentMethodId = $paymentMethods->data[0]->id;
+
+        try {
+            // Create the subscription
+            $subscription = $user->newSubscription(
+                'pro',
+                'price_1QG110I0ZVFC3GSIbVOWIApT'
+            )->create($paymentMethodId);
+
+            // Check if the subscription is active
+            if ($subscription->status === 'active') {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (\Exception $e) {
+            // Handle any types of exceptions
+            return false;
+        }
     }
 
     /**
@@ -239,6 +301,15 @@ class DemandeController extends Controller
         $dem->save();
 
         if ($dem->id_type != 1) {
+            if ($dem->id_type == 3) {
+                if(!DemandeController::subscribe($dem->id_user))
+                    return back()->withErrors(['fail' => 'Une erreur inattendue s\'est produite lors du processus de votre abonnement. Veuillez confirmer la validité de votre carte ou réessayer plus tard.']);
+                    //TODO: ENVOYER UN COURRIEL DISANT QUE LA DEMANDE EST ACCEPTÉE MAIS ABONNEMENT REFUSÉ
+                else{
+                    //TODO: ENVOYER UN COURRIEL AVEC MODALITÉS D'ABONNEMENT
+                }
+
+            }
             // Créer instance d'artiste
 
             $artiste = Artiste::create([
@@ -252,10 +323,6 @@ class DemandeController extends Controller
                 'couleur_banniere' => '808080'
             ]);
             $artiste->save();
-
-            if ($dem->id_type == 3) {
-                /* Effectuer le paiement si pro. */
-            }
         } else {
             /* Traiter différemment s'il s'agit d'un renouvellement. */
             $artiste = Artiste::where("id_user", $dem->id_user)->first();

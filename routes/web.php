@@ -45,6 +45,7 @@ Route::get('/buttons', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::get('/profile/facturation', [ProfileController::class, 'facturation'])->name('profile.facturation');
+    Route::get('/stripe/facturation', [ProfileController::class, 'stripe_facturation_form'])->name('stripe.facturation');
     Route::get('/profile/personnaliser', [ProfileController::class, 'personnaliser'])->name('profile.personnaliser');
     Route::post('/profile/edit', [ProfileController::class, 'updateBlur'])->name('profile.updateBlur');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -55,7 +56,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/devenir-artiste', [DemandeController::class, 'store'])->name('store-demande-artiste');
     Route::get('/renouvellement', [DemandeController::class, 'create'])->name('renouvellement-artiste')->middleware(EnsureUserIsArtist::class);
     Route::post('/devenir-artiste', [DemandeController::class, 'storeRenouvellement'])->name('store-renouvellement-artiste');
-    Route::post('/abonner', [ArtisteController::class, 'subscribe'])->name('subscribe-artist')->middleware(EnsureUserIsArtist::class);
 });
 
 
