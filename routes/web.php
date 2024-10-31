@@ -33,13 +33,18 @@ Route::controller(ArticleController::class)->group(function () {
 
 /* Routes lié aux commandes*/
 Route::controller(CommandeController::class)->group(function () {
-    Route::get('/mesCommandes/{idUser}', [CommandeController::class, 'commandesTraiter'])->name('mesCommandes');
     #Route pour afficher le panier en cours de l'utilisateur
     Route::get('/panier', [CommandeController::class, 'showPanier'])->name('panier');
     Route::get('/commandes', [CommandeController::class, 'index']);
     Route::get('/commande/{id}', 'show');
 });
 
+/* Routes liés aux transactions */
+Route::controller(TransactionController::class)->group(function () {
+    Route::get('/deleteThisArticle/{id}', 'destroy');
+    Route::post('/addArticleToPanier', 'store')->name('addArticleToPanier');
+    Route::get('/mesTransactions/{idUser}', [TransactionController::class, 'transactionsTraiter'])->name('mesTransactions');
+});
 
 Route::get('/decouverte', function () {
     return view('decouverte');
@@ -62,10 +67,7 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/recherche/{search}', [ArticleController::class, 'getSearch'])->name('recherche.getSearch');
 
-Route::controller(TransactionController::class)->group(function () {
-    Route::get('/deleteThisArticle/{id}', 'destroy');
-    Route::post('/addArticleToPanier', 'store')->name('addArticleToPanier');
-});
+
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';

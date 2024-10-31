@@ -13,7 +13,7 @@ class CommandeSeeder extends Seeder
      */
     public function run(): void
     {
-        for($i = 0; $i < 10; $i++)
+        for($i = 0; $i < 30; $i++)
             DB::table('commandes')->insert([
                 'id_user' => random_int(20, 29),
                 'date' => now(),

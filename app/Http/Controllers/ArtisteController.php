@@ -66,8 +66,6 @@ class ArtisteController extends Controller
             }
         }
 
-
-
         return view('kiosque/kiosque', [
             'artiste' => $artiste,
             'reseaux' => $reseaux,

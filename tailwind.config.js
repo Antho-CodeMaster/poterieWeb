@@ -170,6 +170,19 @@ export default {
                     'font-family': 'Inter',
                 },
 
+                //Titre text Moyen
+                '.textMoyen-light': {
+                    'line-height': '1rem',
+                    'font-size': 'calc(14px + 0.22vw)',
+                    'color': '#f4f0ec',
+                    'font-family': 'Inter',
+                },
+                '.textMoyen-dark': {
+                    'line-height': '1rem',
+                    'font-size': 'calc(14px + 0.22vw)',
+                    'color': '#444444',
+                    'font-family': 'Inter',
+                },
 
                 //Titre text Petit
                 '.textPetit-light': {
@@ -254,14 +267,14 @@ export default {
                 //Text de navigation SideMenu ou navBar
                 '.textNavigation-light': {
                     'line-height': '1.5rem',
-                    'font-size': 'calc(16px + 0.3vw)',
+                    'font-size': 'calc(14px + 0.5vw)',
                     'color': '#f4f0ec',
                     'font-weight': '500',
                     'font-family': 'Inter',
                 },
                 '.textNavigation-dark': {
                     'line-height': '1.5rem',
-                    'font-size': 'calc(16px + 0.3vw)',
+                    'font-size': 'calc(14px + 0.5vw)',
                     'color': '#444444',
                     'font-weight': '500',
                     'font-family': 'Inter',
@@ -284,17 +297,22 @@ export default {
                 },
 
                 '.p-sectionBottom': {
-                    'padding-bottom': 'calc(3px + 0.5vw)',
+                    'padding-bottom': 'calc(2px + 0.4vw)',
                 },
 
+                '.p-sectionTop': {
+                    'padding-top': 'calc(2px + 0.4vw)',
+                },
+
+
                 '.p-sectionX': {
-                    'padding-right': 'calc(3px + 0.5vw) ',
-                    'padding-left': 'calc(3px + 0.5vw) ',
+                    'padding-right': 'calc(2px + 0.4vw) ',
+                    'padding-left': 'calc(2px + 0.4vw) ',
                 },
 
                 '.p-sectionY': {
-                    'padding-top': 'calc(3px + 0.5vw)',
-                    'padding-bottom': 'calc(3px + 0.5vw)',
+                    'padding-top': 'calc(2px + 0.4vw)',
+                    'padding-bottom': 'calc(2px + 0.4vw)',
                 },
 
                 // Articles
@@ -334,7 +352,7 @@ export default {
                 },
 
                 '.p-sidebarNav': {
-                    'padding': 'calc(2px + 0.5vw) 0.5rem',
+                    'padding': 'calc(8px + 0.5vw) 0.5rem',
                 },
 
                 // Titre

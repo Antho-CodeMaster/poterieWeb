@@ -53,14 +53,6 @@ class CommandeController extends Controller
 
     }
 
-     /**
-     * Montre les commandes de l'artiste a traiter
-     */
-    public function commandesTraiter($idUser)
-    {
-        //
-    }
-
     /**
      * Show the form for creating a new resource.
      */
