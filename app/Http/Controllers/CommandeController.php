@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Commande;
 use App\Models\Artiste;
+use App\Models\Ville;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Stripe\Checkout\Session;
+use Stripe\PaymentIntent;
 
 class CommandeController extends Controller
 {
@@ -153,26 +156,58 @@ class CommandeController extends Controller
         #Set de la clé d'api pour stripe
         \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
 
-        $checkoutSession = \Stripe\Checkout\Session::create([
+        $checkoutSession = Session::create([
             'payment_method_types' => ['card'],
             'line_items' => $cartItems,
             'mode' => 'payment', // Paiement unique
-            'success_url' => route('checkout-success'),
-            'cancel_url' => route('checkout-cancel'),
+            'shipping_address_collection' => [
+                'allowed_countries' => ['CA']
+            ],
+            'success_url' => route('checkout-success').'?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => route('panier'),
         ]);
 
-        $commande->update(['checkout_session_id' => $checkoutSession->id]);
+        $commande->checkout_id = $checkoutSession->id;
 
         $commande->save();
 
         return redirect($checkoutSession->url);
     }
 
-    public function success(){
+    public function success(Request $request){
 
-    }
-    public function cancel(){
 
+        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+
+        $sessionId = $request->get('session_id');
+        echo $sessionId . '\n';
+        $checkoutSession = Session::retrieve($sessionId); #$request->user()->stripe()->checkout->sessions->retrieve($request->get('session_id'));
+        echo $checkoutSession. '\n';
+        $paymentIntent = PaymentIntent::retrieve($checkoutSession->payment_intent);
+        echo $paymentIntent. '\n';
+
+        $commande = Commande::where('checkout_id', $sessionId)->first();
+
+        //On recupere les infos de shipping
+        $addressLine = $paymentIntent->shipping->address->line1;
+        preg_match('/^(\d+)\s+(.*)$/', $addressLine, $matches);
+
+        $noCivique = $matches[1] ?? null;
+        $rue = $matches[2] ?? $addressLine;
+        $codePostal = str_replace(' ', '', $paymentIntent->shipping->address->postal_code);
+
+        $ville = Ville::firstOrCreate(['ville'=>$paymentIntent->shipping->address->city]);
+
+        $commande->update([
+            'is_panier' => false,
+            'no_civique' => $noCivique,
+            'rue' => $rue,
+            'ville' => $ville->id_ville ,
+            'code_postal' => $codePostal,
+            'payment_intent_id' => $paymentIntent->id
+        ]);
+
+        return view('commande.success',['commande' => $commande]);
     }
 
     public function FormatPanier(Commande $panier){
@@ -210,7 +245,7 @@ class CommandeController extends Controller
             }
         }
 
-        $commande->save();
+       $commande->save();
 
         return $commande;
     }
