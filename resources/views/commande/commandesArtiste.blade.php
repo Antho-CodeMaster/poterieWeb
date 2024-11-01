@@ -212,17 +212,17 @@
                         @endforeach
                     </div>
                 @endforeach
+                {{-- Message de Session --}}
+                {{-- Succes de la gestion d'une transaction --}}
+                @if (Session::has('succesTransaction'))
+                    <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1" role="alert">
+                        @include('messages.messageSucces', [
+                            'message' => Session::get('succesTransaction'),
+                            'titre' => 'Transaction',
+                        ])
+                    </div>
+                @endif
             </div>
-            {{-- Message de Session --}}
-            {{-- Succes de la gestion d'une transaction --}}
-            @if (Session::has('succesTransaction'))
-                <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1" role="alert">
-                    @include('messages.messageSucces', [
-                        'message' => Session::get('succesTransaction'),
-                        'titre' => 'Transaction',
-                    ])
-                </div>
-            @endif
         </div>
     </div>
 </x-app-layout>

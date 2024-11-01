@@ -133,11 +133,13 @@ class TransactionController extends Controller
             /* 1. Récupérer et valider les données du form */
             $validatedData = $request->validate([
                 "idTransaction" => "required",
+                "compagnieLivraison" => "required",
                 "codeRefLivraison" => "required",
                 "photo1" => "required|mimes:jpeg,png,jpg",
                 "photo2" => "mimes:jpeg,png,jpg",
                 "photo3" => "mimes:jpeg,png,jpg",
             ], [
+                "compagnieLivraison.required" => "Le numéro de tracking de la livraison est obligatoire.",
                 "codeRefLivraison.required" => "Le numéro de tracking de la livraison est obligatoire.",
                 'photo1.mimes' => 'La photo 1 doit être au format JPEG, PNG ou JPG.',
                 'photo1.required' => 'Il doit y avoir au moins 1 photo de livraison afin de traiter une transaction correctement',
@@ -172,6 +174,7 @@ class TransactionController extends Controller
             }
 
             $transaction = Transaction::where("id_transaction", $validatedData["idTransaction"]);
+
             /* Gestion du numéro de tracking */
             /* 1. Récupérer la transaction à modifier */
 
@@ -187,10 +190,17 @@ class TransactionController extends Controller
             if (!$transaction->update([
                 'id_etat' => 3,
             ])) {
-                session()->flash('erreurEtatTransaction', 'Un problème lors de la modification de l\'article s\'est produit');
+                session()->flash('erreurEtatTransaction', 'Un problème lors de la modification du statut de la transaction s\'est produit');
                 return back();
             }
 
+            /* Gestion de la compagnie de livraison */
+            if (!$transaction->update([
+                'id_compagnie' => $validatedData['compagnieLivraison'],
+            ])) {
+                session()->flash('erreurCompagnieLivraison', 'Un problème lors de l\'ajout du numéro de suivis s\'est produit');
+                return back();
+            }
             session()->flash('succesTransaction', 'La transaction a bien été traitée');
             return redirect()->route('mesTransactions', ['idUser' => Auth::user()->id]);
         }

@@ -7,10 +7,11 @@
 
             <div class="grid grid-cols-7 gap-6 grow overflow-auto">
                 {{-- Form pour traiter la transaction --}}
-                <form action="{{ route('traiterTransaction') }}" method="post" class="col-span-5 gap-input" enctype="multipart/form-data">
+                <form action="{{ route('traiterTransaction') }}" method="post" class="col-span-5 gap-input"
+                    enctype="multipart/form-data">
                     @csrf
                     {{-- Téléversement des photos --}}
-                    <div class="grid m-sectionFormY">
+                    <div class="grid m-sectionFormY mb-4">
                         <div class="">
                             <div class="flex items-center justify-between">
                                 <h2 class="textGrand-dark">Téléversez les photos de livraison</h2>
@@ -75,7 +76,30 @@
                     </div>
 
                     {{-- Input du code de référence --}}
-                    <div class="grid gap-input">
+                    <div class="grid mb-4">
+                        <div class="flex items-center justify-between col-span-4">
+                            <h2 class="textGrand-dark">Compagnie de livraison</h2>
+                            <x-tooltip
+                                text="<ul class='list-disc ml-5'>
+                                <li>L'entré est obligatoire</li>
+                              </ul>"
+                                position="bottom" id="1">
+                                <p class="text-[200%]">&#9432;</p>
+                            </x-tooltip>
+                        </div>
+                        <select id="compagnieLivraison" name="compagnieLivraison"
+                            class="col-span-4 {{ $errors->has('compagnieLivraison') ? 'color-borderError border-[2px]' : '' }} border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            required>
+                            <option value="" disabled selected hidden>Sélectionner une compagnie de livraison
+                            </option>
+                            <option value="1">Purolator</option>
+                            <option value="2">Postes Canada</option>
+                            <option value="3">Fedex</option>
+                        </select>
+                    </div>
+
+                    {{-- Input du code de référence --}}
+                    <div class="grid">
                         <div class="flex items-center justify-between col-span-4">
                             <h2 class="textGrand-dark">Numéro de tracking</h2>
                             <x-tooltip
@@ -120,6 +144,22 @@
                         ])
                     @endif
 
+                    {{-- Erreur de l'ajout des photos --}}
+                    @if (Session::has('erreurCompagnieLivraison'))
+                        @include('messages.messageFail', [
+                            'message' => Session::get('erreurCompagnieLivraison'),
+                            'titre' => 'Compagnie de livraison',
+                        ])
+                    @endif
+
+                    {{-- Erreur de l'ajout des photos --}}
+                    @if (Session::has('erreurEtatTransaction'))
+                        @include('messages.messageFail', [
+                            'message' => Session::get('erreurEtatTransaction'),
+                            'titre' => 'Status de transaction',
+                        ])
+                    @endif
+
                     {{-- Erreur de photos --}}
                     @for ($i = 1; $i <= 3; $i++)
                         @if ($errors->has("photo{$i}"))
@@ -129,6 +169,13 @@
                             ])
                         @endif
                     @endfor
+
+                    @if ($errors->has('compagnieLivraison'))
+                        @include('messages.messageError', [
+                            'message' => $errors->first("photo{$i}"),
+                            'titre' => "Photo $i",
+                        ])
+                    @endif
                 </div>
             </div>
         </div>
