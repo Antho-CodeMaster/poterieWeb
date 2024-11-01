@@ -93,7 +93,10 @@ export default {
         'object-cover',
         "border-[2px]",
         "border-darkGrey",
-        "rounded-[0.5rem]"
+        "rounded-[0.5rem]",
+        {
+            pattern: /bg-+/
+        }
     ],
 
     plugins: [

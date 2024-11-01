@@ -21,7 +21,7 @@
                                     <li>La photo ne doit pas avoir une résolution dépassant 3840 x 2160.</li>
                                   </ul>"
                                     position="bottom" id="1">
-                                    <p class="text-[200%]">&#9432;</p>
+                                    <p class="text-[200%] cursor-pointer">&#9432;</p>
                                 </x-tooltip>
                             </div>
                             <p class="textMoyen-dark text-wrap w-full mb-1 text-justify">Veuillez téléversez jusqu'à 3
@@ -84,7 +84,7 @@
                                 <li>L'entré est obligatoire</li>
                               </ul>"
                                 position="bottom" id="1">
-                                <p class="text-[200%]">&#9432;</p>
+                                <p class="text-[200%] cursor-pointer">&#9432;</p>
                             </x-tooltip>
                         </div>
                         <select id="compagnieLivraison" name="compagnieLivraison"
