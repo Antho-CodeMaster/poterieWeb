@@ -16,7 +16,7 @@ class Commande extends Model
         return $this->hasMany(Transaction::class, 'id_commande','id_commande')->orderByDesc('id_etat');
     }
     public function user(){
-        return $this->belongsTo(User::class,'id','id_user');
+        return $this->belongsTo(User::class, 'id_user', 'id');
     }
     public function ville(){
         return $this->belongsTo(Ville::class,'id_ville', 'id_ville');

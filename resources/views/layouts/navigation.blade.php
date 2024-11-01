@@ -58,9 +58,9 @@
                     </a>
                 @endif
 
+                {{-- Boutons de réglage du kiosque --}}
                 @if (Auth::user()->artiste)
-                    {{-- Bouton kiosque omg le svg est big update: j'ai géré la calibration --}}
-                    <a href="{{ route('kiosque', ['idUser' => Auth::user()->id]) }}"
+                    <a href="{{ route('tousMesArticles') }}"
                         class="ml-[15px] flex items-center">
                         <svg width="34" height="34" viewBox="0 0 78 78" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
