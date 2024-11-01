@@ -18,7 +18,7 @@
 
                     <div class="w-1/4 m-0 ml-4 flex flex-col justify-between">
                         <div class="">
-                            <h2 class="text-xl font-bold"> {{$transaction->article->nom}} </h2>
+                            <h2 class="textGrand-dark"> {{$transaction->article->nom}} </h2>
                             <p class="">{{$transaction->article->prix}} $ / Pièce</p>
                         </div>
                         <div class="">
