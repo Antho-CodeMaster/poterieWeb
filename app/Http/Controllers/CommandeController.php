@@ -10,6 +10,7 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Laravel\Cashier\Invoice;
 use Stripe\Checkout\Session;
 use Stripe\PaymentIntent;
 
@@ -184,9 +185,11 @@ class CommandeController extends Controller
         $sessionId = $request->get('session_id');
         #echo $sessionId . '\n';
         $checkoutSession = Session::retrieve($sessionId); #$request->user()->stripe()->checkout->sessions->retrieve($request->get('session_id'));
-        echo $checkoutSession. '\n';
+       # echo $checkoutSession->finalizeInvoice()->charge->receipt_url;
         $paymentIntent = PaymentIntent::retrieve($checkoutSession->payment_intent);
-        echo $paymentIntent. '\n';
+        echo $paymentIntent;
+        $charge = \Stripe\Charge::retrieve($paymentIntent->latest_charge);
+
 
         $commande = Commande::where('checkout_id', $sessionId)->first();
 
@@ -209,7 +212,7 @@ class CommandeController extends Controller
             'payment_intent_id' => $paymentIntent->id
         ]);
 
-        $urlFacture = $paymentIntent->charges->data[0]->receipt_url;
+        $urlFacture = $charge->receipt_url;
 
         return view('commande.success',['commande' => $commande, 'facture'=>$urlFacture]);
     }

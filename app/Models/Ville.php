@@ -10,4 +10,7 @@ class Ville extends Model
     use HasFactory;
 
     protected $primaryKey = 'id_ville';
+    protected $fillable = [
+        'ville'
+    ];
 }
