@@ -40,16 +40,9 @@ class TransactionController extends Controller
         /* 4. Récupérer les transactions en lien avec les articles de l'artiste*/
         $transactions = Transaction::whereIn('id_article', $articleIds)->get();
 
-        /* 5. Créer un liste de commande lié au transaction */
-        $commande = array();
-        foreach($transactions as $transaction){
-            array_push($commande, $transaction->commande);
-        }
-
         return view('commande.commandesArtiste', [
             'articles' => $articles,
             'transactions' => $transactions,
-            'commandes' => $commande,
         ]);
     }
 
@@ -119,15 +112,19 @@ class TransactionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(transaction $transaction)
+    public function edit(Request $request)
     {
-        //
+        $transaction = Transaction::findOrFail($request->input("id_transaction"));
+        return view("commande.traiterCommande")->with("transaction", $transaction);
     }
+
 
     /**
      * Update rien pour l'instant
      */
-    public function update(Request $request, transaction $transaction) {}
+    public function update(Request $request, transaction $transaction) {
+
+    }
 
     /**
      * Remove the specified resource from storage.

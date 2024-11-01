@@ -44,6 +44,8 @@ Route::controller(TransactionController::class)->group(function () {
     Route::get('/deleteThisArticle/{id}', 'destroy');
     Route::post('/addArticleToPanier', 'store')->name('addArticleToPanier');
     Route::get('/mesTransactions/{idUser}', [TransactionController::class, 'transactionsTraiter'])->name('mesTransactions');
+    Route::post('/traiterTransactionForm', [TransactionController::class, 'edit'])->name('traiterTransactionForm');
+    Route::post('/traiterTransaction', [TransactionController::class, 'update'])->name('traiterTransaction');
 });
 
 Route::get('/decouverte', function () {

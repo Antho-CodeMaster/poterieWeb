@@ -34,32 +34,12 @@
                 </div>
             </form>
 
-            {{-- Titre d'infos --}}
-            <div class="w-full flex justify-between p-sectionY">
-                <p class="textGrand-dark">image</p>
-                <p class="textGrand-dark">image</p>
-                <p class="textGrand-dark">image</p>
-                <p class="textGrand-dark">image</p>
-            </div>
-
             {{-- Group transactions by commande --}}
-            <div class="rounded-[12px] m-sectionY overflow-auto flex flex-wrap gap-input">
+            <div class="rounded-[12px] m-sectionY overflow-auto flex flex-wrap gap-inputXXL">
                 {{-- Transactions séparées par commandes --}}
                 @foreach ($transactions->groupBy('id_commande') as $commandeId => $commandeTransactions)
-                    {{-- @foreach ($commandeTransactions as $transaction)
-                        @switch($transaction->id_etat)
-                            @case(2)
-
-                                @break
-
-                            @default
-
-                        @endswitch
-                    @endforeach --}}
-
                     {{-- Regrouppement de tous les transactions --}}
                     <div class="rounded-[12px] flex flex-wrap gap-input w-full mb-2">
-
                         {{-- Informations de commande --}}
                         <div class="flex w-full p-sectionX p-sectionTop gap-1">
                             {{-- Nom du client acheteur --}}
@@ -71,8 +51,8 @@
 
                             {{-- Addresse de livraison  --}}
                             <div class="flex gap-1 items-baseline w-[54%]">
-                                <p class="textGrand-dark font-bold">Addresse de livraison:</p>
-                                <p class="textGrand-dark">
+                                <p class="textGrand-dark font-bold">Adresse de livraison:</p>
+                                <p class="textGrand-dark text-nowrap text-ellipsis overflow-hidden">
                                     @if (
                                         $commandeTransactions->first()->commande->no_civique == null ||
                                             $commandeTransactions->first()->commande->rue == null)
@@ -105,7 +85,7 @@
                         {{-- Transactions qui ont besoin d'être traitées --}}
                         @foreach ($commandeTransactions->sortBy('id_etat') as $transaction)
                             <div
-                                class="rounded-[12px] bg-beige w-full p-sectionX p-sectionY border-[2px]
+                                class="flex gap-input rounded-[12px] bg-beige w-full p-sectionX p-sectionY border-[2px]
                                 {{ $transaction->id_etat == 2 ? 'border-jauneWarning' : '' }}
                                 {{ $transaction->id_etat == 3 ? 'border-vertSucces' : '' }}
                                 {{ $transaction->id_etat == 4 ? 'border-blue-700' : '' }}
@@ -115,26 +95,29 @@
                                 <img src="/../img/{{ $transaction->article->photosArticle->path }}"
                                     alt="Photo d'article"
                                     class="z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer h-[100px] w-[100px] object-cover">
+                                {{-- certains images ne prennent pas la width voulue --}}
 
-                                {{-- Prix unitaire --}}
-                                <div class="flex gap-1 items-baseline w-[27%]">
-                                    <p class="textMoyen-dark font-bold">Prix:</p>
-                                    <p class="textMoyen-dark text-nowrap text-ellipsis overflow-hidden">
-                                        {{ $transaction->prix_unitaire }}$</p>
-                                </div>
+                                <div class="w-[15%] flex flex-col gap-1 justify-between">
+                                    {{-- Prix unitaire --}}
+                                    <div class="w-full flex flex-col gap-1">
+                                        <p class="textMoyen-dark font-bold">Prix unitaire:</p>
+                                        <p class="textMoyen-dark text-nowrap text-ellipsis overflow-hidden">
+                                            {{ $transaction->prix_unitaire }}$</p>
+                                    </div>
 
-                                {{-- Quantité --}}
-                                <div class="flex gap-1 items-baseline w-[27%]">
-                                    <p class="textMoyen-dark font-bold">Quantité:</p>
-                                    <p class="textMoyen-dark text-nowrap text-ellipsis overflow-hidden">
-                                        {{ $transaction->quantite }}</p>
+                                    {{-- Quantité --}}
+                                    <div class="w-full flex flex-col gap-1">
+                                        <p class="textMoyen-dark font-bold">Quantité:</p>
+                                        <p class="textMoyen-dark text-nowrap text-ellipsis overflow-hidden">
+                                            {{ $transaction->quantite }}</p>
+                                    </div>
                                 </div>
 
                                 {{-- Status --}}
-                                <div class="flex gap-1 items-baseline w-[27%]">
+                                <div class="w-[10%] flex flex-col gap-1">
                                     <p class="textMoyen-dark font-bold">Status:</p>
                                     <p
-                                        class="textMoyen-dark text-nowrap text-ellipsis overflow-hidden {{-- Bug de couleur de texte --}}
+                                        class="textMoyen underline font-bold text-nowrap text-ellipsis overflow-hidden {{-- Bug de couleur de texte --}}
                                         {{ $transaction->id_etat == 2 ? 'text-jauneWarning' : '' }}
                                         {{ $transaction->id_etat == 3 ? 'text-vertSucces' : '' }}
                                         {{ $transaction->id_etat == 4 ? 'text-blue-700' : '' }}
@@ -143,33 +126,89 @@
                                     </p>
                                 </div>
 
-                                {{-- Date de récéption prévue --}}
-                                <div class="flex gap-1 items-baseline w-[27%]">
-                                    <p class="textMoyen-dark font-bold">Date de réception pévue:</p>
-                                    @if ($transaction->id_etat == 3 || $transaction->id_etat == 4)
-                                        <p class="textMoyen-dark text-nowrap text-ellipsis overflow-hidden">
-                                            {{ $transaction->date_reception_prevue }}
-                                        </p>
-                                    @else
-                                        <p class="textMoyen-dark text-nowrap text-ellipsis overflow-hidden">
-                                            N/A
-                                        </p>
-                                    @endif
+                                <div class="w-[30%] flex flex-col gap-1 justify-between">
+                                    {{-- Date de récéption prévue --}}
+                                    <div class="w-full flex flex-col gap-1">
+                                        <p class="textMoyen-dark font-bold">Date de réception pévue:</p>
+                                        @if ($transaction->id_etat == 3 || $transaction->id_etat == 4 || $transaction->id_etat == 5)
+                                            <p class="textMoyen-dark text-nowrap text-ellipsis overflow-hidden">
+                                                {{ $transaction->date_reception_prevue }}
+                                            </p>
+                                        @elseif ($transaction->id_etat == 2)
+                                            <p class="textMoyen-dark text-nowrap text-ellipsis overflow-hidden">
+                                                Pas encore définie
+                                            </p>
+                                        @else
+                                            <p class="textMoyen-dark text-nowrap text-ellipsis overflow-hidden">
+                                                N/A
+                                            </p>
+                                        @endif
+                                    </div>
+
+                                    {{-- Date de récéption prévue --}}
+                                    <div class="w-full flex flex-col gap-1">
+                                        <p class="textMoyen-dark font-bold">Date de réception effective:</p>
+                                        @if ($transaction->id_etat == 4)
+                                            <p class="textMoyen-dark text-nowrap text-ellipsis overflow-hidden">
+                                                {{ $transaction->date_reception_effective }}
+                                            </p>
+                                        @elseif ($transaction->id_etat == 5)
+                                            <p class="textMoyen-dark text-nowrap text-ellipsis overflow-hidden">
+                                                N/A
+                                            </p>
+                                        @elseif ($transaction->id_etat == 2 || $transaction->id_etat == 3)
+                                            <p class="textMoyen-dark text-nowrap text-ellipsis overflow-hidden">
+                                                Pas encore délivré
+                                            </p>
+                                        @endif
+                                    </div>
                                 </div>
 
-                                {{-- Date de récéption prévue --}}
-                                <div class="flex gap-1 items-baseline w-[27%]">
-                                    <p class="textMoyen-dark font-bold">Date de réception effective:</p>
-                                    @if ($transaction->id_etat == 4)
-                                        <p class="textMoyen-dark text-nowrap text-ellipsis overflow-hidden">
-                                            {{ $transaction->date_reception_effective }}
-                                        </p>
-                                    @else
-                                        <p class="textMoyen-dark text-nowrap text-ellipsis overflow-hidden">
-                                            N/A
-                                        </p>
-                                    @endif
+
+                                {{-- numéro de livraison et compagnie --}}
+                                <div class="w-[20%] flex flex-col gap-1 justify-between">
+                                    <div class="w-full flex flex-col gap-1">
+                                        <p class="textMoyen-dark font-bold">Compagnie:</p>
+                                        @if ($transaction->id_etat == 3 || $transaction->id_etat == 4)
+                                            <p class="textMoyen-dark text-nowrap text-ellipsis overflow-hidden">
+                                                {{ $transaction->compagnie_livraison->compagnie }} compagnie
+                                            </p>
+                                        @else
+                                            <p class="textMoyen-dark text-nowrap text-ellipsis overflow-hidden">
+                                                N/A
+                                            </p>
+                                        @endif
+                                    </div>
+                                    <div class="w-full flex flex-col gap-1">
+                                        <p class="textMoyen-dark font-bold">Numéro de livraison:</p>
+                                        @if ($transaction->id_etat == 3)
+                                            <p class="textMoyen-dark text-nowrap text-ellipsis overflow-hidden">
+                                                {{ $transaction->code_ref_livraison }}
+                                            </p>
+                                        @elseif ($transaction->id_etat == 3)
+                                            <p class="textMoyen-dark text-nowrap text-ellipsis overflow-hidden">
+                                                Déja livré
+                                            </p>
+                                        @else
+                                            <p class="textMoyen-dark text-nowrap text-ellipsis overflow-hidden">
+                                                N/A
+                                            </p>
+                                        @endif
+                                    </div>
                                 </div>
+
+                                {{-- Bouton pour traiter la commande --}}
+                                @if ($transaction->id_etat == 2)
+                                    <form action="{{ route('traiterTransactionForm') }}" method="POST"
+                                        class="flex items-center grow">
+                                        @csrf
+                                        <input type="hidden" name="id_transaction"
+                                            value="{{ $transaction->id_transaction }}">
+                                        <x-button.yellow.empty class="w-full">
+                                            Traiter
+                                        </x-button.yellow.empty>
+                                    </form>
+                                @endif
                             </div>
                         @endforeach
                     </div>

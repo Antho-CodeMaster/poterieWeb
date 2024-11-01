@@ -89,11 +89,11 @@ export default {
 
     safelist: [
         'w-[100px]',
-        'h-[96px]',
+        'h-[190px]',
         'object-cover',
         "border-[2px]",
         "border-darkGrey",
-        "rounded-[0.375rem]"
+        "rounded-[0.5rem]"
     ],
 
     plugins: [
@@ -172,15 +172,20 @@ export default {
 
                 //Titre text Moyen
                 '.textMoyen-light': {
-                    'line-height': '1rem',
+                    'line-height': '1.25rem',
                     'font-size': 'calc(14px + 0.22vw)',
                     'color': '#f4f0ec',
                     'font-family': 'Inter',
                 },
                 '.textMoyen-dark': {
-                    'line-height': '1rem',
+                    'line-height': '1.25rem',
                     'font-size': 'calc(14px + 0.22vw)',
                     'color': '#444444',
+                    'font-family': 'Inter',
+                },
+                '.textMoyen': {
+                    'line-height': '1.25rem',
+                    'font-size': 'calc(14px + 0.22vw)',
                     'font-family': 'Inter',
                 },
 
@@ -336,6 +341,10 @@ export default {
 
                 '.gap-input': {
                     'gap': 'calc(2px + 0.5vw)',
+                },
+
+                '.gap-inputXXL': {
+                    'gap': 'calc(6px + 0.8vw)',
                 },
 
                 // SideBar
