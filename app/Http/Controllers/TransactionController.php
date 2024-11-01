@@ -6,7 +6,10 @@ use App\Models\Artiste;
 use App\Models\Article;
 use App\Models\Transaction;
 use App\Models\Commande;
+use App\Models\Photo_livraison;
+use App\Models\Photo_oeuvre;
 use Exception;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
@@ -26,7 +29,7 @@ class TransactionController extends Controller
     /**
      * Montre les commandes de l'artiste a traiter
      */
-    public function transactionsTraiter($idUser)
+    public function mesTransactions($idUser)
     {
         /* 1. Récupérer le id de l'artiste */
         $idArtiste = Artiste::where('id_user', $idUser)->pluck('id_artiste')->first();
@@ -112,18 +115,85 @@ class TransactionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Request $request)
+    public function edit($idTransaction)
     {
-        $transaction = Transaction::findOrFail($request->input("id_transaction"));
-        return view("commande.traiterCommande")->with("transaction", $transaction);
+        $transaction = Transaction::findOrFail($idTransaction);
+        return view("commande.traiterTransactionForm")->with("transaction", $transaction);
     }
 
 
     /**
      * Update rien pour l'instant
      */
-    public function update(Request $request, transaction $transaction) {
+    public function update(Request $request, transaction $transaction)
+    {
 
+        if ($request->routeIs('traiterTransaction')) {
+
+            /* 1. Récupérer et valider les données du form */
+            $validatedData = $request->validate([
+                "idTransaction" => "required",
+                "codeRefLivraison" => "required",
+                "photo1" => "required|mimes:jpeg,png,jpg",
+                "photo2" => "mimes:jpeg,png,jpg",
+                "photo3" => "mimes:jpeg,png,jpg",
+            ], [
+                "codeRefLivraison.required" => "Le numéro de tracking de la livraison est obligatoire.",
+                'photo1.mimes' => 'La photo 1 doit être au format JPEG, PNG ou JPG.',
+                'photo1.required' => 'Il doit y avoir au moins 1 photo de livraison afin de traiter une transaction correctement',
+                'photo2.mimes' => 'La photo 2 doit être au format JPEG, PNG ou JPG.',
+                'photo3.mimes' => 'La photo 3 doit être au format JPEG, PNG ou JPG.',
+            ]);
+
+            /* Gestion des photos de livraisons */
+            for ($i = 1; $i <= 3; $i++) {
+                if ($request->hasFile('photo' . $i)) {
+                    $file = $request->file('photo' . $i);
+
+                    // Créer un nom de fichier unique avec un identifiant aléatoire
+                    $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+
+                    // Stocker le fichier dans le répertoire public
+                    $filePath = $file->storeAs('tests', $filename, 'public');
+
+                    // Déplacer le fichier vers le dossier public (optionnel, dépendant de votre configuration)
+                    $file->move(public_path('img/tests'), $filename);
+
+                    /* Ajouter la données dans la BD */
+                    $newPhotoLivraison = new Photo_livraison();
+                    $newPhotoLivraison->id_transaction = $validatedData["idTransaction"];
+                    $newPhotoLivraison->path = $filePath; // Stockage du chemin exact en base de données
+
+                    if (!$newPhotoLivraison->save()) {
+                        session()->flash('erreurPhotos', 'Un problème lors de l\'ajout des photos s\'est produit, veuillez réessayer.');
+                        return back();
+                    }
+                }
+            }
+
+            $transaction = Transaction::where("id_transaction", $validatedData["idTransaction"]);
+            /* Gestion du numéro de tracking */
+            /* 1. Récupérer la transaction à modifier */
+
+            /* 2. Modifier le numéro de tracking*/
+            if (!$transaction->update([
+                'code_ref_livraison' => $validatedData['codeRefLivraison'],
+            ])) {
+                session()->flash('erreurCodeRefLivraison', 'Un problème lors de l\'ajout du numéro de suivis s\'est produit');
+                return back();
+            }
+
+            /* Modification de l'Étatde la transaction */
+            if (!$transaction->update([
+                'id_etat' => 3,
+            ])) {
+                session()->flash('erreurEtatTransaction', 'Un problème lors de la modification de l\'article s\'est produit');
+                return back();
+            }
+
+            session()->flash('succesTransaction', 'La transaction a bien été traitée');
+            return redirect()->route('mesTransactions', ['idUser' => Auth::user()->id]);
+        }
     }
 
     /**

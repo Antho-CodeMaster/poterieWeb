@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Stocker chaque bouton SVG original
         let boutonsInputClone = [];
-        for (let i = 1; i <= 5; i++) {
+        for (let i = 1; i <= 3; i++) {
             boutonsInputClone[i] = document.getElementById('boutonInput' + i).cloneNode(true);
 
             // Ajouter un gestionnaire d'événements 'change' pour chaque input file généré dans la boucle
