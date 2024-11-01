@@ -121,16 +121,24 @@
             @include('admin.components.refuser-modal')
             {{-- Si toute autre erreur --}}
             @if ($errors->has('error'))
-                <div class="w-fit absolute right-2 bottom-10">
+                <div class="w-[500px] absolute right-2 bottom-10">
                     @include('messages.messageError', [
                         'message' => $errors->first('error'),
                         'titre' => 'Erreur',
                     ])
                 </div>
             @endif
+            @if ($errors->has('refus'))
+                <div class="w-[500px] absolute right-2 bottom-10">
+                    @include('messages.messageError', [
+                        'message' => $errors->first('refus'),
+                        'titre' => 'Paiement refusé',
+                    ])
+                </div>
+            @endif
             {{-- Si toute autre erreur --}}
             @if ($errors->has('fail'))
-                <div class="w-fit absolute right-2 bottom-10">
+                <div class="w-[500px] absolute right-2 bottom-10">
                     @include('messages.messageFail', [
                         'message' => $errors->first('fail'),
                         'titre' => 'Échec',
@@ -139,7 +147,7 @@
             @endif
             {{-- Si toute autre erreur --}}
             @if (Session::has('succes'))
-                <div class="w-fit absolute right-2 bottom-10">
+                <div class="w-[500px] absolute right-2 bottom-10">
                     @include('messages.messageSucces', [
                         'message' => Session::get('succes'),
                         'titre' => 'Succès',

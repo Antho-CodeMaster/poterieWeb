@@ -1,14 +1,29 @@
 <x-app-layout>
     <div>
-        @if (Session::all())
-            {{-- Modal de remerciement d'avoir envoyé une demande --}}
-            @if (Session::has('succesDemande'))
-                @include('components.devenir-artiste-succes-modal')
-            @endif
-            {{-- Span qui, s'il existe, va trigger l'ouvertur du modal de connexion --}}
-            @if (Session::has('openLoginModal'))
-                <span id="showLoginModal" class="hidden"></span>
-            @endif
+        {{-- Modal de remerciement d'avoir envoyé une demande --}}
+        @if (Session::has('succesDemande'))
+            @include('components.devenir-artiste-succes-modal')
+        @endif
+        {{-- Modal de remerciement d'avoir envoyé une demande --}}
+        @if (Session::has('succesRenouvellement'))
+            <div class="w-[500px] fixed z-50 right-2 bottom-10">
+                @include('messages.messageSucces', [
+                    'message' => Session::get('succesRenouvellement'),
+                    'titre' => 'Succès',
+                ])
+            </div>
+        @endif
+        {{-- Span qui, s'il existe, va trigger l'ouvertur du modal de connexion --}}
+        @if (Session::has('openLoginModal'))
+            <span id="showLoginModal" class="hidden"></span>
+        @endif
+        @if ($errors->any())
+        <div class="w-[500px] fixed z-50 right-2 bottom-10">
+            @include('messages.messageFail', [
+                'message' => $errors->first('msg'),
+                'titre' => 'Échec',
+            ])
+        </div>
         @endif
     </div>
 
@@ -38,8 +53,7 @@
 
     <!-- Parallax Section -->
     <div id="parallax-img" class="relative top-0 h-screen w-full overflow-hidden">
-        <div class="bg-cover bg-center h-full w-full"
-             style="background-image: url('/../covers/cover_picture.png');">
+        <div class="bg-cover bg-center h-full w-full" style="background-image: url('/../covers/cover_picture.png');">
             <div class="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center">
                 <h1 class="text-beige text-5xl font-bold">@Terracium</h1>
             </div>
@@ -47,7 +61,7 @@
     </div>
 
     <div>
-        @foreach($collections as $collection)
+        @foreach ($collections as $collection)
             <x-collection-articles :collection="$collection" />
         @endforeach
     </div>
