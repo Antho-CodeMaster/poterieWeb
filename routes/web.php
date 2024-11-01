@@ -56,10 +56,6 @@ Route::controller(TransactionController::class)->group(function () {
     Route::post('/updateQuantite','updateQt')->name('update');
 });
 
-Route::get('/decouverte', function () {
-    return view('decouverte');
-})->name('decouverte');
-
 Route::get('/buttons', function () {
     return view('buttons');
 })->name('buttons');
