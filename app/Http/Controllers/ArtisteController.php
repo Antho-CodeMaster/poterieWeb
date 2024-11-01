@@ -174,6 +174,7 @@ class ArtisteController extends Controller
         //TODO: S'assurer que le customer existe
         //TODO: S'assurer que le paiement fonctionne
         \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+
         // Retrieve the customer
         $customer = \Stripe\Customer::retrieve(Auth::user()->stripe_id);
 
@@ -188,10 +189,18 @@ class ArtisteController extends Controller
 
         $request->user()->newSubscription(
             'pro',
-            'price_1QG110I0ZVFC3GSIbVOWIApT'
+            env('subscription_pricekey')
         )->create($paymentMethodId);
 
         return "This is a plain text response without a Blade view.";
+    }
+
+    // TODO: DO THE DO
+    public function cancel(Request $request){
+
+        $request->user()->subscription('pro')->cancel();
+
+        return back();
     }
 
     /**

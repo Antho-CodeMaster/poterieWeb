@@ -20,7 +20,7 @@
                     </svg>
                 </div>
                 <div id="infobubble"
-                    class="hidden relative right-16 mt-2 bg-white border border-black w-[350px] rounded-lg p-5 text-center">
+                    class="hidden absolute right-[600px] mt-2 bg-white border border-black w-[350px] rounded-lg p-5 text-center">
                     <p>Le site a pour mission d'encourager et aider les étudiants en métiers d'art à vendre leurs
                         oeuvres, car le processus peut être difficile. Ainsi, les vendeurs n'étant pas à l'école doivent
                         payer un abonnement pour avoir accès au site.</p>
@@ -127,7 +127,7 @@
         <div class="w-fit">
             @include('messages.messageFail', [
                 'message' => $errors->first('msg'),
-                'titre' => 'Demande en attente',
+                'titre' => 'Erreur lors de la demande',
             ])
         </div>
     @endif

@@ -15,11 +15,7 @@ use App\Http\Middleware\EnsureUserCanBecomeArtist;
 use Illuminate\Support\Facades\Route;
 use Laravel\Cashier\Checkout;
 
-Route::get('/decouverte', function () {
-    return redirect('/');
-})->name('decouverte');
-
-Route::get('/', [CollectionController::class, 'index']);
+Route::get('/', [CollectionController::class, 'index'])->name('decouverte');
 
 /* Route relié au kiosque */
 Route::controller(ArtisteController::class)->group(function(){
@@ -55,7 +51,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/devenir-artiste', [DemandeController::class, 'create'])->name('devenir-artiste')->middleware(EnsureUserCanBecomeArtist::class);
     Route::post('/devenir-artiste', [DemandeController::class, 'store'])->name('store-demande-artiste');
     Route::get('/renouvellement', [DemandeController::class, 'create'])->name('renouvellement-artiste')->middleware(EnsureUserIsArtist::class);
-    Route::post('/devenir-artiste', [DemandeController::class, 'storeRenouvellement'])->name('store-renouvellement-artiste');
+    Route::post('/renouvellement', [DemandeController::class, 'storeRenouvellement'])->name('store-renouvellement-artiste');
 });
 
 
