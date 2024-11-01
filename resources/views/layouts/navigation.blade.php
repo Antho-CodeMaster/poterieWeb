@@ -105,13 +105,14 @@
                         <div class="bg-[#444444] text-[#f4f0ec] rounded-t-lg px-3 text-lg font-bold shadow-2xl">
                             Notifications
                         </div>
-
-                        @foreach (Auth::user()->notifications as $notification)
-                            <div class="p-2">
-                                <span class="font-semibold">{{ $notification->formatted_description }}</span>
-                                <p class="text-sm">{{ $notification->message }}</p>
-                            </div>
-                        @endforeach
+                        @if (isset(Auth::user()->notifications))
+                            @foreach (Auth::user()->notifications as $notification)
+                                <div class="p-2">
+                                    <span class="font-semibold">{{ $notification->formatted_description }}</span>
+                                    <p class="text-sm">{{ $notification->message }}</p>
+                                </div>
+                            @endforeach
+                        @endif
                     </x-slot>
                 </x-dropdown>
             </div>
