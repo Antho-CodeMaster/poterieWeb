@@ -72,13 +72,14 @@ class TransactionController extends Controller
             );
 
             //get si la transaction existe deja ou en créé une nouvelle
-            Transaction::firstOrCreate(
+            $transaction = Transaction::firstOrCreate(
                 [
                     'id_commande' => $commande->id_commande,
                     'id_article' => $request->input('id_article')
                 ],
-                ['quantite' => 0, 'id_etat' => 2]
+                ['quantite' => 1, 'id_etat' => 2]
             );
+            $transaction->update(['prix_unitaire' => $transaction->article->prix]);
 
             //incémente la quantité (0+1 si nouvelle)
             return Redirect::back(302, ['message' => 'Succes: Article ajouté au panier']);
@@ -257,6 +258,7 @@ class TransactionController extends Controller
             return response()->json(['message'=>'Success, quantity data updated'])->withCookie($biscuit);
 
     }
+}
 
     /**
      * Remove the specified resource from storage.

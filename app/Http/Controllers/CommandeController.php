@@ -180,9 +180,10 @@ class CommandeController extends Controller
             'invoice_creation' => ['enabled'=>true]
         ]);
 
-        $commande->checkout_id = $checkoutSession->id;
+        $commande->update([
+            'checkout_id' =>$checkoutSession->id,
+        ]);
 
-        $commande->save();
 
         return redirect($checkoutSession->url);
     }
@@ -192,16 +193,16 @@ class CommandeController extends Controller
 
         \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
 
-        $sessionId = $request->get('session_id');
-        #echo $sessionId . '\n';
+        $sessionId = $request->input('session_id');
+     #   echo $sessionId . '\n';
         $checkoutSession = Session::retrieve($sessionId); #$request->user()->stripe()->checkout->sessions->retrieve($request->get('session_id'));
-       # echo $checkoutSession->finalizeInvoice()->charge->receipt_url;
+     #  echo $checkoutSession;
         $paymentIntent = PaymentIntent::retrieve($checkoutSession->payment_intent);
-        #echo $paymentIntent;
+    #    echo $paymentIntent;
         $charge = \Stripe\Charge::retrieve($paymentIntent->latest_charge);
 
 
-        $commande = Commande::where('checkout_id', $sessionId)->first();
+        $commande = Commande::where('checkout_id', '=',$sessionId)->first();
 
         //On recupere les infos de shipping
         $addressLine = $paymentIntent->shipping->address->line1;
@@ -262,8 +263,6 @@ class CommandeController extends Controller
                 $commande->transactions()->save($transaction);
             }
         }
-
-       $commande->save();
 
         return $commande;
     }

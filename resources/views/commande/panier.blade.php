@@ -79,8 +79,7 @@
                     <x-button.border.empty class="w-[80%] mx-auto mb-[5%] rounded-lg" @click="window.location.href='{{route('decouverte')}}'" > Remplir le panier</x-button.border.empty>
                 </form>
             @else
-                <x-button.border.empty class="w-[80%] mx-auto mb-[5%] rounded-lg" @click="$dispatch('open-login-modal')" > Se connecter</x-button.border.empty>
-
+                <x-button.border.empty type="button"  @click="$dispatch('open-login-modal')" class="w-[80%] mx-auto mb-[5%] rounded-lg" > Se connecter</x-button.border.empty>
             @endif
 
 

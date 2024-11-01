@@ -41,7 +41,7 @@ class TransactionSeeder extends Seeder
             $article = Article::where('id_article', $id_article)->get();
 
             DB::table('transactions')->insert([
-                'id_commande' => 11,
+                'id_commande' => 31,
                 'id_article' => $id_article,
                 'id_etat' => 4,
                 'id_compagnie' => random_int(1, 3),
@@ -52,7 +52,7 @@ class TransactionSeeder extends Seeder
             ]);
 
             DB::table('transactions')->insert([
-                'id_commande' => 12,
+                'id_commande' => 32,
                 'id_article' => $id_article,
                 'id_etat' => rand(2,5),
                 'id_compagnie' => random_int(1, 3),
