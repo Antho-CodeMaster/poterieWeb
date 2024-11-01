@@ -121,6 +121,10 @@
                                 {{ __('Paramètres du compte') }}
                             </x-dropdown-link>
 
+                            <x-dropdown-link :href="route('commandes')" class="hover:underline">
+                                {{ __('Historique de commandes') }}
+                            </x-dropdown-link>
+
                             <!-- Authentication -->
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf

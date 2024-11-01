@@ -22,6 +22,8 @@ class CommandeController extends Controller
     public function index()
     {
         if(Auth::check()){
+            \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+
             $commandes = Commande::where('id_user', Auth::id())
             ->where('is_panier', false)
             ->get();
@@ -30,6 +32,14 @@ class CommandeController extends Controller
             $commandeFini = [];
 
             foreach ($commandes as $commande) {
+                if(isset($commande->payment_intent_id))
+                {
+                    $paymentIntent = PaymentIntent::retrieve($commande->payment_intent_id);
+                    $charge = \Stripe\Charge::retrieve($paymentIntent->latest_charge);
+                    $commande->receipt_url = $charge->receipt_url;
+                }
+
+
                 $hasActiveTransaction = false;
                 foreach ($commande->transactions as $transaction) {
                     $etat = $transaction->etat_transaction->etat;
@@ -187,7 +197,7 @@ class CommandeController extends Controller
         $checkoutSession = Session::retrieve($sessionId); #$request->user()->stripe()->checkout->sessions->retrieve($request->get('session_id'));
        # echo $checkoutSession->finalizeInvoice()->charge->receipt_url;
         $paymentIntent = PaymentIntent::retrieve($checkoutSession->payment_intent);
-        echo $paymentIntent;
+        #echo $paymentIntent;
         $charge = \Stripe\Charge::retrieve($paymentIntent->latest_charge);
 
 
@@ -209,7 +219,8 @@ class CommandeController extends Controller
             'rue' => $rue,
             'ville' => $ville->id_ville ,
             'code_postal' => $codePostal,
-            'payment_intent_id' => $paymentIntent->id
+            'payment_intent_id' => $paymentIntent->id,
+            'date' => now()
         ]);
 
         $urlFacture = $charge->receipt_url;

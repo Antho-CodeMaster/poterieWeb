@@ -9,11 +9,8 @@
 
         {{-- Container pour LES lignes d'articles --}}
         <div class="w-2/3 ml-[10%]">
-
-            {{$count =0;}}
             {{-- Une ligne d'article --}}
             @foreach ($commande->transactions as $transaction)
-                {{$count ++;}}
 
                 <div class="flex m-auto my-14 itemPanier" data-prix="{{$transaction->article->prix}}" data-ida="{{$transaction->article->id_article}}" data-idt="{{$transaction->id_transaction}}">
                     <img src="{{'img/'.$transaction->article->photo_article[0]->path}}" alt="Une image de pot" class="rounded-xl border shadow-xl shadow-black w-1/4 m-auto aspect-square">

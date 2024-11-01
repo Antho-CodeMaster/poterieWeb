@@ -35,9 +35,11 @@
                     <div class="flex my-24 ml-24">
                         {{--images--}}
                         <div class="w-1/3 flex relative space-x-0">
-                            <img src="{{'img/'. $commande->transactions[0]->article->photo_article[0]->path }}" alt="" class="w-1/3 h-full object-cover z-10 rounded-[12px] shadow-xl shadow-black">
-                            <img src="{{'img/'. $commande->transactions[1]->article->photo_article[0]->path }}" alt="" class="w-1/3 h-full object-cover z-20 absolute left-[25%] rounded-[12px] shadow-xl shadow-black">
-                            <img src="{{'img/'. $commande->transactions[2]->article->photo_article[0]->path }}" alt="" class="w-1/3 h-full object-cover z-30 absolute left-[50%] rounded-[12px] shadow-xl shadow-black">
+                            @foreach ($commande->transactions as $transaction)
+                                <img src="{{'img/'. $transaction->article->photo_article[0]->path }}" alt="" class="w-1/3 h-full object-cover z-{{$loop->iteration * 10}} rounded-[12px] shadow-xl shadow-black {{$loop->first === true ? '': 'absolute left-[' . ($loop->iteration - 1)* 25 . '%]'}} ">
+                                @if($loop->iteration == 3) @break @endif
+                            @endforeach
+
                         </div>
                         {{--infos--}}
                         <div class="flex flex-col w-1/3 justify-between">
@@ -51,7 +53,8 @@
                             <a href="/commande/{{$commande->id_commande}}" class="underline hover:text-[#0000FF]">Détails</a>
                         </div>
                         {{--prix--}}
-                        <div class="w-1/3 self-end">
+                        <div class="flex flex-col w-1/3 justify-between">
+                            <a href="{{$commande->receipt_url}}">Télécharger le reçu</a>
                             @php
                                 $prix = 0.0;
                                 foreach ($commande->transactions as $transaction) {
