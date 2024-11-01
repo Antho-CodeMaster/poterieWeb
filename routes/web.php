@@ -43,6 +43,11 @@ Route::controller(CommandeController::class)->group(function () {
     Route::get('/panier', [CommandeController::class, 'showPanier'])->name('panier');
     Route::get('/commandes', [CommandeController::class, 'index'])->name('commandes');
     Route::get('/commande/{id}', 'show');
+
+    /**Route pour Cashier */
+    Route::get('/checkout','checkoutCommande')->name('checkout');
+    Route::get('/checkout/success', 'success')->name('checkout-success');
+    Route::get('/checkout/cancel', 'cancel')->name('checkout-cancel');
 });
 
 /* Routes liés aux transactions */
