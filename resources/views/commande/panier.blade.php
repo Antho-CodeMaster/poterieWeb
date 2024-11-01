@@ -1,5 +1,5 @@
 <x-app-layout>
-    <h1 class="my-8 ml-[5%] text-4xl leading-none tracking-tight md:text-5xl lg:text-6xl">Mon Panier</h1>
+    <h1 class="titre1-dark">Mon Panier</h1>
 
     {{-- Container pour diviser la page entre la liste et le résumé --}}
     <div class="flex">
@@ -13,7 +13,7 @@
             {{-- Une ligne d'article --}}
             @foreach ($commande->transactions as $transaction)
 
-                <div class="flex m-auto my-14 itemPanier" data-prix="{{$transaction->article->prix}}">
+                <div class="flex m-auto my-14 itemPanier" data-prix="{{$transaction->article->prix}}" data-ida="{{$transaction->article->id_article}}" data-idt="{{$transaction->id_transaction}}">
                     <img src="{{'img/'.$transaction->article->photo_article[0]->path}}" alt="Une image de pot" class="rounded-xl border shadow-xl shadow-black w-1/4 m-auto aspect-square">
 
                     <div class="w-1/4 m-0 ml-4 flex flex-col justify-between">
@@ -71,13 +71,11 @@
                 <p class="" id="total">NNN $</p>
             </div>
             @if (Auth::check())
-                <a href="{{route('checkout')}}"><button class="bg-[#009b4d] w-[80%] mx-auto mb-[5%] rounded-lg">Passer la commande</div></a>
+                <x-button nom="Passer la commande" class="bg-[#009B4D] hover:bg-[#34AF71] w-[80%] mx-auto mb-[5%] rounded-lg" @click="window.location.href='{{route('checkout')}}'">
             @else
-                <a href="{{route('panier')}}" x-data>
-                    <button class="bg-[#009b4d] w-[80%] mx-auto mb-[5%] rounded-lg" @click="$dispatch('open-login-modal')">
-                        Passer la commande
-                    </button>
-                </a>
+
+                <x-button nom="Se connecter" class="bg-[#009B4D] hover:bg-[#34AF71] w-[80%] mx-auto mb-[5%] rounded-lg" @click="$dispatch('open-login-modal')">
+
             @endif
 
 

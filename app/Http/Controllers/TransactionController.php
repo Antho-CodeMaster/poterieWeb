@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use App\Models\Commande;
+use App\Models\Article;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -96,8 +97,49 @@ class TransactionController extends Controller
      */
     public function update(Request $request)
     {
-        if(Auth::check()){
+        $panierData = $request->input('cart')->json_decode();
+        $qte = $request->input('quantite');
 
+
+        if(Auth::check()){
+            try{
+
+            foreach($panierData as $item){
+                $transaction = Transaction::first($item['Transaction']);
+
+                if($qte > $transaction->article->quantite_disponible || $qte < 0){
+                    throw new Exception('Failed to update, Quantity out of bound');
+                }
+
+                $transaction->update([
+                    'quantite' => $qte
+                ]);
+            }
+            }catch(Exception $e){
+                return response(400)->json()->withException($e);
+            }
+            return response()->json(['message'=>'Success, quantity data updated to '. $transaction->quantite]);
+        }
+        else{
+
+            $panier = json_decode($request->cookie('panier',''),true);
+
+            foreach($panierData as $item){
+                try{
+                    if($qte > Article::firts($item['Article'])->quantite_disponible || $qte < 0){
+                        throw new Exception('Failed to update, Quantity out of bound');
+                    }
+
+                $panier[$item['Article']]['quantite'] = $item['quantite'];
+
+                }catch(Exception $e){
+                    return response(400)->json()->withException($e);
+                }
+            }
+
+            $biscuit = cookie('panier',json_encode($panier), 60*24*30);
+
+            return response()->json(['message'=>'Success, quantity data updated'])->withCookie($biscuit);
         }
     }
 

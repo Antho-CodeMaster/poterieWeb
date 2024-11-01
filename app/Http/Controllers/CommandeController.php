@@ -97,7 +97,7 @@ class CommandeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, commande $commande)
+    public function update(Request $request)
     {
         //
     }
@@ -165,6 +165,8 @@ class CommandeController extends Controller
             ],
             'success_url' => route('checkout-success').'?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => route('panier'),
+            'customer_email' => Auth::user()->email,
+            'invoice_creation' => ['enabled'=>true]
         ]);
 
         $commande->checkout_id = $checkoutSession->id;
@@ -180,7 +182,7 @@ class CommandeController extends Controller
         \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
 
         $sessionId = $request->get('session_id');
-        echo $sessionId . '\n';
+        #echo $sessionId . '\n';
         $checkoutSession = Session::retrieve($sessionId); #$request->user()->stripe()->checkout->sessions->retrieve($request->get('session_id'));
         echo $checkoutSession. '\n';
         $paymentIntent = PaymentIntent::retrieve($checkoutSession->payment_intent);
@@ -207,7 +209,9 @@ class CommandeController extends Controller
             'payment_intent_id' => $paymentIntent->id
         ]);
 
-        return view('commande.success',['commande' => $commande]);
+        $urlFacture = $paymentIntent->charges->data[0]->receipt_url;
+
+        return view('commande.success',['commande' => $commande, 'facture'=>$urlFacture]);
     }
 
     public function FormatPanier(Commande $panier){

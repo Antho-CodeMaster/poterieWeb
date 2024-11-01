@@ -76,6 +76,7 @@ Route::controller(CommandeController::class)->group(function(){
 Route::controller(TransactionController::class)->group(function(){
     Route::get('/deleteThisArticle/{id}','destroy');
     Route::post('/addArticleToPanier', 'store')->name('addArticleToPanier');
+    Route::post('/updateQuantite','update')->name('update');
 });
 
 require __DIR__.'/auth.php';
