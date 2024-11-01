@@ -84,15 +84,37 @@
                 </svg>
             </a>
 
-            {{-- Bouton notification --}}
-            <a class="ml-[15px]" href="">
-                <svg width="34" height="34" viewBox="0 0 48 48" fill="none" class="flex item-center"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M27.46 42C27.1084 42.6062 26.6037 43.1093 25.9965 43.4591C25.3892 43.8088 24.7008 43.9929 24 43.9929C23.2992 43.9929 22.6108 43.8088 22.0035 43.4591C21.3963 43.1093 20.8916 42.6062 20.54 42M36 16C36 12.8174 34.7357 9.76516 32.4853 7.51472C30.2348 5.26428 27.1826 4 24 4C20.8174 4 17.7652 5.26428 15.5147 7.51472C13.2643 9.76516 12 12.8174 12 16C12 30 6 34 6 34H42C42 34 36 30 36 16Z"
-                        stroke="#F4F0EC" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-            </a>
+            {{-- Notification Dropdown --}}
+            <div class="sm:flex sm:items-center ml-[15px]">
+                <x-dropdown align="right" width="48">
+                    <x-slot name="trigger">
+                        <button
+                            class="inline-flex items-center border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                            <div class="ms-1">
+                                <svg width="34" height="34" viewBox="0 0 48 48" fill="none" class="flex item-center"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M27.46 42C27.1084 42.6062 26.6037 43.1093 25.9965 43.4591C25.3892 43.8088 24.7008 43.9929 24 43.9929C23.2992 43.9929 22.6108 43.8088 22.0035 43.4591C21.3963 43.1093 20.8916 42.6062 20.54 42M36 16C36 12.8174 34.7357 9.76516 32.4853 7.51472C30.2348 5.26428 27.1826 4 24 4C20.8174 4 17.7652 5.26428 15.5147 7.51472C13.2643 9.76516 12 12.8174 12 16C12 30 6 34 6 34H42C42 34 36 30 36 16Z"
+                                    stroke="#F4F0EC" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            </div>
+                        </button>
+                    </x-slot>
+
+                    <x-slot name="content">
+                        <div class="bg-[#444444] text-[#f4f0ec] rounded-t-lg px-3 text-lg font-bold shadow-2xl">
+                            Notifications
+                        </div>
+
+                        @foreach (Auth::user()->notifications as $notification)
+                            <div class="p-2">
+                                <span class="font-semibold">{{ $notification->formatted_description }}</span>
+                                <p class="text-sm">{{ $notification->message }}</p>
+                            </div>
+                        @endforeach
+                    </x-slot>
+                </x-dropdown>
+            </div>
 
             <!-- Settings Dropdown -->
             <div class="sm:flex sm:items-center ml-[15px]">
