@@ -11,7 +11,7 @@
                     enctype="multipart/form-data">
                     @csrf
                     {{-- Téléversement des photos --}}
-                    <div class="grid m-sectionFormY mb-4">
+                    <div class="grid m-sectionFormY">
                         <div class="">
                             <div class="flex items-center justify-between">
                                 <h2 class="textGrand-dark">Téléversez les photos de livraison</h2>
