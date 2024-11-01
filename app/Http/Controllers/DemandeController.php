@@ -67,6 +67,22 @@ class DemandeController extends Controller
         else
             return back()->withErrors(['msg' => 'Une erreur inattendue s\'est produite lors de l\'envoi de votre demande. Veuillez réessayer plus tard.']);
 
+        // Si l'user veut un abonnement pro mais n'a pas défini de méthode de paiement, on ne peut pas lui créer de demande.
+        if($type == 3)
+        {
+            \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+            $customer = \Stripe\Customer::retrieve(Auth::user()->stripe_id);
+
+            // Retrieve the customer's payment methods
+            $paymentMethods = \Stripe\PaymentMethod::all([
+                'customer' => $customer->id,
+                'type' => 'card',
+            ]);
+
+            if($paymentMethods->data[0] == null)
+                return back()->withErrors(['msg' => 'Vous devez définir une méthode de paiement dans vos paramètres afin de pouvoir payer votre abonnement si les administrateurs acceptent votre demande.']);
+        }
+
         // Validation de base pour les photos de preuve
         $rules = [
             "photo-preuve" => "required|array|between:1,10",
@@ -151,7 +167,7 @@ class DemandeController extends Controller
                 $cpt++;
             }
         }
-        session()->flash('succesDemande', 'Votre demande a bel et bien été envoyée. Vous recevrez des nouvelles prochainement!');
+        Session::flash('succesDemande', 'Votre demande a bel et bien été envoyée. Vous recevrez des nouvelles prochainement!');
         return redirect()->route('decouverte');
     }
 
@@ -215,12 +231,68 @@ class DemandeController extends Controller
                     $cpt++;
                 }
             }
-            session()->flash('succesDemande', 'Votre demande a bel et bien été envoyée. Vous recevrez des nouvelles prochainement!');
+            Session::flash('succesDemande', 'Votre demande a bel et bien été envoyée. Vous recevrez des nouvelles prochainement!');
             return redirect()->route('decouverte');
         } else if ($nomType == "pro") {
-            // Ne pas créer de demande. Procéder au paiement.
+            if(DemandeController::subscribe(Auth::id()))
+            {
+                Session::flash('succesRenouvellement', 'Votre abonnement a été confirmé. Vos accès à Terracium demeurent les mêmes. Merci!');
+                //TODO: ENVOYER UN COURRIEL AVEC MODALITÉS D'ABONNEMENT
+            }
+            else{
+                return back()->withErrors(['msg' => 'Une erreur inattendue s\'est produite lors du processus de votre abonnement. Veuillez confirmer la validité de votre carte ou réessayer plus tard.']);
+            }
         } else
             return back()->withErrors(['msg' => 'Une erreur inattendue s\'est produite lors de l\'envoi de votre demande. Veuillez réessayer plus tard.']);
+
+            return redirect()->route('decouverte');
+        }
+
+
+    public function subscribe(int $uid) : bool{
+        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+        // Retrieve the customer
+        $user = User::where("id", $uid)->first();
+
+        if($user->stripe_id != null)
+            $customer = \Stripe\Customer::retrieve($user->stripe_id);
+        else return false;
+
+        //S'assurer que le stripe customer existe
+        if($customer == null)
+            return false;
+
+        // Retrieve the customer's payment methods
+        $paymentMethods = \Stripe\PaymentMethod::all([
+            'customer' => $customer->id,
+            'type' => 'card',
+        ]);
+
+        if(empty($paymentMethods->data))
+            return false;
+
+        // Choose the payment method you want to use
+        $paymentMethodId = $paymentMethods->data[0]->id;
+
+        try {
+            // Create the subscription
+            $subscription = $user->newSubscription(
+                'pro',
+                env('subscription_pricekey')
+            )->create($paymentMethodId);
+
+            // Check if the subscription is active
+            if ($user->subscribed('pro')) {
+                return true;
+            } else {
+                dd($user->subscribed('pro'));
+                return false;
+            }
+
+        } catch (\Exception $e) {
+            // Handle any types of exceptions
+            return false;
+        }
     }
 
     /**
@@ -238,7 +310,19 @@ class DemandeController extends Controller
         $dem->id_etat = 2;
         $dem->save();
 
+        $usr = User::find($dem->id_user);
+
         if ($dem->id_type != 1) {
+            if ($dem->id_type == 3) {
+                if(DemandeController::subscribe($dem->id_user)){
+                    //TODO: ENVOYER UN COURRIEL AVEC MODALITÉS D'ABONNEMENT
+                }
+                else{
+                    return back()->withErrors(['refus' => 'Une erreur inattendue s\'est produite lors du processus de l\'abonnement. Le client a été notifié et devra faire une nouvelle demande.']);
+                    //TODO: ENVOYER UN COURRIEL DISANT QUE LA DEMANDE EST ACCEPTÉE MAIS ABONNEMENT REFUSÉ
+                }
+
+            }
             // Créer instance d'artiste
 
             $artiste = Artiste::create([
@@ -252,10 +336,6 @@ class DemandeController extends Controller
                 'couleur_banniere' => '808080'
             ]);
             $artiste->save();
-
-            if ($dem->id_type == 3) {
-                /* Effectuer le paiement si pro. */
-            }
         } else {
             /* Traiter différemment s'il s'agit d'un renouvellement. */
             $artiste = Artiste::where("id_user", $dem->id_user)->first();
@@ -276,8 +356,6 @@ class DemandeController extends Controller
         $notif->save();
 
         /* Aussi notifier par courriel. */
-
-        $usr = User::find($dem->id_user);
         $usr->notify(new Acceptation_demande($dem->id_user));
 
         Session::flash("succes", "L'utilisateur a bel et bien été accepté !");

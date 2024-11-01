@@ -10,7 +10,7 @@ class Commande extends Model
     use HasFactory;
     protected $table = 'commandes';
     protected $primaryKey = 'id_commande';
-    protected $fillable = ['is_panier', 'id_user', 'date', 'no_civique', 'rue','code_postal', 'id_ville'];
+    protected $fillable = ['is_panier', 'id_user', 'date', 'no_civique', 'rue','code_postal', 'id_ville', 'payment_intent_id', 'checkout_id'];
 
     public function transactions(){
         return $this->hasMany(Transaction::class, 'id_commande','id_commande')->orderByDesc('id_etat');

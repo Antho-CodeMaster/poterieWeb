@@ -5,10 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Commande;
 use App\Models\Artiste;
+use App\Models\Ville;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Laravel\Cashier\Invoice;
+use Stripe\Checkout\Session;
+use Stripe\PaymentIntent;
 
 class CommandeController extends Controller
 {
@@ -18,6 +22,8 @@ class CommandeController extends Controller
     public function index()
     {
         if(Auth::check()){
+            \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+
             $commandes = Commande::where('id_user', Auth::id())
             ->where('is_panier', false)
             ->get();
@@ -26,6 +32,14 @@ class CommandeController extends Controller
             $commandeFini = [];
 
             foreach ($commandes as $commande) {
+                if(isset($commande->payment_intent_id))
+                {
+                    $paymentIntent = PaymentIntent::retrieve($commande->payment_intent_id);
+                    $charge = \Stripe\Charge::retrieve($paymentIntent->latest_charge);
+                    $commande->receipt_url = $charge->receipt_url;
+                }
+
+
                 $hasActiveTransaction = false;
                 foreach ($commande->transactions as $transaction) {
                     $etat = $transaction->etat_transaction->etat;
@@ -94,7 +108,7 @@ class CommandeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, commande $commande)
+    public function update(Request $request)
     {
         //
     }
@@ -153,26 +167,66 @@ class CommandeController extends Controller
         #Set de la clé d'api pour stripe
         \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
 
-        $checkoutSession = \Stripe\Checkout\Session::create([
+        $checkoutSession = Session::create([
             'payment_method_types' => ['card'],
             'line_items' => $cartItems,
             'mode' => 'payment', // Paiement unique
-            'success_url' => route('checkout-success'),
-            'cancel_url' => route('checkout-cancel'),
+            'shipping_address_collection' => [
+                'allowed_countries' => ['CA']
+            ],
+            'success_url' => route('checkout-success').'?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => route('panier'),
+            'customer_email' => Auth::user()->email,
+            'invoice_creation' => ['enabled'=>true]
         ]);
 
-        $commande->update(['checkout_session_id' => $checkoutSession->id]);
+        $commande->update([
+            'checkout_id' =>$checkoutSession->id,
+        ]);
 
-        $commande->save();
 
         return redirect($checkoutSession->url);
     }
 
-    public function success(){
+    public function success(Request $request){
 
-    }
-    public function cancel(){
 
+        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+
+        $sessionId = $request->input('session_id');
+     #   echo $sessionId . '\n';
+        $checkoutSession = Session::retrieve($sessionId); #$request->user()->stripe()->checkout->sessions->retrieve($request->get('session_id'));
+     #  echo $checkoutSession;
+        $paymentIntent = PaymentIntent::retrieve($checkoutSession->payment_intent);
+    #    echo $paymentIntent;
+        $charge = \Stripe\Charge::retrieve($paymentIntent->latest_charge);
+
+
+        $commande = Commande::where('checkout_id', '=',$sessionId)->first();
+
+        //On recupere les infos de shipping
+        $addressLine = $paymentIntent->shipping->address->line1;
+        preg_match('/^(\d+)\s+(.*)$/', $addressLine, $matches);
+
+        $noCivique = $matches[1] ?? null;
+        $rue = $matches[2] ?? $addressLine;
+        $codePostal = str_replace(' ', '', $paymentIntent->shipping->address->postal_code);
+
+        $ville = Ville::firstOrCreate(['ville'=>$paymentIntent->shipping->address->city]);
+
+        $commande->update([
+            'is_panier' => false,
+            'no_civique' => $noCivique,
+            'rue' => $rue,
+            'ville' => $ville->id_ville ,
+            'code_postal' => $codePostal,
+            'payment_intent_id' => $paymentIntent->id,
+            'date' => now()
+        ]);
+
+        $urlFacture = $charge->receipt_url;
+
+        return view('commande.success',['commande' => $commande, 'facture'=>$urlFacture]);
     }
 
     public function FormatPanier(Commande $panier){
@@ -209,8 +263,6 @@ class CommandeController extends Controller
                 $commande->transactions()->save($transaction);
             }
         }
-
-        $commande->save();
 
         return $commande;
     }

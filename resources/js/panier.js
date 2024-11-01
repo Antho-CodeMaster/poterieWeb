@@ -2,9 +2,10 @@ if(document.baseURI.includes('/panier')){
     document.addEventListener('DOMContentLoaded', function() {
         console.log("works ig");
         // Function to update the panier summary
-        function updatePanierSummary() {
+        async function updatePanierSummary() {
             let subtotal = 0;
             let totalItems = 0;
+            let cartData = [];
 
             // Get all cart items
             let cartItems = document.querySelectorAll('.itemPanier');
@@ -13,10 +14,19 @@ if(document.baseURI.includes('/panier')){
                 let price = parseFloat(item.getAttribute('data-prix'));
                 let quantitySelect = item.querySelector('.quantite');
                 let quantity = parseInt(quantitySelect.value);
+                let article = item.getAttribute('data-ida');
+                let transaction = item.getAttribute('data-idt');
 
                 subtotal += price * quantity;
                 totalItems += quantity;
+
+                cartData.push({
+                    idTransaction: transaction,
+                    idArticle: article,
+                    quantity: quantity
+                });
             });
+
 
             // Update subtotal
             document.getElementById('nb').textContent = 'Sous total (' + totalItems + ' Articles) :';
@@ -33,6 +43,16 @@ if(document.baseURI.includes('/panier')){
             // Calculate total
             let total = subtotal + deliveryFees + taxes;
             document.getElementById('total').textContent = total.toFixed(2) + ' $';
+
+            /*fetch('/updateQuantite', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ cart: cartData })
+            })
+            .then(response => response.json());*/
         }
 
         // Function to calculate delivery fees

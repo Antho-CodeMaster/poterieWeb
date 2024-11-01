@@ -32,9 +32,10 @@
                                 </div>
                                 <p class="w-2/12 text-center">{{ $demande->date }}</p>
 
-                                <div class="w-7/12 flex">
+                                <div class="w-7/12 flex nowrap overflow-x-auto overflow-y-hidden">
+                                    @if ($demande->type->type != 'Renouvellement')
                                     <div
-                                        class="{{ $demande->type->type == 'Nouveau professionnel' ? 'w-full' : 'w-1/2' }} flex flex-wrap">
+                                        class="w-1/2 flex">
                                         @for ($i = 0; $i < 10; $i++)
                                             @if (isset($demande->photos_oeuvres[$i]))
                                                 <img src="{{ asset('img/demandePreuve/' . $demande->photos_oeuvres[$i]->path) }}"
@@ -46,6 +47,7 @@
                                             @endif
                                         @endfor
                                     </div>
+                                    @endif
                                     @if ($demande->type->type != 'Nouveau professionnel')
                                         <div class="w-1/2 flex">
                                             @for ($i = 0; $i < 3; $i++)

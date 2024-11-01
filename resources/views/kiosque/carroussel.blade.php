@@ -46,8 +46,9 @@
                             </svg>
                         @endif
                     </div>
-                    <form action="{{ route('decouverte') }}" method="GET">
-                        <button type="submit" value="add" name="ajouterPanier"
+                    <form action="{{ '/addArticleToPanier' }}" method="POST">
+                        @csrf
+                        <button type="submit" value="{{ $article->id_article }}" name="id_article"
                             class="border-darkGrey border rounded-[24px] w-[100%] h-[40px] articleGrand-dark">Ajouter
                             au
                             panier
