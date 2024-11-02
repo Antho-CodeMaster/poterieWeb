@@ -20,8 +20,8 @@
 
 <div class="hidden text-[#FF0000] text-[#ffb700] text-[#009b4d] text-[#0000FF] rotate-180"></div>
 
-    <h1 class="my-4 w-full text-center text-4xl leading-none tracking-tight md:text-5xl lg:text-6xl ">Détails</h1>
-    <h1 class="my-4 w-full text-center text-2xl leading-none tracking-tight md:text-5xl lg:text-6xl ">Date : {{$commande->date}}</h1>
+    <h1 class="my-4 w-full text-center titre1-dark ">Détails</h1>
+    <h1 class="my-4 w-full text-center titre1-dark ">Date : {{$commande->date}}</h1>
 
 
     @foreach ($articleParArtiste as $nomArtiste => $transactions)

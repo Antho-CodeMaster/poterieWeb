@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Cookie;
 use Laravel\Cashier\Invoice;
 use Stripe\Checkout\Session;
 use Stripe\PaymentIntent;
+use Stripe\Stripe;
+use Stripe\StripeClient;
 
 class CommandeController extends Controller
 {
@@ -165,19 +167,31 @@ class CommandeController extends Controller
 
 
         #Set de la clé d'api pour stripe
-        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+        Stripe::setApiKey(config('services.stripe.secret'));
+
+        $stripe = new StripeClient(config('services.stripe.secret'));
+
+        #$stripe->taxRates->retrieve();
 
         $checkoutSession = Session::create([
-            'payment_method_types' => ['card'],
-            'line_items' => $cartItems,
+            'payment_method_types' => ['card'],//paiement par carte
+            'payment_intent_data' => ['transfer_group' => $commande->id_commande], //met l'id de commande dans le transfer groupe pour transferer l'argent aux artistes
+            'line_items' => $cartItems, // les items de la transaction
             'mode' => 'payment', // Paiement unique
-            'shipping_address_collection' => [
+            'shipping_address_collection' => [ //les pays accepté pour la livraison
                 'allowed_countries' => ['CA']
             ],
-            'success_url' => route('checkout-success').'?session_id={CHECKOUT_SESSION_ID}',
-            'cancel_url' => route('panier'),
+            'success_url' => route('checkout-success').'?session_id={CHECKOUT_SESSION_ID}', //l'url a visiter en cas de succes
+            'cancel_url' => route('panier'),    //idem mais en cas d'échec.
             'customer_email' => Auth::user()->email,
-            'invoice_creation' => ['enabled'=>true]
+            'invoice_creation' => ['enabled'=>true], //permet de générer une facture avec stripe
+            'automatic_tax' => ['enabled' => true], //permet de calculer les taxes, doit être setté dans le stripe dashboard
+            'shipping_options' => [['shipping_rate_data' => [   //frais de livraisons
+                    'display_name' => 'Frais de livraison',
+                    'fixed_amount' => ['amount' => 1000, 'currency' => 'cad'],
+                    'type' => 'fixed_amount'
+                ]]
+            ]
         ]);
 
         $commande->update([
@@ -205,7 +219,7 @@ class CommandeController extends Controller
         $commande = Commande::where('checkout_id', '=',$sessionId)->first();
 
         //On recupere les infos de shipping
-        $addressLine = $paymentIntent->shipping->address->line1;
+        $addressLine = $paymentIntent->shipping->address->line1 ;
         preg_match('/^(\d+)\s+(.*)$/', $addressLine, $matches);
 
         $noCivique = $matches[1] ?? null;
