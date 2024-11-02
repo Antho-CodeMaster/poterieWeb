@@ -169,13 +169,12 @@ class CommandeController extends Controller
         #Set de la clé d'api pour stripe
         Stripe::setApiKey(config('services.stripe.secret'));
 
-        $stripe = new StripeClient(config('services.stripe.secret'));
-
-        #$stripe->taxRates->retrieve();
 
         $checkoutSession = Session::create([
             'payment_method_types' => ['card'],//paiement par carte
-            'payment_intent_data' => ['transfer_group' => $commande->id_commande], //met l'id de commande dans le transfer groupe pour transferer l'argent aux artistes
+            'payment_intent_data' => [
+                'transfer_group' => $commande->id_commande,  //met l'id de commande dans le transfer groupe pour transferer l'argent aux artistes
+            ],
             'line_items' => $cartItems, // les items de la transaction
             'mode' => 'payment', // Paiement unique
             'shipping_address_collection' => [ //les pays accepté pour la livraison
@@ -191,7 +190,7 @@ class CommandeController extends Controller
                     'fixed_amount' => ['amount' => 1000, 'currency' => 'cad'],
                     'type' => 'fixed_amount'
                 ]]
-            ]
+            ],
         ]);
 
         $commande->update([
