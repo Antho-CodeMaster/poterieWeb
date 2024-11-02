@@ -23,6 +23,6 @@ class EnsureUserCanBecomeArtist
         if ($artiste == null && $admin == null)
             return $next($request);
 
-        return redirect('/decouverte');
+        return redirect('/');
     }
 }

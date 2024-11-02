@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Reseau_artiste;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class ArtisteController extends Controller
 {
@@ -61,7 +62,9 @@ class ArtisteController extends Controller
             }
         }
 
-
+        // Va ouvrir un modal de bienvenue si c'est le premier accès de l'usager.
+        if(request()->has('firstaccess'))
+            Session::flash('firstaccess');
 
         return view('kiosque/kiosque', [
             'artiste' => $artiste,

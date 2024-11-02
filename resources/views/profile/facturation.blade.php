@@ -6,16 +6,25 @@
         </div>
 
         <!-- Main Content -->
-        <div x-data = "{link:'{{route('stripe.facturation')}}'}" class="lg:col-span-5 grid grid-cols-1 lg:grid-cols-4 gap-6 py-8 mx-4">
-            <x-button.green.pay type="button" @click="window.location.href=link">Définir informations de facturation</x-button.green.pay>
+        <div class="lg:col-span-5 grid grid-cols-1 lg:grid-cols-4 gap-6 py-8 mx-4">
+            <div class="lg:col-span-2 p-4 sm:p-8 bg-beige hover:shadow-lg rounded-lg">
+                <div class="max-w-xl">
+                    @include('profile.partials.edit-payment-method-form')
+                </div>
+            </div>
+            <div class="lg:col-span-2 p-4 sm:p-8 bg-beige hover:shadow-lg rounded-lg">
+                <div class="max-w-xl">
+                    @include('profile.partials.cancel-subscription-form')
+                </div>
+            </div>
         </div>
         @if (Session::has('succes'))
-        <div class="w-fit absolute right-2 bottom-10">
-            @include('messages.messageSucces', [
-                'message' => Session::get('succes'),
-                'titre' => 'Succès',
-            ])
-        </div>
-    @endif
+            <div class="w-fit absolute right-2 bottom-10">
+                @include('messages.messageSucces', [
+                    'message' => Session::get('succes'),
+                    'titre' => 'Succès',
+                ])
+            </div>
+        @endif
     </div>
 </x-app-layout>

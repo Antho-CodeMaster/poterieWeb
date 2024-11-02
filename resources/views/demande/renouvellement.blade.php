@@ -1,14 +1,13 @@
 <x-app-layout>
-    <form action="{{ route('store-renouvellement-artiste') }}" method="post" enctype="multipart/form-data"
-        class="content-height py-16 px-12 flex flex-col justify-center">
-        @csrf
+
+    <div class="content-height py-16 px-12 flex flex-col justify-center">
         <h1 class="text-center text-5xl">Effectuer votre renouvellement</h1>
         <div class="flex mt-20 justify-center">
 
             <div class="w-1/2 py-4 px-12">
                 <div class="justify-center flex">
                     <p class="my-auto">Je suis : </p>
-                    <select name="type" class="mx-4">
+                    <select class="mx-4">
                         <option value="etu" {{ old('type') == 'etu' ? 'selected' : '' }}>Encore étudiant(e)</option>
                         <option value="pro" {{ old('type') == 'pro' ? 'selected' : '' }}>Hors des études</option>
                     </select>
@@ -26,7 +25,8 @@
                         payer un abonnement pour avoir accès au site.</p>
                 </div>
                 <div id="variable-message-etu">
-                    <p class="text-center mt-10">Puisque vous appliquez en tant qu'étudiant(e), veuillez soumettre à nouveau une
+                    <p class="text-center mt-10">Puisque vous appliquez en tant qu'étudiant(e), veuillez soumettre à
+                        nouveau une
                         photo pour chacune des
                         preuves suivantes: </p>
                     <ul class="list-disc ml-[40%]">
@@ -55,7 +55,7 @@
                 </div>
                 <div id="variable-message-pro" class="hidden">
                     <p class="text-center mt-10">Puisque vous n'êtes plus aux études, <span class="font-bold">le
-                        paiement d'un abonnement sera désormais requis.</span> Cet abonnement soutient les frais de
+                            paiement d'un abonnement sera désormais requis.</span> Cet abonnement soutient les frais de
                         maintenance de la plateforme web.
                         Le mode de paiement utilisé sera celui que vous avez enregistré dans
                         Paramètres > Facturation. Vous serez facturés dès que votre demande sera approuvée. Si le
@@ -63,10 +63,20 @@
                 </div>
             </div>
         </div>
-        <div>
+        <form id="also-variable-message-etu" action="{{ route('store-demande-artiste') }}" method="post"
+            enctype="multipart/form-data">
+            @csrf
+            <input class="hidden" name="type" value="ren">
             <x-button.green.send class="mx-auto mt-6">Envoyer</x-button.green.send>
-            <p id="also-variable-message-etu" class="text-center mt-6">Vous serez notifiés lorsqu'un administrateur passera en revue votre profil.</p>
-        </div>
+            <p id="also-variable-message-etu" class="text-center mt-6">Vous serez notifiés lorsqu'un administrateur
+                passera en revue votre profil.</p>
+        </form>
+
+        <form id="also-variable-message-pro" class="hidden" action="{{ route('abonnement') }}" method="post"
+            enctype="multipart/form-data">
+            @csrf
+            <x-button.green.pay class="mx-auto mt-6">Payer</x-button.green.pay>
+        </form>
 
         <div class="fixed bottom-10 right-5">
             {{-- Erreur de l'ajout des photos --}}
@@ -122,6 +132,15 @@
         </div>
     @endif
 
+    @if ($errors->has('alreadySubscribed'))
+        <div class="w-fit">
+            @include('messages.messageError', [
+                'message' => $errors->first('alreadySubscribed'),
+                'titre' => 'Déjà abonné !',
+            ])
+        </div>
+    @endif
+
     {{-- Si toute autre erreur --}}
     @if ($errors->has('msg'))
         <div class="w-fit">
@@ -132,6 +151,7 @@
         </div>
     @endif
 </div>
-</form>
+</div>
+
 
 </x-app-layout>

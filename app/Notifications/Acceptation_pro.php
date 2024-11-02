@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class Acceptation_demande extends Notification
+class Acceptation_pro extends Notification
 {
     use Queueable;
 
@@ -38,7 +38,7 @@ class Acceptation_demande extends Notification
     {
         return (new MailMessage)
             ->subject('Terracium | Votre demande a été acceptée!')
-            ->markdown('mail.acceptation-demande', ['id' => $this->id_kiosque]);
+            ->markdown('mail.acceptation-pro', ['id' => $this->id_kiosque]);
     }
 
     /**
