@@ -29,7 +29,7 @@
                         <option value="" disabled selected hidden>Type d'usage
                         </option>
                         <option value="1">Alimentaire</option>
-                        <option value="0">Non-alimentaire</option>
+                        <option value="0">Non alimentaire</option>
                     </select>
                 </div>
             </form>
@@ -171,7 +171,7 @@
                                         <p class="textMoyen-dark font-bold">Compagnie:</p>
                                         @if ($transaction->id_etat == 3 || $transaction->id_etat == 4)
                                             <p class="textMoyen-dark text-nowrap text-ellipsis overflow-hidden">
-                                                {{ $transaction->compagnie_livraison->compagnie }} compagnie
+                                                {{ $transaction->compagnie_livraison->compagnie }}
                                             </p>
                                         @else
                                             <p class="textMoyen-dark text-nowrap text-ellipsis overflow-hidden">

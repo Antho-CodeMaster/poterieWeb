@@ -1,7 +1,7 @@
 <div x-cloak @open-delete-article-modal.window="openDeleteArticle = true;">
     {{-- Fond gris --}}
     <div x-show="openDeleteArticle" x-data="{ id: 0 }" @set-id.window = "id = $event.detail"
-        class="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
+        class="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-[100]">
 
         {{-- modal card --}}
         <div class="bg-white px-5 py-10 rounded-[12px] shadow-lg w-full max-w-[620px]">

@@ -89,9 +89,9 @@ export default {
 
     safelist: [
         'w-[100px]',
-        'h-[190px]',
+        'h-[230px]',
         'object-cover',
-        "border-[2px]",
+        "border-[4px]",
         "border-darkGrey",
         "rounded-[0.5rem]",
         {
