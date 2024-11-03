@@ -49,7 +49,7 @@
         </div>
 
         {{-- Le résumé/la facture  TODO: changer la couleur--}}
-        <div class="w-1/5 h-[50vh] bg-gray-200 rounded-xl sticky top-[10%] flex flex-col justify-between">
+        <div x-data class="w-1/5 h-[50vh] bg-gray-200 rounded-xl sticky top-[10%] flex flex-col justify-between">
             <div>
                 <div class="flex w-[95%] m-auto">
                     <p class="grow" id="nb">Sous total ( Articles) :</p>
@@ -72,18 +72,18 @@
 
             @if (Auth::check() && !$commande->transactions->isEmpty())
                 <form action="{{route('checkout')}}">
-                    <x-button.green.pay class="w-[80%] mx-auto mb-[5%] rounded-lg" @click="window.location.href='{{route('checkout')}}'" >Passer la commande</x-button.green.pay>
+                    <x-button.green.pay class="w-[80%] mx-auto mb-[5%] rounded-lg">Passer la commande</x-button.green.pay>
                 </form>
             @elseif ($commande->transactions->isEmpty())
                 <form action="{{route('decouverte')}}">
-                    <x-button.border.empty class="w-[80%] mx-auto mb-[5%] rounded-lg" @click="window.location.href='{{route('decouverte')}}'" > Remplir le panier</x-button.border.empty>
+                    <x-button.border.empty class="w-[80%] mx-auto mb-[5%] rounded-lg"> Remplir le panier</x-button.border.empty>
                 </form>
             @else
-                <x-button.border.empty type="button"  @click="$dispatch('open-login-modal')" class="w-[80%] mx-auto mb-[5%] rounded-lg" > Se connecter</x-button.border.empty>
+                <x-button.border.empty class="mx-auto mb-[5%] rounded-lg" @click="$dispatch('open-login-modal')">
+                     Se connecter
+                </x-button.border.empty>
+
             @endif
-
-
-
         </div>
 
     </div>
