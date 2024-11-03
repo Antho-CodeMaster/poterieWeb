@@ -140,7 +140,7 @@
                             </div>
 
                             {{-- Masqué, floutter, en vedette --}}
-                            <div class="w-[15%] m-sectionX flex-col flex gap-inputXXL">
+                            <div class="w-[15%] m-sectionX flex-col flex gap-inputXXL ">
                                 <div class="w-full flex items-center justify-between">
                                     <p class="textGrand-dark font-bold">Masqué</p>
                                     @if ($article->id_etat == 1)
@@ -157,12 +157,12 @@
                                 <div class="w-full flex items-center justify-between">
                                     <!-- En vedette -->
                                     <p class="textGrand-dark font-bold">En vedette</p>
-                                    @if ($article->is_en_vedette == 0)
+                                    @if ($article->is_en_vedette == 1)
                                         <span class="bg-darkGrey border-2 border-darkGrey p-2 rounded-[99px]">
 
                                         </span>
-                                    @elseif($article->is_en_vedette == 1)
-                                    <span class=" bg-darkGrey border-2 border-darkGrey p-2 rounded-[99px]">
+                                    @elseif($article->is_en_vedette == 0)
+                                    <span class=" border-2 border-darkGrey p-2 rounded-[99px]">
 
                                         </span>
                                     @endif
@@ -171,12 +171,12 @@
                                 <div class="w-full flex items-center justify-between">
                                     <!-- Sensible -->
                                     <p class="textGrand-dark font-bold">Sensible</p>
-                                    @if ($article->is_sensible == 0)
+                                    @if ($article->is_sensible == 1)
                                         <span class="bg-darkGrey border-2 border-darkGrey p-2 rounded-[99px]">
 
                                         </span>
-                                    @elseif($article->is_sensible == 1)
-                                    <span class=" bg-darkGrey border-2 border-darkGrey p-2 rounded-[99px]">
+                                    @elseif($article->is_sensible == 0)
+                                    <span class=" border-2 border-darkGrey p-2 rounded-[99px]">
 
                                         </span>
                                     @endif
