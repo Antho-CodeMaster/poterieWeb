@@ -12,11 +12,13 @@
                     @include('profile.partials.edit-payment-method-form')
                 </div>
             </div>
-            <div class="lg:col-span-2 p-4 sm:p-8 bg-beige hover:shadow-lg rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.cancel-subscription-form')
+            @if ($subbed == true)
+                <div class="lg:col-span-2 p-4 sm:p-8 bg-beige hover:shadow-lg rounded-lg">
+                    <div class="max-w-xl">
+                        @include('profile.partials.cancel-subscription-form')
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
         @if (Session::has('succes'))
             <div class="w-fit absolute right-2 bottom-10">

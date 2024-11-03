@@ -58,9 +58,14 @@ class ProfileController extends Controller
             Session::flash('succes', 'Vos informations de facturation ont bel et bien été enregistrées!');
         }
 
+        $art = Artiste::where('id_user', Auth::id())->first();
+        $subbed = false;
+        if($art != null)
+            $subbed = $art->subscribed();
 
         return view('profile.facturation', [
             'user' => $request->user(),
+            'subbed' => $subbed
         ]);
     }
 

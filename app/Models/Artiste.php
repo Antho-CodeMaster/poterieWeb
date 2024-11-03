@@ -36,4 +36,22 @@ class Artiste extends Model
     {
         return $this->hasMany(Article::class, 'id_artiste', 'id_artiste');
     }
+
+    public function subscribed(): bool
+    {
+        $usr = User::where("id", $this->id_user)->first();
+        if ($usr->stripe_id != null) {
+            \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+            $subscriptions = \Stripe\Subscription::all([
+                'customer' => $usr->stripe_id,
+                'status' => 'active',
+            ]);
+
+            foreach ($subscriptions->data as $subscription)
+                foreach ($subscription->items->data as $item)
+                    if ($item->price->product === env("SUBSCRIPTION_PRODUCT_ID"))
+                        return true;
+        }
+        return false;
+    }
 }
