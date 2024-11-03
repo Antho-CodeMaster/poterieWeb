@@ -23,6 +23,5 @@
         </form>
 
     </div>
-    @dump($intent)
 </div>
 </x-app-layout>
