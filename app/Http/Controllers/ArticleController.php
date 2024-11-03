@@ -62,6 +62,18 @@ class ArticleController extends Controller
     public function store(Request $request)
     {
         if ($request->routeIs('addArticle')) {
+            /* Vérifie si l'artiste est actif ou non */
+            $artiste = Artiste::with("reseaux", "articles")->where('id_artiste', $request->input("idArtiste"))->first();
+            if ($artiste->actif == 0) {
+                if (Auth::id() != $artiste->id_user) {
+                    session()->flash('errorInactif', 'L\'utilisateur n\'est plus artiste.');
+                    return redirect()->back();
+                }
+
+                session()->flash('errorInactif', 'Vous n\'est plus un artiste. Veuillez effectuer une nouvelle demande si vous voulez avoir accès à votre kiosque à nouveau.');
+                return redirect()->back();
+            }
+
             /* Validation des entrés */
             $validatedData = $request->validate([
                 "idArtiste" => "required",
@@ -113,13 +125,13 @@ class ArticleController extends Controller
                 "poidsArticle.min" => "Le poids de l'article doit être supérieur ou égal à 0.01.",
 
                 "typePiece.required" => "Le type de pièce est obligatoire.",
-                "typePiece.in" => "La valeur du type de pièce doit être soit 'Non-alimentaire' soit 'Alimentaire'.",
+                "typePiece.in" => "La valeur du type de pièce doit être soit 'Non alimentaire' soit 'Alimentaire'.",
 
                 "quantiteArticle.required" => "La quantité de l'article est obligatoire.",
                 "quantiteArticle.integer" => "La quantité de l'article doit être un nombre entier.",
                 "quantiteArticle.min" => "La quantité de l'article doit être au moins 1.",
 
-                "motClesArticle.regex" => "Les mots clés de l'article doivent commencer par '#' et contenir aucun espacement.",
+                "motClesArticle.regex" => "Les mots clés de l'article doivent commencer par '#' et ne contenir aucun espacement.",
 
                 'photo1.mimes' => 'La photo 1 doit être au format JPEG, PNG ou JPG.',
                 'photo1.required' => 'Il doit y avoir au moins 1 photo afin d\'ajouter un nouvel article',
@@ -221,7 +233,7 @@ class ArticleController extends Controller
                 "description" => $validatedData["signaleDescription"]
             ]);
 
-            /* Stockage en BD du nouvelle article */
+            /* Stockage en BD du nouvel article */
             if ($newsignalement->save()) {
                 session()->flash('succesSignalement', 'Le signalement à été envoyé');
             } else {
@@ -303,6 +315,19 @@ class ArticleController extends Controller
 
             return redirect()->route('kiosque', ['idUser' => $idUser]);
         } elseif ($request->routeIs('modifArticle')) {
+
+            /* Vérifie si l'artiste est actif ou non */
+            $artiste = Artiste::with("reseaux", "articles")->where('id_artiste', $request->input("idArtiste"))->first();
+            if ($artiste->actif == 0) {
+                if (Auth::id() != $artiste->id_user) {
+                    session()->flash('errorInactif', 'L\'utilisateur n\'est plus artiste.');
+                    return redirect()->back();
+                }
+
+                session()->flash('errorInactif', 'Vous n\'est plus un artiste. Veuillez effectuer une nouvelle demande si vous voulez avoir accès à votre kiosque à nouveau.');
+                return redirect()->back();
+            }
+
             /* Validation des entrés */
             $validatedData = $request->validate([
                 "idArtiste" => "required",

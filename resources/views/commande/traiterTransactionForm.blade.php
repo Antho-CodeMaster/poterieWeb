@@ -93,13 +93,13 @@
                             <option value="" disabled selected hidden>Sélectionner une compagnie de livraison
                             </option>
                             @foreach ($compagnies as $compagnie)
-                                <option value="{{$compagnie->id_compagnie}}">{{$compagnie->compagnie}}</option>
+                                <option value="{{ $compagnie->id_compagnie }}">{{ $compagnie->compagnie }}</option>
                             @endforeach
                         </select>
                     </div>
 
                     {{-- Input du code de référence --}}
-                    <div class="grid mb-4" >
+                    <div class="grid mb-4">
                         <div class="flex items-center justify-between col-span-4">
                             <h2 class="textGrand-dark">Numéro de tracking</h2>
                             <x-tooltip
@@ -162,7 +162,7 @@
                         ])
                     @endif
 
-                    {{-- Erreur de l'ajout des photos --}}
+                    {{-- Erreur sur la compagnie de livraison --}}
                     @if (Session::has('erreurCompagnieLivraison'))
                         @include('messages.messageFail', [
                             'message' => Session::get('erreurCompagnieLivraison'),
@@ -170,7 +170,7 @@
                         ])
                     @endif
 
-                    {{-- Erreur de l'ajout des photos --}}
+                    {{-- Erreur de l'état de transaction --}}
                     @if (Session::has('erreurEtatTransaction'))
                         @include('messages.messageFail', [
                             'message' => Session::get('erreurEtatTransaction'),
@@ -178,13 +178,23 @@
                         ])
                     @endif
 
-                         {{-- Erreur de l'ajout des photos --}}
-                         @if (Session::has('erreurDateLivraison'))
-                         @include('messages.messageFail', [
-                             'message' => Session::get('erreurEtatTransaction'),
-                             'titre' => 'Status de transaction',
-                         ])
-                     @endif
+                    {{-- Erreur de la date de livraison --}}
+                    @if (Session::has('erreurDateLivraison'))
+                        @include('messages.messageFail', [
+                            'message' => Session::get('erreurEtatTransaction'),
+                            'titre' => 'Status de transaction',
+                        ])
+                    @endif
+
+                    {{-- Artiste inactif --}}
+                    @if (Session::has('errorInactif'))
+                        <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1" role="alert">
+                            @include('messages.messageFail', [
+                                'message' => Session::get('errorInactif'),
+                                'titre' => 'Artiste pas trouvée',
+                            ])
+                        </div>
+                    @endif
 
                     {{-- Erreur de photos --}}
                     @for ($i = 1; $i <= 3; $i++)
@@ -198,17 +208,17 @@
 
                     @if ($errors->has('compagnieLivraison'))
                         @include('messages.messageError', [
-                            'message' => $errors->first("compagnieLivraison"),
+                            'message' => $errors->first('compagnieLivraison'),
                             'titre' => "Photo $i",
                         ])
                     @endif
 
                     @if ($errors->has('dateLivraison'))
-                    @include('messages.messageError', [
-                        'message' => $errors->first("dateLivraison"),
-                        'titre' => "Photo $i",
-                    ])
-                @endif
+                        @include('messages.messageError', [
+                            'message' => $errors->first('dateLivraison'),
+                            'titre' => "Photo $i",
+                        ])
+                    @endif
                 </div>
             </div>
         </div>

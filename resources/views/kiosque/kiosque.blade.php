@@ -291,6 +291,17 @@
             ])
         </div>
     @endif
+
+    {{-- Artiste inactif --}}
+    @if (Session::has('errorInactif'))
+        <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1" role="alert">
+            @include('messages.messageFail', [
+                'message' => Session::get('errorInactif'),
+                'titre' => 'Artiste pas trouvée',
+            ])
+        </div>
+    @endif
+
 </x-app-layout>
 
 {{-- TODO: La partie responsive --}}

@@ -24,7 +24,8 @@
                             </x-tooltip>
                         </div>
                         <p class="textMoyen-dark text-wrap w-full mb-1 text-justify">Assurez-vous que les photos soient
-                            prises dans un envirronnement éclairé. L'article doit se retrouver à l'intérieur et au centre du cadre.</p>
+                            prises dans un envirronnement éclairé. L'article doit se retrouver à l'intérieur et au
+                            centre du cadre.</p>
                         <div class="flex gap-input">
                             @for ($i = 1; $i <= 5; $i++)
                                 {{-- Image preview --}}
@@ -282,6 +283,16 @@
                             'message' => Session::get('erreurPhotos'),
                             'titre' => 'Photos',
                         ])
+                    @endif
+
+                    {{-- Artiste inactif --}}
+                    @if (Session::has('errorInactif'))
+                        <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1" role="alert">
+                            @include('messages.messageFail', [
+                                'message' => Session::get('errorInactif'),
+                                'titre' => 'Artiste pas trouvée',
+                            ])
+                        </div>
                     @endif
 
                     {{-- Erreur de photos --}}
