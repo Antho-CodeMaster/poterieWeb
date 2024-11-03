@@ -40,14 +40,25 @@ class ArtisteController extends Controller
      */
     public function show($idUser)
     {
+        /* 1. Aller chercher l'artiste en fonction de l'idUser */
         $artiste = Artiste::with("reseaux", "articles")->where('id_user', $idUser)->first();
-
         if (!$artiste) {
             // Gérer le cas où l'artiste n'est pas trouvé
             return redirect()->back()->with('error', 'Artiste non trouvé.');
         }
 
-        /* Va chercher les reseaux et articles de l'artiste pour alléger le code dans la vue */
+        /* 2. Vérifie si l'utilisateur est un artiste actif */
+        if ($artiste->actif == 0) {
+            if (Auth::id() != $artiste->id_user) {
+                session()->flash('errorInactif', 'L\'utilisateur n\'est plus artiste.');
+                return redirect()->back();
+            }
+
+            session()->flash('errorInactif', 'Vous n\'est plus un artiste. Veuillez effectuer une nouvelle demande si vous voulez avoir accès à votre kiosque à nouveau.');
+            return redirect()->back();
+        }
+
+        /* 3. Va chercher les reseaux et articles de l'artiste */
         $reseaux = $artiste->reseaux;
 
         /* Filtre les articles en fonctions de qui visite la page */
@@ -62,14 +73,23 @@ class ArtisteController extends Controller
             }
         }
 
+
+        /* 4. Vérifie si l'artiste a des articles en vedette */
+        $aDesArticlesVedette = collect($articles)->contains('is_en_vedette', true);
+
+        /* 5. Vérifie si l'artiste a des articles */
+        $aDesArticles = collect($articles)->isNotEmpty();
+
         // Va ouvrir un modal de bienvenue si c'est le premier accès de l'usager.
-        if(request()->has('firstaccess'))
+        if (request()->has('firstaccess'))
             Session::flash('firstaccess');
 
         return view('kiosque/kiosque', [
             'artiste' => $artiste,
             'reseaux' => $reseaux,
             'articles' => $articles,
+            "enVedette" => $aDesArticlesVedette,
+            "hasArticle" => $aDesArticles
         ]);
     }
 
@@ -199,7 +219,8 @@ class ArtisteController extends Controller
     }
 
     // TODO: DO THE DO
-    public function cancel(Request $request){
+    public function cancel(Request $request)
+    {
 
         $request->user()->subscription('pro')->cancel();
 

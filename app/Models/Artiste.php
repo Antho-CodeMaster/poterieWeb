@@ -23,15 +23,17 @@ class Artiste extends Model
         'couleur_banniere'
     ];
 
-    public function reseaux() {
+    public function reseaux()
+    {
         return $this->belongsToMany(Reseau::class, "reseaux_artistes", 'id_artiste', 'id_reseau')->withPivot('username');
     }
-    public function user() : BelongsTo {
-        return $this->belongsTo(User::class, 'id_user' , 'id');
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'id_user', 'id');
     }
 
-    public function articles() {
+    public function articles()
+    {
         return $this->hasMany(Article::class, 'id_artiste', 'id_artiste');
     }
 }
-

@@ -6,6 +6,7 @@ use App\Models\Artiste;
 use App\Models\Article;
 use App\Models\Transaction;
 use App\Models\Commande;
+use App\Models\Compagnie_livraison;
 use App\Models\Photo_livraison;
 use App\Models\Photo_oeuvre;
 use Exception;
@@ -118,8 +119,13 @@ class TransactionController extends Controller
      */
     public function edit($idTransaction)
     {
+        /* 1. Récupérer la transaction concernée */
         $transaction = Transaction::findOrFail($idTransaction);
-        return view("commande.traiterTransactionForm")->with("transaction", $transaction);
+
+        /* 2. Envoyer la liste de compagnie de livraison */
+        $compagnies = Compagnie_livraison::all();
+
+        return view("commande.traiterTransactionForm")->with("transaction", $transaction)->with("compagnies", $compagnies);
     }
 
 
@@ -135,22 +141,22 @@ class TransactionController extends Controller
                 /* 1. Récupérer et valider les données du form */
                 $validatedData = $request->validate([
                     "idTransaction" => "required",
+                    "dateLivraison" => "required",
                     "compagnieLivraison" => "required",
                     "codeRefLivraison" => "required",
                     "photo1" => "required|mimes:jpeg,png,jpg",
                     "photo2" => "mimes:jpeg,png,jpg",
-                    "photo3" => "mimes:jpeg,png,jpg",
                 ], [
                     "compagnieLivraison.required" => "Le numéro de tracking de la livraison est obligatoire.",
                     "codeRefLivraison.required" => "Le numéro de tracking de la livraison est obligatoire.",
+                    "dateLivraison.required" => "La date de livraison prévue est obligatoire.",
                     'photo1.mimes' => 'La photo 1 doit être au format JPEG, PNG ou JPG.',
                     'photo1.required' => 'Il doit y avoir au moins 1 photo de livraison afin de traiter une transaction correctement',
                     'photo2.mimes' => 'La photo 2 doit être au format JPEG, PNG ou JPG.',
-                    'photo3.mimes' => 'La photo 3 doit être au format JPEG, PNG ou JPG.',
                 ]);
 
                 /* Gestion des photos de livraisons */
-                for ($i = 1; $i <= 3; $i++) {
+                for ($i = 1; $i <= 2; $i++) {
                     if ($request->hasFile('photo' . $i)) {
                         $file = $request->file('photo' . $i);
 
@@ -203,6 +209,15 @@ class TransactionController extends Controller
                     session()->flash('erreurCompagnieLivraison', 'Un problème lors de l\'ajout du numéro de suivis s\'est produit');
                     return back();
                 }
+
+                /* Gestion de la date de livraison de livraison */
+                if (!$transaction->update([
+                    'date_reception_prevue' => $validatedData['dateLivraison'],
+                ])) {
+                    session()->flash('erreurDateLivraison', 'Un problème lors de l\'ajout de la date de livraison s\'est produit');
+                    return back();
+                }
+
                 session()->flash('succesTransaction', 'La transaction a bien été traitée');
                 return redirect()->route('mesTransactions', ['idUser' => Auth::user()->id]);
             }
@@ -212,53 +227,51 @@ class TransactionController extends Controller
     /**
      * Update de la quantite
      */
-    public function updateQt(Request $request){
+    public function updateQt(Request $request)
+    {
         $panierData = $request->input('cart')->json_decode();
         $qte = $request->input('quantite');
 
 
-        if(Auth::check()){
-            try{
+        if (Auth::check()) {
+            try {
 
-            foreach($panierData as $item){
-                $transaction = Transaction::first($item['Transaction']);
+                foreach ($panierData as $item) {
+                    $transaction = Transaction::first($item['Transaction']);
 
-                if($qte > $transaction->article->quantite_disponible || $qte < 0){
-                    throw new Exception('Failed to update, Quantity out of bound');
-                }
-
-                $transaction->update([
-                    'quantite' => $qte
-                ]);
-            }
-            }catch(Exception $e){
-                return response(400)->json()->withException($e);
-            }
-            return response()->json(['message'=>'Success, quantity data updated to '. $transaction->quantite]);
-        }
-        else{
-
-            $panier = json_decode($request->cookie('panier',''),true);
-
-            foreach($panierData as $item){
-                try{
-                    if($qte > Article::firts($item['Article'])->quantite_disponible || $qte < 0){
+                    if ($qte > $transaction->article->quantite_disponible || $qte < 0) {
                         throw new Exception('Failed to update, Quantity out of bound');
                     }
 
-                $panier[$item['Article']]['quantite'] = $item['quantite'];
+                    $transaction->update([
+                        'quantite' => $qte
+                    ]);
+                }
+            } catch (Exception $e) {
+                return response(400)->json()->withException($e);
+            }
+            return response()->json(['message' => 'Success, quantity data updated to ' . $transaction->quantite]);
+        } else {
 
-                }catch(Exception $e){
+            $panier = json_decode($request->cookie('panier', ''), true);
+
+            foreach ($panierData as $item) {
+                try {
+                    if ($qte > Article::firts($item['Article'])->quantite_disponible || $qte < 0) {
+                        throw new Exception('Failed to update, Quantity out of bound');
+                    }
+
+                    $panier[$item['Article']]['quantite'] = $item['quantite'];
+                } catch (Exception $e) {
                     return response(400)->json()->withException($e);
                 }
             }
 
-            $biscuit = cookie('panier',json_encode($panier), 60*24*30);
+            $biscuit = cookie('panier', json_encode($panier), 60 * 24 * 30);
 
-            return response()->json(['message'=>'Success, quantity data updated'])->withCookie($biscuit);
-
+            return response()->json(['message' => 'Success, quantity data updated'])->withCookie($biscuit);
+        }
     }
-}
 
     /**
      * Remove the specified resource from storage.
