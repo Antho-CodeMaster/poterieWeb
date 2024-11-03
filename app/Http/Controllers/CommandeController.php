@@ -224,14 +224,13 @@ class CommandeController extends Controller
         $noCivique = $matches[1] ?? null;
         $rue = $matches[2] ?? $addressLine;
         $codePostal = str_replace(' ', '', $paymentIntent->shipping->address->postal_code);
-
-        $ville = Ville::firstOrCreate(['ville'=>$paymentIntent->shipping->address->city]);
+        $ville = Ville::firstOrCreate(['ville'=> $paymentIntent->shipping->address->city]);
 
         $commande->update([
             'is_panier' => false,
             'no_civique' => $noCivique,
             'rue' => $rue,
-            'ville' => $ville->id_ville ,
+            'id_ville' => $ville->id_ville ,
             'code_postal' => $codePostal,
             'payment_intent_id' => $paymentIntent->id,
             'date' => now()
