@@ -35,13 +35,13 @@
                         {{-- Input des photos --}}
                         <div class="flex gap-input">
 
-                            @for ($i = 1; $i <= 3; $i++)
+                            @for ($i = 1; $i <= 2; $i++)
                                 {{-- Image preview --}}
                                 <input type="file" name="photo{{ $i }}" id="photo{{ $i }}"
                                     accept="image/png, image/jpg, image/jpeg" class="hidden">
 
                                 <!-- Conteneur pour l'aperçu de l'image et le bouton de suppression -->
-                                <div class="relative flex items-center w-[200px] h-[200px]"
+                                <div class="relative flex items-center w-[250px] h-[250px]"
                                     id="previewContainer{{ $i }}">
                                     <!-- Par défaut, le bouton SVG pour déclencher l'upload -->
                                     <button type="button" id="boutonInput{{ $i }}"
@@ -62,7 +62,7 @@
 
                                     <!-- Bouton de suppression -->
                                     <button type="button" id="suppressionBtn{{ $i }}"
-                                        class="absolute top-[2px] right-0 hover:scale-125 transition-all duration-[0.2s]">
+                                        class="absolute top-[7px] right-0 hover:scale-125 transition-all duration-[0.2s]">
                                         <svg class="w-10 h-10" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                             width="24" height="24" fill="none" viewBox="0 0 24 24">
                                             <path stroke="#e60000" stroke-linecap="round" stroke-linejoin="round"
@@ -92,14 +92,14 @@
                             required>
                             <option value="" disabled selected hidden>Sélectionner une compagnie de livraison
                             </option>
-                            <option value="1">Purolator</option>
-                            <option value="2">Postes Canada</option>
-                            <option value="3">Fedex</option>
+                            @foreach ($compagnies as $compagnie)
+                                <option value="{{$compagnie->id_compagnie}}">{{$compagnie->compagnie}}</option>
+                            @endforeach
                         </select>
                     </div>
 
                     {{-- Input du code de référence --}}
-                    <div class="grid">
+                    <div class="grid mb-4" >
                         <div class="flex items-center justify-between col-span-4">
                             <h2 class="textGrand-dark">Numéro de tracking</h2>
                             <x-tooltip
@@ -114,6 +114,24 @@
                             class="col-span-4 {{ $errors->has('codeRefLivraison') ? 'color-borderError border-[2px]' : '' }}"
                             type="text" name="codeRefLivraison" required
                             placeholder="Numéro de suivie de la livraison" value="{{ old('codeRefLivraison') }}" />
+                    </div>
+
+                    {{-- Input de la date de livraison prévue --}}
+                    <div class="grid">
+                        <div class="flex items-center justify-between col-span-4">
+                            <h2 class="textGrand-dark">Date de livraison prévue</h2>
+                            <x-tooltip
+                                text="<ul class='list-disc ml-5'>
+                                <li>L'entré est obligatoire</li>
+                              </ul>"
+                                position="bottom" id="1">
+                                <p class="text-[200%]">&#9432;</p>
+                            </x-tooltip>
+                        </div>
+                        <x-text-input id="dateLivraison"
+                            class="col-span-4 {{ $errors->has('dateLivraison') ? 'color-borderError border-[2px]' : '' }}"
+                            type="date" name="dateLivraison" required placeholder="Date la livraison prévue"
+                            value="{{ old('dateLivraison') }}" min="{{ date('Y-m-d') }}" />
                     </div>
 
                     {{-- Input caché de l'id de transaction --}}
@@ -160,6 +178,14 @@
                         ])
                     @endif
 
+                         {{-- Erreur de l'ajout des photos --}}
+                         @if (Session::has('erreurDateLivraison'))
+                         @include('messages.messageFail', [
+                             'message' => Session::get('erreurEtatTransaction'),
+                             'titre' => 'Status de transaction',
+                         ])
+                     @endif
+
                     {{-- Erreur de photos --}}
                     @for ($i = 1; $i <= 3; $i++)
                         @if ($errors->has("photo{$i}"))
@@ -172,10 +198,17 @@
 
                     @if ($errors->has('compagnieLivraison'))
                         @include('messages.messageError', [
-                            'message' => $errors->first("photo{$i}"),
+                            'message' => $errors->first("compagnieLivraison"),
                             'titre' => "Photo $i",
                         ])
                     @endif
+
+                    @if ($errors->has('dateLivraison'))
+                    @include('messages.messageError', [
+                        'message' => $errors->first("dateLivraison"),
+                        'titre' => "Photo $i",
+                    ])
+                @endif
                 </div>
             </div>
         </div>

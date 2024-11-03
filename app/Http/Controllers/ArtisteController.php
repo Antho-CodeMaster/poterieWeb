@@ -61,10 +61,18 @@ class ArtisteController extends Controller
             }
         }
 
+        /* Vérifie si l'artiste a des articles en vedette */
+        $aDesArticlesVedette = collect($articles)->contains('is_en_vedette', true);
+
+        /* Vérifie si l'artiste a des articles */
+        $aDesArticles = collect($articles)->isNotEmpty();
+
         return view('kiosque/kiosque', [
             'artiste' => $artiste,
             'reseaux' => $reseaux,
             'articles' => $articles,
+            "enVedette" => $aDesArticlesVedette,
+            "hasArticle" => $aDesArticles
         ]);
     }
 
@@ -194,7 +202,8 @@ class ArtisteController extends Controller
     }
 
     // TODO: DO THE DO
-    public function cancel(Request $request){
+    public function cancel(Request $request)
+    {
 
         $request->user()->subscription('pro')->cancel();
 

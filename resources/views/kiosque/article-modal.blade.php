@@ -4,15 +4,14 @@
         @set-article.window="article = JSON.parse($event.detail); console.log('Modal ouvert'); currentIndex = 0;"
         @set-photos.window="photos = JSON.parse($event.detail)"
         @set-mots-cles.window="motsCles = JSON.parse($event.detail); console.log('Mots-clés mis à jour : ', this.motsCles);"
-        class="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
+        class="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-[101]">
 
         {{-- modal card --}}
         <div class="bg-white p-sectionX p-sectionY rounded-[12px] shadow-lg w-full max-w-[1080px]">
 
             <section class="relative flex w-full h-[50px] items-center m-sectionY">
                 <!-- Titre centré -->
-                <p class="titre2-dark w-full text-center text-ellipsis text-wrap px-7"
-                    x-text="article.nom"></p>
+                <p class="titre2-dark w-full text-center text-ellipsis text-wrap px-7" x-text="article.nom"></p>
 
                 <!-- Bouton de fermeture -->
                 <button @click="openArticleModal = false" class="absolute right-0 hover:scale-110 duration-200">
@@ -94,13 +93,15 @@
                         <p class="titre3-dark w-full">Détails</p>
                         <div>
                             {{-- Poids --}}
-                            <div class="flex gap-1 items-baseline">
-                                <p class=" articleGrand-dark">Poids:</p>
-                                <div class="flex">
-                                    <p class=" articlePetit-dark" x-text="article.poids"></p>
-                                    <p class=" articlePetit-dark">g</p>
+                            <template x-if="article.poids != null">
+                                <div class="flex gap-1 items-baseline">
+                                    <p class=" articleGrand-dark">Poids:</p>
+                                    <div class="flex">
+                                        <p class=" articlePetit-dark" x-text="article.poids"></p>
+                                        <p class=" articlePetit-dark">g</p>
+                                    </div>
                                 </div>
-                            </div>
+                            </template>
 
                             {{-- Longueur --}}
                             <div class="flex gap-1 items-baseline">
@@ -162,30 +163,30 @@
                         </div>
 
                         {{-- Types --}}
-                        <div class="flex flex-wrap gap-1 w-full items-baseline">
-                            <p class="titre3-dark mr-1 ">Type de pièce :</p>
+                        <div class="flex flex-wrap m-titreY w-full items-baseline">
+                            <p class="titre3-dark mr-1 ">Pièce :</p>
                             <template x-if="article.is_unique == 1">
-                                <p class="textGrand-dark bg-beigeFoncé rounded-md p-2">Unique</p>
+                                <p class="titre3-dark">Unique</p>
                             </template>
 
                             <template x-if="article.is_unique == 0">
-                                <p class="textGrand-dark bg-beigeFoncé rounded-md p-2">En série</p>
+                                <p class="titre3-dark">En série</p>
                             </template>
                         </div>
-                        <div class="flex flex-wrap w-full gap-1 items-baseline">
-                            <p class="titre3-dark mr-1 ">Type d'usage :</p>
+
+                        <div class="w-full m-titreY">
                             <template x-if="article.is_alimentaire == 1">
-                                <p class="textGrand-dark bg-beigeFoncé rounded-md p-2">Alimentaire</p>
+                                <p class="titre3-dark">Alimentaire</p>
                             </template>
 
                             <template x-if="article.is_alimentaire == 0">
-                                <p class="textGrand-dark bg-beigeFoncé rounded-md p-2">Non-Alimentaire</p>
+                                <p class="titre3-dark">Non-Alimentaire</p>
                             </template>
                         </div>
 
                         {{-- Quantite --}}
                         <div class="flex flex-wrap w-full gap-1 m-titreY items-baseline">
-                            <p class="titre3-dark ">Quantite</p>
+                            <p class="titre3-dark mr-1">Quantite :</p>
                             <p class=" articleGrand-dark bg-beigeFoncé rounded-md py-[1px] px-[14px]"
                                 x-text="article.quantite_disponible"></p>
                         </div>
@@ -226,11 +227,12 @@
                         </template>
 
                         {{-- Bouton de signalement --}}
-                        <p class="cursor-pointer textFooter-dark hover:text-blue-500 underline" @click=" $dispatch('open-signal-article-modal'); $dispatch('set-article-signal', JSON.stringify(article))">
+                        <p class="cursor-pointer textFooter-dark hover:text-blue-500 underline"
+                            @click=" $dispatch('open-signal-article-modal'); $dispatch('set-article-signal', JSON.stringify(article))">
                             Signalé cet article
                         </p>
 
-                        @include("kiosque.article-signal-modal")
+                        @include('kiosque.article-signal-modal')
                     </div>
                 </div>
             </section>

@@ -24,6 +24,9 @@
                                 <p class="text-[200%]">&#9432;</p>
                             </x-tooltip>
                         </div>
+                        <p class="textMoyen-dark text-wrap w-full mb-1 text-justify">Assurez-vous que les photos soient
+                            prises dans un envirronnement éclairé. L'article doit se retrouver à l'intérieur et au
+                            centre du cadre.</p>
                         <div class="flex gap-input ">
                             @for ($i = 1; $i <= 5; $i++)
                                 <div id="biggerContainer">
@@ -174,7 +177,7 @@
                             {{-- Poids --}}
                             <x-text-input id="poidsArticle"
                                 class="col-span-1 {{ $errors->has('poidsArticle') ? 'color-borderError border-[2px]' : '' }}"
-                                type="number" name="poidsArticle" placeholder="Poids (g)" min="0" required
+                                type="number" name="poidsArticle" placeholder="Poids (g)" min="0"
                                 value="{{ $article->poids }}" step="0.01" />
                         </div>
                     </div>

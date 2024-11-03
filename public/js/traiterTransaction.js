@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     // Créer une balise img et remplacer le SVG
                     var img = document.createElement('img');
                     img.src = e.target.result;
-                    img.classList.add('w-[200px]', 'h-[190px]', 'object-cover', "border-[2px]", "border-darkGrey", "rounded-[0.5rem]");
+                    img.classList.add('w-[250px]', 'h-[230px]', 'object-cover', "border-[4px]", "border-darkGrey", "rounded-[0.5rem]");
 
                     // Remplacer le SVG par l'image
                     previewContainer.innerHTML = ''; // Vider le conteneur du SVG
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Stocker chaque bouton SVG original
         let boutonsInputClone = [];
-        for (let i = 1; i <= 3; i++) {
+        for (let i = 1; i <= 2; i++) {
             boutonsInputClone[i] = document.getElementById('boutonInput' + i).cloneNode(true);
 
             // Ajouter un gestionnaire d'événements 'change' pour chaque input file généré dans la boucle

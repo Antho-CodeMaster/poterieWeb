@@ -23,6 +23,8 @@
                                 <p class="text-[200%]">&#9432;</p>
                             </x-tooltip>
                         </div>
+                        <p class="textMoyen-dark text-wrap w-full mb-1 text-justify">Assurez-vous que les photos soient
+                            prises dans un envirronnement éclairé. L'article doit se retrouver à l'intérieur et au centre du cadre.</p>
                         <div class="flex gap-input">
                             @for ($i = 1; $i <= 5; $i++)
                                 {{-- Image preview --}}
@@ -33,7 +35,7 @@
                                 <div class="relative flex items-center w-[100px] h-[100px]"
                                     id="previewContainer{{ $i }}">
                                     <!-- Par défaut, le bouton SVG pour déclencher l'upload -->
-                                    <button type="button" id="boutonInput{{$i}}"
+                                    <button type="button" id="boutonInput{{ $i }}"
                                         onclick="document.getElementById('photo{{ $i }}').click()"
                                         class="w-full h-full">
                                         <svg id="svg{{ $i }}" class="w-full h-full" viewBox="0 0 293 276"
@@ -50,13 +52,12 @@
                                     </button>
 
                                     <!-- Bouton de suppression -->
-                                    <button type="button" id="suppressionBtn{{$i}}"
+                                    <button type="button" id="suppressionBtn{{ $i }}"
                                         class="absolute top-[2px] right-0 hover:scale-125 transition-all duration-[0.2s]">
-                                        <svg class="w-7 h-7" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            fill="none" viewBox="0 0 24 24">
-                                            <path stroke="#e60000"  stroke-linecap="round" stroke-linejoin="round"
-                                                stroke-width="3" d="M6 18 17.94 6M18 18 6.06 6"  />
+                                        <svg class="w-7 h-7" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="#e60000" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="3" d="M6 18 17.94 6M18 18 6.06 6" />
                                         </svg>
                                     </button>
                                 </div>
@@ -140,7 +141,7 @@
                             {{-- Poids --}}
                             <x-text-input id="poidsArticle"
                                 class="col-span-1 {{ $errors->has('poidsArticle') ? 'color-borderError border-[2px]' : '' }}"
-                                type="number" name="poidsArticle" placeholder="Poids (g)" min="0.1" required
+                                type="number" name="poidsArticle" placeholder="Poids (g)" min="0.1"
                                 value="{{ old('poidsArticle') }}" step="0.01" />
                         </div>
                     </div>

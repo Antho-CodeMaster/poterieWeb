@@ -75,7 +75,7 @@ class ArticleController extends Controller
                 "hauteurArticle" => "required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0.01",
                 "largeurArticle" => "required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0.01",
                 "profondeurArticle" => "required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0.01",
-                "poidsArticle" => "required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0.01",
+                "poidsArticle" => "nullable|regex:/^\d+(\.\d{1,2})?$/",
                 "typePiece" => "required|in:0,1",
                 "quantiteArticle" => "required|integer|min:1",
                 "motClesArticle" => "nullable|regex:/^#[a-zA-ZÀ-ÿ0-9]+(#[a-zA-ZÀ-ÿ0-9]+)*$/",
@@ -109,8 +109,6 @@ class ArticleController extends Controller
                 "profondeurArticle.regex" => "La profondeur de l'article doit être un nombre valide avec au maximum deux décimales.",
                 "profondeurArticle.min" => "La profondeur de l'article doit être supérieure ou égale à 0.01.",
 
-                "poidsArticle.required" => "Le poids de l'article est obligatoire.",
-                "poidsArticle.numeric" => "Le poids de l'article doit être un nombre.",
                 "poidsArticle.regex" => "Le poids de l'article doit être un nombre valide avec au maximum deux décimales.",
                 "poidsArticle.min" => "Le poids de l'article doit être supérieur ou égal à 0.01.",
 
@@ -206,7 +204,6 @@ class ArticleController extends Controller
             $idUser = Auth::user()->id;
 
             return redirect()->route('addArticleForm', ['idUser' => $idUser]);
-
         } elseif ($request->routeIs('signaleArticle')) { /* Fonction pour ajouter un signalement */
             /* Validation des entrées */
             $validatedData = $request->validate([
@@ -319,7 +316,7 @@ class ArticleController extends Controller
                 "hauteurArticle" => "required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0.01",
                 "largeurArticle" => "required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0.01",
                 "profondeurArticle" => "required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0.01",
-                "poidsArticle" => "required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0.01",
+                "poidsArticle" => "nullable|regex:/^\d+(\.\d{1,2})?$/",
                 "typePiece" => "required|in:0,1",
                 "quantiteArticle" => "required|integer|min:1",
                 "motClesArticle" => "nullable|regex:/^#[a-zA-ZÀ-ÿ0-9]+(#[a-zA-ZÀ-ÿ0-9]+)*$/",
@@ -353,10 +350,7 @@ class ArticleController extends Controller
                 "profondeurArticle.regex" => "La profondeur de l'article doit être un nombre valide avec au maximum deux décimales.",
                 "profondeurArticle.min" => "La profondeur de l'article doit être supérieure ou égale à 0.01.",
 
-                "poidsArticle.required" => "Le poids de l'article est obligatoire.",
-                "poidsArticle.numeric" => "Le poids de l'article doit être un nombre.",
                 "poidsArticle.regex" => "Le poids de l'article doit être un nombre valide avec au maximum deux décimales.",
-                "poidsArticle.min" => "Le poids de l'article doit être supérieur ou égal à 0.01.",
 
                 "typePiece.required" => "Le type de pièce est obligatoire.",
                 "typePiece.in" => "La valeur du type de pièce doit être soit 'Non-alimentaire' soit 'Alimentaire'.",
