@@ -78,6 +78,7 @@
             @include('kiosque.carroussel')
         @else
             @if (Auth::id() == $artiste->id_user)
+                <h2 class="titre2-dark mx-[16px] m-titreY select-none">En vedette</h2>
                 <div class="bg-beige p-sectionY">
                     <p class=" textGrand-dark mx-[16px] select-none font-bold">Pour le moment vous n'avez aucun article
                         en vedette.

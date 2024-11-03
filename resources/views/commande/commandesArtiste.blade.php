@@ -29,7 +29,7 @@
                         <option value="" disabled selected hidden>Type d'usage
                         </option>
                         <option value="1">Alimentaire</option>
-                        <option value="0">Non-alimentaire</option>
+                        <option value="0">Non alimentaire</option>
                     </select>
                 </div>
             </form>

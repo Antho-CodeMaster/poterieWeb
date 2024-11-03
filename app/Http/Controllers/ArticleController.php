@@ -235,7 +235,7 @@ class ArticleController extends Controller
 
             /* Stockage en BD du nouvel article */
             if ($newsignalement->save()) {
-                session()->flash('succesSignalement', 'Le signalement à été envoyé');
+                session()->flash('succesSignalement', 'Le signalement a été envoyé');
             } else {
                 session()->flash('echecSignalement', 'Un problème lors du signalement de l\'article s\'est produit.');
             }

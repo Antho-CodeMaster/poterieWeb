@@ -13,18 +13,18 @@
                     {{-- Téléversement des photos --}}
                     <div class="grid m-sectionFormY">
                         <div class="flex items-center justify-between">
-                            <h2 class="textGrand-dark">Téléversez les photos de l'article</h2>
+                            <h2 class="textGrand-dark">Téléversement des photos de l'article</h2>
                             <x-tooltip
                                 text="<ul class='list-disc ml-5'>
-                                        <li>Les fichiers téléversés ne peuvent être que de format JPEG, JPG ou PNG</li>
-                                        <li>La photo ne doit pas avoir une résolution dépassant 3840 x 2160.</li>
+                                        <li>Les fichiers téléversés doivent être au format JPEG, JPG ou PNG</li>
+                                        <li>La photo ne doit pas dépasser 2MB.</li>
                                       </ul>"
                                 position="bottom" id="1">
                                 <p class="text-[200%]">&#9432;</p>
                             </x-tooltip>
                         </div>
                         <p class="textMoyen-dark text-wrap w-full mb-1 text-justify">Assurez-vous que les photos soient
-                            prises dans un envirronnement éclairé. L'article doit se retrouver à l'intérieur et au
+                            prises dans un environnement éclairé. L'article doit se retrouver à l'intérieur et au
                             centre du cadre.</p>
                         <div class="flex gap-input">
                             @for ($i = 1; $i <= 5; $i++)
@@ -164,17 +164,17 @@
                             <!-- IsAlimentaire -->
                             <select id="typePiece" name="typePiece" required
                                 class="col-span-2 {{ $errors->has('typePiece') ? 'color-borderError border-[2px]' : '' }} row-span-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                                <option value="" disabled selected hidden>Sélectionner un type d'usage
+                                <option value="" disabled selected hidden>Sélection du type d'usage
                                 </option>
                                 <option value="1">Alimentaire</option>
-                                <option value="0">Non-alimentaire</option>
+                                <option value="0">Non alimentaire</option>
                             </select>
 
                             {{-- IsUnique --}}
                             <select id="pieceUnique" name="pieceUnique"
                                 class="col-span-2 {{ $errors->has('pieceUnique') ? 'color-borderError border-[2px]' : '' }} border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 required>
-                                <option value="" disabled selected hidden>Sélectionner un type de pièce
+                                <option value="" disabled selected hidden>Sélection du type de pièce
                                 </option>
                                 <option value="1">Unique</option>
                                 <option value="0">En série</option>
@@ -188,9 +188,9 @@
                             <h2 class="textGrand-dark">Attributs de l'article</h2>
                             <x-tooltip
                                 text="<ul class='list-disc ml-5'>
-                                            <li>Le bouton masqué empêche les utilisateurs clients d'avoir accès à cet article.</li>
-                                            <li>Le bouton en vedette permet à cet article d'être mis en avant sur votre kiosque personnel.</li>
-                                            <li>Le bouton flouté floutera cette image aux yeux des utilisateurs qui ont activé la sensibilité sur le site.</li>
+                                            <li>Le bouton 'masquer' empêche les utilisateurs clients d'avoir accès à cet article.</li>
+                                            <li>Le bouton 'en vedette' permet à cet article d'être mis en avant sur votre kiosque personnel.</li>
+                                            <li>Le bouton 'flouter' floutera cette image aux yeux des utilisateurs qui ont activé la sensibilité sur le site.</li>
                                           </ul>"
                                 position="left" id="1">
                                 <p class="text-[200%]">&#9432;</p>

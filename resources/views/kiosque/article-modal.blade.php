@@ -180,7 +180,7 @@
                             </template>
 
                             <template x-if="article.is_alimentaire == 0">
-                                <p class="titre3-dark">Non-Alimentaire</p>
+                                <p class="titre3-dark">Non alimentaire</p>
                             </template>
                         </div>
 
@@ -229,7 +229,7 @@
                         {{-- Bouton de signalement --}}
                         <p class="cursor-pointer textFooter-dark hover:text-blue-500 underline"
                             @click=" $dispatch('open-signal-article-modal'); $dispatch('set-article-signal', JSON.stringify(article))">
-                            Signalé cet article
+                            Signaler cet article
                         </p>
 
                         @include('kiosque.article-signal-modal')

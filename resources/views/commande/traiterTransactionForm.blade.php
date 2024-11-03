@@ -101,7 +101,7 @@
                     {{-- Input du code de référence --}}
                     <div class="grid mb-4">
                         <div class="flex items-center justify-between col-span-4">
-                            <h2 class="textGrand-dark">Numéro de tracking</h2>
+                            <h2 class="textGrand-dark">Numéro de suivie</h2>
                             <x-tooltip
                                 text="<ul class='list-disc ml-5'>
                                 <li>L'entré est obligatoire</li>

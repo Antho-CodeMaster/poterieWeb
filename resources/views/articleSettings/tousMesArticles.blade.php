@@ -116,7 +116,7 @@
                                         @if ($article->is_alimentaire)
                                             <p class="textPetit-dark">Alimetaire</p>
                                         @else
-                                            <p class="textPetit-dark">Non-alimetaire</p>
+                                            <p class="textPetit-dark">Non alimetaire</p>
                                         @endif
                                     </div>
                                     <div class=" w-full flex gap-input">
@@ -130,7 +130,7 @@
                                 </div>
 
                                 <div class="flex gap-1 text-end w-full">
-                                    <p class="text-[16px] font-semibold mb-0 mt-auto">Quantité: </p>
+                                    <p class="textPetit-dark font-bold mb-0 mt-auto">Quantité: </p>
                                     @if ($article->quantite_disponible < 1)
                                         <p class="text-[14px] mb-0 mt-auto">En rupture de stock</p>
                                     @elseif ($article->quantite_disponible >= 1)
@@ -139,32 +139,48 @@
                                 </div>
                             </div>
 
-                            {{-- Masqué, floutter, en vedette A DEBUGGUER --}}
-                            <div class="w-[15%] m-sectionX">
-                                @if ($article->id_etat == 1)
-                                    <p class="border border-darkGrey articleGrand-dark px-[10px] py-[3px] bg-white">
-                                        Visible</p>
-                                @elseif($article->id_etat == 2)
-                                    <p class="border border-darkGrey articleGrand-light px-[10px] py-[3px] bg-darkGrey">
-                                        Masqué</p>
-                                @endif
+                            {{-- Masqué, floutter, en vedette --}}
+                            <div class="w-[15%] m-sectionX flex-col flex gap-inputXXL">
+                                <div class="w-full flex items-center justify-between">
+                                    <p class="textGrand-dark font-bold">Masqué</p>
+                                    @if ($article->id_etat == 1)
+                                        <span class=" border-2 border-darkGrey p-2 rounded-[99px]">
 
-                                @if ($article->is_en_vedette == 1)
-                                    <p class="border border-darkGrey articleGrand-dark px-[10px] py-[3px] bg-white">
-                                        En vedette</p>
-                                @elseif($article->is_en_vedette == 0)
-                                    <p class="border border-darkGrey articleGrand-light px-[10px] py-[3px] bg-darkGrey">
-                                        En vedette</p>
-                                @endif
+                                        </span>
+                                    @elseif($article->id_etat == 2)
+                                        <span class=" bg-darkGrey border-2 border-darkGrey p-2 rounded-[99px]">
 
-                                @if ($article->is_sensible == 1)
-                                    <p class="border border-darkGrey articleGrand-dark px-[10px] py-[3px] bg-white">
-                                        Sensible</p>
-                                @elseif($article->is_sensible == 0)
-                                    <p
-                                        class="border border-darkGrey articleGrand-light px-[10px] py-[3px] bg-darkGrey">
-                                        Sensible</p>
-                                @endif
+                                        </span>
+                                    @endif
+                                </div>
+
+                                <div class="w-full flex items-center justify-between">
+                                    <!-- En vedette -->
+                                    <p class="textGrand-dark font-bold">En vedette</p>
+                                    @if ($article->is_en_vedette == 0)
+                                        <span class="bg-darkGrey border-2 border-darkGrey p-2 rounded-[99px]">
+
+                                        </span>
+                                    @elseif($article->is_en_vedette == 1)
+                                    <span class=" bg-darkGrey border-2 border-darkGrey p-2 rounded-[99px]">
+
+                                        </span>
+                                    @endif
+                                </div>
+
+                                <div class="w-full flex items-center justify-between">
+                                    <!-- Sensible -->
+                                    <p class="textGrand-dark font-bold">Sensible</p>
+                                    @if ($article->is_sensible == 0)
+                                        <span class="bg-darkGrey border-2 border-darkGrey p-2 rounded-[99px]">
+
+                                        </span>
+                                    @elseif($article->is_sensible == 1)
+                                    <span class=" bg-darkGrey border-2 border-darkGrey p-2 rounded-[99px]">
+
+                                        </span>
+                                    @endif
+                                </div>
                             </div>
 
 
