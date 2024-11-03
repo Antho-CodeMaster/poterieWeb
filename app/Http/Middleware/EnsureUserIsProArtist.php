@@ -6,9 +6,10 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Artiste;
 use App\Models\Moderateur;
 
-class EnsureUserIsAdmin
+class EnsureUserIsProArtist
 {
     /**
      * Handle an incoming request.
@@ -17,9 +18,13 @@ class EnsureUserIsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Moderateur::where('id_user', '=', Auth::id())->first()->is_admin)
-            return $next($request);
+        $artiste = Artiste::where('id_user', '=', Auth::id())->first();
 
-        return redirect('/');
+        if($artiste == null)
+            return redirect('/');
+        if ($artiste->is_etudiant == 1)
+            return redirect('/');
+
+        return $next($request);
     }
 }

@@ -30,6 +30,7 @@ if (document.baseURI.includes('renouvellement')) {
 
         if (select.value == "etu") {
             document.getElementById("variable-message-pro").classList.add("hidden");
+            document.getElementById("also-variable-message-pro").classList.add("hidden");
             document.getElementById("also-variable-message-etu").classList.remove("hidden");
             document.getElementById("variable-message-etu").classList.remove("hidden");
         }
@@ -37,6 +38,7 @@ if (document.baseURI.includes('renouvellement')) {
             document.getElementById("variable-message-etu").classList.add("hidden");
             document.getElementById("also-variable-message-etu").classList.add("hidden");
             document.getElementById("variable-message-pro").classList.remove("hidden");
+            document.getElementById("also-variable-message-pro").classList.remove("hidden");
         }
     }
 

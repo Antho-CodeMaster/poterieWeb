@@ -1,4 +1,8 @@
 <x-app-layout>
+    {{-- Modal de remerciement d'avoir envoyé une demande --}}
+    @if (Session::has('firstaccess'))
+        @include('components.kiosque-first-access-modal')
+    @endif
 
     {{-- Section Bannière --}}
     <section class="flex items-center justify-between p-[16px]" {{-- style="background-color: #{{ $artiste->couleur_banniere }}" --}}>

@@ -21,6 +21,6 @@ class EnsureUserIsArtist
         if ($artiste != null)
             return $next($request);
 
-        return redirect('/decouverte');
+        return redirect('/');
     }
 }

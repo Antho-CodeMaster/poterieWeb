@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AbonnementController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ArtisteController;
 use App\Http\Controllers\CheckoutController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Middleware\EnsureUserIsArtist;
 use App\Http\Middleware\EnsureUserCanBecomeArtist;
+use App\Http\Middleware\EnsureUserIsProArtist;
 use Illuminate\Support\Facades\Route;
 use Laravel\Cashier\Checkout;
 
@@ -73,7 +75,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/devenir-artiste', [DemandeController::class, 'create'])->name('devenir-artiste')->middleware(EnsureUserCanBecomeArtist::class);
     Route::post('/devenir-artiste', [DemandeController::class, 'store'])->name('store-demande-artiste');
     Route::get('/renouvellement', [DemandeController::class, 'create'])->name('renouvellement-artiste')->middleware(EnsureUserIsArtist::class);
-    Route::post('/renouvellement', [DemandeController::class, 'storeRenouvellement'])->name('store-renouvellement-artiste');
+    Route::get('/abonnement', [AbonnementController::class, 'create'])->name('abonnement')->middleware(EnsureUserIsProArtist::class);
+    Route::post('/abonnement', [AbonnementController::class, 'store'])->name('abonnement');
+    Route::get('/abonnement/annuler', [AbonnementController::class, 'destroy'])->name('annuler-abonnement');
 });
 
 Route::get('/recherche/{search}', [ArticleController::class, 'getSearch'])->name('recherche.getSearch');
