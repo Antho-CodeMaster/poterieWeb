@@ -6,7 +6,7 @@
             <h1 class=" m-titreY titre2-dark p-sectionY border-b-2 border-darkGrey">Mes commandes</h1>
 
             {{-- Filtres de recherche --}}
-            <form action="" method="post" class="flex justify-between w-full">
+            <form action="" method="post" class="flex justify-between w-full mt-1.5">
 
                 <!-- Barre de recherche -->
                 <div id="search-article" class="w-[300px] h-[40px] flex border rounded border-darkGrey">

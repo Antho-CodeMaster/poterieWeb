@@ -265,7 +265,7 @@
     {{-- Message de Session --}}
     {{-- Succes de la suppression d'un article --}}
     @if (Session::has('succesDeleteArticle'))
-        <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1" role="alert">
+        <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1 z-[1001]" role="alert">
             @include('messages.messageSucces', [
                 'message' => Session::get('succesDeleteArticle'),
                 'titre' => 'Suppression',
@@ -275,7 +275,7 @@
 
     {{-- Succes d'un signalement d'article --}}
     @if (Session::has('succesSignalement'))
-        <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1" role="alert">
+        <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1 z-[1001]" role="alert">
             @include('messages.messageSucces', [
                 'message' => Session::get('succesSignalement'),
                 'titre' => 'Signalement',
@@ -285,7 +285,7 @@
 
     {{-- Échec d'un signalement d'article --}}
     @if (Session::has('echecSignalement'))
-        <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1" role="alert">
+        <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1 z-[1001]" role="alert">
             @include('messages.messageFail', [
                 'message' => Session::get('echecSignalement'),
                 'titre' => 'Signalement',
@@ -295,7 +295,7 @@
 
     {{-- Artiste inactif --}}
     @if (Session::has('errorInactif'))
-        <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1" role="alert">
+        <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1 z-[1001]" role="alert">
             @include('messages.messageFail', [
                 'message' => Session::get('errorInactif'),
                 'titre' => 'Artiste pas trouvée',

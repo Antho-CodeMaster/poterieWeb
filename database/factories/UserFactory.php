@@ -32,7 +32,8 @@ class UserFactory extends Factory
             'contenu_sensible' => 0,
             'id_question_securite' => 1,
             'reponse_question' => Hash::make('Lorem Ipsum Dolor Sit Amet'),
-            'active' => 1
+            'active' => 1,
+            'units' => 0
         ];
     }
 

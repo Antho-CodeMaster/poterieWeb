@@ -124,19 +124,19 @@
                             {{-- Profondeur --}}
                             <x-text-input id="profondeurArticle"
                                 class="col-span-1 {{ $errors->has('profondeurArticle') ? 'color-borderError border-[2px]' : '' }}"
-                                type="number" name="profondeurArticle" placeholder="Profondeur (cm)" min="0.1"
+                                type="number" name="profondeurArticle" placeholder="{{Auth::user()->units == 0 ? 'Profondeur (cm)': 'Profondeur (po)'}}" min="0.1"
                                 required value="{{ old('profondeurArticle') }}" step="0.01" />
 
                             {{-- Hauteur --}}
                             <x-text-input id="hauteurArticle"
                                 class="col-span-1 {{ $errors->has('hauteurArticle') ? 'color-borderError border-[2px]' : '' }}"
-                                type="number" name="hauteurArticle" placeholder="Hauteur (cm)" min="0.1"
+                                type="number" name="hauteurArticle" placeholder="{{Auth::user()->units == 0 ? 'Hauteur (cm)': 'Hauteur (po)'}} " min="0.1"
                                 required value="{{ old('hauteurArticle') }}" step="0.01" />
 
                             {{-- Largeur --}}
                             <x-text-input id="largeurArticle"
                                 class="col-span-1 {{ $errors->has('largeurArticle') ? 'color-borderError border-[2px]' : '' }}"
-                                type="number" name="largeurArticle" placeholder="Largeur (cm)" min="0.1"
+                                type="number" name="largeurArticle" placeholder="{{Auth::user()->units == 0 ? 'Largeur (cm)': 'Largeur (po)'}}" min="0.1"
                                 required value="{{ old('largeurArticle') }}" step="0.01" />
 
                             {{-- Poids --}}

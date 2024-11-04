@@ -62,11 +62,11 @@ class ArticleController extends Controller
     public function store(Request $request)
     {
         if ($request->routeIs('addArticle')) {
-            /* Vérifie si l'artiste est actif ou non */
+            /* 1. Vérifie si l'artiste est actif ou non */
             $artiste = Artiste::with("reseaux", "articles")->where('id_artiste', $request->input("idArtiste"))->first();
             if ($artiste->actif == 0) {
                 if (Auth::id() != $artiste->id_user) {
-                    session()->flash('errorInactif', 'L\'utilisateur n\'est plus artiste.');
+                    session()->flash('errorInactif', 'cette artiste n\'existe pas.');
                     return redirect()->back();
                 }
 
@@ -74,7 +74,7 @@ class ArticleController extends Controller
                 return redirect()->back();
             }
 
-            /* Validation des entrés */
+            /* 2. Valiation des entrées */
             $validatedData = $request->validate([
                 "idArtiste" => "required",
                 "masquer" => "required|",
@@ -141,7 +141,14 @@ class ArticleController extends Controller
                 'photo5.mimes' => 'La photo 5 doit être au format JPEG, PNG ou JPG.',
             ]);
 
-            /* Création de l'article */
+            /* 3. Stock des cm même si l'entré c'est des pouces */
+            if ($artiste->units == 1) {
+                $validatedData['hauteurArticle'] = $validatedData['hauteurArticle'] * 2.54;
+                $validatedData['largeurArticle'] = $validatedData['largeurArticle'] * 2.54;
+                $validatedData['profondeurArticle'] = $validatedData['profondeurArticle'] * 2.54;
+            }
+
+            /* 4. Création de l'article */
             $newArticle = Article::create([
                 'id_artiste' => $validatedData['idArtiste'],
                 'id_etat' => $validatedData['masquer'],
@@ -161,60 +168,68 @@ class ArticleController extends Controller
                 'couleur' => 'brun marde', // Vous pouvez le modifier selon vos besoins
             ]);
 
-            /* Stockage en BD du nouvelle article */
+            /* 5. Stockage en BD du nouvelle article */
             if ($newArticle->save()) {
+
+                /* 6. Gestion des mots clés*/
+                $motsClesString = $validatedData['motClesArticle'];
+
+                $motsClesArray = array_filter(array_map('trim', explode('#', $motsClesString)));
+
+                foreach ($motsClesArray as $motCle) {
+                    /* Vérifie si le mot clé existe dans la table "Mot_Cle", si non il le crée et si oui, il y accède */
+                    $instanceMotCle = Mot_cle::where("mot_cle", $motCle)->firstOrCreate(["mot_cle" => $motCle]);
+                    if ($instanceMotCle == null) {
+                        session()->flash('erreurMotsCles', 'Un problème lors de l\'ajout des mots clés s\'est produit, veuillez réessayer.');
+
+                        /* Retour à la vue */
+                        $idUser = Auth::user()->id;
+                        return redirect()->route('addArticleForm', ['idUser' => $idUser]);
+                    }
+                    /* Vérifie si le mot clé existe dans la table "Mot_Cle_article", si non il le crée et si oui, il y accède */
+                    Mot_cle_article::where("id_mot_cle", $instanceMotCle->id_mot_cle)
+                        ->where("id_article", $newArticle->id_article)
+                        ->firstOrCreate([
+                            "id_mot_cle" => $instanceMotCle->id_mot_cle,
+                            "id_article" => $newArticle->id_article
+                        ]);
+                }
+
+                /* 7. Gestion des photos */
+                for ($i = 1; $i <= 5; $i++) {
+                    if ($request->hasFile('photo' . $i)) {
+                        $file = $request->file('photo' . $i);
+
+                        // Créer un nom de fichier unique avec un identifiant aléatoire
+                        $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+
+                        // Stocker le fichier dans le répertoire public
+                        $filePath = $file->storeAs('tests', $filename, 'public');
+
+                        // Déplacer le fichier vers le dossier public (optionnel, dépendant de votre configuration)
+                        $file->move(public_path('img/tests'), $filename);
+
+                        $newPhotoArticle = new Photo_article();
+                        $newPhotoArticle->id_article = $newArticle->id_article;
+                        $newPhotoArticle->path = $filePath; // Stockage du chemin exact en base de données
+
+                        if (!$newPhotoArticle->save()) {
+                            session()->flash('erreurPhotos', 'Un problème lors de l\'ajout des photos s\'est produit, veuillez réessayer.');
+
+                            /* Retour à la vue */
+                            $idUser = Auth::user()->id;
+                            return redirect()->route('addArticleForm', ['idUser' => $idUser]);
+                        }
+                    }
+                }
+
                 session()->flash('succesArticle', 'L\'article a bien été ajouté');
             } else {
                 session()->flash('erreurArticle', 'Un problème lors de l\'ajout de l\'article s\'est produit');
             }
 
-            /* Gestion des mots clés*/
-            $motsClesString = $validatedData['motClesArticle'];
-
-            $motsClesArray = array_filter(array_map('trim', explode('#', $motsClesString)));
-            foreach ($motsClesArray as $motCle) {
-                /* Vérifie si le mot clé existe dans la table "Mot_Cle", si non il le crée et si oui, il y accède */
-                $instanceMotCle = Mot_cle::where("mot_cle", $motCle)->firstOrCreate(["mot_cle" => $motCle]);
-                if ($instanceMotCle == null) {
-                    session()->flash('erreurMotsCles', 'Un problème lors de l\'ajout des mots clés s\'est produit, veuillez réessayer.');
-                    #return->back();??
-                }
-                /* Vérifie si le mot clé existe dans la table "Mot_Cle_article", si non il le crée et si oui, il y accède */
-                Mot_cle_article::where("id_mot_cle", $instanceMotCle->id_mot_cle)
-                    ->where("id_article", $newArticle->id_article)
-                    ->firstOrCreate([
-                        "id_mot_cle" => $instanceMotCle->id_mot_cle,
-                        "id_article" => $newArticle->id_article
-                    ]);
-            }
-
-
-            for ($i = 1; $i <= 5; $i++) {
-                if ($request->hasFile('photo' . $i)) {
-                    $file = $request->file('photo' . $i);
-
-                    // Créer un nom de fichier unique avec un identifiant aléatoire
-                    $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-
-                    // Stocker le fichier dans le répertoire public
-                    $filePath = $file->storeAs('tests', $filename, 'public');
-
-                    // Déplacer le fichier vers le dossier public (optionnel, dépendant de votre configuration)
-                    $file->move(public_path('img/tests'), $filename);
-
-                    $newPhotoArticle = new Photo_article();
-                    $newPhotoArticle->id_article = $newArticle->id_article;
-                    $newPhotoArticle->path = $filePath; // Stockage du chemin exact en base de données
-
-                    if (!$newPhotoArticle->save()) {
-                        session()->flash('erreurPhotos', 'Un problème lors de l\'ajout des photos s\'est produit, veuillez réessayer.');
-                    }
-                }
-            }
-
-
+            /* Retour à la vue */
             $idUser = Auth::user()->id;
-
             return redirect()->route('addArticleForm', ['idUser' => $idUser]);
         } elseif ($request->routeIs('signaleArticle')) { /* Fonction pour ajouter un signalement */
             /* Validation des entrées */
