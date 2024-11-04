@@ -78,38 +78,59 @@ window.addEventListener('scroll', () => {
                 </svg>
             </a>
 
-            {{-- Notification Dropdown --}}
+            <!-- Notification Dropdown -->
+            @auth
             <div class="sm:flex sm:items-center ml-[15px]">
-                <x-dropdown align="right" width="48">
+                <x-dropdown-notification align="right" width="64" class="dropdown-content-class">
                     <x-slot name="trigger">
-                        <button
-                            class="inline-flex items-center border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                        <button class="inline-flex items-center border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                             <div class="ms-1">
-                                <svg width="34" height="34" viewBox="0 0 48 48" fill="none" class="flex item-center"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M27.46 42C27.1084 42.6062 26.6037 43.1093 25.9965 43.4591C25.3892 43.8088 24.7008 43.9929 24 43.9929C23.2992 43.9929 22.6108 43.8088 22.0035 43.4591C21.3963 43.1093 20.8916 42.6062 20.54 42M36 16C36 12.8174 34.7357 9.76516 32.4853 7.51472C30.2348 5.26428 27.1826 4 24 4C20.8174 4 17.7652 5.26428 15.5147 7.51472C13.2643 9.76516 12 12.8174 12 16C12 30 6 34 6 34H42C42 34 36 30 36 16Z"
-                                    stroke="#F4F0EC" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
+                                <svg width="34" height="34" viewBox="0 0 48 48" fill="none" class="flex items-center" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M27.46 42C27.1084 42.6062 26.6037 43.1093 25.9965 43.4591C25.3892 43.8088 24.7008 43.9929 24 43.9929C23.2992 43.9929 22.6108 43.8088 22.0035 43.4591C21.3963 43.1093 20.8916 42.6062 20.54 42M36 16C36 12.8174 34.7357 9.76516 32.4853 7.51472C30.2348 5.26428 27.1826 4 24 4C20.8174 4 17.7652 5.26428 15.5147 7.51472C13.2643 9.76516 12 12.8174 12 16C12 30 6 34 6 34H42C42 34 36 30 36 16Z" stroke="#F4F0EC" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
                             </div>
                         </button>
                     </x-slot>
 
                     <x-slot name="content">
-                        <div class="bg-[#444444] text-[#f4f0ec] rounded-t-lg px-3 text-lg font-bold shadow-2xl">
+                        <div class="bg-[#444444] text-[#f4f0ec] font-bold px-3 py-2 text-lg rounded-t-lg">
                             Notifications
                         </div>
-                        @if (isset(Auth::user()->notifications))
-                            @foreach (Auth::user()->notifications as $notification)
+                        <div class="overflow-y-auto h-[400px] w-[300px] select-none p-4 space-y-2">
+                            @php
+                                $visibleNotifications = Auth::user()->notifications->filter(function ($notification) {
+                                    return $notification->visible == 1;
+                                });
+                            @endphp
+
+                            @if ($visibleNotifications->isNotEmpty())
+                                @foreach ($visibleNotifications as $notification)
+                                    <div x-data="{ slid: false }" class="notification-item">
+                                        <div class="relative flex items-center p-4 bg-darkGrey rounded-lg overflow-hidden cursor-pointer" @click="slid = !slid" :class="{ 'translate-x-[-50px]': slid }">
+                                            <!-- Notification Content -->
+                                            <p class="notification-text flex-1 text-beige">{{ $notification->formatted_description }}</p>
+                                        </div>
+
+                                        <!-- Trash Icon -->
+                                        <div x-show="slid" class="absolute right-4 top-1/2 transform -translate-y-1/2 transition-opacity duration-200" x-transition.opacity>
+                                            <button @click="slid = false; const notificationElement = $el.closest('.notification-item'); hideNotification({{ $notification->id_notification }}, notificationElement)" class="text-red-500 hover:text-red-700 focus:outline-none">
+                                                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @else
                                 <div class="p-2">
-                                    <span class="font-semibold">{{ $notification->formatted_description }}</span>
-                                    <p class="text-sm">{{ $notification->message }}</p>
+                                    <span class="font-semibold text-darkGrey">Aucune notification à afficher</span>
                                 </div>
-                            @endforeach
-                        @endif
+                            @endif
+                        </div>
                     </x-slot>
-                </x-dropdown>
+                </x-dropdown-notification>
             </div>
+            @endauth
 
             <!-- Settings Dropdown -->
             <div class="sm:flex sm:items-center ml-[15px]">

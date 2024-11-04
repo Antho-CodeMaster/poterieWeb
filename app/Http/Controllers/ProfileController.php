@@ -65,7 +65,8 @@ class ProfileController extends Controller
 
         return view('profile.facturation', [
             'user' => $request->user(),
-            'subbed' => $subbed
+            'subbed' => $subbed,
+            'artiste' => $art,
         ]);
     }
 

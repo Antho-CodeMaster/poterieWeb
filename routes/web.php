@@ -8,6 +8,7 @@ use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\NotificationController;
 
 use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\TransactionController;
@@ -22,6 +23,11 @@ Route::get('/', [CollectionController::class, 'index'])->name('decouverte');
 /* Route relié au kiosque */
 Route::controller(ArtisteController::class)->group(function () {
     Route::get('/kiosque/{idUser}', 'show')->name('kiosque');
+});
+
+/* Route relié aux notifications */
+Route::controller(NotificationController::class)->group(function () {
+    Route::post('/notification/hide', 'hideNotification')->name('notification.hide');
 });
 
 /* Routes liés à Article */

@@ -13,6 +13,7 @@ import '../../public/js/tousMesArticles.js';
 import '../../public/js/modifArticle.js';
 import '../../public/js/deployerArticle.js';
 import '../../public/js/traiterTransaction.js';
+import '../../public/js/navigation.js';
 
 import './panier';
 
