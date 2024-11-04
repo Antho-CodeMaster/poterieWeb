@@ -21,9 +21,9 @@ window.addEventListener('scroll', () => {
 
         <!-- Barre de recherche -->
         <div class="w-[500px]">
-            <form action="{{ route('recherche.getSearch', ['search']) }}" method="GET"
+            <form action="{{ route('recherche.getSearch') }}" method="GET"
                 class="w-full h-[38px] py-auto">
-                <input class="w-full rounded h-full" type="text" placeholder="Rechercher..." name="search">
+                <input class="w-full rounded h-full" type="text" placeholder="Rechercher..." name="query">
                 <button type="submit"><i class="fa fa-search"></i></button>
             </form>
         </div>
@@ -67,13 +67,18 @@ window.addEventListener('scroll', () => {
                     @endif
                 @endif
             @endif
-            <a class="ml-[15px]" href="{{ route('devenir-artiste') }}">
-                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="none"
-                    viewBox="0 0 24 24">
-                    <path stroke="#F4F0EC" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                </svg>
-            </a>
+
+            @auth
+                @if (!Auth::user()->moderateur && !Auth::user()->artiste)
+                    <a class="ml-[15px]" href="{{ route('devenir-artiste') }}">
+                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="34" height="34"
+                            fill="none" viewBox="0 0 24 24">
+                            <path stroke="#F4F0EC" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        </svg>
+                    </a>
+                @endif
+            @endauth
 
             {{-- Bouton panier --}}
             <a class="ml-[15px]" href="{{ route('panier') }}">
@@ -126,7 +131,8 @@ window.addEventListener('scroll', () => {
                                                 <div>
                                                     <p class="notification-text flex-1 text-beige">
                                                         {{ $notification->formatted_description }}</p>
-                                                    <p class="notification-text flex-1 text-right text-beige text-sm italic">
+                                                    <p
+                                                        class="notification-text flex-1 text-right text-beige text-sm italic">
                                                         {{ $notification->date }}</p>
                                                 </div>
                                             </div>

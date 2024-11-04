@@ -86,7 +86,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/abonnement/annuler', [AbonnementController::class, 'destroy'])->name('annuler-abonnement');
 });
 
-Route::get('/recherche/{search}', [ArticleController::class, 'getSearch'])->name('recherche.getSearch');
+Route::get('/recherche', [ArticleController::class, 'getSearch'])->name('recherche.getSearch');
 
 
 

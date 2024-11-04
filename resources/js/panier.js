@@ -1,5 +1,5 @@
-if(document.baseURI.includes('/panier')){
-    document.addEventListener('DOMContentLoaded', function() {
+if (document.baseURI.includes('/panier')) {
+    document.addEventListener('DOMContentLoaded', function () {
         console.log("works ig");
         // Function to update the panier summary
         async function updatePanierSummary() {
@@ -10,7 +10,7 @@ if(document.baseURI.includes('/panier')){
             // Get all cart items
             let cartItems = document.querySelectorAll('.itemPanier');
 
-            cartItems.forEach(function(item) {
+            cartItems.forEach(function (item) {
                 let price = parseFloat(item.getAttribute('data-prix'));
                 let quantitySelect = item.querySelector('.quantite');
                 let quantity = parseInt(quantitySelect.value);
@@ -29,7 +29,7 @@ if(document.baseURI.includes('/panier')){
 
 
             // Update subtotal
-            document.getElementById('nb').textContent = 'Sous total (' + totalItems + ' Articles) :';
+            document.getElementById('nb').textContent = 'Sous-total (' + totalItems + ' article' + (totalItems !== 1 ? 's' : '') + ')';
             document.getElementById('brut').textContent = subtotal.toFixed(2) + ' $';
 
             // Calculate delivery fees
@@ -59,15 +59,15 @@ if(document.baseURI.includes('/panier')){
         function calculateDeliveryFees(subtotal) {
             // Si le total est de 0
             if (subtotal == 0) {
-                return 0 ;
-            } else{
+                return 0;
+            } else {
                 return 10; // Frais fixe
             }
         }
 
         // Add event listeners to quantity selects
         let quantitySelects = document.querySelectorAll('.quantite-select');
-        quantitySelects.forEach(function(select) {
+        quantitySelects.forEach(function (select) {
             select.addEventListener('change', updatePanierSummary);
         });
 

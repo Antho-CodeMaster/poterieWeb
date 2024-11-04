@@ -266,7 +266,7 @@ class ArticleController extends Controller
     public function getSearch(Request $request)
     {
         // Retrieve the search term from the request
-        $searchTerm = $request->input('search');
+        $searchTerm = $request->input('query');
 
         // Query the articles table to find partial matches in the 'nom' and 'description' fields
         $articles = Article::where(function ($query) use ($searchTerm) {
