@@ -14,10 +14,10 @@ class PhotoOeuvreSeeder extends Seeder
     public function run(): void
     {
         // Pour chacune des demandes de nouvel utilisateur
-        for($i = 1; $i <= 2; $i++)
+        for($i = 1; $i <= 53; $i++)
         {
-            // Les articles, dans cette mise en situation, auront entre 1 et 4 photos chacun
-            for($j = 1; $j <= random_int(1, 4); $j++)
+            // Les articles, dans cette mise en situation, auront entre 1 et 10 photos chacun
+            for($j = 1; $j <= random_int(1, 10); $j++)
 
             /* Les paths des photos bidon sont:
                 public/img/tests/pot_1.jpg,
@@ -28,7 +28,7 @@ class PhotoOeuvreSeeder extends Seeder
             */
             DB::table('photos_oeuvres')->insert([
                 'id_demande' => $i,
-                'path' => 'pot_' . $j . '.jpg',
+                'path' => 'pot_' . random_int(1, 14) . '.jpg',
             ]);
         }
     }

@@ -5,10 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Commande;
 use App\Models\Artiste;
+use App\Models\Ville;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Laravel\Cashier\Invoice;
+use Stripe\Checkout\Session;
+use Stripe\PaymentIntent;
+use Stripe\Stripe;
+use Stripe\StripeClient;
 
 class CommandeController extends Controller
 {
@@ -18,6 +24,8 @@ class CommandeController extends Controller
     public function index()
     {
         if(Auth::check()){
+            \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+
             $commandes = Commande::where('id_user', Auth::id())
             ->where('is_panier', false)
             ->get();
@@ -26,6 +34,14 @@ class CommandeController extends Controller
             $commandeFini = [];
 
             foreach ($commandes as $commande) {
+                if(isset($commande->payment_intent_id))
+                {
+                    $paymentIntent = PaymentIntent::retrieve($commande->payment_intent_id);
+                    $charge = \Stripe\Charge::retrieve($paymentIntent->latest_charge);
+                    $commande->receipt_url = $charge->receipt_url;
+                }
+
+
                 $hasActiveTransaction = false;
                 foreach ($commande->transactions as $transaction) {
                     $etat = $transaction->etat_transaction->etat;
@@ -58,7 +74,7 @@ class CommandeController extends Controller
      */
     public function create()
     {
-        //
+        return view('commande.formInfos');
     }
 
     /**
@@ -66,7 +82,6 @@ class CommandeController extends Controller
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**
@@ -95,7 +110,7 @@ class CommandeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, commande $commande)
+    public function update(Request $request)
     {
         //
     }
@@ -116,31 +131,9 @@ class CommandeController extends Controller
         # returns the panier of the connected user
         # or the disconnected user
         if (Auth::check())
-            return Commande::firstOrCreate(
-                ['id_user' => Auth::id(), 'is_panier' => true]
-            );
+            return $this->saveCookieToDb($request);
         else{
-            //recupere les cookies
-            $cookie = $request->cookie('panier','');
-            $items = $cookie ? json_decode($cookie,true) : [];
-
-            //cree pbj commande
-            $commande = new Commande();
-            $commande->transactions->collect();
-
-            foreach($items as $item){
-                $article = Article::find($item['id_article']);
-                if($article){
-                    $transaction = new Transaction();
-                    $transaction->article = $article;
-                    $transaction->quantite = $item['quantite'];
-                    $transaction->prix_unitaire = $article->prix;
-                    $transaction->id_transaction = $item['id_article'];
-
-                    $commande->transactions->push($transaction);
-                }
-            }
-            return $commande;
+            return $this->cookieToCommande($request);
         }
 
     }
@@ -151,16 +144,165 @@ class CommandeController extends Controller
     public function showPanier(Request $request){
 
         #Prend les valeurs dans la bd si connecté ou dans le cookie si non connecté
-        if(Auth::check()){
-            $commande = $this->getPanier($request);
-        }
-        else{
-            $commande = $this->getPanier($request);
-        }
+        $commande = $this->getPanier($request);
 
+        if(Auth::check()){
+            return response()->view('commande/panier',
+                ['commande' => $commande])->withCookie(Cookie::forget('panier'));
+        }
+        else
         return view( 'commande/panier',
                 ['commande' => $commande]);
     }
 
+
+    /**Gestion de Checkout */
+
+    public function checkoutCommande(Request $request){
+
+        $commande = $this->getPanier($request);
+
+        #On formate les transactions du panier en Items lisible pour Stripe Checkout
+        $cartItems = $this->FormatPanier($commande);
+
+
+        #Set de la clé d'api pour stripe
+        Stripe::setApiKey(config('services.stripe.secret'));
+
+
+        $checkoutSession = Session::create([
+            'payment_method_types' => ['card'],//paiement par carte
+            'payment_intent_data' => [
+                'transfer_group' => $commande->id_commande,  //met l'id de commande dans le transfer groupe pour transferer l'argent aux artistes
+            ],
+            'line_items' => $cartItems, // les items de la transaction
+            'mode' => 'payment', // Paiement unique
+            'shipping_address_collection' => [ //les pays accepté pour la livraison
+                'allowed_countries' => ['CA']
+            ],
+            'success_url' => route('checkout-success').'?session_id={CHECKOUT_SESSION_ID}', //l'url a visiter en cas de succes
+            'cancel_url' => route('panier'),    //idem mais en cas d'échec.
+            'customer_email' => Auth::user()->email,
+            'invoice_creation' => ['enabled'=>true], //permet de générer une facture avec stripe
+            'automatic_tax' => ['enabled' => true], //permet de calculer les taxes, doit être setté dans le stripe dashboard
+            'shipping_options' => [['shipping_rate_data' => [   //frais de livraisons
+                    'display_name' => 'Frais de livraison',
+                    'fixed_amount' => ['amount' => 1000, 'currency' => 'cad'],
+                    'type' => 'fixed_amount'
+                ]]
+            ],
+        ]);
+
+        $commande->update([
+            'checkout_id' =>$checkoutSession->id,
+        ]);
+
+
+        return redirect($checkoutSession->url);
+    }
+
+    public function success(Request $request){
+
+
+        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+
+        $sessionId = $request->input('session_id');
+     #   echo $sessionId . '\n';
+        $checkoutSession = Session::retrieve($sessionId); #$request->user()->stripe()->checkout->sessions->retrieve($request->get('session_id'));
+     #  echo $checkoutSession;
+        $paymentIntent = PaymentIntent::retrieve($checkoutSession->payment_intent);
+    #    echo $paymentIntent;
+        $charge = \Stripe\Charge::retrieve($paymentIntent->latest_charge);
+
+
+        $commande = Commande::where('checkout_id', '=',$sessionId)->first();
+
+        //On recupere les infos de shipping
+        $addressLine = $paymentIntent->shipping->address->line1 ;
+        preg_match('/^(\d+)\s+(.*)$/', $addressLine, $matches);
+
+        $noCivique = $matches[1] ?? null;
+        $rue = $matches[2] ?? $addressLine;
+        $codePostal = str_replace(' ', '', $paymentIntent->shipping->address->postal_code);
+        $ville = Ville::firstOrCreate(['ville'=> $paymentIntent->shipping->address->city]);
+
+        $commande->update([
+            'is_panier' => false,
+            'no_civique' => $noCivique,
+            'rue' => $rue,
+            'id_ville' => $ville->id_ville ,
+            'code_postal' => $codePostal,
+            'payment_intent_id' => $paymentIntent->id,
+            'date' => now()
+        ]);
+
+        $urlFacture = $charge->receipt_url;
+
+        return view('commande.success',['commande' => $commande, 'facture'=>$urlFacture]);
+    }
+
+    public function FormatPanier(Commande $panier){
+        $items =[];
+        foreach($panier->transactions as $transaction){
+
+            $item = [
+                'price_data' => [
+                    'currency' => 'cad',
+                    'product_data' => [
+                        'name' => $transaction->article->nom,
+                    ],
+                    'unit_amount' => $transaction->prix_unitaire * 100, // Prix en cenne (Prix en dollards * 100)
+                ],
+                'quantity' => $transaction->quantite,
+            ];
+
+            /**Ajoute l'item a l'array */
+            array_push($items, $item);
+        }
+
+        return $items;
+    }
+
+    public function saveCookieToDb(Request $request){
+        $commandeUnsaved = $this->cookieToCommande($request);
+
+        $commande = Commande::firstOrCreate(
+            ['id_user' => Auth::id(), 'is_panier' => true]
+        );
+
+        foreach($commandeUnsaved->transactions as $transaction){
+            if(!$commande->transactions->contains('id_article',$transaction->id_article)){
+                $commande->transactions()->save($transaction);
+            }
+        }
+
+        return $commande;
+    }
+
+    public function cookieToCommande(Request $request){
+        //recupere les cookies
+        $cookie = $request->cookie('panier','');
+        $items = $cookie ? json_decode($cookie,true) : [];
+
+        //cree pbj commande
+        $commande = new Commande();
+        $commande->transactions->collect();
+
+        foreach($items as $item){
+            $article = Article::find($item['id_article']);
+            if($article){
+                $transaction = new Transaction();
+                #$transaction->id_article = $article->id_article;
+                $transaction->quantite = $item['quantite'];
+                $transaction->prix_unitaire = $article->prix;
+                $transaction->id_article = $item['id_article'];
+                $transaction->id_etat = 2;
+
+                $commande->transactions->push($transaction);
+            }
+        }
+
+        return $commande;
+    }
 
 }

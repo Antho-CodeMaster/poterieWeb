@@ -89,11 +89,11 @@ export default {
 
     safelist: [
         'w-[100px]',
-        'h-[96px]',
+        'h-[230px]',
         'object-cover',
-        "border-[2px]",
+        "border-[4px]",
         "border-darkGrey",
-        "rounded-[0.375rem]",
+        "rounded-[0.5rem]",
         {
             pattern: /bg-+/
         }
@@ -173,6 +173,24 @@ export default {
                     'font-family': 'Inter',
                 },
 
+                //Titre text Moyen
+                '.textMoyen-light': {
+                    'line-height': '1.25rem',
+                    'font-size': 'calc(14px + 0.22vw)',
+                    'color': '#f4f0ec',
+                    'font-family': 'Inter',
+                },
+                '.textMoyen-dark': {
+                    'line-height': '1.25rem',
+                    'font-size': 'calc(14px + 0.22vw)',
+                    'color': '#444444',
+                    'font-family': 'Inter',
+                },
+                '.textMoyen': {
+                    'line-height': '1.25rem',
+                    'font-size': 'calc(14px + 0.22vw)',
+                    'font-family': 'Inter',
+                },
 
                 //Titre text Petit
                 '.textPetit-light': {
@@ -257,14 +275,14 @@ export default {
                 //Text de navigation SideMenu ou navBar
                 '.textNavigation-light': {
                     'line-height': '1.5rem',
-                    'font-size': 'calc(16px + 0.3vw)',
+                    'font-size': 'calc(14px + 0.5vw)',
                     'color': '#f4f0ec',
                     'font-weight': '500',
                     'font-family': 'Inter',
                 },
                 '.textNavigation-dark': {
                     'line-height': '1.5rem',
-                    'font-size': 'calc(16px + 0.3vw)',
+                    'font-size': 'calc(14px + 0.5vw)',
                     'color': '#444444',
                     'font-weight': '500',
                     'font-family': 'Inter',
@@ -287,17 +305,22 @@ export default {
                 },
 
                 '.p-sectionBottom': {
-                    'padding-bottom': 'calc(3px + 0.5vw)',
+                    'padding-bottom': 'calc(2px + 0.4vw)',
                 },
 
+                '.p-sectionTop': {
+                    'padding-top': 'calc(2px + 0.4vw)',
+                },
+
+
                 '.p-sectionX': {
-                    'padding-right': 'calc(3px + 0.5vw) ',
-                    'padding-left': 'calc(3px + 0.5vw) ',
+                    'padding-right': 'calc(2px + 0.4vw) ',
+                    'padding-left': 'calc(2px + 0.4vw) ',
                 },
 
                 '.p-sectionY': {
-                    'padding-top': 'calc(3px + 0.5vw)',
-                    'padding-bottom': 'calc(3px + 0.5vw)',
+                    'padding-top': 'calc(2px + 0.4vw)',
+                    'padding-bottom': 'calc(2px + 0.4vw)',
                 },
 
                 // Articles
@@ -323,6 +346,10 @@ export default {
                     'gap': 'calc(2px + 0.5vw)',
                 },
 
+                '.gap-inputXXL': {
+                    'gap': 'calc(6px + 0.8vw)',
+                },
+
                 // SideBar
                 '.m-sidebar': {
                     'margin': 'calc(4px + 1.5vw) 0px',
@@ -337,7 +364,7 @@ export default {
                 },
 
                 '.p-sidebarNav': {
-                    'padding': 'calc(2px + 0.5vw) 0.5rem',
+                    'padding': 'calc(8px + 0.5vw) 0.5rem',
                 },
 
                 // Titre

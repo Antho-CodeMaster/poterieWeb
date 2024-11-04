@@ -8,12 +8,15 @@ use App\Models\Photo_identite;
 use App\Models\Notification;
 use App\Models\Artiste;
 use App\Models\User;
-use App\Notifications\Acceptation_demande;
+use App\Notifications\Acceptation_etudiant;
+use App\Notifications\Acceptation_pro;
 use App\Notifications\Refus_demande;
+use App\Notifications\Renouvellement_refuse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Session;
 
 class DemandeController extends Controller
 {
@@ -23,7 +26,7 @@ class DemandeController extends Controller
     public function index()
     {
         return view('admin/demandes', [
-            'demandes' => Demande::where('id_etat', 1)->with(['photos_oeuvres','photos_identite'])->orderBy('date', 'asc')->get(),
+            'demandes' => Demande::where('id_etat', 1)->with(['photos_oeuvres', 'photos_identite'])->orderBy('date', 'asc')->get(),
             'images' => Storage::disk('public')
         ]);
     }
@@ -34,7 +37,7 @@ class DemandeController extends Controller
     public function index_traitees()
     {
         return view('admin/demandes-traitees', [
-            'demandes' => Demande::where('id_etat','!=', 1)->with(['photos_oeuvres','photos_identite'])->orderBy('updated_at', 'desc')->get(),
+            'demandes' => Demande::where('id_etat', '!=', 1)->with(['photos_oeuvres', 'photos_identite'])->orderBy('updated_at', 'desc')->get(),
             'images' => Storage::disk('public')
         ]);
     }
@@ -42,9 +45,9 @@ class DemandeController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('devenir-artiste');
+        return $request->getRequestUri() == "/renouvellement" ? view('demande.renouvellement') : view('demande.devenir-artiste');
     }
 
     /**
@@ -58,30 +61,36 @@ class DemandeController extends Controller
 
         // Assigner le bon type selon la demande
         $nomType = $request->input('type');
-        if ($nomType == "etu")
+
+        if ($nomType == "ren")
+            $type = 1;
+        else if ($nomType == "etu")
             $type = 2;
         else if ($nomType == "pro")
             $type = 3;
         else
             return back()->withErrors(['msg' => 'Une erreur inattendue s\'est produite lors de l\'envoi de votre demande. Veuillez réessayer plus tard.']);
 
+        $rules = [];
+        $messages = [];
+
+        // Validations si c'est une demande pour un nouvel artiste
+
+        if ($type != 1) {
         // Validation de base pour les photos de preuve
-        $rules = [
-            "photo-preuve" => "required|array|between:1,10",
-            "photo-preuve.*" => "mimes:jpeg,png,jpg|max:2048"
-        ];
+        $rules["photo-preuve"] = "required|array|between:1,10";
+        $rules["photo-preuve.*"] = "mimes:jpeg,png,jpg|max:2048";
 
-        $messages = [
-            "photo-preuve.required" => "Vous devez soumettre entre 1 et 10 photos à l'étape 1.",
-            "photo-preuve.array" => "Vous devez soumettre entre 1 et 10 photos à l'étape 1.",
-            "photo-preuve.between" => "Vous devez soumettre entre 1 et 10 photos à l'étape 1.",
+        $messages["photo-preuve.required"] = "Vous devez soumettre entre 1 et 10 photos à l'étape 1.";
+        $messages["photo-preuve.array"] = "Vous devez soumettre entre 1 et 10 photos à l'étape 1.";
+        $messages["photo-preuve.between"] = "Vous devez soumettre entre 1 et 10 photos à l'étape 1.";
 
-            "photo-preuve.*.mimes" => "Toutes les photos doivent être des fichiers .jpeg, .png ou .jpg.",
-            "photo-preuve.*.max" => "Toutes les photos doivent être moins lourdes que 2048 Ko.",
-        ];
+        $messages["photo-preuve.*.mimes"] = "Toutes les photos doivent être des fichiers .jpeg, .png ou .jpg.";
+        $messages["photo-preuve.*.max"] = "Toutes les photos doivent être moins lourdes que 2048 Ko.";
+        }
 
-        // Valider qu'il y a bel et bien 3 photos et qu'elles sont dans le bon format si la demande est pour un étudiant
-        if ($type == 2) {
+        // Validations de photo d'identité si la demande n'est pas pour un pro
+        if ($type != 3) {
             $rules['photo-identite'] = 'required|array|size:3';
             $rules['photo-identite.*'] = 'mimes:jpeg,png,jpg|max:2048';
 
@@ -135,7 +144,7 @@ class DemandeController extends Controller
 
         // Stockage des photos d'oeuvre
         $cpt = 0;
-        if ($request->hasFile('photo-preuve')) {
+        if ($request->hasFile('photo-preuve') && $type != 1) {
             $files = $request->file('photo-preuve');
             foreach ($files as $file) {
                 $filename = time() . '_' . $cpt . '.' . $file->getClientOriginalExtension();
@@ -149,7 +158,7 @@ class DemandeController extends Controller
                 $cpt++;
             }
         }
-        session()->flash('succesDemande', 'Votre demande a bel et bien été envoyée. Vous recevrez des nouvelles prochainement!');
+        Session::flash('succesDemande', 'Votre demande a bel et bien été envoyée. Vous recevrez des nouvelles prochainement!');
         return redirect()->route('decouverte');
     }
 
@@ -158,38 +167,59 @@ class DemandeController extends Controller
      */
     public function accept()
     {
-        // Changer état demande
+        // Charger id de la personne à accepter
         $id = request()->query('id');
 
+        // Retrouver la demande
         $dem = Demande::where([
             'id_demande' => $id,
         ])->first();
 
+        // Mettre à jour son état
         $dem->id_etat = 2;
         $dem->save();
 
-        if ($dem->id_type != 1) {
-            // Créer instance d'artiste
+        // Charger l'utilisateur lié à la demande
+        $usr = User::find($dem->id_user);
 
-            $artiste = Artiste::create([
-                'id_user' => $dem->id_user,
-                'id_theme' => 1,
-                'nom_artiste' => null,
-                'path_photo_profil' => 'img/artistePFP/default_artiste.png',
-                'is_etudiant' => $dem->id_type == 2 ? true : false,
-                'description' => null,
-                'couleur_banniere' => '808080'
-            ]);
-            $artiste->save();
+        switch ($dem->id_type) {
+            // S'il s'agit d'un renouvellement étudiant, simplement remettre l'étudiant actif.
+            case 1:
+                $artiste = Artiste::where("id_user", $dem->id_user)->first();
+                $artiste->actif = 1;
+                $artiste->save();
+                break;
 
-            if($dem->id_type == 3)
-            {
-                /* Effectuer le paiement si pro. */
-            }
-        }
-        else
-        {
-            /* Traiter différemment s'il s'agit d'un renouvellement. */
+            // S'il s'agit d'une demande pour devenir étudiant, créer la ressource avec les valeurs appropriées.
+            case 2:
+                $artiste = Artiste::create([
+                    'id_user' => $dem->id_user,
+                    'id_theme' => 1,
+                    'nom_artiste' => null,
+                    'path_photo_profil' => 'img/artistePFP/default_artiste.png',
+                    'is_etudiant' => true,
+                    'actif' => 1,
+                    'description' => null,
+                    'couleur_banniere' => '808080'
+                ]);
+                $artiste->save();
+                $usr->notify(new Acceptation_etudiant($dem->id_user));
+                break;
+            // S'il s'agit d'une demande pour devenir professionnel, créer la ressource avec les valeurs appropriées.
+            case 3:
+                $artiste = Artiste::create([
+                    'id_user' => $dem->id_user,
+                    'id_theme' => 1,
+                    'nom_artiste' => null,
+                    'path_photo_profil' => 'img/artistePFP/default_artiste.png',
+                    'is_etudiant' => false,
+                    'actif' => false,
+                    'description' => null,
+                    'couleur_banniere' => '808080'
+                ]);
+                $artiste->save();
+                $usr->notify(new Acceptation_pro($dem->id_user));
+                break;
         }
 
         // Notifier user
@@ -204,12 +234,8 @@ class DemandeController extends Controller
         ]);
         $notif->save();
 
-        /* Aussi notifier par courriel. */
-
-        $usr = User::find($dem->id_user);
-        $usr->notify(new Acceptation_demande($dem->id_user));
-
-        return redirect()->to(route('admin-demandes'));
+        Session::flash("succes", "L'utilisateur a bel et bien été accepté !");
+        return back();
     }
 
     /**
@@ -217,21 +243,40 @@ class DemandeController extends Controller
      */
     public function deny()
     {
-        // Changer état demande
+        // S'assurer qu'une raison aie été spécifiée.
+        if (request()->input('reason') == "" || request()->input('reason') == null)
+            return back()->withErrors(['error' => "Veuillez spécifier une raison pour le refus."]);
+
+        // Charger l'ID de l'utilisateur concerné.
         $id = request()->query('id');
 
+        // Retrouver la demande
         $dem = Demande::where([
             'id_demande' => $id,
         ])->first();
 
+        // Changer son état
         $dem->id_etat = 3;
         $dem->save();
 
-        if($dem->id_type == 1)
-        {
-            /* Traiter différemment s'il s'agit d'un renouvellement refusé. */
+        // Charger l'utilisateur concerné
+        $usr = User::find($dem->id_user);
+
+        // S'il s'agit d'un renouvellement refusé, en informer l'utilisateur de la manière appropriée.
+        if ($dem->id_type == 1) {
+            // Envoyer un courriel
+            $usr->notify(new Renouvellement_refuse(request()->input('reason')));
+
+            // Rendre l'artiste inactif
+            $artiste = Artiste::where("id_user", $dem->id_user)->first();
+            $artiste->actif = 0;
+            $artiste->save();
+        } else {
+            // Envoyer un courriel
+            $usr->notify(new Refus_demande(request()->input('reason')));
         }
 
+        // Notifier in=app concernant le refus
         $notif = Notification::create([
             'id_type' => 2,
             'id_user' => $dem->id_user,
@@ -242,10 +287,8 @@ class DemandeController extends Controller
         ]);
         $notif->save();
 
-        $usr = User::find($dem->id_user);
-        $usr->notify(new Refus_demande(request()->input('reason')));
-
-        return redirect()->to(route('admin-demandes'));
+        Session::flash("succes", "L'utilisateur a bel et bien été refusé !");
+        return back();
     }
 
     /**

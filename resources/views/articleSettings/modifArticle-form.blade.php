@@ -24,6 +24,9 @@
                                 <p class="text-[200%]">&#9432;</p>
                             </x-tooltip>
                         </div>
+                        <p class="textMoyen-dark text-wrap w-full mb-1 text-justify">Assurez-vous que les photos soient
+                            prises dans un envirronnement éclairé. L'article doit se retrouver à l'intérieur et au
+                            centre du cadre.</p>
                         <div class="flex gap-input ">
                             @for ($i = 1; $i <= 5; $i++)
                                 <div id="biggerContainer">
@@ -146,7 +149,7 @@
                         <div class="flex items-center justify-between">
                             <h2 class="textGrand-dark">Dimensions et poids de l'article</h2>
                             <x-tooltip
-                                text="Les dimensions doivent être inscrit en cm et ne peuvent être plus petit que 0,1cm."
+                                text="Les dimensions doivent être inscrit en cm ou en pouce et ne peuvent être plus petit que 0,1 cm/pouce."
                                 position="left" id="1">
                                 <p class="text-[200%]">&#9432</p>
                             </x-tooltip>
@@ -174,7 +177,7 @@
                             {{-- Poids --}}
                             <x-text-input id="poidsArticle"
                                 class="col-span-1 {{ $errors->has('poidsArticle') ? 'color-borderError border-[2px]' : '' }}"
-                                type="number" name="poidsArticle" placeholder="Poids (g)" min="0" required
+                                type="number" name="poidsArticle" placeholder="Poids (g)" min="0"
                                 value="{{ $article->poids }}" step="0.01" />
                         </div>
                     </div>
@@ -202,7 +205,7 @@
                                 <option value="1" {{ $article->typePiece == 1 ? 'selected' : '' }}>
                                     Alimentaire</option>
                                 <option value="0" {{ $article->typePiece == 0 ? 'selected' : '' }}>
-                                    Non-alimentaire</option>
+                                    Non alimentaire</option>
                             </select>
 
                             {{-- IsUnique --}}
@@ -325,6 +328,16 @@
                         'message' => Session::get('erreurPhotos'),
                         'titre' => 'Photos',
                     ])
+                @endif
+
+                {{-- Artiste inactif --}}
+                @if (Session::has('errorInactif'))
+                    <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1" role="alert">
+                        @include('messages.messageFail', [
+                            'message' => Session::get('errorInactif'),
+                            'titre' => 'Artiste pas trouvée',
+                        ])
+                    </div>
                 @endif
 
                 {{-- Erreur de photos --}}

@@ -20,6 +20,6 @@ class EnsureUserIsModerateur
         if (Moderateur::where('id_user', '=', Auth::id())->exists())
             return $next($request);
 
-        return redirect('/decouverte');
+        return redirect('/');
     }
 }

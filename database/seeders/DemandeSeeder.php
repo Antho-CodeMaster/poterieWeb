@@ -46,7 +46,7 @@ class DemandeSeeder extends Seeder
             DB::table('demandes')->insert([
                 'id_type' => random_int(1, 3),
                 'id_etat' => 1,
-                'id_user' => random_int(1, 10),
+                'id_user' => random_int(1, 9),
                 'date' => now()
             ]);
         }

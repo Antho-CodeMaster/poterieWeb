@@ -6,19 +6,19 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Carbon\Carbon;
 
-class Acceptation_demande extends Notification
+class Demande_renouvellement extends Notification
 {
     use Queueable;
-
-    private $id_kiosque;
+    private $date;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct($id_kiosque)
+    public function __construct()
     {
-        $this->id_kiosque = $id_kiosque;
+        $this->date = Carbon::now()->addMonth()->locale('fr_FR')->isoFormat('dddd [le] D MMMM YYYY');
     }
 
     /**
@@ -37,8 +37,8 @@ class Acceptation_demande extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Terracium | Votre demande a été acceptée!')
-            ->markdown('mail.acceptation-demande', ['id' => $this->id_kiosque]);
+            ->subject('Terracium | Vous avez un mois pour renouveler votre abonnement chez Terracium')
+            ->markdown('mail.demande-renouvellement', ['date' => $this->date]);
     }
 
     /**

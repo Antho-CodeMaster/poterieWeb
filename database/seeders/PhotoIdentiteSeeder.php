@@ -14,7 +14,7 @@ class PhotoIdentiteSeeder extends Seeder
     public function run(): void
     {
         // Pour chacune des demandes de nouvel utilisateur étudiant (AKA juste une en ce moment)
-        for($i = 2; $i <= 2; $i++)
+        for($i = 1; $i <= 53; $i++)
         {
             // Les demandes, dans cette mise en situation, auront 3 photos d'identité chacun
             for($j = 1; $j <= 3; $j++)

@@ -16,7 +16,7 @@
                 {{-- Div de l'article --}}
                 <div class="w-[300px] m-article flex-shrink-0  whitespace-nowrap" x-data="{ openArticleModal: false }">
                     <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
-                        class="shadow-md rounded-[16px] cursor-pointer w-full h-[300px] object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200"
+                        class="shadow-md rounded-[16px] cursor-pointer w-full h-[300px] object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200 select-none"
                         @click=" $dispatch('open-article-modal');
                                  console.log('Dispatching set-article');
                                  $dispatch('set-article', '{{ $article }}');
@@ -46,8 +46,9 @@
                             </svg>
                         @endif
                     </div>
-                    <form action="{{ route('decouverte') }}" method="GET">
-                        <button type="submit" value="add" name="ajouterPanier"
+                    <form action="{{ '/addArticleToPanier' }}" method="POST">
+                        @csrf
+                        <button type="submit" value="{{ $article->id_article }}" name="id_article"
                             class="border-darkGrey border rounded-[24px] w-[100%] h-[40px] articleGrand-dark">Ajouter
                             au
                             panier

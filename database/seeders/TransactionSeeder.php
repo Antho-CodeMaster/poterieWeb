@@ -20,7 +20,7 @@ class TransactionSeeder extends Seeder
             for($j = 0; $j <= random_int(1, 10); $j++)
             {
                 $etat = random_int(1, 5);
-                $id_article = random_int(0, 50);
+                $id_article = random_int(1, 50);
                 $article = Article::where('id_article', $id_article)->get();
 
                 DB::table('transactions')->insert([
@@ -37,11 +37,11 @@ class TransactionSeeder extends Seeder
         //Générer transactions prédéfinies pour tests
         for($i = 0; $i <= 5; $i++)
         {
-            $id_article = random_int(0, 50);
+            $id_article = random_int(1, 50);
             $article = Article::where('id_article', $id_article)->get();
 
             DB::table('transactions')->insert([
-                'id_commande' => 11,
+                'id_commande' => 31,
                 'id_article' => $id_article,
                 'id_etat' => 4,
                 'id_compagnie' => random_int(1, 3),
@@ -52,7 +52,7 @@ class TransactionSeeder extends Seeder
             ]);
 
             DB::table('transactions')->insert([
-                'id_commande' => 12,
+                'id_commande' => 32,
                 'id_article' => $id_article,
                 'id_etat' => rand(2,5),
                 'id_compagnie' => random_int(1, 3),

@@ -4,6 +4,7 @@ use App\Http\Middleware\EnsureUserIsModerateur;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ArtisteController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(EnsureUserIsModerateur::class)->group(function () {
@@ -53,4 +54,10 @@ Route::middleware(EnsureUserIsModerateur::class)->group(function () {
     Route::get('/admin/transactions', function () {
         return view('admin/transactions');
     })->name('admin-transactions');
+
+    Route::get('/admin/renouvellement', function () {
+        return view('admin/renouvellement');
+    })->name('admin-display-renouvellement');
+
+    Route::post('/admin/renouvellement', [ArtisteController::class, 'renouvellement'])->name('admin-do-renouvellement');
 });

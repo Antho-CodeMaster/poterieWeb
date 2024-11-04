@@ -20,6 +20,6 @@ class EnsureUserIsAdmin
         if (Moderateur::where('id_user', '=', Auth::id())->first()->is_admin)
             return $next($request);
 
-        return redirect('/decouverte');
+        return redirect('/');
     }
 }

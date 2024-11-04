@@ -18,19 +18,40 @@ class Artiste extends Model
         'nom_artiste',
         'path_photo_profil',
         'is_etudiant',
+        'actif',
         'description',
         'couleur_banniere'
     ];
 
-    public function reseaux() {
+    public function reseaux()
+    {
         return $this->belongsToMany(Reseau::class, "reseaux_artistes", 'id_artiste', 'id_reseau')->withPivot('username');
     }
-    public function user() : BelongsTo {
-        return $this->belongsTo(User::class, 'id_user' , 'id');
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'id_user', 'id');
     }
 
-    public function articles() {
+    public function articles()
+    {
         return $this->hasMany(Article::class, 'id_artiste', 'id_artiste');
     }
-}
 
+    public function subscribed(): bool
+    {
+        $usr = User::where("id", $this->id_user)->first();
+        if ($usr->stripe_id != null) {
+            \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+            $subscriptions = \Stripe\Subscription::all([
+                'customer' => $usr->stripe_id,
+                'status' => 'active',
+            ]);
+
+            foreach ($subscriptions->data as $subscription)
+                foreach ($subscription->items->data as $item)
+                    if ($item->price->product === env("SUBSCRIPTION_PRODUCT_ID"))
+                        return true;
+        }
+        return false;
+    }
+}

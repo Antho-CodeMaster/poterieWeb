@@ -27,12 +27,12 @@
                     <div class="w-full flex justify-center gap-3 mt-3">
                         <!-- Bouton de fermeture -->
                         <x-button.grey.empty @click="openSignalArticleModal = false"
-                            class="h-[36px] text-[20px] w-[45%]  text-center" type="button" name="idArticle">
-                            Annuler la suppression
+                            class="h-[36px] text-[20px] w-[50%] text-center hover:bg-[#515151]" type="button" name="idArticle">
+                            Annuler
                         </x-button.grey.empty>
 
                         <x-button.red.empty type="submit" name="id_article"
-                            class="h-[36px] text-[20px] w-[45%] font-black text-center">
+                            class="h-[36px] text-[20px] w-[50%] font-black text-center">
                             Signalement
                         </x-button.red.empty>
                     </div>
