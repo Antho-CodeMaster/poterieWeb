@@ -50,7 +50,7 @@ class ArtisteController extends Controller
         if($artiste->actif == 0)
         {
             if (Auth::id() != $artiste->id_user){
-                session()->flash('errorInactif', 'L\'utilisateur n\'est plus artiste.');
+                session()->flash('errorInactif', 'L\'artiste n\'existe pas');
                 return redirect()->back();
             }
 

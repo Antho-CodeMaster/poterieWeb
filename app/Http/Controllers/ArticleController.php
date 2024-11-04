@@ -312,22 +312,23 @@ class ArticleController extends Controller
     public function update(Request $request, article $article)
     {
         if ($request->routeIs('deleteArticle')) {
-            $idArticle = $request->input("idArticle");
 
+            /* 1. Récupérer l'article en BD */
+            $idArticle = $request->input("idArticle");
             $article = Article::where("id_article", $idArticle)->first();
 
-            /* Changement de l'état (masqué aux clients et à l'artiste) */
+            /* 2. Changer l'état (masqué aux clients et à l'artiste) */
             $article->id_etat = 3;
 
-            /* Update de l'article en BD */
+            /* 3. Mettre à jours l'article en BD */
             if ($article->save()) {
                 session()->flash('succesDeleteArticle', 'L\'article a bien été supprimé');
             } else {
                 session()->flash('erreurDeleteArticle', 'Un problème lors de la suppression de l\'article s\'est produit');
             }
 
+            /* Retour à la vue */
             $idUser = $request->input("idUser");
-
             return redirect()->route('kiosque', ['idUser' => $idUser]);
         } elseif ($request->routeIs('modifArticle')) {
 

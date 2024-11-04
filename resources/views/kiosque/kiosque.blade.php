@@ -243,13 +243,20 @@
                                         class="border-darkGrey border rounded-[24px] w-[100%] h-[30px] articlePetit-light bg-darkGrey text-center">
                                         En rupture de stock</p>
                                 @elseif ($article->quantite_disponible > 0)
-                                    <form action="{{ '/addArticleToPanier' }}" method="POST">
-                                        @csrf
-                                        <button type="submit" value="{{ $article->id_article }}" name="id_article"
-                                            class="border-darkGrey border rounded-[24px] w-[100%] h-[30px] articlePetit-dark">Ajouter
-                                            au
-                                            panier</button>
-                                    </form>
+                                    {{-- Si l'artiste est sur son propre kiosque l'empecher d'acheter --}}
+                                    @if ($article->artiste->id_user != Auth::user()->id)
+                                        <form action="{{ '/addArticleToPanier' }}" method="POST">
+                                            @csrf
+                                            <button type="submit" value="{{ $article->id_article }}"
+                                                name="id_article"
+                                                class="border-darkGrey border rounded-[24px] w-[100%] h-[30px] articlePetit-dark">Ajouter
+                                                au
+                                                panier</button>
+                                        </form>
+                                    @else
+                                        <button type="button" value="{{ $article->id_article }}" name="id_article"
+                                            class="border-darkGrey border rounded-[24px] w-[100%] h-[30px] articlePetit-dark cursor-default">Votre propre article</button>
+                                    @endif
                                 @endif
                             @endif
                         </div>

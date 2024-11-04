@@ -1,7 +1,8 @@
-<div x-cloak @open-article-modal.window="openArticleModal = true;" class="z-[1000]" x-data="{ article: {}, photos: [], motsCles: [], currentIndex: 0, openArticleModal: false }">
+<div x-cloak @open-article-modal.window="openArticleModal = true;" class="z-[1000]" x-data="{ article: {}, artiste: {}, photos: [], motsCles: [], currentIndex: 0, openArticleModal: false }">
     {{-- Fond gris --}}
     <div x-show="openArticleModal"
         @set-article.window="article = JSON.parse($event.detail); console.log('Modal ouvert'); currentIndex = 0;"
+        @set-artiste.window="artiste = JsON.parse($event.detail);"
         @set-photos.window="photos = JSON.parse($event.detail)"
         @set-mots-cles.window="motsCles = JSON.parse($event.detail); console.log('Mots-clés mis à jour : ', this.motsCles);"
         class="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-[101]">
@@ -194,7 +195,8 @@
 
                     {{-- Boutons d'ajout au panier --}}
                     <div class="w-full flex flex-wrap justify-center" x-data="{ openSignalArticleModal: false }">
-                        <template x-if="article.quantite_disponible > 0 && article.id_etat == 1">
+                        <template
+                            x-if="article.quantite_disponible > 0 && article.id_etat == 1 && artiste.id_user != {{ Auth::user()->id }}">
                             <form action="{{ '/addArticleToPanier' }}" method="POST" class="w-full h-[64px] ">
                                 @csrf
                                 <x-button.green.empty type="submit" id="addArticleBtn"
@@ -203,6 +205,14 @@
                                     Ajouter au panier
                                 </x-button.green.empty>
                             </form>
+                        </template>
+
+                        <template
+                            x-if="article.quantite_disponible > 0 && article.id_etat == 1 && artiste.id_user == {{ Auth::user()->id }}">
+                            <x-button.green.empty type="submit" id="addArticleBtn" x-bind:value="article.id_article"
+                                name="id_article" class="w-full h-[64px] text-[36px] font-bold text-center cursor-default">
+                                Votre propre article
+                            </x-button.green.empty>
                         </template>
 
                         <template x-if="article.quantite_disponible == 0 && article.id_etat == 2">

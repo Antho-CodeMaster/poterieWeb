@@ -20,6 +20,7 @@
                         @click=" $dispatch('open-article-modal');
                                  console.log('Dispatching set-article');
                                  $dispatch('set-article', '{{ $article }}');
+                                 $dispatch('set-artiste', '{{ $article->artiste }}');
                                  $dispatch('set-photos', '{{ $article->photo_article }}');
                                  $dispatch('set-mots-cles', '{{ $article->motCles }}'); ">
 
@@ -46,14 +47,20 @@
                             </svg>
                         @endif
                     </div>
-                    <form action="{{ '/addArticleToPanier' }}" method="POST">
-                        @csrf
-                        <button type="submit" value="{{ $article->id_article }}" name="id_article"
-                            class="border-darkGrey border rounded-[24px] w-[100%] h-[40px] articleGrand-dark">Ajouter
-                            au
-                            panier
-                        </button>
-                    </form>
+                    {{-- Si l'artiste est sur son propre kiosque l'empecher d'acheter --}}
+                    @if ($article->artiste->id_user != Auth::user()->id)
+                        <form action="{{ '/addArticleToPanier' }}" method="POST">
+                            @csrf
+                            <button type="submit" value="{{ $article->id_article }}" name="id_article"
+                                class="border-darkGrey border rounded-[24px] w-[100%] h-[40px] articleGrand-dark">Ajouter
+                                au
+                                panier</button>
+                        </form>
+                    @else
+                        <button type="button" value="{{ $article->id_article }}" name="id_article"
+                            class="border-darkGrey border rounded-[24px] w-[100%] h-[40px] articleGrand-dark cursor-default">Votre
+                            propre article</button>
+                    @endif
                 </div>
             @endif
         @endforeach
@@ -62,8 +69,10 @@
 
     {{-- Flèche droite --}}
 
-    <svg id="nextBtn" class="text-darkGrey absolute right-0 cursor-pointer z-[10] transition-transform duration-200 transform hover:scale-[115%]" aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="none" viewBox="4 4 16 16">
+    <svg id="nextBtn"
+        class="text-darkGrey absolute right-0 cursor-pointer z-[10] transition-transform duration-200 transform hover:scale-[115%]"
+        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="none"
+        viewBox="4 4 16 16">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7" />
     </svg>
 
