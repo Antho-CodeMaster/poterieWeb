@@ -17,8 +17,13 @@
             <!-- Carousel Wrapper -->
             <div id="carousel-{{ $collection->id_collection }}" class="carousel bg-beige p-2 flex overflow-x-scroll scroll-smooth whitespace-nowrap scrollbar-hide w-full">
                 @foreach($collection->articles as $article)
-                    <div class="inline-block w-[300px] mx-2 flex-shrink-0 overflow-hidden whitespace-nowrap bg-white shadow-md rounded-md">
-                        <img src="/../img/{{ $article->photosArticle->path }}" alt="{{ $article->nom }}" class="w-full h-48 object-cover rounded-t-md">
+                    <div x-data='{openArticleModal: false}' class="inline-block w-[300px] mx-2 flex-shrink-0 overflow-hidden whitespace-nowrap bg-white shadow-md rounded-md">
+                        <img @click=" $dispatch('open-article-modal');
+                        console.log('Dispatching set-article');
+                        $dispatch('set-article', '{{ $article }}');
+                        $dispatch('set-photos', '{{ $article->photo_article }}');
+                        $dispatch('set-mots-cles', '{{ $article->motCles }}');"
+                        src="/../img/{{ $article->photosArticle->path }}" alt="{{ $article->nom }}" class="w-full h-48 object-cover rounded-t-md">
                         <div class="p-4">
                             <h3 class="text-lg font-bold text-nowrap overflow-hidden text-ellipsis">{{ $article->nom }}</h3>
                             <p class="text-gray-600">{{ $article->prix }}$</p>
@@ -64,5 +69,7 @@
                 </svg>
             </button>
         </div>
+        {{-- Les modals --}}
+        @include('kiosque.article-modal')
     @endif
 </div>

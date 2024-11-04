@@ -206,21 +206,21 @@
                         </template>
 
                         <template x-if="article.quantite_disponible == 0 && article.id_etat == 2">
-                            <x-button.grey.empty type="submit" id="addArticleBtn" value="confirmer"
+                            <x-button.grey.empty type="submit" value="confirmer"
                                 class="w-full h-[64px] cursor-pointer text-[36px] font-bold text-center">
                                 Masqué
                             </x-button.grey.empty>
                         </template>
 
                         <template x-if="article.id_etat == 2 && article.quantite_disponible > 0">
-                            <x-button.grey.empty type="submit" id="addArticleBtn" value="confirmer"
+                            <x-button.grey.empty type="submit" value="confirmer"
                                 class="w-full h-[64px] cursor-pointer  text-[36px] font-bold text-center">
                                 Masqué
                             </x-button.grey.empty>
                         </template>
 
                         <template x-if="article.quantite_disponible == 0">
-                            <x-button.grey.empty type="submit" id="addArticleBtn" value="confirmer"
+                            <x-button.grey.empty type="submit" value="confirmer"
                                 class="w-full h-[64px] cursor-pointer text-[36px] font-bold text-center">
                                 En rupture de stock
                             </x-button.grey.empty>

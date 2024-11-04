@@ -54,13 +54,23 @@
     <!-- Parallax Section -->
     <div id="parallax-img" class="relative top-0 h-screen w-full overflow-hidden">
         <div class="bg-cover bg-center h-full w-full" style="background-image: url('/../covers/cover_picture.png');">
-            <div class="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-                <h1 class="text-beige text-5xl font-bold">@Terracium</h1>
+            <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-between items-center h-full">
+                <!-- Centered title -->
+                <h1 class="text-beige text-5xl font-bold mt-auto mb-[25%]">@Terracium</h1>
+
+                <!-- Bottom-centered anchor link -->
+                <a href="#collections" class="mb-10 flex justify-center">
+                    <div class="arrow">
+                        <span></span>
+                        <span></span>
+                    </div>
+                </a>
             </div>
         </div>
     </div>
 
-    <div>
+
+    <div id="collections">
         @foreach ($collections as $collection)
             <x-collection-articles :collection="$collection" />
         @endforeach

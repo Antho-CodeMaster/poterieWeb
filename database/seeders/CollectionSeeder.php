@@ -17,6 +17,7 @@ class CollectionSeeder extends Seeder
         // Create the Featured Collection with 'en vedette' articles
         $featuredCollection = Collection::create(['collection' => 'En Vedette']);
         $featuredArticles = Article::where('is_en_vedette', true) // Select articles that are featured
+            ->where('id_etat', 1) // Only pick articles where id_etat = 1
             ->inRandomOrder()
             ->take(20)
             ->pluck('id_article');
@@ -24,14 +25,16 @@ class CollectionSeeder extends Seeder
 
         // Create the New Collection with the most recent articles
         $newCollection = Collection::create(['collection' => 'Nouveautés']);
-        $newArticles = Article::orderBy('created_at', 'desc') // Select the most recent articles
+        $newArticles = Article::where('id_etat', 1) // Only pick articles where id_etat = 1
+            ->orderBy('created_at', 'desc') // Select the most recent articles
             ->take(20)
             ->pluck('id_article');
         $newCollection->articles()->attach($newArticles);
 
         // Create the Random Collection with random articles
         $randomCollection = Collection::create(['collection' => 'Au hasard']);
-        $randomArticles = Article::inRandomOrder()
+        $randomArticles = Article::where('id_etat', 1) // Only pick articles where id_etat = 1
+            ->inRandomOrder()
             ->take(20)
             ->pluck('id_article');
         $randomCollection->articles()->attach($randomArticles);
