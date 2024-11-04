@@ -54,7 +54,7 @@ class AbonnementController extends Controller
 
         foreach ($subscriptions->data as $subscription)
             foreach ($subscription->items->data as $item)
-                if ($item->price->product === "prod_R8HakFOzvdUueX")
+                if ($item->price->product === env("SUBSCRIPTION_PRODUCT_ID"))
                     return back()->withErrors(['alreadySubscribed' => 'Vous êtes déjà abonnés! Vous devriez déjà pouvoir accéder à votre kiosque normalement !']);
 
         $checkoutSession = \Stripe\Checkout\Session::create([
@@ -62,7 +62,7 @@ class AbonnementController extends Controller
             'mode' => 'subscription',
             'customer' => $user->stripe_id,
             'line_items' => [[
-                'price' => 'price_1QG110I0ZVFC3GSIbVOWIApT', // Replace with your Stripe price ID
+                'price' => env("SUBSCRIPTION_PRICE_ID"),
                 'quantity' => 1,
             ]],
             'success_url' => route('kiosque', ['idUser' => $user->id]) . '?firstaccess=true',
@@ -117,7 +117,7 @@ class AbonnementController extends Controller
         // Loop through each subscription and cancel them
         foreach ($subscriptions->data as $subscription)
             foreach ($subscription->items->data as $item)
-                if ($item->price->product === "prod_R8HakFOzvdUueX")
+                if ($item->price->product === env("SUBSCRIPTION_PRODUCT_ID"))
                 {
                     \Stripe\Subscription::update($subscription->id, [
                         'cancel_at_period_end' => true, // Set to cancel at the end of the billing period

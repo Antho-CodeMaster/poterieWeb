@@ -77,16 +77,16 @@ class DemandeController extends Controller
         // Validations si c'est une demande pour un nouvel artiste
 
         if ($type != 1) {
-        // Validation de base pour les photos de preuve
-        $rules["photo-preuve"] = "required|array|between:1,10";
-        $rules["photo-preuve.*"] = "mimes:jpeg,png,jpg|max:2048";
+            // Validation de base pour les photos de preuve
+            $rules["photo-preuve"] = "required|array|between:1,10";
+            $rules["photo-preuve.*"] = "mimes:jpeg,png,jpg|max:2048";
 
-        $messages["photo-preuve.required"] = "Vous devez soumettre entre 1 et 10 photos à l'étape 1.";
-        $messages["photo-preuve.array"] = "Vous devez soumettre entre 1 et 10 photos à l'étape 1.";
-        $messages["photo-preuve.between"] = "Vous devez soumettre entre 1 et 10 photos à l'étape 1.";
+            $messages["photo-preuve.required"] = "Vous devez soumettre entre 1 et 10 photos à l'étape 1.";
+            $messages["photo-preuve.array"] = "Vous devez soumettre entre 1 et 10 photos à l'étape 1.";
+            $messages["photo-preuve.between"] = "Vous devez soumettre entre 1 et 10 photos à l'étape 1.";
 
-        $messages["photo-preuve.*.mimes"] = "Toutes les photos doivent être des fichiers .jpeg, .png ou .jpg.";
-        $messages["photo-preuve.*.max"] = "Toutes les photos doivent être moins lourdes que 2048 Ko.";
+            $messages["photo-preuve.*.mimes"] = "Toutes les photos doivent être des fichiers .jpeg, .png ou .jpg.";
+            $messages["photo-preuve.*.max"] = "Toutes les photos doivent être moins lourdes que 2048 Ko.";
         }
 
         // Validations de photo d'identité si la demande n'est pas pour un pro
@@ -183,14 +183,14 @@ class DemandeController extends Controller
         $usr = User::find($dem->id_user);
 
         switch ($dem->id_type) {
-            // S'il s'agit d'un renouvellement étudiant, simplement remettre l'étudiant actif.
+                // S'il s'agit d'un renouvellement étudiant, simplement remettre l'étudiant actif.
             case 1:
                 $artiste = Artiste::where("id_user", $dem->id_user)->first();
                 $artiste->actif = 1;
                 $artiste->save();
                 break;
 
-            // S'il s'agit d'une demande pour devenir étudiant, créer la ressource avec les valeurs appropriées.
+                // S'il s'agit d'une demande pour devenir étudiant, créer la ressource avec les valeurs appropriées.
             case 2:
                 $artiste = Artiste::create([
                     'id_user' => $dem->id_user,
@@ -204,8 +204,19 @@ class DemandeController extends Controller
                 ]);
                 $artiste->save();
                 $usr->notify(new Acceptation_etudiant($dem->id_user));
+                // Notifier user
+
+                $notif = Notification::create([
+                    'id_type' => 3,
+                    'id_user' => $dem->id_user,
+                    'date' => now(),
+                    'message' => '',
+                    'lien' => route('kiosque', ['idUser' => $dem->id_user]) .'?firstaccess=true',
+                    'visible' => 1
+                ]);
+                $notif->save();
                 break;
-            // S'il s'agit d'une demande pour devenir professionnel, créer la ressource avec les valeurs appropriées.
+                // S'il s'agit d'une demande pour devenir professionnel, créer la ressource avec les valeurs appropriées.
             case 3:
                 $artiste = Artiste::create([
                     'id_user' => $dem->id_user,
@@ -219,20 +230,19 @@ class DemandeController extends Controller
                 ]);
                 $artiste->save();
                 $usr->notify(new Acceptation_pro($dem->id_user));
+                // Notifier user
+
+                $notif = Notification::create([
+                    'id_type' => 5,
+                    'id_user' => $dem->id_user,
+                    'date' => now(),
+                    'message' => '',
+                    'lien' => route('abonnement'),
+                    'visible' => 1
+                ]);
+                $notif->save();
                 break;
         }
-
-        // Notifier user
-
-        $notif = Notification::create([
-            'id_type' => 3,
-            'id_user' => $dem->id_user,
-            'date' => now(),
-            'message' => '',
-            'lien' => null,
-            'visible' => 1
-        ]);
-        $notif->save();
 
         Session::flash("succes", "L'utilisateur a bel et bien été accepté !");
         return back();
