@@ -1,9 +1,8 @@
-<div x-cloak @open-article-modal.window="openArticleModal = true;" class="z-[1000]" x-data="{ article: {}, artiste: {}, photos: [], motsCles: [], currentIndex: 0, openArticleModal: false }">
+<div x-cloak @open-article-modal.window="openArticleModal = true;" class="z-[1000]" x-data="articleModal()">
     {{-- Fond gris --}}
     <div x-show="openArticleModal"
-        @set-article.window="article = JSON.parse($event.detail); console.log('Modal ouvert'); currentIndex = 0;"
-        @set-artiste.window="artiste = JsON.parse($event.detail);"
-        @set-photos.window="photos = JSON.parse($event.detail)"
+        @set-article.window="article = $event.detail; console.log('Modal ouvert'); currentIndex = 0;"
+        @set-artiste.window="artiste = JSON.parse($event.detail);" @set-photos.window="photos = JSON.parse($event.detail)"
         @set-mots-cles.window="motsCles = JSON.parse($event.detail); console.log('Mots-clés mis à jour : ', this.motsCles);"
         class="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-[101]">
 
@@ -12,10 +11,11 @@
 
             <section class="relative flex w-full h-[50px] items-center m-sectionY">
                 <!-- Titre centré -->
-                <p class="titre2-dark w-full text-center text-ellipsis text-wrap px-7" x-text="article.nom"></p>
+                <p class="titre2-dark w-full text-center text-ellipsis text-wrap px-7"
+                    x-html="article.nom"></p>
 
                 <!-- Bouton de fermeture -->
-                <button @click="openArticleModal = false" class="absolute right-0 hover:scale-110 duration-200">
+                <button @click="closeModal(); index = 0" class="absolute right-0 hover:scale-110 duration-200">
                     <svg class="w-9 h-9" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                         height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -85,8 +85,6 @@
                                     stroke-width="2" d="m9 5 7 7-7 7" />
                             </svg>
                         </template>
-
-
                     </div>
 
                     {{-- Dimension --}}
@@ -195,25 +193,27 @@
 
                     {{-- Boutons d'ajout au panier --}}
                     <div class="w-full flex flex-wrap justify-center" x-data="{ openSignalArticleModal: false }">
-                        <template
-                            x-if="article.quantite_disponible > 0 && article.id_etat == 1 && artiste.id_user != {{ Auth::user()->id }}">
-                            <form action="{{ '/addArticleToPanier' }}" method="POST" class="w-full h-[64px] ">
-                                @csrf
-                                <x-button.green.empty type="submit" id="addArticleBtn"
-                                    x-bind:value="article.id_article" name="id_article"
-                                    class="w-full h-[64px] text-[36px] font-bold text-center">
-                                    Ajouter au panier
-                                </x-button.green.empty>
-                            </form>
-                        </template>
 
-                        <template
-                            x-if="article.quantite_disponible > 0 && article.id_etat == 1 && artiste.id_user == {{ Auth::user()->id }}">
-                            <x-button.green.empty type="submit" id="addArticleBtn" x-bind:value="article.id_article"
-                                name="id_article" class="w-full h-[64px] text-[36px] font-bold text-center cursor-default">
-                                Votre propre article
-                            </x-button.green.empty>
-                        </template>
+                        <div x-show="article.quantite_disponible > 0 && article.id_etat == 1" class="w-full">
+                            <div x-show="artiste.id_user != {{ Auth::user()->id }}">
+                                <form action="{{ '/addArticleToPanier' }}" method="POST" class="w-full h-[64px]">
+                                    @csrf
+                                    <x-button.green.empty type="submit" id="addArticleBtn"
+                                        x-bind:value="article.id_article" name="id_article"
+                                        class="w-full h-[64px] text-[36px] font-bold text-center">
+                                        Ajouter au panier
+                                    </x-button.green.empty>
+                                </form>
+                            </div>
+
+                            <div x-show="artiste.id_user == {{ Auth::user()->id }}">
+                                <x-button.green.empty type="button" id="addArticleBtn"
+                                    x-bind:value="article.id_article" name="id_article"
+                                    class="w-full h-[64px] text-[36px] font-bold text-center cursor-default hover:bg-[#009B4D]">
+                                    Votre propre article
+                                </x-button.green.empty>
+                            </div>
+                        </div>
 
                         <template x-if="article.quantite_disponible == 0 && article.id_etat == 2">
                             <x-button.grey.empty type="submit" id="addArticleBtn" value="confirmer"
@@ -249,3 +249,24 @@
         </div>
     </div>
 </div>
+
+<script>
+    function articleModal() {
+        return {
+            openArticleModal: false,
+            article: {},
+            photos: [],
+            artiste: {},
+            motsCles: [],
+            currentIndex: 0,
+
+            closeModal() {
+                this.openArticleModal = false;
+                this.article = {};
+                this.photos = [];
+                this.motsCles = [];
+                this.artiste = {};
+            }
+        }
+    }
+</script>

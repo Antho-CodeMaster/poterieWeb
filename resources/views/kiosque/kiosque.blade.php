@@ -143,26 +143,71 @@
                                         <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
                                             class="select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200"
                                             @click=" $dispatch('open-article-modal');
-                                        console.log('Dispatching set-article');
-                                        $dispatch('set-article', '{{ $article }}');
-                                        $dispatch('set-photos', '{{ $article->photo_article }}');
-                                        $dispatch('set-mots-cles', '{{ $article->motCles }}'); ">
+                                            $dispatch('set-article', {
+                                                id_article: '{{ $article->id_article }}',
+                                                id_artiste: '{{ $article->artiste->id_artiste }}',
+                                                id_etat: '{{ $article->id_etat }}',
+                                                nom: '{{ htmlspecialchars($article->nom) }}',
+                                                description: '{{ htmlspecialchars($article->description) }}',
+                                                prix: '{{ $article->prix }}',
+                                                hauteur: '{{ $article->hauteur }}',
+                                                largeur: '{{ $article->largeur }}',
+                                                profondeur: '{{ $article->profondeur }}',
+                                                poids: '{{ $article->poids }}',
+                                                couleur: '{{ $article->couleur }}',
+                                                quantite_disponible: '{{ htmlspecialchars($article->quantite_disponible) }}',
+                                                is_unique: '{{ $article->is_unique }}',
+                                                is_alimentaire: '{{ $article->is_alimentaire }}',
+                                            });
+                                             $dispatch('set-artiste', '{{ $article->artiste }}');
+                                             $dispatch('set-photos', '{{ $article->photo_article }}');
+                                             $dispatch('set-mots-cles', '{{ $article->motCles }}'); ">
                                     @elseif ($article->quantite_disponible == 0 && $article->id_etat == 1)
                                         <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
                                             class="select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200"
                                             @click=" $dispatch('open-article-modal');
-                                        console.log('Dispatching set-article');
-                                        $dispatch('set-article', '{{ $article }}');
-                                        $dispatch('set-photos', '{{ $article->photo_article }}');
-                                        $dispatch('set-mots-cles', '{{ $article->motCles }}'); ">
+                                            $dispatch('set-article', {
+                                                id_article: '{{ $article->id_article }}',
+                                                id_artiste: '{{ $article->artiste->id_artiste }}',
+                                                id_etat: '{{ $article->id_etat }}',
+                                                nom: '{{ htmlspecialchars($article->nom) }}',
+                                                description: '{{ htmlspecialchars($article->description) }}',
+                                                prix: '{{ $article->prix }}',
+                                                hauteur: '{{ $article->hauteur }}',
+                                                largeur: '{{ $article->largeur }}',
+                                                profondeur: '{{ $article->profondeur }}',
+                                                poids: '{{ $article->poids }}',
+                                                couleur: '{{ $article->couleur }}',
+                                                quantite_disponible: '{{ htmlspecialchars($article->quantite_disponible) }}',
+                                                is_unique: '{{ $article->is_unique }}',
+                                                is_alimentaire: '{{ $article->is_alimentaire }}',
+                                            });
+                                             $dispatch('set-artiste', '{{ $article->artiste }}');
+                                             $dispatch('set-photos', '{{ $article->photo_article }}');
+                                             $dispatch('set-mots-cles', '{{ $article->motCles }}'); ">
                                     @else
                                         <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
                                             class="select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200"
                                             @click=" $dispatch('open-article-modal');
-                                        console.log('Dispatching set-article');
-                                        $dispatch('set-article', '{{ $article }}');
-                                        $dispatch('set-photos', '{{ $article->photo_article }}');
-                                        $dispatch('set-mots-cles', '{{ $article->motCles }}'); ">
+                                            $dispatch('set-article', {
+                                                id_article: '{{ $article->id_article }}',
+                                                id_artiste: '{{ $article->artiste->id_artiste }}',
+                                                id_etat: '{{ $article->id_etat }}',
+                                                nom: '{{ htmlspecialchars($article->nom) }}',
+                                                description: '{{ htmlspecialchars($article->description) }}',
+                                                prix: '{{ $article->prix }}',
+                                                hauteur: '{{ $article->hauteur }}',
+                                                largeur: '{{ $article->largeur }}',
+                                                profondeur: '{{ $article->profondeur }}',
+                                                poids: '{{ $article->poids }}',
+                                                couleur: '{{ $article->couleur }}',
+                                                quantite_disponible: '{{ htmlspecialchars($article->quantite_disponible) }}',
+                                                is_unique: '{{ $article->is_unique }}',
+                                                is_alimentaire: '{{ $article->is_alimentaire }}',
+                                            });
+                                             $dispatch('set-artiste', '{{ $article->artiste }}');
+                                             $dispatch('set-photos', '{{ $article->photo_article }}');
+                                             $dispatch('set-mots-cles', '{{ $article->motCles }}'); ">
                                     @endif
                                 </div>
 
@@ -255,7 +300,8 @@
                                         </form>
                                     @else
                                         <button type="button" value="{{ $article->id_article }}" name="id_article"
-                                            class="border-darkGrey border rounded-[24px] w-[100%] h-[30px] articlePetit-dark cursor-default">Votre propre article</button>
+                                            class="border-darkGrey border rounded-[24px] w-[100%] h-[30px] articlePetit-dark cursor-default">Votre
+                                            propre article</button>
                                     @endif
                                 @endif
                             @endif

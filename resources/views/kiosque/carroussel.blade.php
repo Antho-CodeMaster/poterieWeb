@@ -14,12 +14,26 @@
         @foreach ($articles as $article)
             @if ($article->etat->etat == 'Visible client' && $article->quantite_disponible > 0 && $article->is_en_vedette == 1)
                 {{-- Div de l'article --}}
-                <div class="w-[300px] m-article flex-shrink-0  whitespace-nowrap" x-data="{ openArticleModal: false }">
+                <div class="w-[300px] m-article flex-shrink-0  whitespace-nowrap" x-data="{ openArticleModal: false, currentIndex: 0 }">
                     <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
                         class="shadow-md rounded-[16px] cursor-pointer w-full h-[300px] object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200 select-none"
                         @click=" $dispatch('open-article-modal');
-                                 console.log('Dispatching set-article');
-                                 $dispatch('set-article', '{{ $article }}');
+                                $dispatch('set-article', {
+                                    id_article: '{{ $article->id_article }}',
+                                    id_artiste: '{{ $article->artiste->id_artiste }}',
+                                    id_etat: '{{ $article->id_etat }}',
+                                    nom: '{{ htmlspecialchars($article->nom) }}',
+                                    description: '{{ htmlspecialchars($article->description) }}',
+                                    prix: '{{ $article->prix }}',
+                                    hauteur: '{{ $article->hauteur }}',
+                                    largeur: '{{ $article->largeur }}',
+                                    profondeur: '{{ $article->profondeur }}',
+                                    poids: '{{ $article->poids }}',
+                                    couleur: '{{ $article->couleur }}',
+                                    quantite_disponible: '{{ htmlspecialchars($article->quantite_disponible) }}',
+                                    is_unique: '{{$article->is_unique}}',
+                                    is_alimentaire: '{{$article->is_alimentaire}}',
+                                });
                                  $dispatch('set-artiste', '{{ $article->artiste }}');
                                  $dispatch('set-photos', '{{ $article->photo_article }}');
                                  $dispatch('set-mots-cles', '{{ $article->motCles }}'); ">
