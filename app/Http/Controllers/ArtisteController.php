@@ -212,7 +212,7 @@ class ArtisteController extends Controller
 
         $request->user()->newSubscription(
             'pro',
-            env('subscription_pricekey')
+            env("SUBSCRIPTION_PRICE_ID")
         )->create($paymentMethodId);
 
         return "This is a plain text response without a Blade view.";
