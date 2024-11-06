@@ -1,4 +1,4 @@
-<div class="collection my-20 px-4" data-collection-id="{{ $collection->id_collection }}">
+<div class="collection my-20" data-collection-id="{{ $collection->id_collection }}">
     <h2 class="titre font-semibold mt-8 mb-4">{{ $collection->collection }}</h2>
 
     @if ($collection->articles->isEmpty())

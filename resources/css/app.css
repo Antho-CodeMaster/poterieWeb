@@ -139,9 +139,10 @@ body {
     padding: 0;
 }
 
+/* Animation pour les flèches sur la page Découverte */
 .arrow {
     position: absolute;
-    top: 50%;
+    bottom: 10%;
     left: 50%;
     transform: translate(-50%, -50%);
     cursor: pointer;
@@ -149,12 +150,11 @@ body {
 
 .arrow span {
     display: block;
-    width: 1.5vw;
-    height: 1.5vw;
+    width: 2vw;
+    height: 2vw;
     border-bottom: 5px solid white;
     border-right: 5px solid white;
     transform: rotate(45deg);
-    margin: -10px;
     animation: animate 2s infinite;
 }
 
@@ -175,4 +175,53 @@ body {
         transform: rotate(45deg) translate(10px, 10px);
     }
 }
+/* ------------------------------------------------------ */
 
+/* Hover sur les boutons anchors (#) de la page Découverte */
+.hover9::before, .hover9::after, .hover9__label::before, .hover9__label::after {
+    content: "";
+    position: absolute;
+    transition: transform 0.2s ease-out;
+}
+
+.hover9::before, .hover9::after {
+    width: 100%;
+    height: 2px;
+    background-color: currentColor; /* Matches the link color */
+    left: 0;
+}
+
+.hover9::before {
+    top: 0;
+    transform: translate3d(-101%, 0, 0);
+}
+
+.hover9::after {
+    bottom: 0;
+    transform: translate3d(101%, 0, 0);
+}
+
+.hover9__label::before, .hover9__label::after {
+    width: 2px;
+    height: 100%;
+    background-color: currentColor;
+    top: 0;
+}
+
+.hover9__label::before {
+    left: 0;
+    transform: translate3d(0, 100%, 0);
+}
+
+.hover9__label::after {
+    right: 0;
+    transform: translate3d(0, -100%, 0);
+}
+
+.hover9:hover::before, .hover9:hover::after,
+.hover9:hover .hover9__label::before, .hover9:hover .hover9__label::after,
+.hover9:focus::before, .hover9:focus::after,
+.hover9:focus .hover9__label::before, .hover9:focus .hover9__label::after {
+    transform: translate3d(0, 0, 0);
+}
+/* ------------------------------------------------------ */
