@@ -14,10 +14,10 @@ class AuthenticatedSessionController extends Controller
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create()
     {
         session()->flash('openLoginModal', 'Vous devez vous connecter pour accéder à cette fonctionnalité');
-        return view('decouverte');
+        return redirect('/');
     }
 
     /**
