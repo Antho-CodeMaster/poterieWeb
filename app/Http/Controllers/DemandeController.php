@@ -47,7 +47,19 @@ class DemandeController extends Controller
      */
     public function create(Request $request)
     {
-        return $request->getRequestUri() == "/renouvellement" ? view('demande.renouvellement') : view('demande.devenir-artiste');
+        $view = $request->getRequestUri() == "/renouvellement"
+            ? view('demande.renouvellement')
+            : view('demande.devenir-artiste');
+
+        $demande = Demande::where('id_user', Auth::id())->where('id_etat', 1)->first();
+
+        // Si on a déjà une demande pending, on ne peut pas en faire une nouvelle
+        if (Demande::where('id_user', Auth::id())->where('id_etat', 1)->first() != null)
+            return $view->withErrors([
+                'alreadyPending' => 'Vous avez déjà une demande en attente dans notre serveur, créée le ' . $demande->date . '. Veuillez attendre le verdict de l\'administration avant de réessayer.'
+            ]);
+
+        return $view;
     }
 
     /**
@@ -56,7 +68,7 @@ class DemandeController extends Controller
     public function store(Request $request)
     {
         // Si on a déjà une demande pending, on ne peut pas en faire une nouvelle
-        if (Demande::where('id_user', Auth::id())->where('id_etat', 1)->first() != null)
+        if (Demande::where('id_user', Auth::id())->where('id_etat', 1)->exists())
             return back()->withErrors(['alreadyPending' => 'Vous avez déjà une demande en attente dans notre serveur. Veuillez attendre le verdict de l\'administration avant de réessayer.']);
 
         // Assigner le bon type selon la demande
@@ -211,7 +223,7 @@ class DemandeController extends Controller
                     'id_user' => $dem->id_user,
                     'date' => now(),
                     'message' => '',
-                    'lien' => route('kiosque', ['idUser' => $dem->id_user]) .'?firstaccess=true',
+                    'lien' => route('kiosque', ['idUser' => $dem->id_user]) . '?firstaccess=true',
                     'visible' => 1
                 ]);
                 $notif->save();
