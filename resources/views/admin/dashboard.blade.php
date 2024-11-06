@@ -56,7 +56,9 @@
                     <div class="mx-auto flex flex-col">
                         <p class="mx-auto text-2xl">{{$demandes}}</p>
                         <p class="mx-auto text-2xl">Demandes d'inscription</p>
+                        @if($newDemandes > 0)
                         <span class="w-fit mx-auto bg-red-500 text-white py-1 px-2 text-center rounded-md">{{$newDemandes}} en attente</span>
+                        @endif
                     </div>
                 </a>
 
