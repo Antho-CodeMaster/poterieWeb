@@ -8,6 +8,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Models\Artiste;
+use App\Models\Notification;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -31,7 +33,7 @@ class AuthenticatedSessionController extends Controller
 
         $user = $request->user();
 
-        if($user->active == 0) {
+        if ($user->active == 0) {
             Auth::guard('web')->logout();
 
             $request->session()->invalidate();
@@ -39,12 +41,29 @@ class AuthenticatedSessionController extends Controller
             $request->session()->regenerateToken();
 
             return redirect('/');
-        }
-        else{
+        } else {
+            // Validation de l'artiste pour terminer un abonnement
+            $art = Artiste::where('id_user', Auth::id())->first();
+            if ($art != null) {
+                if ($art->is_etudiant == 0 && $art->actif == 1 && !$art->subscribed()) {
+                    $art->actif = 0;
+                    $art->save();
+
+                    // Notifier in-app pour avertir l'artiste qu'il perd ses accès
+                    $notif = Notification::create([
+                        'id_type' => 6,
+                        'id_user' => Auth::id(),
+                        'date' => now(),
+                        'message' => '',
+                        'lien' => route('profile.facturation'),
+                        'visible' => 1
+                    ]);
+                    $notif->save();
+                }
+            }
             return back();
             #return redirect()->intended(route('decouverte', absolute: false));
         }
-
     }
 
     /**

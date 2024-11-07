@@ -32,5 +32,9 @@ class TypeNotificationSeeder extends Seeder
         DB::table('types_notification')->insert([
             'description' => 'Votre demande pour devenir vendeur a été acceptée! Vous devez payer votre abonnement pour accéder au site.',
         ]);
+
+        DB::table('types_notification')->insert([
+            'description' => 'Votre abonnement est terminé! Vous pouvez le réactiver via Paramètres > Facturation.',
+        ]);
     }
 }
