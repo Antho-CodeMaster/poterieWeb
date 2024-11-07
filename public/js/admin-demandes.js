@@ -2,7 +2,8 @@ if (document.baseURI.includes("admin/demandes") && !document.baseURI.includes("t
 
     let demandes = document.getElementsByClassName("demande");
     if (demandes.length != 0) {
-        document.getElementById('nextBtn').classList.remove("invisible");
+        if(demandes.length > 1)
+            document.getElementById('nextBtn').classList.remove("invisible");
 
         let demandeIndex = 0;
         demandes[0].classList.remove("hidden");
