@@ -14,6 +14,7 @@ use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Middleware\EnsureUserIsArtist;
 use App\Http\Middleware\EnsureUserCanBecomeArtist;
+use App\Http\Middleware\EnsureUserCanSubscribe;
 use App\Http\Middleware\EnsureUserIsProArtist;
 use Illuminate\Support\Facades\Route;
 use Laravel\Cashier\Checkout;
@@ -70,8 +71,8 @@ Route::get('/buttons', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/profil/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::get('/profil/facturation', [ProfileController::class, 'methodePaiement'])->name('profile.facturation');
-    Route::get('/profil/carte/modifier', [ProfileController::class, 'stripe_facturation_form'])->name('profile.modifierCarte');
+    Route::get('/profil/facturation', [ProfileController::class, 'facturation'])->name('profile.facturation');
+    Route::get('/profil/carte/modifier', [ProfileController::class, 'stripe_methodePaiement_form'])->name('profile.modifierCarte');
     Route::get('/profil/carte/supprimer', [ProfileController::class, 'destroy_card'])->name('profile.supprimerCarte');
     Route::get('/profil/personnaliser', [ProfileController::class, 'personnaliser'])->name('profile.personnaliser');
     Route::post('/profil/edit', [ProfileController::class, 'updateBlur'])->name('profile.updateBlur');
@@ -82,8 +83,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/devenir-artiste', [DemandeController::class, 'create'])->name('devenir-artiste')->middleware(EnsureUserCanBecomeArtist::class);
     Route::post('/devenir-artiste', [DemandeController::class, 'store'])->name('store-demande-artiste');
     Route::get('/renouvellement', [DemandeController::class, 'create'])->name('renouvellement-artiste')->middleware(EnsureUserIsArtist::class);
-    Route::get('/abonnement', [AbonnementController::class, 'create'])->name('abonnement')->middleware(EnsureUserIsProArtist::class);
-    Route::post('/abonnement', [AbonnementController::class, 'store'])->name('abonnement');
+    Route::get('/abonnement', [AbonnementController::class, 'create'])->name('abonnement')->middleware(EnsureUserCanSubscribe::class);
+    Route::get('/abonnement/demarrer', [AbonnementController::class, 'store'])->name('demarrer-abonnement');
     Route::get('/abonnement/annuler', [AbonnementController::class, 'destroy'])->name('annuler-abonnement');
 });
 
