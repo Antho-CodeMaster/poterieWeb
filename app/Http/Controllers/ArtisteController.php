@@ -192,41 +192,6 @@ class ArtisteController extends Controller
         return redirect()->to(route('admin-display-renouvellement'));
     }
 
-    public function subscribe(Request $request)
-    {
-        //TODO: S'assurer que le customer existe
-        //TODO: S'assurer que le paiement fonctionne
-        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
-
-        // Retrieve the customer
-        $customer = \Stripe\Customer::retrieve(Auth::user()->stripe_id);
-
-        // Retrieve the customer's payment methods
-        $paymentMethods = \Stripe\PaymentMethod::all([
-            'customer' => $customer->id,
-            'type' => 'card',
-        ]);
-
-        // Choose the payment method you want to use
-        $paymentMethodId = $paymentMethods->data[0]->id;
-
-        $request->user()->newSubscription(
-            'pro',
-            env("SUBSCRIPTION_PRICE_ID")
-        )->create($paymentMethodId);
-
-        return "This is a plain text response without a Blade view.";
-    }
-
-    // TODO: DO THE DO
-    public function cancel(Request $request)
-    {
-
-        $request->user()->subscription('pro')->cancel();
-
-        return back();
-    }
-
     /**
      * Remove the specified resource from storage.
      */
