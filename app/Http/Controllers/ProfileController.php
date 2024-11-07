@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 use App\Models\Artiste;
+use Carbon\Carbon;
 
 class ProfileController extends Controller
 {
@@ -32,12 +33,40 @@ class ProfileController extends Controller
      */
     public function facturation(Request $request)
     {
+        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+        $stripe = new \Stripe\StripeClient(config('services.stripe.secret'));
+
+        $customer = null;
+        $art = Artiste::where('id_user', Auth::id())->first();
+
+        if(Auth::user()->stripe_id != null)
+            $customer = \Stripe\Customer::retrieve(Auth::user()->stripe_id);
+
+        // Informations pour le formulaire d'abonnement
+
+        $sub_info = null;
+        $subbed = false;
+        $was_subbed = false;
+        if ($art != null)
+            if($art->subscribed())
+                $subbed = true;
+            else
+                $was_subbed = true;
+
+        if($subbed || $was_subbed)
+        {
+            $info = \Stripe\Subscription::all([
+            'customer' => Auth::user()->stripe_id,
+            'status' => 'all'
+            ]);
+            $sub_info = $info->data[0];
+            $sub_info['debut'] = Carbon::createFromTimestamp($sub_info->created)->locale('fr_FR')->isoFormat('dddd [le] D MMMM YYYY');
+            $sub_info['debut_periode'] = Carbon::createFromTimestamp($sub_info->current_period_start)->locale('fr_FR')->isoFormat('dddd [le] D MMMM YYYY');
+            $sub_info['fin_periode'] = Carbon::createFromTimestamp($sub_info->current_period_end)->locale('fr_FR')->isoFormat('dddd [le] D MMMM YYYY');
+        }
+
         // Si la méthode de paiement a bel et bien été définie, remplacer tout ancienne méthode de paiement par la nouvelle.
         if (request()->query('success') === 'true') {
-            \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
-
-            // Retrieve the customer
-            $customer = \Stripe\Customer::retrieve(Auth::user()->stripe_id);
 
             // Retrieve existing payment methods
             $existingPaymentMethods = \Stripe\PaymentMethod::all([
@@ -49,28 +78,38 @@ class ProfileController extends Controller
             // Replace old payment methods
             for ($i = 0; $i < $totalPaymentMethods; $i++) {
                 $paymentMethod = $existingPaymentMethods->data[$i];
-                // Detach every existing payment method but not the new one
-                $paymentMethodToDetach = \Stripe\PaymentMethod::retrieve($paymentMethod->id);
-
-                if($i !== 0)
-                    $paymentMethodToDetach->detach();
+                if ($i == 0)
+                {
+                    $stripe->customers->update(Auth::user()->stripe_id, ['invoice_settings' => ['default_payment_method' => $paymentMethod->id]]);
+                    if($subbed)
+                        $stripe->subscriptions->update(
+                            $sub_info['id'],
+                            ['default_payment_method' => $paymentMethod->id]
+                        );
+                }
+                else
+                    \Stripe\PaymentMethod::retrieve($paymentMethod->id)->detach();
             }
             Session::flash('succes', 'Vos informations de facturation ont bel et bien été enregistrées!');
         }
 
-        $art = Artiste::where('id_user', Auth::id())->first();
-        $subbed = false;
-        if($art != null)
-            $subbed = $art->subscribed();
+        if($customer != null)
+            $customer->invoice_settings->default_payment_method == null ? $card_info = null : $card_info = \Stripe\PaymentMethod::retrieve($customer->invoice_settings->default_payment_method)->card;
+        else
+            $card_info = null;
+
 
         return view('profile.facturation', [
             'user' => $request->user(),
             'subbed' => $subbed,
+            'was_subbed' => $was_subbed,
             'artiste' => $art,
+            'card' => $card_info,
+            'subscription' => $sub_info
         ]);
     }
 
-    public function stripe_facturation_form()
+    public function stripe_methodePaiement_form()
     {
         \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
         $user = Auth::user();
@@ -170,5 +209,32 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    /**
+     * Delete the user's card.
+     */
+    public function destroy_card(Request $request)
+    {
+        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+        $stripe = new \Stripe\StripeClient(config('services.stripe.secret'));
+        $customer = \Stripe\Customer::retrieve(Auth::user()->stripe_id);
+
+        // Retrieve existing payment methods
+        $existingPaymentMethods = \Stripe\PaymentMethod::all([
+            'customer' => $customer->id,
+            'type' => 'card',
+        ]);
+
+        $totalPaymentMethods = count($existingPaymentMethods->data);
+        // Replace old payment methods
+        for ($i = 0; $i < $totalPaymentMethods; $i++) {
+            \Stripe\PaymentMethod::retrieve($existingPaymentMethods->data[$i]->id)->detach();
+        }
+        $stripe->customers->update(Auth::user()->stripe_id, ['invoice_settings' => ['default_payment_method' => null]]);
+
+        Session::flash('succes', 'Vos informations de facturation ont bel et bien été enregistrées!');
+
+        return redirect(route('profile.facturation'));
     }
 }

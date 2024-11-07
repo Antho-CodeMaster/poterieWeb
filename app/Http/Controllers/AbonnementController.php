@@ -20,14 +20,6 @@ class AbonnementController extends Controller
      */
     public function create()
     {
-        return view('demande/abonnement');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
         \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
 
         $user = Auth::user();
@@ -43,20 +35,6 @@ class AbonnementController extends Controller
             $user->save();
         }
 
-        // Récupérer le "Customer" associé à l'user.
-        $customer = \Stripe\Customer::retrieve($user->stripe_id);
-
-        //Validation si l'usager était déjà abonné.
-        $subscriptions = \Stripe\Subscription::all([
-            'customer' => $user->stripe_id,
-            'status' => 'active',
-        ]);
-
-        foreach ($subscriptions->data as $subscription)
-            foreach ($subscription->items->data as $item)
-                if ($item->price->product === env("SUBSCRIPTION_PRODUCT_ID"))
-                    return back()->withErrors(['alreadySubscribed' => 'Vous êtes déjà abonnés! Vous devriez déjà pouvoir accéder à votre kiosque normalement !']);
-
         $checkoutSession = \Stripe\Checkout\Session::create([
             'payment_method_types' => ['card'],
             'mode' => 'subscription',
@@ -65,12 +43,37 @@ class AbonnementController extends Controller
                 'price' => env("SUBSCRIPTION_PRICE_ID"),
                 'quantity' => 1,
             ]],
-            'success_url' => route('kiosque', ['idUser' => $user->id]) . '?firstaccess=true',
+            'success_url' => route('demarrer-abonnement'),
             'cancel_url' => url()->previous(),
             'locale' => 'fr-CA'
         ]);
 
         return redirect($checkoutSession->url);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $artiste = Artiste::where('id_user', Auth::id())->first();
+        if ($artiste->subscribed()) {
+            // MAJ de la méthode de paiement
+            \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+            $stripe = new \Stripe\StripeClient(config('services.stripe.secret'));
+            $info = \Stripe\Subscription::all([
+                'customer' => Auth::user()->stripe_id,
+                'status' => 'active'
+                ]);
+            $pm = $info->data[0]->default_payment_method;
+            $stripe->customers->update(Auth::user()->stripe_id, ['invoice_settings' => ['default_payment_method' => $pm]]);
+
+            // Artiste devient actif
+            $artiste->actif = true;
+            $artiste->save();
+            return redirect(route('kiosque', ['idUser' => Auth::id()]) . '?firstaccess=true');
+        } else
+            return url()->previous();
     }
 
     /**
@@ -94,7 +97,7 @@ class AbonnementController extends Controller
      */
     public function update(Request $request, Abonnement $abonnement)
     {
-        //
+
     }
 
     /**
@@ -105,7 +108,7 @@ class AbonnementController extends Controller
         \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
         $user = Auth::user();
 
-        if($user->stripe_id == null)
+        if ($user->stripe_id == null)
             return back()->withErrors(["error" => "Erreur lors de l'annulation de votre abonnement. Veuillez contacter l'administration via la page \"Nous contacter\"."]);
 
         // Retrieve all active subscriptions for this customer
@@ -117,8 +120,7 @@ class AbonnementController extends Controller
         // Loop through each subscription and cancel them
         foreach ($subscriptions->data as $subscription)
             foreach ($subscription->items->data as $item)
-                if ($item->price->product === env("SUBSCRIPTION_PRODUCT_ID"))
-                {
+                if ($item->price->product === env("SUBSCRIPTION_PRODUCT_ID")) {
                     \Stripe\Subscription::update($subscription->id, [
                         'cancel_at_period_end' => true, // Set to cancel at the end of the billing period
                     ]);
