@@ -15,7 +15,7 @@ class CollectionSeeder extends Seeder
     public function run(): void
     {
         // Create the Featured Collection with 'en vedette' articles
-        $featuredCollection = Collection::create(['collection' => 'En Vedette']);
+        $featuredCollection = Collection::create(['collection' => 'En vedette']);
         $featuredArticles = Article::where('is_en_vedette', true) // Select articles that are featured
             ->where('id_etat', 1) // Only pick articles where id_etat = 1
             ->inRandomOrder()
