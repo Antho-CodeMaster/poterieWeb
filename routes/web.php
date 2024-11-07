@@ -69,15 +69,16 @@ Route::get('/buttons', function () {
 })->name('buttons');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::get('/profile/facturation', [ProfileController::class, 'facturation'])->name('profile.facturation');
-    Route::get('/stripe/facturation', [ProfileController::class, 'stripe_facturation_form'])->name('stripe.facturation');
-    Route::get('/profile/personnaliser', [ProfileController::class, 'personnaliser'])->name('profile.personnaliser');
-    Route::post('/profile/edit', [ProfileController::class, 'updateBlur'])->name('profile.updateBlur');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::post('/profile/update-picture', [ArtisteController::class, 'updatePicture'])->name('artiste.updatePicture');
-    Route::post('/profile/update-name', [ArtisteController::class, 'updateName'])->name('artiste.updateName');
+    Route::get('/profil/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profil/facturation', [ProfileController::class, 'methodePaiement'])->name('profile.facturation');
+    Route::get('/profil/carte/modifier', [ProfileController::class, 'stripe_facturation_form'])->name('profile.modifierCarte');
+    Route::get('/profil/carte/supprimer', [ProfileController::class, 'destroy_card'])->name('profile.supprimerCarte');
+    Route::get('/profil/personnaliser', [ProfileController::class, 'personnaliser'])->name('profile.personnaliser');
+    Route::post('/profil/edit', [ProfileController::class, 'updateBlur'])->name('profile.updateBlur');
+    Route::patch('/profil', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profil', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('/profil/update-picture', [ArtisteController::class, 'updatePicture'])->name('artiste.updatePicture');
+    Route::post('/profil/update-name', [ArtisteController::class, 'updateName'])->name('artiste.updateName');
     Route::get('/devenir-artiste', [DemandeController::class, 'create'])->name('devenir-artiste')->middleware(EnsureUserCanBecomeArtist::class);
     Route::post('/devenir-artiste', [DemandeController::class, 'store'])->name('store-demande-artiste');
     Route::get('/renouvellement', [DemandeController::class, 'create'])->name('renouvellement-artiste')->middleware(EnsureUserIsArtist::class);
