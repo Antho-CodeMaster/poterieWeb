@@ -85,11 +85,13 @@
         </div>
     </div>
 
+{{-- Les modals --}}
+@include('kiosque.article-modal')
 
     <div id="collections">
         @foreach ($collections as $collection)
             <div id="{{ $collection->collection }}" class="pt-2">
-                <x-collection-articles :collection="$collection" />
+                <x-decouverte.collection-articles :collection="$collection" />
             </div>
         @endforeach
     </div>

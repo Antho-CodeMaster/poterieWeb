@@ -181,7 +181,7 @@ body {
 .hover9::before, .hover9::after, .hover9__label::before, .hover9__label::after {
     content: "";
     position: absolute;
-    transition: transform 0.2s ease-out;
+    transition: transform 0.15s ease-out;
 }
 
 .hover9::before, .hover9::after {
