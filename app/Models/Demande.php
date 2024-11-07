@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Demande extends Model
 {
     use HasFactory;
-    protected $fillable = ['id_type', 'id_etat', 'id_user', 'date'];
+    protected $fillable = ['id_type', 'id_etat', 'id_user', 'raison_refus', 'date'];
     protected $primaryKey = "id_demande";
     protected $table = "demandes";
 
