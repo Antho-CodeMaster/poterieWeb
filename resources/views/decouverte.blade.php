@@ -85,8 +85,8 @@
         </div>
     </div>
 
-{{-- Les modals --}}
-@include('kiosque.article-modal')
+    {{-- Les modals --}}
+    @include('kiosque.article-modal')
 
     <div id="collections">
         @foreach ($collections as $collection)
