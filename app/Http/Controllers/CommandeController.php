@@ -17,6 +17,7 @@ use Stripe\PaymentIntent;
 use Stripe\Stripe;
 use Stripe\StripeClient;
 use Stripe\Transfer;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CommandeController extends Controller
 {
@@ -244,8 +245,6 @@ class CommandeController extends Controller
 
         $urlFacture = $charge->receipt_url;
 
-        $this->recusArtistes($checkoutSession, $commande);
-
         //Notifiactions
         //Client
         Notification::firstOrCreate([
@@ -366,7 +365,7 @@ class CommandeController extends Controller
         }
     }
 
-    public function recusArtistes(Session $session, Commande $commande){
+   /* public function recusArtistes(Session $session, Commande $commande){
 
         $lineItems = Session::allLineItems($session->id);
         echo "<br>". "<br>". "<br>". "<br>". "<br>". 'line Items : ' . $lineItems;
@@ -403,6 +402,37 @@ class CommandeController extends Controller
             $invoice->finalizeInvoice();
             echo "<br>" . 'invoice : ' .$invoice;
         }
+    }*/
+
+    public function recusArtistes(int $id_commande){
+        $artiste = Artiste::where('id_user',Auth::id())->first();
+        $commande = Commande::where('id_commande',$id_commande)->first();
+
+        $itemsByArtist = [];
+        foreach ($commande->transactions as $transaction) {
+            $artistId = $transaction->article->artiste->id_artiste;
+
+            if ($artistId) {
+                $itemsByArtist[$artistId][] = $transaction;
+            }
+        }
+
+        if(array_key_exists($artiste->id_artiste,$itemsByArtist)){
+            $data = [
+                'date' => now()->format('Y-m-d'),
+                'nom_artiste' => $artiste->nom_artiste,
+                'id_artiste' => $artiste->id_artiste,
+                'transaction_date' => $commande->created_at->format('Y-m-d'),
+                'id_commande' => $commande->id,
+                'stripe_session_id' => $commande->checkout_id,
+                'transactions' => $commande->transactions
+            ];
+
+
+            $pdf = Pdf::loadView('recus/recus_template', $data);
+            return $pdf->stream('artiste_recus.pdf');
+        }
+
     }
 
 }

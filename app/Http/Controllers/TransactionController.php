@@ -45,8 +45,10 @@ class TransactionController extends Controller
         /* 4. Récupérer les transactions en lien avec les articles de l'artiste*/
         $transactions = Transaction::whereIn('id_article', $articleIds)->get();
 
+
+        //Scrap that, trash code lmao i spent to much time on this for nooooone
         /* 5. Récupérer auprès de stripe les informations de facturations */
-        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+        /*\Stripe\Stripe::setApiKey(config('services.stripe.secret'));
 
         $stripeId = Artiste::where('id_user',$idUser)->pluck('stripe_acc')->first();
 
@@ -67,12 +69,11 @@ class TransactionController extends Controller
                 $sentInvoice->sendInvoice(); // This generates the hosted link
                 $invoiceUrls[] = $sentInvoice->hosted_invoice_url;
             }
-        }
+        }*/
 
         return view('commande.commandesArtiste', [
             'articles' => $articles,
             'transactions' => $transactions,
-            'invoiceUrls' => $invoiceUrls,
         ]);
     }
 

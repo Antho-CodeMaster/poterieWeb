@@ -1,5 +1,4 @@
 <x-app-layout>
-    @dump($invoiceUrls)
     <div class="flex content-height">
         @include('articleSettings.articleSettings-sideMenu')
 
@@ -81,6 +80,9 @@
                                         {{ $commandeTransactions->first()->commande->date }}</p>
                                 @endif
                             </div>
+                        </div>
+                        <div class="flex w-full p-sectionX p-sectionTop gap-1 underline">
+                            <a href="/facture/vente/{{$commandeId}}" target="_blank">Facture</a>
                         </div>
 
                         {{-- Transactions qui ont besoin d'être traitées --}}

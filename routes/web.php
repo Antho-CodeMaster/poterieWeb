@@ -89,6 +89,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/stripe/create-account', [ProfileController::class, 'creeCompteConnect'])->name('stripe.connect');
     Route::get('/connect', [ProfileController::class, 'connectReturn'])->name('connect-return');
     Route::get('/refresh', [ProfileController::class, 'connectRefresh'])->name('connect-refresh');
+
+    //Route pour la génération de facture
+    Route::get('/facture/vente/{id_commande}', [CommandeController::class,'recusArtistes'])->name('recus');
 });
 
 Route::get('/recherche', [ArticleController::class, 'getSearch'])->name('recherche.getSearch');
