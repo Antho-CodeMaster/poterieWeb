@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Commande;
 use App\Models\Artiste;
+use App\Models\Notification;
 use App\Models\Ville;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
@@ -15,6 +16,7 @@ use Stripe\Checkout\Session;
 use Stripe\PaymentIntent;
 use Stripe\Stripe;
 use Stripe\StripeClient;
+use Stripe\Transfer;
 
 class CommandeController extends Controller
 {
@@ -191,6 +193,7 @@ class CommandeController extends Controller
                     'type' => 'fixed_amount'
                 ]]
             ],
+            'metadata' => ['id_commande' => $commande->id_commande],
         ]);
 
         $commande->update([
@@ -219,6 +222,7 @@ class CommandeController extends Controller
 
         //On recupere les infos de shipping
         $addressLine = $paymentIntent->shipping->address->line1 ;
+        $addressLine = str_replace(',', ' ', $addressLine);
         preg_match('/^(\d+)\s+(.*)$/', $addressLine, $matches);
 
         $noCivique = $matches[1] ?? null;
@@ -236,7 +240,38 @@ class CommandeController extends Controller
             'date' => now()
         ]);
 
+        //Envoi des reçus
+
         $urlFacture = $charge->receipt_url;
+
+        $this->recusArtistes($checkoutSession, $commande);
+
+        //Notifiactions
+        //Client
+        Notification::firstOrCreate([
+            'lien' => '/commande/'.$commande->id_commande,
+            'id_user' => Auth::id()
+        ],[
+            'message' => 'cliquez ici ou visitez la section "mes commandes".',
+            'date' => now(),
+            'id_type' => 6,
+            'visible' => true
+        ]);
+
+        //Artiste
+        foreach($commande->transactions as $transaction){
+            Notification::firstOrCreate([
+                'lien' => '/mesTransactions/'.$transaction->article->id_artiste,
+                'message' => 'Vous avez des nouvelles transactions à traiter en lien avec la commande no:'.$commande->id_commande,
+                'id_user' => $transaction->article->artiste->id_user
+            ],[
+                'date' => now(),
+                'id_type' => 6,
+                'visible' => true
+            ]);
+        }
+
+
 
         return view('commande.success',['commande' => $commande, 'facture'=>$urlFacture]);
     }
@@ -251,9 +286,12 @@ class CommandeController extends Controller
                     'product_data' => [
                         'name' => $transaction->article->nom,
                     ],
+
                     'unit_amount' => $transaction->prix_unitaire * 100, // Prix en cenne (Prix en dollards * 100)
                 ],
                 'quantity' => $transaction->quantite,
+
+
             ];
 
             /**Ajoute l'item a l'array */
@@ -303,6 +341,68 @@ class CommandeController extends Controller
         }
 
         return $commande;
+    }
+
+
+    public function payerArtistes(Commande $commande){
+        $transactions = Transaction::where('id_commande',$commande->id_commande)->groupBy('id_artiste')->get();
+        foreach($transactions as $transaction){
+            Transfer::create([
+                'amount' => $transaction->prix_unitaire * $transaction->quantite,
+                'currency' => 'cad',
+                'source_transaction' => $commande->id_commande,
+                'destination' => $transaction->article->artiste->user->stripe_id
+            ]);
+
+            Notification::firstOrCreate([
+                'lien' => '/mesTransactions/'.$transaction->id_artiste,
+                'message' => 'Vous avez des nouvelles transactions à traiter en lien avec la commande no:'.$commande->id_commande,
+                'id_user' => $transaction->artiste->id_user
+            ],[
+                'date' => now(),
+                'id_type' => 6,
+                'visible' => true
+            ]);
+        }
+    }
+
+    public function recusArtistes(Session $session, Commande $commande){
+
+        $lineItems = Session::allLineItems($session->id);
+        echo "<br>". "<br>". "<br>". "<br>". "<br>". 'line Items : ' . $lineItems;
+
+        $itemsByArtist = [];
+        foreach ($commande->transactions as $transaction) {
+            $artistId = $transaction->article->artiste->id_artiste;
+            if ($artistId) {
+                $itemsByArtist[$artistId][] = $transaction;
+            }
+        }
+
+
+        foreach ($itemsByArtist as $artistId => $transactions) {
+
+            $stripeAcc = $transaction->article->artiste->stripe_acc;
+            foreach ($transactions as $transaction) {
+                \Stripe\InvoiceItem::create([
+                    'customer' => $session->customer,
+                    'amount' => $transaction->prix_unitaire * $transaction->quantite * 100,
+                    'currency' => $session->currency,
+                    'description' => $transaction->article->nom,
+                ]);
+            }
+
+            $invoice = \Stripe\Invoice::create([
+                'customer' => $session->customer,
+                'on_behalf_of' => $stripeAcc,
+                'transfer_data' => ['destination' => $stripeAcc],
+                'metadata' => ['artist_id' => $artistId, 'session_id' => $session->id, 'id_commande' => $commande->id_commande],
+            ]);
+
+
+            $invoice->finalizeInvoice();
+            echo "<br>" . 'invoice : ' .$invoice;
+        }
     }
 
 }

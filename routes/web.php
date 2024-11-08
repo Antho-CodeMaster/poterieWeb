@@ -84,6 +84,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/abonnement', [AbonnementController::class, 'create'])->name('abonnement')->middleware(EnsureUserIsProArtist::class);
     Route::post('/abonnement', [AbonnementController::class, 'store'])->name('abonnement');
     Route::get('/abonnement/annuler', [AbonnementController::class, 'destroy'])->name('annuler-abonnement');
+
+    /** Route lié a stripe connect*/
+    Route::get('/stripe/create-account', [ProfileController::class, 'creeCompteConnect'])->name('stripe.connect');
+    Route::get('/connect', [ProfileController::class, 'connectReturn'])->name('connect-return');
+    Route::get('/refresh', [ProfileController::class, 'connectRefresh'])->name('connect-refresh');
 });
 
 Route::get('/recherche', [ArticleController::class, 'getSearch'])->name('recherche.getSearch');

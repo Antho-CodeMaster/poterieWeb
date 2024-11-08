@@ -23,6 +23,9 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->char('couleur_banniere', 6);
             $table->timestamps();
+
+            //Pour Stripe
+            $table->string('stripe_acc')->nullable();
         });
 
         Schema::table('artistes', function (Blueprint $table) {

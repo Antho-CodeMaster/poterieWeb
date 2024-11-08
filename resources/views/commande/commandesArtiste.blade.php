@@ -1,4 +1,5 @@
 <x-app-layout>
+    @dump($invoiceUrls)
     <div class="flex content-height">
         @include('articleSettings.articleSettings-sideMenu')
 

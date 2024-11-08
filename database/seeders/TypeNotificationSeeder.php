@@ -32,5 +32,10 @@ class TypeNotificationSeeder extends Seeder
         DB::table('types_notification')->insert([
             'description' => 'Votre demande pour devenir vendeur a été acceptée! Vous devez payer votre abonnement pour accéder au site.',
         ]);
+
+        DB::table('types_notification')->insert([
+            'description' => 'Vous avez une nouvelle commande en cours, [1]',
+        ]);
+
     }
 }
