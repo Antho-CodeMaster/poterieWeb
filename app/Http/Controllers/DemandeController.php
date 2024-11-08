@@ -236,7 +236,7 @@ class DemandeController extends Controller
                     'nom_artiste' => null,
                     'path_photo_profil' => 'img/artistePFP/default_artiste.png',
                     'is_etudiant' => false,
-                    'actif' => false,
+                    'actif' => false, //Car l'artiste doit payer pour activer son abonnement
                     'description' => null,
                     'couleur_banniere' => '808080'
                 ]);

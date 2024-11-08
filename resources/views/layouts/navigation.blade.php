@@ -119,7 +119,7 @@ window.addEventListener('scroll', () => {
                                         $notification,
                                     ) {
                                         return $notification->visible == 1;
-                                    });
+                                    })->sortByDesc('date');
                                 @endphp
 
                                 @if ($visibleNotifications->isNotEmpty())

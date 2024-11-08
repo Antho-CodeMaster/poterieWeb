@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ArtisteController;
+use App\Http\Controllers\RenouvellementController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(EnsureUserIsModerateur::class)->group(function () {
@@ -59,5 +60,5 @@ Route::middleware(EnsureUserIsModerateur::class)->group(function () {
         return view('admin/renouvellement');
     })->name('admin-display-renouvellement');
 
-    Route::post('/admin/renouvellement', [ArtisteController::class, 'renouvellement'])->name('admin-do-renouvellement');
+    Route::post('/admin/renouvellement', [RenouvellementController::class, 'store'])->name('admin-do-renouvellement');
 });

@@ -4,13 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Artiste;
 use App\Models\Reseau;
-use App\Models\Notification;
-use App\Notifications\Demande_renouvellement;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Reseau_artiste;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use App\Models\Notification;
 
 class ArtisteController extends Controller
 {
@@ -161,35 +159,6 @@ class ArtisteController extends Controller
         // Redirect back with a success message
         return redirect()->route('profile.personnaliser')
             ->with('status', 'artiste-name-updated');
-    }
-    public function renouvellement()
-    {
-        $artistes = Artiste::where([
-            'is_etudiant' => 1,
-        ])->get();
-
-        foreach ($artistes as $artiste) {
-            // Notifier user
-
-            $notif = Notification::create([
-                'id_type' => 4,
-                'id_user' => $artiste->id_user,
-                'date' => now(),
-                'message' => '',
-                'lien' => null,
-                'visible' => 1
-            ]);
-            $notif->save();
-
-            /* Aussi notifier par courriel. */
-
-            $usr = User::find($artiste->id_user);
-            $usr->notify(new Demande_renouvellement($artiste->id_user));
-        }
-
-
-
-        return redirect()->to(route('admin-display-renouvellement'));
     }
 
     /**
