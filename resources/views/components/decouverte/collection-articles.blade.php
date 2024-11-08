@@ -1,4 +1,4 @@
-<div class="collection my-20 px-4" data-collection-id="{{ $collection->id_collection }}">
+<div class="my-20" data-collection-id="{{ $collection->id_collection }}">
     <h2 class="titre font-semibold mt-8 mb-4">{{ $collection->collection }}</h2>
 
     @if ($collection->articles->isEmpty())
@@ -18,12 +18,13 @@
             <div id="carousel-{{ $collection->id_collection }}" class="carousel bg-beige p-2 flex overflow-x-scroll scroll-smooth whitespace-nowrap scrollbar-hide w-full">
                 @foreach($collection->articles as $article)
                     <div x-data='{openArticleModal: false}' class="inline-block w-[300px] mx-2 flex-shrink-0 overflow-hidden whitespace-nowrap bg-white shadow-md rounded-md">
-                        <img @click=" $dispatch('open-article-modal');
+                        <img
+                        src="/../img/{{ $article->photosArticle->path }}" alt="{{ $article->nom }}" class="w-full h-48 object-cover rounded-t-md"
+                        @click=" $dispatch('open-article-modal');
                         console.log('Dispatching set-article');
                         $dispatch('set-article', '{{ $article }}');
                         $dispatch('set-photos', '{{ $article->photo_article }}');
-                        $dispatch('set-mots-cles', '{{ $article->motCles }}');"
-                        src="/../img/{{ $article->photosArticle->path }}" alt="{{ $article->nom }}" class="w-full h-48 object-cover rounded-t-md">
+                        $dispatch('set-mots-cles', '{{ $article->motCles }}');" >
                         <div class="p-4">
                             <h3 class="text-lg font-bold text-nowrap overflow-hidden text-ellipsis">{{ $article->nom }}</h3>
                             <p class="text-gray-600">{{ $article->prix }}$</p>
@@ -69,7 +70,5 @@
                 </svg>
             </button>
         </div>
-        {{-- Les modals --}}
-        @include('kiosque.article-modal')
     @endif
 </div>
