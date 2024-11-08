@@ -332,7 +332,7 @@ class ArticleController extends Controller
             return redirect()->route('kiosque', ['idUser' => $idUser]);
         } elseif ($request->routeIs('modifArticle')) {
 
-            /* Vérifie si l'artiste est actif ou non */
+            /* 1. Vérifie si l'artiste est actif ou non */
             $artiste = Artiste::with("reseaux", "articles")->where('id_artiste', $request->input("idArtiste"))->first();
             if ($artiste->actif == 0) {
                 if (Auth::id() != $artiste->id_user) {
@@ -344,7 +344,7 @@ class ArticleController extends Controller
                 return redirect()->back();
             }
 
-            /* Validation des entrés */
+            /* 2. Validation des entrés */
             $validatedData = $request->validate([
                 "idArtiste" => "required",
                 "masquer" => "required|",
@@ -409,10 +409,17 @@ class ArticleController extends Controller
                 'photo5.mimes' => 'La photo 5 doit être au format JPEG, PNG ou JPG.',
             ]);
 
-            /* Chercher l'article à modifier */
+            /* 3. Stock des cm même si l'entré c'est des pouces */
+            if ($artiste->units == 1) {
+                $validatedData['hauteurArticle'] = $validatedData['hauteurArticle'] * 2.54;
+                $validatedData['largeurArticle'] = $validatedData['largeurArticle'] * 2.54;
+                $validatedData['profondeurArticle'] = $validatedData['profondeurArticle'] * 2.54;
+            }
+
+            /* 4. Chercher l'article à modifier */
             $article = Article::where('id_article', $request->input("idArticle"))->first();
 
-            /* Update de l'article*/
+            /* 5. Update de l'article*/
             if ($article->update([
                 'id_etat' => $validatedData['masquer'],
                 'nom' => $validatedData['nomArticle'],
@@ -432,9 +439,12 @@ class ArticleController extends Controller
                 session()->flash('succesArticle', 'L\'article a bien été modifié');
             } else {
                 session()->flash('erreurArticle', 'Un problème lors de la modification de l\'article s\'est produit');
+
+                /* Retour à la vue */
+                return redirect()->route('modifArticleForm', ['idArticle' => $article->id_article]);
             }
 
-            /* Gestion des mots clés*/
+            /* 6. Gestion des mots clés*/
             # On supprime tous les anciennes liaisons pour en refaire des nouveaux meme si ce sont les mêmes.
             $article->motCles()->detach();
 
@@ -445,8 +455,9 @@ class ArticleController extends Controller
                 /* Vérifie si le mot clé existe dans la table "Mot_Cle", si non il le crée et si oui, il y accède */
                 $instanceMotCle = Mot_cle::where("mot_cle", $motCle)->firstOrCreate(["mot_cle" => $motCle]);
                 if ($instanceMotCle == null) {
-                    session()->flash('erreurMotsCles', 'Un problème lors de l\'ajout des mots clés s\'est produit, veuillez réessayer.');
-                    #return->back();??
+                    session()->flash('erreurMotsCles', 'Un problème lors de l\'ajout des mots clés s\'est produit, veuillez réessayer');
+                    /* Retour à la vue */
+                    return redirect()->route('modifArticleForm', ['idArticle' => $article->id_article]);
                 }
                 /* Cherche le mot clé dans la table de jonction et l'update */
                 Mot_cle_article::where("id_mot_cle", $instanceMotCle->id_mot_cle)
@@ -457,18 +468,8 @@ class ArticleController extends Controller
                     ]);
             }
 
-            // Gestion du téléchargement de l'image
+            // 7. Gestion du téléchargement de l'image
             for ($i = 1; $i <= 5; $i++) {
-
-                /*
-            Je dois vérifier quelle photo ont été modifié,
-                Je dois retrouvé le photo_article de ces photos et changer leur paths en téléchargeant la nouvelle photo
-                Je dois supprimer l'acienne photo de mon stockage en utilisant son ancien path
-
-
-            quelle photo Sont nouveau
-                Je dois ajouté cette path dans le photo_article et ensuite télécharger la nouvelle photo*/
-
                 if ($request->hasFile('photo' . $i)) {
                     $file = $request->file('photo' . $i);
                     $originalFilename = $file->getClientOriginalName(); // Récupérer le nom original
@@ -499,7 +500,7 @@ class ArticleController extends Controller
 
                                 // Enregistrer les changements
                                 if (!$photoToUpdate->save()) {
-                                    session()->flash('erreurPhotos', 'Un problème lors de la mise à jour des photos s\'est produit, veuillez réessayer.');
+                                    session()->flash('erreurPhotos', 'Un problème lors de la mise à jour des photos s\'est produit, veuillez réessayer');
                                     #return back();
                                 }
                             }
@@ -511,8 +512,9 @@ class ArticleController extends Controller
 
                             // Stockage en BD de la nouvelle photo
                             if (!$newPhotoArticle->save()) {
-                                session()->flash('erreurPhotos', 'Un problème lors de l\'ajout des photos s\'est produit, veuillez réessayer.');
-                                # return back();
+                                session()->flash('erreurPhotos', 'Un problème lors de l\'ajout des photos s\'est produit, veuillez réessayer');
+                                /* Retour à la vue */
+                                return redirect()->route('modifArticleForm', ['idArticle' => $article->id_article]);
                             }
                         }
                     } elseif ($fileExistsInStorage) #Si la photo existe dans le disque dur
@@ -530,8 +532,9 @@ class ArticleController extends Controller
 
                                 // Enregistrer les changements
                                 if (!$photoToUpdate->save()) {
-                                    session()->flash('erreurPhotos', 'Un problème lors de la mise à jour des photos s\'est produit, veuillez réessayer.');
-                                    #return back();
+                                    session()->flash('erreurPhotos', 'Un problème lors de la mise à jour des photos s\'est produit, veuillez réessayer');
+                                    /* Retour à la vue */
+                                    return redirect()->route('modifArticleForm', ['idArticle' => $article->id_article]);
                                 }
                             }
                         } else {
@@ -544,8 +547,9 @@ class ArticleController extends Controller
 
                             // Stockage en BD de la nouvelle photo
                             if (!$newPhotoArticle->save()) {
-                                session()->flash('erreurPhotos', 'Un problème lors de l\'ajout des photos s\'est produit, veuillez réessayer.');
-                                # return back();
+                                session()->flash('erreurPhotos', 'Un problème lors de l\'ajout des photos s\'est produit, veuillez réessayer');
+                                /* Retour à la vue */
+                                return redirect()->route('modifArticleForm', ['idArticle' => $article->id_article]);
                             }
                         }
                     }
@@ -566,6 +570,7 @@ class ArticleController extends Controller
                 }
             }
 
+            /* Retour à la vue */
             return redirect()->route('modifArticleForm', ['idArticle' => $article->id_article]);
         }
     }

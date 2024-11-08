@@ -43,18 +43,18 @@
                         {{-- Regrouppement de tous les transactions --}}
                         <div class="rounded-[12px] flex flex-wrap gap-input w-full mb-2">
                             {{-- Informations de commande --}}
-                            <div class="flex w-full p-sectionX p-sectionTop gap-1">
+                            <div class="flex w-full p-sectionTop gap-1">
 
                                 <div class="flex flex-col w-[45%]">
                                     {{-- Nom du client acheteur --}}
                                     <div class="flex gap-1 items-baseline w-full">
-                                        <p class="textGrand-dark font-bold">Client:</p>
+                                        <p class="textGrand-dark font-bold">Client :</p>
                                         <p class="textGrand-dark text-nowrap text-ellipsis overflow-hidden">
                                             {{ $commandeTransactions->first()->commande->user->name }}</p>
                                     </div>
                                     {{-- Date de prise de commande --}}
                                     <div class="flex gap-1 items-baseline w-full">
-                                        <p class="textGrand-dark font-bold">Date de commande:</p>
+                                        <p class="textGrand-dark font-bold">Date de commande :</p>
                                         @if (
                                             $commandeTransactions->first()->commande->no_civique == null ||
                                                 $commandeTransactions->first()->commande->rue == null)
@@ -69,7 +69,7 @@
 
                                 <div class="flex flex-col w-[55%]">
                                     <div class="w-full">
-                                        <p class="textGrand-dark font-bold">Adresse de livraison</p>
+                                        <p class="textGrand-dark font-bold">Adresse de livraison :</p>
                                     </div>
 
                                     {{-- Addresse de livraison  --}}
@@ -123,7 +123,7 @@
 
                                     {{-- Status --}}
                                     <div class="w-[10%] flex flex-col gap-1">
-                                        <p class="textMoyen-dark font-bold">Status:</p>
+                                        <p class="textMoyen-dark font-bold">Statut:</p>
                                         <p
                                             class="textMoyen underline font-bold text-nowrap text-ellipsis overflow-hidden {{-- Bug de couleur de texte --}}
                                         {{ $transaction->id_etat == 2 ? 'text-jauneWarning' : '' }}
@@ -137,7 +137,7 @@
                                     <div class="w-[30%] flex flex-col gap-1 justify-between">
                                         {{-- Date de récéption prévue --}}
                                         <div class="w-full flex flex-col gap-1">
-                                            <p class="textMoyen-dark font-bold">Date de réception pévue:</p>
+                                            <p class="textMoyen-dark font-bold">Date de réception prévue:</p>
                                             @if ($transaction->id_etat == 3 || $transaction->id_etat == 4 || $transaction->id_etat == 5)
                                                 <p class="textMoyen-dark text-nowrap text-ellipsis overflow-hidden">
                                                     {{ $transaction->date_reception_prevue }}
@@ -166,7 +166,7 @@
                                                 </p>
                                             @elseif ($transaction->id_etat == 2 || $transaction->id_etat == 3)
                                                 <p class="textMoyen-dark text-nowrap text-ellipsis overflow-hidden">
-                                                    Pas encore délivré
+                                                    Pas encore livré
                                                 </p>
                                             @endif
                                         </div>

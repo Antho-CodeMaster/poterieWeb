@@ -52,7 +52,7 @@ class ProfileController extends Controller
                 // Detach every existing payment method but not the new one
                 $paymentMethodToDetach = \Stripe\PaymentMethod::retrieve($paymentMethod->id);
 
-                if($i !== 0)
+                if ($i !== 0)
                     $paymentMethodToDetach->detach();
             }
             Session::flash('succes', 'Vos informations de facturation ont bel et bien été enregistrées!');

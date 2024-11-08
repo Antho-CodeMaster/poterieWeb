@@ -7,6 +7,7 @@ use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\TransactionController;
@@ -41,7 +42,7 @@ Route::controller(CommandeController::class)->group(function () {
     Route::get('/commande/{id}', 'show');
 
     /**Route pour Cashier */
-    Route::get('/checkout','checkoutCommande')->name('checkout');
+    Route::get('/checkout', 'checkoutCommande')->name('checkout');
     Route::get('/checkout/success', 'success')->name('checkout-success');
     Route::get('/checkout/cancel', 'cancel')->name('checkout-cancel');
 });
@@ -53,7 +54,7 @@ Route::controller(TransactionController::class)->group(function () {
     Route::get('/mesTransactions/{idUser}', [TransactionController::class, 'mesTransactions'])->name('mesTransactions');
     Route::get('/traiterTransactionForm/{idTransaction}', [TransactionController::class, 'edit'])->name('traiterTransactionForm');
     Route::post('/traiterTransaction', [TransactionController::class, 'update'])->name('traiterTransaction');
-    Route::post('/updateQuantite','updateQt')->name('update');
+    Route::post('/updateQuantite', 'updateQt')->name('update');
 });
 
 Route::get('/buttons', function () {
@@ -74,6 +75,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/devenir-artiste', [DemandeController::class, 'store'])->name('store-demande-artiste');
     Route::get('/renouvellement', [DemandeController::class, 'create'])->name('renouvellement-artiste')->middleware(EnsureUserIsArtist::class);
     Route::post('/renouvellement', [DemandeController::class, 'storeRenouvellement'])->name('store-renouvellement-artiste');
+});
+
+/* Route lié à l'utilisateur */
+Route::controller(UserController::class)->group(function () {
+    Route::post('/updateUnits', [UserController::class, 'updateUnits'])->name('updateUnits');
 });
 
 Route::get('/recherche/{search}', [ArticleController::class, 'getSearch'])->name('recherche.getSearch');

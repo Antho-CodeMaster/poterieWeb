@@ -14,7 +14,7 @@
                     <div class="grid m-sectionFormY">
                         <div class="">
                             <div class="flex items-center justify-between">
-                                <h2 class="textGrand-dark">Téléversez les photos de livraison</h2>
+                                <h2 class="textGrand-dark">Téléversement des photos de livraison</h2>
                                 <x-tooltip
                                     text="<ul class='list-disc ml-5'>
                                     <li>Les fichiers téléversés ne peuvent être que de format JPEG, JPG ou PNG</li>
@@ -24,10 +24,8 @@
                                     <p class="text-[200%] cursor-pointer">&#9432;</p>
                                 </x-tooltip>
                             </div>
-                            <p class="textMoyen-dark text-wrap w-full mb-1 text-justify">Veuillez téléversez jusqu'à 3
-                                photos. Ils acteront en tant que
-                                preuve
-                                de livraison. Assurez-vous que les photos soient prises dans un envirronnement éclairé,
+                            <p class="textMoyen-dark text-wrap w-full mb-1 text-justify">Veuillez téléverser une photo du colis et une photo du numéro de suivi. Elles serviront de preuves
+                                de livraison. Assurez-vous que les photos soient prises dans un environnement éclairé,
                                 bien
                                 cadré et à l'intérieur du cadre de la photo.</p>
                         </div>
