@@ -24,7 +24,7 @@ class ArtisteFactory extends Factory
             'is_etudiant' => random_int(0, 1),
             'actif' => 1,
             'description' => fake()->sentence(random_int(5, 10), true),
-            'couleur_banniere' => '808080'
+            'couleur_banniere' => 'neutral-500'
         ];
     }
 }

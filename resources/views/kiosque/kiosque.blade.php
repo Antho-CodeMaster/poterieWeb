@@ -5,8 +5,7 @@
     @endif
 
     {{-- Section Bannière --}}
-    <section class="flex items-center justify-between p-[16px]"
-        style="background-color: #{{ $artiste->couleur_banniere }}">
+    <section class="flex items-center justify-between p-[16px] bg-{{ $artiste->couleur_banniere }}">
 
 
         <div class="flex-1 ">

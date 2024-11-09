@@ -162,6 +162,18 @@ class ArtisteController extends Controller
             ->with('status', 'artiste-name-updated');
     }
 
+    public function updateColor(Request $request)
+    {
+        $artiste = Auth::user()->artiste;
+        $color = str_replace('bg-', '', $request->input('couleur_banniere'));
+
+        // Save the color to the artiste model
+        $artiste->couleur_banniere = $color;
+        $artiste->save();
+
+        return redirect()->back()->with('status', 'kiosque-color-updated');
+    }
+
     /**
      * Remove the specified resource from storage.
      */

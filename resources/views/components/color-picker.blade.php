@@ -1,10 +1,15 @@
 <div class="bg-white mx-auto my-auto p-6">
-    <div x-data="colorPicker()" x-init="[initColor()]">
+    <form action="{{ route('artiste.updateColor') }}" method="POST" x-data="colorPicker()"
+        x-init="[initColor('{{ isset($artiste->couleur_banniere) ? 'bg-' . $artiste->couleur_banniere : 'bg-neutral-500' }}')]">
+        @csrf <!-- Include CSRF token for security -->
         <div>
-            <label for="color-picker" class="block mb-1 font-semibold">Choisir une couleur</label>
+            <label for="color-picker" class="block mb-1 font-semibold">Choisir la couleur de bannière du kiosque</label>
             <div class="flex flex-row relative">
                 <!-- Input for the current color -->
                 <input id="color-picker" class="border border-gray-400 p-2 rounded-lg" readonly x-model="currentColor">
+
+                <!-- Hidden input to submit the selected color -->
+                <input type="hidden" name="couleur_banniere" :value="currentColor">
 
                 <!-- Color preview button that toggles the dropdown -->
                 <div @click="isColorPickerOpen = !isColorPickerOpen"
@@ -23,7 +28,7 @@
                 <!-- Dropdown for color selection -->
                 <div x-show="isColorPickerOpen"
                      @click.away="handleCloseDropdown"
-                     class="absolute right-0 top-full mt-2 border border-gray-300 rounded-md shadow-lg bg-white p-2 z-30">
+                     class="absolute left-0 top-full mt-2 border border-gray-300 rounded-md shadow-lg bg-white p-2 z-30">
                     <div class="rounded-md bg-white shadow-xs p-2">
                         <div class="flex flex-wrap">
                             <template x-for="color in colors" :key="color">
@@ -43,50 +48,19 @@
                 </div>
             </div>
         </div>
-    </div>
+
+        <div class="flex items-center mt-2 gap-4">
+            <x-primary-button class="hover:bg-lightVert bg-vert">{{ __('Sauvegarder') }}</x-primary-button>
+
+            @if (session('status') === 'kiosque-color-updated')
+                <p
+                    x-data="{ show: true }"
+                    x-show="show"
+                    x-transition
+                    x-init="setTimeout(() => show = false, 2000)"
+                    class="text-sm text-gray-600"
+                >{{ __('Sauvegardé.') }}</p>
+            @endif
+        </div>
+    </form>
 </div>
-
-<!-- Script -->
-<script>
-    function colorPicker() {
-        return {
-            colors: ['slate', 'gray', 'zinc', 'neutral', 'stone', 'red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose'],
-            variants: [100, 200, 300, 400, 500, 600, 700, 800, 900],
-            currentColor: '',
-            iconColor: '',
-            isColorPickerOpen: false, // Renamed to make it more specific
-
-            initColor() {
-                this.currentColor = 'bg-emerald-400'; // Initialize with default color
-                this.setIconBlack(); // Set default icon color
-                console.log(this.colors); // Log colors once on init
-                console.log(this.variants); // Log variants once on init
-            },
-
-            setIconWhite() {
-                this.iconColor = 'text-beige'; // Set icon color to white for dark background
-            },
-
-            setIconBlack() {
-                this.iconColor = 'text-darkGrey'; // Set icon color to black for light background
-            },
-
-            selectColor(color, variant) {
-                console.log("Lists : ", this.colors.length, this.variants.length);
-                this.currentColor = `bg-${color}-${variant}`; // Update the color with backticks
-
-                if (variant < 500)
-                    this.setIconBlack(); // Change to black if lighter color
-                else
-                    this.setIconWhite(); // Change to white if darker color
-            },
-
-            handleCloseDropdown() {
-                // Slight delay to prevent immediate closing when clicking outside
-                setTimeout(() => {
-                    this.isColorPickerOpen = false;
-                }, 200);
-            }
-        };
-    }
-    </script>
