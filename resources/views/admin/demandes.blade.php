@@ -3,11 +3,11 @@
     <div class="flex content-height">
         @include('admin.menu-gauche')
         <!-- Partie de droite (contenu de la page) -->
-        <div class="pt-20 px-20 h-[100%] w-4/5 flex flex-col" x-data="{ openRefuser: false }">
+        <div class="pr-10 h-[100%] w-4/5 flex flex-col" x-data="{ openRefuser: false }">
             <!-- Titre, nombre de résultats, filtres-->
             <div id="header-info" class="flex justify-between">
                 <div>
-                    <h1 class="text-4xl text-black">Demandes d'inscription</h1>
+                    <h1 class="titre2-dark m-titreY p-sectionY border-b-2 border-darkGrey">Demandes d'inscription</h1>
                     <h2 class="text-2xl text-darkGrey">{{ sizeof($demandes) }} résultats</h2>
                 </div>
                 <div class="flex items-center justify-center">

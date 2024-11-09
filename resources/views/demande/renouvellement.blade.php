@@ -54,12 +54,16 @@
                     @endfor
                 </div>
                 <div id="variable-message-pro" class="hidden">
-                    <p class="text-center mt-10">Puisque vous n'êtes plus aux études, <span class="font-bold">le
+                    <p class="text-center mt-10">Puisque vous n'êtes plus aux études, si vous voulez conserver vos accès
+                        au site, <span class="font-bold">le
                             paiement d'un abonnement sera désormais requis.</span> Cet abonnement soutient les frais de
-                        maintenance de la plateforme web.
-                        Le mode de paiement utilisé sera celui que vous avez enregistré dans
-                        Paramètres > Facturation. Vous serez facturés dès que votre demande sera approuvée. Si le
-                        paiement ne passe pas, vous n'aurez pas votre accès artiste.</p>
+                        maintenance de la plateforme web.</p>
+                    <p class="text-center mt-10"> <span class="font-bold"> Si vous désirez conserver vos accès à
+                            Terracium, </span> veuillez vous abonner en cliquant sur le bouton ci-dessous. Il sera
+                        toujours possible d'annuler votre abonnement par la suite via Paramètres > Facturation.</p>
+                    <p class="text-center mt-10"> <span class="font-bold"> Si vous ne désirez pas payer
+                            l'abonnement, </span> vous n'avez rien à faire. Vos accès au site seront toutefois retirés à
+                        la fin de la période.</p>
                 </div>
             </div>
         </div>
@@ -69,13 +73,13 @@
             <input class="hidden" name="type" value="ren">
             <x-button.green.send class="mx-auto mt-6">Envoyer</x-button.green.send>
             <p id="also-variable-message-etu" class="text-center mt-6">Vous serez notifiés lorsqu'un administrateur
-                passera en revue votre profil.</p>
+                passera en revue votre profil. En attendant, vous conservez vos accès au site. Merci d'effectuer votre renouvellement!</p>
         </form>
 
         <form id="also-variable-message-pro" class="hidden" action="{{ route('abonnement') }}" method="post"
             enctype="multipart/form-data">
             @csrf
-            <x-button.green.pay class="mx-auto mt-6">Payer</x-button.green.pay>
+            <x-button.green.pay class="mx-auto mt-6">Démarrer un abonnement</x-button.green.pay>
         </form>
 
         <div class="fixed bottom-10 right-5">

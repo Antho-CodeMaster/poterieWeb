@@ -1,10 +1,10 @@
 <x-app-layout>
     <div class="flex content-height">
         @include('admin.menu-gauche')
-        <div class="pt-20 px-20 w-[90%] h-[100%] flex flex-col" x-data="{ openAvertir: false, openDelete: false, openPromote: false, openDemote: false, openArtist: false }">
+        <div class="pr-10 w-[90%] h-[100%] flex flex-col" x-data="{ openAvertir: false, openDelete: false, openPromote: false, openDemote: false, openArtist: false }">
             <div id="header-info">
-                <h1 class="text-4xl text-black">Utilisateurs</h1>
-                <h2 class="text-2xl text-darkGrey">{{ sizeof($users) }} résultats</h2>
+                <h1 class="titre2-dark m-titreY p-sectionY border-b-2 border-darkGrey">Utilisateurs</h1>
+                <h2 class="text-2xl text-darkGrey">{{ count($users) }} résultats</h2>
 
                 <div class="flex justify-end">
                     <!-- Sélection du type d'utilisateur -->

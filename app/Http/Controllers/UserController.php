@@ -15,7 +15,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('admin/utilisateurs', ['users' => User::where('active', 1)->get()]);
+        return view('admin/utilisateurs',
+        [
+            'users' => User::where('active', 1)->get(),
+        ]);
     }
 
     /**

@@ -103,7 +103,7 @@ class Artiste extends Model
                         ]);
                         $notif->save();
 
-                        // Les autres cas de figure sont gérés dans les méthode accept() et deny() de DemandeController.
+                        // Les autres cas de figure sont déjà gérés dans les méthode accept() et deny() de DemandeController.
                     }
                 }
             }
