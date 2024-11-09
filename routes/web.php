@@ -90,13 +90,11 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/recherche', [ArticleController::class, 'getSearch'])->name('recherche.getSearch');
+
 /* Route lié à l'utilisateur */
 Route::controller(UserController::class)->group(function () {
     Route::post('/updateUnits', [UserController::class, 'updateUnits'])->name('updateUnits');
 });
-
-Route::get('/recherche/{search}', [ArticleController::class, 'getSearch'])->name('recherche.getSearch');
-
 
 
 require __DIR__ . '/auth.php';
