@@ -7,14 +7,15 @@
     </div>
 
     <div class="flex items-center font-size-[10px]">
+
         {{-- Nous contacter --}}
         <div class="mx-[16px] underline">
-            <a href="{{ route('decouverte') }}">Nous contacter</a>
+            <a href="{{ route('contact') }}">Nous contacter</a>
         </div>
 
         {{-- Besoin d'aide --}}
         <div class="mx-[16px] underline">
-            <a href="{{ route('decouverte') }}">Besoin d'aide?</a>
+            <a href="{{ route('apropos') }}">À propos de nous</a>
         </div>
 
         {{-- Conditions d'utilisateur --}}
