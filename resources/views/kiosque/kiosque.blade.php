@@ -220,7 +220,7 @@
                                             @if ($article->id_etat == 2)
                                                 <img src="/../img/{{ $article->photosArticle->path }}"
                                                     alt="Photo d'article"
-                                                    class="select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200 {{ $article->is_sensible == 1 ? ' blur-md' : '' }}"
+                                                    class="select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200 {{ $article->is_sensible == 1 ? ' blur-[18px]' : '' }}"
                                                     @click=" $dispatch('open-article-modal');
                                                     $dispatch('set-article', {
                                                         id_article: '{{ $article->id_article }}',
@@ -245,7 +245,7 @@
                                             @elseif ($article->quantite_disponible == 0 && $article->id_etat == 1)
                                                 <img src="/../img/{{ $article->photosArticle->path }}"
                                                     alt="Photo d'article"
-                                                    class="{{ $article->is_sensible == 1 ? ' blur-md' : '' }} select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200"
+                                                    class="{{ $article->is_sensible == 1 ? ' blur-[18px]' : '' }} select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200"
                                                     @click=" $dispatch('open-article-modal');
                                                     $dispatch('set-article', {
                                                         id_article: '{{ $article->id_article }}',
@@ -270,7 +270,7 @@
                                             @else
                                                 <img src="/../img/{{ $article->photosArticle->path }}"
                                                     alt="Photo d'article"
-                                                    class="{{ $article->is_sensible == 1 ? ' blur-md' : '' }} select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200"
+                                                    class="{{ $article->is_sensible == 1 ? ' blur-[18px]' : '' }} select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200"
                                                     @click=" $dispatch('open-article-modal');
                                                     $dispatch('set-article', {
                                                         id_article: '{{ $article->id_article }}',
@@ -298,7 +298,7 @@
                                         @if ($article->id_etat == 2)
                                             <img src="/../img/{{ $article->photosArticle->path }}"
                                                 alt="Photo d'article"
-                                                class="select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200 {{ $article->is_sensible == 1 ? ' blur-md' : '' }}"
+                                                class="select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200 {{ $article->is_sensible == 1 ? ' blur-[18px]' : '' }}"
                                                 @click=" $dispatch('open-article-modal');
                                                 $dispatch('set-article', {
                                                     id_article: '{{ $article->id_article }}',
@@ -323,7 +323,7 @@
                                         @elseif ($article->quantite_disponible == 0 && $article->id_etat == 1)
                                             <img src="/../img/{{ $article->photosArticle->path }}"
                                                 alt="Photo d'article"
-                                                class="{{ $article->is_sensible == 1 ? ' blur-md' : '' }} select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200"
+                                                class="{{ $article->is_sensible == 1 ? ' blur-[18px]' : '' }} select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200"
                                                 @click=" $dispatch('open-article-modal');
                                                 $dispatch('set-article', {
                                                     id_article: '{{ $article->id_article }}',
@@ -348,7 +348,7 @@
                                         @else
                                             <img src="/../img/{{ $article->photosArticle->path }}"
                                                 alt="Photo d'article"
-                                                class="{{ $article->is_sensible == 1 ? ' blur-md' : '' }} select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200"
+                                                class="{{ $article->is_sensible == 1 ? ' blur-[18px]' : '' }} select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200"
                                                 @click=" $dispatch('open-article-modal');
                                                 $dispatch('set-article', {
                                                     id_article: '{{ $article->id_article }}',

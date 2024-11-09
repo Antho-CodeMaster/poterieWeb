@@ -66,7 +66,7 @@
                                         class="absolute w-[450px] h-[400px] object-cover transition-opacity duration-300 rounded select-none"
                                         :class="(article.quantite_disponible < 1 ? 'brightness-[35%]' : '') +
                                         (article.id_etat == 2 ? ' brightness-[35%]' : '') +
-                                        (article.is_sensible == 1 ? 'blur-md' : '')"
+                                        (article.is_sensible == 1 ? 'blur-[18px]' : '')"
                                         x-show="currentIndex === index"
                                         x-transition:enter="transition-opacity ease-in duration-400"
                                         x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
@@ -97,7 +97,7 @@
                                         class="absolute w-[450px] h-[400px] object-cover transition-opacity duration-300 rounded select-none"
                                         :class="(article.quantite_disponible < 1 ? 'brightness-[35%]' : '') +
                                         (article.id_etat == 2 ? ' brightness-[35%]' : '') +
-                                        (article.is_sensible == 1 ? 'blur-md' : '')"
+                                        (article.is_sensible == 1 ? 'blur-[18px]' : '')"
                                         x-show="currentIndex === index"
                                         x-transition:enter="transition-opacity ease-in duration-400"
                                         x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
