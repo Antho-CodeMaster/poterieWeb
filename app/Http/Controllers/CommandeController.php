@@ -423,7 +423,7 @@ class CommandeController extends Controller
                 'nom_artiste' => $artiste->nom_artiste,
                 'id_artiste' => $artiste->id_artiste,
                 'transaction_date' => $commande->created_at->format('Y-m-d'),
-                'id_commande' => $commande->id,
+                'id_commande' => $commande->id_commande,
                 'stripe_session_id' => $commande->checkout_id,
                 'transactions' => $commande->transactions
             ];

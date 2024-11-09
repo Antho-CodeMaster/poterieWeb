@@ -96,7 +96,8 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/recherche', [ArticleController::class, 'getSearch'])->name('recherche.getSearch');
 
-
+Route::view('contact','contact');
+Route::view('about-us','apropos');
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';
