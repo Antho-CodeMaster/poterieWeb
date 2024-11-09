@@ -26,6 +26,7 @@ return new class extends Migration
             $table->tinyInteger('id_question_securite')->unsigned();
             $table->string('reponse_question');
             $table->boolean('active');
+            $table->boolean('units');
 
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
