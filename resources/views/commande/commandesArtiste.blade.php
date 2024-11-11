@@ -90,6 +90,7 @@
                                 </div>
                             </div>
 
+
                             {{-- Transactions qui ont besoin d'être traitées --}}
                             @foreach ($commandeTransactions->sortBy('id_etat') as $transaction)
                                 <div

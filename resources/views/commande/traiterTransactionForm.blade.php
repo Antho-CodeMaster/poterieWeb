@@ -137,7 +137,7 @@
 
                     {{-- Boutons d'envoie --}}
                     <x-button.green.empty type="submit" id="traiterTransactionBtn" value="confirmer"
-                        class="w-full h-[64px] m-submit cursor-pointer bg-vert text-[36px] font-bold text-center">
+                        class="w-full h-[64px] m-submit cursor-pointer bg-vert text-[36px] font-bold text-center mb-2">
                         Confirmer
                     </x-button.green.empty>
 
