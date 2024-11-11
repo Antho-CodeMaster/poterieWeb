@@ -111,7 +111,8 @@ class UserController extends Controller
             'visible' => 1
         ]);
         $notif->save();
-        return redirect()->to(route('admin-utilisateurs'));
+        session()->flash('succes', 'Utilisateur averti.');
+        return redirect(url()->previous());
     }
 
     // Créer une nouvelle instance de modérateur ou rendre administrateur un modérateur

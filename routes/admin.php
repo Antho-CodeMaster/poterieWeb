@@ -43,7 +43,7 @@ Route::middleware(EnsureUserIsModerateur::class)->group(function () {
         ->name('admin-signalements-delete');
     });
 
-    Route::controller(UserController::class)->group(function () {
+    Route::controller(DemandeController::class)->group(function () {
         Route::get('/admin/demandes', 'index')
             ->name('admin-demandes');
 

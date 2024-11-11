@@ -80,10 +80,13 @@ class SignalementController extends Controller
 
             /* 3. Mettre à jours l'article en BD */
             if ($article->save()) {
-                session()->flash('succesDeleteArticle', 'L\'article a bien été supprimé');
+                session()->flash('succes', 'Article supprimé.');
             } else {
-                session()->flash('erreurDeleteArticle', 'Un problème lors de la suppression de l\'article s\'est produit');
+                session()->flash('erreur', 'Un problème est survenu lors de la suppression de l\'article.');
             }
+        }
+        else{
+            session()->flash('succes', 'Signalement supprimé.');
         }
 
         return back();
