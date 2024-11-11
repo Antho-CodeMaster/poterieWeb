@@ -40,7 +40,7 @@ class ProfileController extends Controller
         $customer = null;
         $art = Artiste::where('id_user', Auth::id())->first();
 
-        if(Auth::user()->stripe_id != null)
+        if (Auth::user()->stripe_id != null)
             $customer = \Stripe\Customer::retrieve(Auth::user()->stripe_id);
 
         // Informations pour le formulaire d'abonnement
@@ -49,21 +49,22 @@ class ProfileController extends Controller
         $subbed = false;
         $was_subbed = false;
         if ($art != null)
-            if($art->subscribed())
+            if ($art->subscribed())
                 $subbed = true;
             else
                 $was_subbed = true;
 
-        if($subbed || $was_subbed)
-        {
+        if ($subbed || $was_subbed) {
             $info = \Stripe\Subscription::all([
-            'customer' => Auth::user()->stripe_id,
-            'status' => 'all'
+                'customer' => Auth::user()->stripe_id,
+                'status' => 'all'
             ]);
-            $sub_info = $info->data[0];
-            $sub_info['debut'] = Carbon::createFromTimestamp($sub_info->created)->locale('fr_FR')->isoFormat('dddd [le] D MMMM YYYY');
-            $sub_info['debut_periode'] = Carbon::createFromTimestamp($sub_info->current_period_start)->locale('fr_FR')->isoFormat('dddd [le] D MMMM YYYY');
-            $sub_info['fin_periode'] = Carbon::createFromTimestamp($sub_info->current_period_end)->locale('fr_FR')->isoFormat('dddd [le] D MMMM YYYY');
+            if (!empty($info->data)) {
+                $sub_info = $info->data[0];
+                $sub_info['debut'] = Carbon::createFromTimestamp($sub_info->created)->locale('fr_FR')->isoFormat('dddd [le] D MMMM YYYY');
+                $sub_info['debut_periode'] = Carbon::createFromTimestamp($sub_info->current_period_start)->locale('fr_FR')->isoFormat('dddd [le] D MMMM YYYY');
+                $sub_info['fin_periode'] = Carbon::createFromTimestamp($sub_info->current_period_end)->locale('fr_FR')->isoFormat('dddd [le] D MMMM YYYY');
+            }
         }
 
         // Si la méthode de paiement a bel et bien été définie, remplacer tout ancienne méthode de paiement par la nouvelle.
@@ -79,16 +80,14 @@ class ProfileController extends Controller
             // Replace old payment methods
             for ($i = 0; $i < $totalPaymentMethods; $i++) {
                 $paymentMethod = $existingPaymentMethods->data[$i];
-                if ($i == 0)
-                {
+                if ($i == 0) {
                     $stripe->customers->update(Auth::user()->stripe_id, ['invoice_settings' => ['default_payment_method' => $paymentMethod->id]]);
-                    if($subbed)
+                    if ($subbed)
                         $stripe->subscriptions->update(
                             $sub_info['id'],
                             ['default_payment_method' => $paymentMethod->id]
                         );
-                }
-                else
+                } else
                     \Stripe\PaymentMethod::retrieve($paymentMethod->id)->detach();
                 // Detach every existing payment method but not the new one
                 $paymentMethodToDetach = \Stripe\PaymentMethod::retrieve($paymentMethod->id);
@@ -99,7 +98,7 @@ class ProfileController extends Controller
             Session::flash('succes', 'Vos informations de facturation ont bel et bien été enregistrées!');
         }
 
-        if($customer != null)
+        if ($customer != null)
             $customer->invoice_settings->default_payment_method == null ? $card_info = null : $card_info = \Stripe\PaymentMethod::retrieve($customer->invoice_settings->default_payment_method)->card;
         else
             $card_info = null;
