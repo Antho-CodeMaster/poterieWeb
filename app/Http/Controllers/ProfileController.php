@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 use App\Models\Artiste;
+use App\Models\Reseau;
 use Carbon\Carbon;
 
 class ProfileController extends Controller
@@ -150,11 +151,16 @@ class ProfileController extends Controller
     public function personnaliser(Request $request): View
     {
         $artiste = Artiste::where('id_user', $request->user()->id)->first();
+        $allReseaux = Reseau::all();
 
         if ($artiste) {
+            $reseaux = $artiste->reseaux;
+
             return view('profile.personnaliser', [
                 'user' => $request->user(),
                 'artiste' => $artiste,
+                'reseaux' => $reseaux,
+                'allReseaux' => $allReseaux,
             ]);
         } else {
             return view('profile.edit', [

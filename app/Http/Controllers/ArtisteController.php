@@ -162,6 +162,77 @@ class ArtisteController extends Controller
             ->with('status', 'artiste-name-updated');
     }
 
+    public function updateColor(Request $request)
+    {
+        $artiste = Auth::user()->artiste;
+        $color = str_replace('bg-', '', $request->input('couleur_banniere'));
+
+        // Save the color to the artiste model
+        $artiste->couleur_banniere = $color;
+        $artiste->save();
+
+        return redirect()->back()->with('status', 'kiosque-color-updated');
+    }
+
+    public function updateSocials(Request $request)
+    {
+        $artiste = Auth::user()->artiste;
+
+        $usernames = $request->input('usernames');
+        $reseaux = $request->input('reseaux');
+        $removedFields = json_decode($request->input('removed_fields'), true);
+
+        // Detach removed fields first
+        if (!empty($removedFields)) {
+            foreach ($removedFields as $field) {
+                $reseau_id = $field['id_reseau'];
+                $username = $field['username'];
+
+                // Detach the specific pivot record for the removed field
+                $artiste->reseaux()
+                    ->wherePivot('id_reseau', $reseau_id)
+                    ->wherePivot('username', $username)
+                    ->detach();
+            }
+
+            // Remove the detached fields from $reseaux and $usernames
+            foreach ($removedFields as $field) {
+                $reseau_id = $field['id_reseau'];
+                $username = $field['username'];
+
+                // Find the index of the removed field in $reseaux and $usernames
+                $index = array_search($reseau_id, $reseaux);
+                if ($index !== false && $usernames[$index] === $username) {
+                    // Remove the values from both arrays
+                    unset($reseaux[$index]);
+                    unset($usernames[$index]);
+                }
+            }
+        }
+
+
+        // Add or update remaining fields
+        foreach ($reseaux as $index => $reseau_id) {
+            $username = $usernames[$index];
+
+            // Check if a 'reseau' with this specific reseau_id and username already exists
+            $existingPivot = $artiste->reseaux()
+                ->wherePivot('id_reseau', $reseau_id)
+                ->wherePivot('username', $username)
+                ->first();
+
+            if ($existingPivot) {
+                // Update the username if a match is found
+                $artiste->reseaux()->updateExistingPivot($reseau_id, ['username' => $username]);
+            } else {
+                // Attach as a new entry if it doesn't already exist
+                $artiste->reseaux()->attach($reseau_id, ['username' => $username]);
+            }
+        }
+
+        return redirect()->back()->with('status', 'social-media-updated');
+    }
+
     /**
      * Remove the specified resource from storage.
      */
