@@ -81,4 +81,8 @@ class Article extends Model
     {
         return $this->belongsToMany(Collection::class, 'collections_articles', 'id_article', 'id_collection');
     }
+
+    public function cmApo($units){
+        return $units / 2.54;
+    }
 }

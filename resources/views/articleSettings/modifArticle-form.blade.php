@@ -147,7 +147,12 @@
                     {{-- Dimensions et poids --}}
                     <div class="m-sectionFormY">
                         <div class="flex items-center justify-between">
-                            <h2 class="textGrand-dark">Dimensions et poids de l'article</h2>
+                            <div class="flex gap-input items-baseline">
+                                <h2 class="textGrand-dark">Dimensions et poids de l'article</h2>
+                                <p class=" textPetit-dark">
+                                     (En {{ Auth::user()->units == 0 ? 'Centimètres' : 'Pouces' }})
+                                </p>
+                            </div>
                             <x-tooltip
                                 text="Les dimensions doivent être inscrit en cm ou en pouce et ne peuvent être plus petit que 0,1 cm/pouce."
                                 position="left" id="1">
@@ -159,27 +164,34 @@
                             {{-- Profondeur --}}
                             <x-text-input id="profondeurArticle"
                                 class="col-span-1 {{ $errors->has('profondeurArticle') ? 'color-borderError border-[2px]' : '' }}"
-                                type="number" name="profondeurArticle" placeholder="Profondeur (cm)" min="0"
-                                required value="{{ $article->profondeur }}" step="0.01" />
+                                type="number" name="profondeurArticle"
+                                placeholder="{{ Auth::user()->units == 0 ? 'Profondeur (cm)' : 'Profondeur (po)' }}"
+                                min="0.1" required value="{{ old('profondeurArticle', $article->profondeur) }} "
+                                step="0.01" />
 
                             {{-- Hauteur --}}
                             <x-text-input id="hauteurArticle"
                                 class="col-span-1 {{ $errors->has('hauteurArticle') ? 'color-borderError border-[2px]' : '' }}"
-                                type="number" name="hauteurArticle" placeholder="Hauteur (cm)" min="0"
-                                required value="{{ $article->hauteur }}" step="0.01" />
+                                type="number" name="hauteurArticle"
+                                placeholder="{{ Auth::user()->units == 0 ? 'Hauteur (cm)' : 'Hauteur (po)' }} "
+                                min="0.1" required value="{{ old('hauteurArticle', $article->hauteur) }}"
+                                step="0.01" />
 
                             {{-- Largeur --}}
                             <x-text-input id="largeurArticle"
                                 class="col-span-1 {{ $errors->has('largeurArticle') ? 'color-borderError border-[2px]' : '' }}"
-                                type="number" name="largeurArticle" placeholder="Largeur (cm)" min="0"
-                                required value="{{ $article->largeur }}" step="0.01" />
+                                type="number" name="largeurArticle"
+                                placeholder="{{ Auth::user()->units == 0 ? 'Largeur (cm)' : 'Largeur (po)' }}"
+                                min="0.1" required value="{{ old('largeurArticle', $article->largeur) }}"
+                                step="0.01" />
 
                             {{-- Poids --}}
                             <x-text-input id="poidsArticle"
                                 class="col-span-1 {{ $errors->has('poidsArticle') ? 'color-borderError border-[2px]' : '' }}"
-                                type="number" name="poidsArticle" placeholder="Poids (g)" min="0"
-                                value="{{ $article->poids }}" step="0.01" />
+                                type="number" name="poidsArticle" placeholder="Poids (g)" min="0.1"
+                                value="{{ old('poidsArticle', $article->poids) }}" step="0.01" />
                         </div>
+
                     </div>
 
                     {{-- Type de pièce et usage alimentaire --}}
@@ -202,9 +214,9 @@
                                 class="col-span-2 row-span-1 {{ $errors->has('typePiece') ? 'color-borderError border-[2px]' : '' }} border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                                 <option value="" disabled selected hidden>Sélectionner un type d'usage
                                 </option>
-                                <option value="1" {{ $article->typePiece == 1 ? 'selected' : '' }}>
+                                <option value="1" {{ $article->is_alimentaire == 1 ? 'selected' : '' }}>
                                     Alimentaire</option>
-                                <option value="0" {{ $article->typePiece == 0 ? 'selected' : '' }}>
+                                <option value="0" {{ $article->is_alimentaire == 0 ? 'selected' : '' }}>
                                     Non alimentaire</option>
                             </select>
 

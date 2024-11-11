@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Carbon\Carbon;
 
 class Artiste extends Model
 {
@@ -25,7 +26,8 @@ class Artiste extends Model
 
     public function reseaux()
     {
-        return $this->belongsToMany(Reseau::class, "reseaux_artistes", 'id_artiste', 'id_reseau')->withPivot('username');
+        return $this->belongsToMany(Reseau::class, 'reseaux_artistes', 'id_artiste', 'id_reseau')
+                ->withPivot('username');
     }
     public function user(): BelongsTo
     {
@@ -53,5 +55,59 @@ class Artiste extends Model
                         return true;
         }
         return false;
+    }
+
+    public function validate()
+    {
+        if ($this->actif == 1) {
+            // Validation de l'artiste pour terminer un abonnement
+            if ($this->is_etudiant == false && !$this->subscribed()) {
+                $this->actif = 0;
+                $this->save();
+
+                // Notifier in-app pour avertir l'artiste qu'il perd ses accès
+                $notif = Notification::create([
+                    'id_type' => 6,
+                    'id_user' => $this->id_user,
+                    'date' => now(),
+                    'message' => '',
+                    'lien' => route('profile.facturation'),
+                    'visible' => 1
+                ]);
+                $notif->save();
+            }
+        }
+
+        if ($this->is_etudiant == true) {
+            $date = Carbon::create(Renouvellement::latest()->first()->created_at);
+
+            // S'assurer que le checkup soit seulement fait si l'étudiant était déjà existant au moment du renouvellement
+            if ($this->created_at < $date) {
+                // Retrouver la dernière demande de renouvellement de l'utilisateur
+                $demande = Demande::where('id_user', $this->id_user)->where('id_type', 1)->latest('date')->first();
+
+                // Si la date du dernier renouvellement est passée
+                if (now() > $date->addMonth()) {
+                    // Si aucune demande de renouvellement n'a été faite depuis, on doit rendre l'artiste inactif.
+                    if ($demande == null || $demande->date < $date) {
+                        $this->actif = 0;
+                        $this->save();
+
+                        // Notifier in-app pour avertir l'artiste qu'il perd ses accès
+                        $notif = Notification::create([
+                            'id_type' => 7,
+                            'id_user' => $this->id_user,
+                            'date' => now(),
+                            'message' => '',
+                            'lien' => route('renouvellement-artiste'),
+                            'visible' => 1
+                        ]);
+                        $notif->save();
+
+                        // Les autres cas de figure sont déjà gérés dans les méthode accept() et deny() de DemandeController.
+                    }
+                }
+            }
+        }
     }
 }

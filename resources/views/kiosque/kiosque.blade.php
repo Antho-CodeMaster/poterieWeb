@@ -5,13 +5,12 @@
     @endif
 
     {{-- Section Bannière --}}
-    <section class="flex items-center justify-between p-[16px]"
-        style="background-color: #{{ $artiste->couleur_banniere }}">
+    <section class="flex items-center justify-between p-[16px] bg-{{ $artiste->couleur_banniere }}">
 
 
-        <div class="flex-1 ">
+        <div class="flex-1" data-background-color="{{ $artiste->couleur_banniere }}">
             {{-- Nom d'artiste --}}
-            <div class="text-left titre1-dark m-titreY">
+            <div class="dynamicText text-left titre1-dark m-titreY">
                 @if ($artiste->nom_artiste == null)
                     {{ $artiste->user->name }}
                 @else
@@ -20,7 +19,7 @@
             </div>
 
             {{-- Déscription de l'artiste --}}
-            <div class="text-left textGrand-dark">
+            <div class="dynamicText text-left textGrand-dark">
                 {{ $artiste->description }}
             </div>
         </div>
@@ -36,35 +35,35 @@
             @foreach ($reseaux as $reseau)
                 <div class="text-right">
                     <a href="{{ $reseau->url }}{{ $reseau->pivot->username }}" class="inline-flex items-center">
-                        <p class=" articleGrand-dark">{{ $reseau->pivot->username }}</p>
+                        <p class="dynamicText articleGrand-dark">{{ $reseau->pivot->username }}</p>
 
                         {{-- Si réseau youtube --}}
                         @if ($reseau->reseau == 'YouTube')
-                            <svg class="w-10 h-10 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-10 h-10 dynamicText" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                width="24" height="24" viewBox="0 0 24 24">
                                 <path fill-rule="evenodd"
                                     d="M21.7 8.037a4.26 4.26 0 0 0-.789-1.964 2.84 2.84 0 0 0-1.984-.839c-2.767-.2-6.926-.2-6.926-.2s-4.157 0-6.928.2a2.836 2.836 0 0 0-1.983.839 4.225 4.225 0 0 0-.79 1.965 30.146 30.146 0 0 0-.2 3.206v1.5a30.12 30.12 0 0 0 .2 3.206c.094.712.364 1.39.784 1.972.604.536 1.38.837 2.187.848 1.583.151 6.731.2 6.731.2s4.161 0 6.928-.2a2.844 2.844 0 0 0 1.985-.84 4.27 4.27 0 0 0 .787-1.965 30.12 30.12 0 0 0 .2-3.206v-1.516a30.672 30.672 0 0 0-.202-3.206Zm-11.692 6.554v-5.62l5.4 2.819-5.4 2.801Z"
-                                    clip-rule="evenodd" class="text-darkGrey" />
+                                    clip-rule="evenodd" class="" />
                             </svg>
                         @endif
 
                         {{-- Si réseau youtube --}}
                         @if ($reseau->reseau == 'Instagram')
-                            <svg class="w-10 h-10 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            <svg class="w-10 h-10 dynamicText" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                <path fill="currentColor" fill-rule="evenodd"
+                                <path fill-rule="evenodd"
                                     d="M3 8a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8Zm5-3a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V8a3 3 0 0 0-3-3H8Zm7.597 2.214a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2h-.01a1 1 0 0 1-1-1ZM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm-5 3a5 5 0 1 1 10 0 5 5 0 0 1-10 0Z"
-                                    clip-rule="evenodd" class="text-darkGrey" />
+                                    clip-rule="evenodd" class="" />
                             </svg>
                         @endif
 
                         {{-- Si réseau youtube --}}
                         @if ($reseau->reseau == 'Facebook')
-                            <svg class="w-10 h-10 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-10 h-10 dynamicText" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                width="24" height="24" viewBox="0 0 24 24">
                                 <path fill-rule="evenodd"
                                     d="M13.135 6H15V3h-1.865a4.147 4.147 0 0 0-4.142 4.142V9H7v3h2v9.938h3V12h2.021l.592-3H12V6.591A.6.6 0 0 1 12.592 6h.543Z"
-                                    clip-rule="evenodd" class="text-darkGrey" />
+                                    clip-rule="evenodd" class="" />
                             </svg>
                         @endif
                     </a>
@@ -141,32 +140,240 @@
 
                             {{-- L'image de l'Article --}}
                             <div class="w-[160px] h-[160px] relative">
-
-                                <div x-data="{ openArticleModal: false }">
-                                    @if ($article->id_etat == 2)
-                                        <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
-                                            class="select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200"
-                                            @click=" $dispatch('open-article-modal');
-                                        console.log('Dispatching set-article');
-                                        $dispatch('set-article', '{{ $article }}');
-                                        $dispatch('set-photos', '{{ $article->photo_article }}');
-                                        $dispatch('set-mots-cles', '{{ $article->motCles }}'); ">
-                                    @elseif ($article->quantite_disponible == 0 && $article->id_etat == 1)
-                                        <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
-                                            class="select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200"
-                                            @click=" $dispatch('open-article-modal');
-                                        console.log('Dispatching set-article');
-                                        $dispatch('set-article', '{{ $article }}');
-                                        $dispatch('set-photos', '{{ $article->photo_article }}');
-                                        $dispatch('set-mots-cles', '{{ $article->motCles }}'); ">
+                                <div x-data="{ openArticleModal: false }" class="overflow-hidden rounded-[16px]">
+                                    @if (Auth::check())
+                                        @if (Auth::user()->contenu_sensible == 1)
+                                            @if ($article->id_etat == 2)
+                                                <img src="/../img/{{ $article->photosArticle->path }}"
+                                                    alt="Photo d'article"
+                                                    class="select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200"
+                                                    @click=" $dispatch('open-article-modal');
+                                                    $dispatch('set-article', {
+                                                        id_article: '{{ $article->id_article }}',
+                                                        id_artiste: '{{ $article->artiste->id_artiste }}',
+                                                        id_etat: '{{ $article->id_etat }}',
+                                                        nom: '{{ htmlspecialchars($article->nom) }}',
+                                                        description: '{{ htmlspecialchars($article->description) }}',
+                                                        prix: '{{ $article->prix }}',
+                                                        hauteur: '{{ $article->hauteur }}',
+                                                        largeur: '{{ $article->largeur }}',
+                                                        profondeur: '{{ $article->profondeur }}',
+                                                        poids: '{{ $article->poids }}',
+                                                        couleur: '{{ $article->couleur }}',
+                                                        quantite_disponible: '{{ htmlspecialchars($article->quantite_disponible) }}',
+                                                        is_unique: '{{ $article->is_unique }}',
+                                                        is_alimentaire: '{{ $article->is_alimentaire }}',
+                                                        is_sensible: '{{ $article->is_sensible }}',
+                                                    });
+                                                    $dispatch('set-artiste', '{{ $article->artiste }}');
+                                                    $dispatch('set-photos', '{{ $article->photo_article }}');
+                                                    $dispatch('set-mots-cles', '{{ $article->motCles }}'); ">
+                                            @elseif ($article->quantite_disponible == 0 && $article->id_etat == 1)
+                                                <img src="/../img/{{ $article->photosArticle->path }}"
+                                                    alt="Photo d'article"
+                                                    class="select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200"
+                                                    @click=" $dispatch('open-article-modal');
+                                                    $dispatch('set-article', {
+                                                        id_article: '{{ $article->id_article }}',
+                                                        id_artiste: '{{ $article->artiste->id_artiste }}',
+                                                        id_etat: '{{ $article->id_etat }}',
+                                                        nom: '{{ htmlspecialchars($article->nom) }}',
+                                                        description: '{{ htmlspecialchars($article->description) }}',
+                                                        prix: '{{ $article->prix }}',
+                                                        hauteur: '{{ $article->hauteur }}',
+                                                        largeur: '{{ $article->largeur }}',
+                                                        profondeur: '{{ $article->profondeur }}',
+                                                        poids: '{{ $article->poids }}',
+                                                        couleur: '{{ $article->couleur }}',
+                                                        quantite_disponible: '{{ htmlspecialchars($article->quantite_disponible) }}',
+                                                        is_unique: '{{ $article->is_unique }}',
+                                                        is_alimentaire: '{{ $article->is_alimentaire }}',
+                                                        is_sensible: '{{ $article->is_sensible }}',
+                                                    });
+                                                    $dispatch('set-artiste', '{{ $article->artiste }}');
+                                                    $dispatch('set-photos', '{{ $article->photo_article }}');
+                                                    $dispatch('set-mots-cles', '{{ $article->motCles }}'); ">
+                                            @else
+                                                <img src="/../img/{{ $article->photosArticle->path }}"
+                                                    alt="Photo d'article"
+                                                    class="select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200"
+                                                    @click=" $dispatch('open-article-modal');
+                                                    $dispatch('set-article', {
+                                                        id_article: '{{ $article->id_article }}',
+                                                        id_artiste: '{{ $article->artiste->id_artiste }}',
+                                                        id_etat: '{{ $article->id_etat }}',
+                                                        nom: '{{ htmlspecialchars($article->nom) }}',
+                                                        description: '{{ htmlspecialchars($article->description) }}',
+                                                        prix: '{{ $article->prix }}',
+                                                        hauteur: '{{ $article->hauteur }}',
+                                                        largeur: '{{ $article->largeur }}',
+                                                        profondeur: '{{ $article->profondeur }}',
+                                                        poids: '{{ $article->poids }}',
+                                                        couleur: '{{ $article->couleur }}',
+                                                        quantite_disponible: '{{ htmlspecialchars($article->quantite_disponible) }}',
+                                                        is_unique: '{{ $article->is_unique }}',
+                                                        is_alimentaire: '{{ $article->is_alimentaire }}',
+                                                        is_sensible: '{{ $article->is_sensible }}',
+                                                    });
+                                                    $dispatch('set-artiste', '{{ $article->artiste }}');
+                                                    $dispatch('set-photos', '{{ $article->photo_article }}');
+                                                    $dispatch('set-mots-cles', '{{ $article->motCles }}'); ">
+                                            @endif
+                                        @else
+                                            @if ($article->id_etat == 2)
+                                                <img src="/../img/{{ $article->photosArticle->path }}"
+                                                    alt="Photo d'article"
+                                                    class="select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200 {{ $article->is_sensible == 1 ? ' blur-[18px]' : '' }}"
+                                                    @click=" $dispatch('open-article-modal');
+                                                    $dispatch('set-article', {
+                                                        id_article: '{{ $article->id_article }}',
+                                                        id_artiste: '{{ $article->artiste->id_artiste }}',
+                                                        id_etat: '{{ $article->id_etat }}',
+                                                        nom: '{{ htmlspecialchars($article->nom) }}',
+                                                        description: '{{ htmlspecialchars($article->description) }}',
+                                                        prix: '{{ $article->prix }}',
+                                                        hauteur: '{{ $article->hauteur }}',
+                                                        largeur: '{{ $article->largeur }}',
+                                                        profondeur: '{{ $article->profondeur }}',
+                                                        poids: '{{ $article->poids }}',
+                                                        couleur: '{{ $article->couleur }}',
+                                                        quantite_disponible: '{{ htmlspecialchars($article->quantite_disponible) }}',
+                                                        is_unique: '{{ $article->is_unique }}',
+                                                        is_alimentaire: '{{ $article->is_alimentaire }}',
+                                                        is_sensible: '{{ $article->is_sensible }}',
+                                                    });
+                                                    $dispatch('set-artiste', '{{ $article->artiste }}');
+                                                    $dispatch('set-photos', '{{ $article->photo_article }}');
+                                                    $dispatch('set-mots-cles', '{{ $article->motCles }}'); ">
+                                            @elseif ($article->quantite_disponible == 0 && $article->id_etat == 1)
+                                                <img src="/../img/{{ $article->photosArticle->path }}"
+                                                    alt="Photo d'article"
+                                                    class="{{ $article->is_sensible == 1 ? ' blur-[18px]' : '' }} select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200"
+                                                    @click=" $dispatch('open-article-modal');
+                                                    $dispatch('set-article', {
+                                                        id_article: '{{ $article->id_article }}',
+                                                        id_artiste: '{{ $article->artiste->id_artiste }}',
+                                                        id_etat: '{{ $article->id_etat }}',
+                                                        nom: '{{ htmlspecialchars($article->nom) }}',
+                                                        description: '{{ htmlspecialchars($article->description) }}',
+                                                        prix: '{{ $article->prix }}',
+                                                        hauteur: '{{ $article->hauteur }}',
+                                                        largeur: '{{ $article->largeur }}',
+                                                        profondeur: '{{ $article->profondeur }}',
+                                                        poids: '{{ $article->poids }}',
+                                                        couleur: '{{ $article->couleur }}',
+                                                        quantite_disponible: '{{ htmlspecialchars($article->quantite_disponible) }}',
+                                                        is_unique: '{{ $article->is_unique }}',
+                                                        is_alimentaire: '{{ $article->is_alimentaire }}',
+                                                        is_sensible: '{{ $article->is_sensible }}',
+                                                    });
+                                                    $dispatch('set-artiste', '{{ $article->artiste }}');
+                                                    $dispatch('set-photos', '{{ $article->photo_article }}');
+                                                    $dispatch('set-mots-cles', '{{ $article->motCles }}'); ">
+                                            @else
+                                                <img src="/../img/{{ $article->photosArticle->path }}"
+                                                    alt="Photo d'article"
+                                                    class="{{ $article->is_sensible == 1 ? ' blur-[18px]' : '' }} select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200"
+                                                    @click=" $dispatch('open-article-modal');
+                                                    $dispatch('set-article', {
+                                                        id_article: '{{ $article->id_article }}',
+                                                        id_artiste: '{{ $article->artiste->id_artiste }}',
+                                                        id_etat: '{{ $article->id_etat }}',
+                                                        nom: '{{ htmlspecialchars($article->nom) }}',
+                                                        description: '{{ htmlspecialchars($article->description) }}',
+                                                        prix: '{{ $article->prix }}',
+                                                        hauteur: '{{ $article->hauteur }}',
+                                                        largeur: '{{ $article->largeur }}',
+                                                        profondeur: '{{ $article->profondeur }}',
+                                                        poids: '{{ $article->poids }}',
+                                                        couleur: '{{ $article->couleur }}',
+                                                        quantite_disponible: '{{ htmlspecialchars($article->quantite_disponible) }}',
+                                                        is_unique: '{{ $article->is_unique }}',
+                                                        is_alimentaire: '{{ $article->is_alimentaire }}',
+                                                        is_sensible: '{{ $article->is_sensible }}',
+                                                    });
+                                                    $dispatch('set-artiste', '{{ $article->artiste }}');
+                                                    $dispatch('set-photos', '{{ $article->photo_article }}');
+                                                    $dispatch('set-mots-cles', '{{ $article->motCles }}'); ">
+                                            @endif
+                                        @endif
                                     @else
-                                        <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
-                                            class="select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200"
-                                            @click=" $dispatch('open-article-modal');
-                                        console.log('Dispatching set-article');
-                                        $dispatch('set-article', '{{ $article }}');
-                                        $dispatch('set-photos', '{{ $article->photo_article }}');
-                                        $dispatch('set-mots-cles', '{{ $article->motCles }}'); ">
+                                        @if ($article->id_etat == 2)
+                                            <img src="/../img/{{ $article->photosArticle->path }}"
+                                                alt="Photo d'article"
+                                                class="select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200 {{ $article->is_sensible == 1 ? ' blur-[18px]' : '' }}"
+                                                @click=" $dispatch('open-article-modal');
+                                                $dispatch('set-article', {
+                                                    id_article: '{{ $article->id_article }}',
+                                                    id_artiste: '{{ $article->artiste->id_artiste }}',
+                                                    id_etat: '{{ $article->id_etat }}',
+                                                    nom: '{{ htmlspecialchars($article->nom) }}',
+                                                    description: '{{ htmlspecialchars($article->description) }}',
+                                                    prix: '{{ $article->prix }}',
+                                                    hauteur: '{{ $article->hauteur }}',
+                                                    largeur: '{{ $article->largeur }}',
+                                                    profondeur: '{{ $article->profondeur }}',
+                                                    poids: '{{ $article->poids }}',
+                                                    couleur: '{{ $article->couleur }}',
+                                                    quantite_disponible: '{{ htmlspecialchars($article->quantite_disponible) }}',
+                                                    is_unique: '{{ $article->is_unique }}',
+                                                    is_alimentaire: '{{ $article->is_alimentaire }}',
+                                                    is_sensible: '{{ $article->is_sensible }}',
+                                                });
+                                                $dispatch('set-artiste', '{{ $article->artiste }}');
+                                                $dispatch('set-photos', '{{ $article->photo_article }}');
+                                                $dispatch('set-mots-cles', '{{ $article->motCles }}'); ">
+                                        @elseif ($article->quantite_disponible == 0 && $article->id_etat == 1)
+                                            <img src="/../img/{{ $article->photosArticle->path }}"
+                                                alt="Photo d'article"
+                                                class="{{ $article->is_sensible == 1 ? ' blur-[18px]' : '' }} select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer brightness-[35%] h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200"
+                                                @click=" $dispatch('open-article-modal');
+                                                $dispatch('set-article', {
+                                                    id_article: '{{ $article->id_article }}',
+                                                    id_artiste: '{{ $article->artiste->id_artiste }}',
+                                                    id_etat: '{{ $article->id_etat }}',
+                                                    nom: '{{ htmlspecialchars($article->nom) }}',
+                                                    description: '{{ htmlspecialchars($article->description) }}',
+                                                    prix: '{{ $article->prix }}',
+                                                    hauteur: '{{ $article->hauteur }}',
+                                                    largeur: '{{ $article->largeur }}',
+                                                    profondeur: '{{ $article->profondeur }}',
+                                                    poids: '{{ $article->poids }}',
+                                                    couleur: '{{ $article->couleur }}',
+                                                    quantite_disponible: '{{ htmlspecialchars($article->quantite_disponible) }}',
+                                                    is_unique: '{{ $article->is_unique }}',
+                                                    is_alimentaire: '{{ $article->is_alimentaire }}',
+                                                    is_sensible: '{{ $article->is_sensible }}',
+                                                });
+                                                $dispatch('set-artiste', '{{ $article->artiste }}');
+                                                $dispatch('set-photos', '{{ $article->photo_article }}');
+                                                $dispatch('set-mots-cles', '{{ $article->motCles }}'); ">
+                                        @else
+                                            <img src="/../img/{{ $article->photosArticle->path }}"
+                                                alt="Photo d'article"
+                                                class="{{ $article->is_sensible == 1 ? ' blur-[18px]' : '' }} select-none z-1 shadow-md shadow-rounded rounded-[12px] cursor-pointer h-[160px] w-full object-cover hover:scale-[103%] hover:shadow-md hoverrounded-[16px] transition-all ease-in-out duration-200"
+                                                @click=" $dispatch('open-article-modal');
+                                                $dispatch('set-article', {
+                                                    id_article: '{{ $article->id_article }}',
+                                                    id_artiste: '{{ $article->artiste->id_artiste }}',
+                                                    id_etat: '{{ $article->id_etat }}',
+                                                    nom: '{{ htmlspecialchars($article->nom) }}',
+                                                    description: '{{ htmlspecialchars($article->description) }}',
+                                                    prix: '{{ $article->prix }}',
+                                                    hauteur: '{{ $article->hauteur }}',
+                                                    largeur: '{{ $article->largeur }}',
+                                                    profondeur: '{{ $article->profondeur }}',
+                                                    poids: '{{ $article->poids }}',
+                                                    couleur: '{{ $article->couleur }}',
+                                                    quantite_disponible: '{{ htmlspecialchars($article->quantite_disponible) }}',
+                                                    is_unique: '{{ $article->is_unique }}',
+                                                    is_alimentaire: '{{ $article->is_alimentaire }}',
+                                                    is_sensible: '{{ $article->is_sensible }}',
+                                                });
+                                                $dispatch('set-artiste', '{{ $article->artiste }}');
+                                                $dispatch('set-photos', '{{ $article->photo_article }}');
+                                                $dispatch('set-mots-cles', '{{ $article->motCles }}'); ">
+                                        @endif
                                     @endif
                                 </div>
 
@@ -247,13 +454,20 @@
                                         class="border-darkGrey border rounded-[24px] w-[100%] h-[30px] articlePetit-light bg-darkGrey text-center">
                                         En rupture de stock</p>
                                 @elseif ($article->quantite_disponible > 0)
-                                    <form action="{{ '/addArticleToPanier' }}" method="POST">
-                                        @csrf
-                                        <button type="submit" value="{{ $article->id_article }}" name="id_article"
-                                            class="border-darkGrey border rounded-[24px] w-[100%] h-[30px] articlePetit-dark">Ajouter
-                                            au
-                                            panier</button>
-                                    </form>
+                                    {{-- Si l'artiste est sur son propre kiosque l'empecher d'acheter --}}
+                                    @if ($article->artiste->id_user != Auth::id())
+                                        <form action="{{ '/addArticleToPanier' }}" method="POST">
+                                            @csrf
+                                            <button type="submit" value="{{ $article->id_article }}"
+                                                name="id_article"
+                                                class="border-darkGrey border rounded-[24px] w-[100%] h-[30px] articlePetit-dark">Ajouter
+                                                au
+                                                panier</button>
+                                        </form>
+                                    @else
+                                        <button type="button" value="{{ $article->id_article }}" name="id_article"
+                                            class="border-darkGrey border rounded-[24px] w-[100%] h-[30px] articlePetit-dark cursor-default">Visible</button>
+                                    @endif
                                 @endif
                             @endif
                         </div>
@@ -269,7 +483,7 @@
     {{-- Message de Session --}}
     {{-- Succes de la suppression d'un article --}}
     @if (Session::has('succesDeleteArticle'))
-        <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1" role="alert">
+        <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1 z-[1001]" role="alert">
             @include('messages.messageSucces', [
                 'message' => Session::get('succesDeleteArticle'),
                 'titre' => 'Suppression',
@@ -279,7 +493,7 @@
 
     {{-- Succes d'un signalement d'article --}}
     @if (Session::has('succesSignalement'))
-        <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1" role="alert">
+        <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1 z-[1001]" role="alert">
             @include('messages.messageSucces', [
                 'message' => Session::get('succesSignalement'),
                 'titre' => 'Signalement',
@@ -289,7 +503,7 @@
 
     {{-- Échec d'un signalement d'article --}}
     @if (Session::has('echecSignalement'))
-        <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1" role="alert">
+        <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1 z-[1001]" role="alert">
             @include('messages.messageFail', [
                 'message' => Session::get('echecSignalement'),
                 'titre' => 'Signalement',
@@ -299,7 +513,7 @@
 
     {{-- Artiste inactif --}}
     @if (Session::has('errorInactif'))
-        <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1" role="alert">
+        <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1 z-[1001]" role="alert">
             @include('messages.messageFail', [
                 'message' => Session::get('errorInactif'),
                 'titre' => 'Artiste pas trouvée',
@@ -309,4 +523,18 @@
 
 </x-app-layout>
 
+
 {{-- TODO: La partie responsive --}}
+
+
+{{-- Fonction pour changer la couleur du texte en fonction du background --}}
+{{-- Applique le style en fonction de la couleur de bannière --}}
+<style>
+    .dynamicText {
+        color: {{ $artiste->couleur_banniere }};
+        filter: invert(1) brightness(1.2);
+        opacity: 0.95;
+        mix-blend-mode: difference;
+        /* Alternative : essayez overlay ou screen */
+    }
+</style>

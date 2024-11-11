@@ -17,6 +17,7 @@ return new class extends Migration
             $table->tinyInteger('id_type')->unsigned();
             $table->tinyInteger('id_etat')->unsigned();
             $table->bigInteger('id_user')->unsigned();
+            $table->string('raison_refus')->nullable();
             $table->timestamps();
             $table->dateTime('date');
         });

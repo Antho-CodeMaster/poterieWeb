@@ -47,7 +47,19 @@ class DemandeController extends Controller
      */
     public function create(Request $request)
     {
-        return $request->getRequestUri() == "/renouvellement" ? view('demande.renouvellement') : view('demande.devenir-artiste');
+        $view = $request->getRequestUri() == "/renouvellement"
+            ? view('demande.renouvellement')
+            : view('demande.devenir-artiste');
+
+        $demande = Demande::where('id_user', Auth::id())->where('id_etat', 1)->first();
+
+        // Si on a déjà une demande pending, on ne peut pas en faire une nouvelle
+        if (Demande::where('id_user', Auth::id())->where('id_etat', 1)->first() != null)
+            return $view->withErrors([
+                'alreadyPending' => 'Vous avez déjà une demande en attente dans notre serveur, créée le ' . $demande->date . '. Veuillez attendre le verdict de l\'administration avant de réessayer.'
+            ]);
+
+        return $view;
     }
 
     /**
@@ -56,7 +68,7 @@ class DemandeController extends Controller
     public function store(Request $request)
     {
         // Si on a déjà une demande pending, on ne peut pas en faire une nouvelle
-        if (Demande::where('id_user', Auth::id())->where('id_etat', 1)->first() != null)
+        if (Demande::where('id_user', Auth::id())->where('id_etat', 1)->exists())
             return back()->withErrors(['alreadyPending' => 'Vous avez déjà une demande en attente dans notre serveur. Veuillez attendre le verdict de l\'administration avant de réessayer.']);
 
         // Assigner le bon type selon la demande
@@ -211,7 +223,7 @@ class DemandeController extends Controller
                     'id_user' => $dem->id_user,
                     'date' => now(),
                     'message' => '',
-                    'lien' => route('kiosque', ['idUser' => $dem->id_user]) .'?firstaccess=true',
+                    'lien' => route('kiosque', ['idUser' => $dem->id_user]) . '?firstaccess=true',
                     'visible' => 1
                 ]);
                 $notif->save();
@@ -224,7 +236,7 @@ class DemandeController extends Controller
                     'nom_artiste' => null,
                     'path_photo_profil' => 'img/artistePFP/default_artiste.png',
                     'is_etudiant' => false,
-                    'actif' => false,
+                    'actif' => false, //Car l'artiste doit payer pour activer son abonnement
                     'description' => null,
                     'couleur_banniere' => '808080'
                 ]);
@@ -267,6 +279,7 @@ class DemandeController extends Controller
 
         // Changer son état
         $dem->id_etat = 3;
+        $dem->raison_refus = request()->input('reason');
         $dem->save();
 
         // Charger l'utilisateur concerné
@@ -275,7 +288,7 @@ class DemandeController extends Controller
         // S'il s'agit d'un renouvellement refusé, en informer l'utilisateur de la manière appropriée.
         if ($dem->id_type == 1) {
             // Envoyer un courriel
-            $usr->notify(new Renouvellement_refuse(request()->input('reason')));
+            $usr->notify(new Renouvellement_refuse($dem->raison_refus));
 
             // Rendre l'artiste inactif
             $artiste = Artiste::where("id_user", $dem->id_user)->first();
@@ -283,7 +296,7 @@ class DemandeController extends Controller
             $artiste->save();
         } else {
             // Envoyer un courriel
-            $usr->notify(new Refus_demande(request()->input('reason')));
+            $usr->notify(new Refus_demande($dem->raison_refus));
         }
 
         // Notifier in=app concernant le refus

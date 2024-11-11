@@ -4,15 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Artiste;
 use App\Models\Reseau;
-use App\Models\Notification;
-use App\Notifications\Demande_renouvellement;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Reseau_artiste;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+
 use Stripe\Account as StripeAccount;
 use Stripe\FinancialConnections\Account;
+
+use App\Models\Notification;
+
 
 class ArtisteController extends Controller
 {
@@ -50,9 +51,10 @@ class ArtisteController extends Controller
         }
 
         /* 2. Vérifie si l'utilisateur est un artiste actif */
-        if ($artiste->actif == 0) {
-            if (Auth::id() != $artiste->id_user) {
-                session()->flash('errorInactif', 'L\'utilisateur n\'est plus artiste.');
+        if($artiste->actif == 0)
+        {
+            if (Auth::id() != $artiste->id_user){
+                session()->flash('errorInactif', 'L\'artiste n\'existe pas');
                 return redirect()->back();
             }
 
@@ -164,69 +166,76 @@ class ArtisteController extends Controller
         return redirect()->route('profile.personnaliser')
             ->with('status', 'artiste-name-updated');
     }
-    public function renouvellement()
+
+    public function updateColor(Request $request)
     {
-        $artistes = Artiste::where([
-            'is_etudiant' => 1,
-        ])->get();
+        $artiste = Auth::user()->artiste;
+        $color = str_replace('bg-', '', $request->input('couleur_banniere'));
 
-        foreach ($artistes as $artiste) {
-            // Notifier user
+        // Save the color to the artiste model
+        $artiste->couleur_banniere = $color;
+        $artiste->save();
 
-            $notif = Notification::create([
-                'id_type' => 4,
-                'id_user' => $artiste->id_user,
-                'date' => now(),
-                'message' => '',
-                'lien' => null,
-                'visible' => 1
-            ]);
-            $notif->save();
+        return redirect()->back()->with('status', 'kiosque-color-updated');
+    }
 
-            /* Aussi notifier par courriel. */
+    public function updateSocials(Request $request)
+    {
+        $artiste = Auth::user()->artiste;
 
-            $usr = User::find($artiste->id_user);
-            $usr->notify(new Demande_renouvellement($artiste->id_user));
+        $usernames = $request->input('usernames');
+        $reseaux = $request->input('reseaux');
+        $removedFields = json_decode($request->input('removed_fields'), true);
+
+        // Detach removed fields first
+        if (!empty($removedFields)) {
+            foreach ($removedFields as $field) {
+                $reseau_id = $field['id_reseau'];
+                $username = $field['username'];
+
+                // Detach the specific pivot record for the removed field
+                $artiste->reseaux()
+                    ->wherePivot('id_reseau', $reseau_id)
+                    ->wherePivot('username', $username)
+                    ->detach();
+            }
+
+            // Remove the detached fields from $reseaux and $usernames
+            foreach ($removedFields as $field) {
+                $reseau_id = $field['id_reseau'];
+                $username = $field['username'];
+
+                // Find the index of the removed field in $reseaux and $usernames
+                $index = array_search($reseau_id, $reseaux);
+                if ($index !== false && $usernames[$index] === $username) {
+                    // Remove the values from both arrays
+                    unset($reseaux[$index]);
+                    unset($usernames[$index]);
+                }
+            }
         }
 
 
+        // Add or update remaining fields
+        foreach ($reseaux as $index => $reseau_id) {
+            $username = $usernames[$index];
 
-        return redirect()->to(route('admin-display-renouvellement'));
-    }
+            // Check if a 'reseau' with this specific reseau_id and username already exists
+            $existingPivot = $artiste->reseaux()
+                ->wherePivot('id_reseau', $reseau_id)
+                ->wherePivot('username', $username)
+                ->first();
 
-    public function subscribe(Request $request)
-    {
-        //TODO: S'assurer que le customer existe
-        //TODO: S'assurer que le paiement fonctionne
-        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+            if ($existingPivot) {
+                // Update the username if a match is found
+                $artiste->reseaux()->updateExistingPivot($reseau_id, ['username' => $username]);
+            } else {
+                // Attach as a new entry if it doesn't already exist
+                $artiste->reseaux()->attach($reseau_id, ['username' => $username]);
+            }
+        }
 
-        // Retrieve the customer
-        $customer = \Stripe\Customer::retrieve(Auth::user()->stripe_id);
-
-        // Retrieve the customer's payment methods
-        $paymentMethods = \Stripe\PaymentMethod::all([
-            'customer' => $customer->id,
-            'type' => 'card',
-        ]);
-
-        // Choose the payment method you want to use
-        $paymentMethodId = $paymentMethods->data[0]->id;
-
-        $request->user()->newSubscription(
-            'pro',
-            env("SUBSCRIPTION_PRICE_ID")
-        )->create($paymentMethodId);
-
-        return "This is a plain text response without a Blade view.";
-    }
-
-    // TODO: DO THE DO
-    public function cancel(Request $request)
-    {
-
-        $request->user()->subscription('pro')->cancel();
-
-        return back();
+        return redirect()->back()->with('status', 'social-media-updated');
     }
 
     /**

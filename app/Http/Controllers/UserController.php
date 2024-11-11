@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Notification;
 use App\Models\Moderateur;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -14,7 +15,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('admin/utilisateurs', ['users' => User::where('active', 1)->get()]);
+        return view('admin/utilisateurs',
+        [
+            'users' => User::where('active', 1)->get(),
+        ]);
     }
 
     /**
@@ -55,6 +59,32 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         //
+    }
+
+    /**
+     * Update the user's accessibility (blur) information.
+     */
+    public function updateUnits(Request $request)
+    {
+        /* 1. Récupérer la valeur */
+        $units = $request->input("units");
+
+        /* 2. Récupérer l'utilisateur à qui cela s'addresse */
+        $user = User::where("id", Auth::id());
+
+        /* 5. Update de l'article*/
+        if ($user->update([
+            "units" => $units
+        ])) {
+            session()->flash('succesUnits', 'L\'unité a bien été modifiée');
+        } else {
+            session()->flash('erreurUnits', 'Un problème lors de la mise à jour de l\'unité s\'est produit');
+
+            /* Retour à la vue */
+            return redirect()->route('profile.edit');
+        }
+
+        return redirect()->route('profile.edit');
     }
 
     /**
@@ -113,12 +143,10 @@ class UserController extends Controller
             'id_user' => $id,
         ])->first();
 
-        if ($mod->is_admin == 1)
-        {
+        if ($mod->is_admin == 1) {
             $mod->is_admin = 0;
             $mod->save();
-        }
-        else
+        } else
             $mod->delete();
         return redirect()->to(route('admin-utilisateurs'));
     }

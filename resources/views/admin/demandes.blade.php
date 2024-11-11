@@ -3,11 +3,11 @@
     <div class="flex content-height">
         @include('admin.menu-gauche')
         <!-- Partie de droite (contenu de la page) -->
-        <div class="pt-20 px-20 h-[100%] w-4/5 flex flex-col" x-data="{ openRefuser: false }">
+        <div class="pr-10 h-[100%] w-4/5 flex flex-col" x-data="{ openRefuser: false }">
             <!-- Titre, nombre de résultats, filtres-->
             <div id="header-info" class="flex justify-between">
                 <div>
-                    <h1 class="text-4xl text-black">Demandes d'inscription</h1>
+                    <h1 class="titre2-dark m-titreY p-sectionY border-b-2 border-darkGrey">Demandes d'inscription</h1>
                     <h2 class="text-2xl text-darkGrey">{{ sizeof($demandes) }} résultats</h2>
                 </div>
                 <div class="flex items-center justify-center">
@@ -49,14 +49,14 @@
                                         @if ($demande->type->type != 'Renouvellement')
                                             <div>
                                                 <h3 class="text-xl mb-4">Photos d'oeuvres réalisées</h3>
-                                                <div class="flex w-full flex-wrap">
+                                                <div class="flex w-full flex-wrap gap-2">
                                                     @for ($i = 0; $i < 10; $i++)
                                                         @if (isset($demande->photos_oeuvres[$i]))
                                                             <img src="{{ asset('img/demandePreuve/' . $demande->photos_oeuvres[$i]->path) }}"
                                                                 alt="Photo d'oeuvre"
-                                                                class="img shadow-md rounded-[16px] cursor-pointer w-1/5 aspect-square object-cover">
+                                                                class="img shadow-md rounded-[16px] cursor-pointer w-[19%] aspect-square object-cover">
                                                         @else
-                                                            <div class="w-1/5">
+                                                            <div class="w-[19%]">
                                                             </div>
                                                         @endif
                                                     @endfor
@@ -66,14 +66,14 @@
                                         @if ($demande->type->type != 'Nouveau professionnel')
                                             <div>
                                                 <h3 class="text-xl mb-4">Photos d'identité</h3>
-                                                <div class="flex w-full">
+                                                <div class="flex w-full gap-2">
                                                     @for ($i = 0; $i < 3; $i++)
                                                         @if (isset($demande->photos_identite[$i]))
                                                             <img src="{{ asset('img/demandeIdentite/' . $demande->photos_identite[$i]->path) }}"
                                                                 alt="Photo d'identité"
-                                                                class="img shadow-md rounded-[16px] cursor-pointer w-1/5 aspect-square object-cover">
+                                                                class="img shadow-md rounded-[16px] cursor-pointer w-[19%] aspect-square object-cover">
                                                         @else
-                                                            <div class="w-1/5"></div>
+                                                            <div class="w-[19%]"></div>
                                                         @endif
                                                     @endfor
                                                 </div>

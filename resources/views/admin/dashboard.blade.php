@@ -3,8 +3,8 @@
         <!-- Menu de gauche -->
         @include('admin.menu-gauche')
         <!-- Contenu de la page -->
-        <div class="pt-20 px-20 w-[90%] h-[100%] flex flex-col">
-            <h1 class="text-4xl text-black">Tableau de bord</h1>
+        <div class="pr-10 w-[90%] h-[100%] flex flex-col">
+            <h1 class="titre2-dark m-titreY p-sectionY border-b-2 border-darkGrey">Tableau de bord</h1>
             <!-- Conteneur des statistiques -->
             <div class="flex flex-wrap grow justify-evenly py-4 overflow-auto mt-8">
 
@@ -56,7 +56,9 @@
                     <div class="mx-auto flex flex-col">
                         <p class="mx-auto text-2xl">{{$demandes}}</p>
                         <p class="mx-auto text-2xl">Demandes d'inscription</p>
+                        @if($newDemandes > 0)
                         <span class="w-fit mx-auto bg-red-500 text-white py-1 px-2 text-center rounded-md">{{$newDemandes}} en attente</span>
+                        @endif
                     </div>
                 </a>
 

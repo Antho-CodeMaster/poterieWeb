@@ -90,37 +90,60 @@
 
                             {{-- Dimensions et poids --}}
                             <div class="w-[15%] h-full m-sectionX">
+                                {{-- Hauteur --}}
                                 <div class="w-full flex items-center gap-1 h-[25%]">
-                                    <p class="textPetit-dark font-bold">Hauteur:</p>
-                                    <p class="textPetit-dark">{{ $article->hauteur }} cm</p>
+                                    <p class="textPetit-dark font-bold">Hauteur :</p>
+                                    <p class="textPetit-dark">
+                                        @if (Auth::user()->units == 0)
+                                            {{ $article->hauteur }} cm
+                                        @elseif (Auth::user()->units == 1)
+                                            {{ number_format($article->hauteur / 2.54, 2) }} po
+                                        @endif
+                                    </p>
                                 </div>
+
+                                {{-- Largeur --}}
                                 <div class="w-full flex items-center gap-1 h-[25%]">
-                                    <p class="textPetit-dark font-bold">Largeur:</p>
-                                    <p class="textPetit-dark">{{ $article->largeur }} cm</p>
+                                    <p class="textPetit-dark font-bold">Largeur :</p>
+                                    <p class="textPetit-dark">
+                                        @if (Auth::user()->units == 0)
+                                            {{ $article->largeur }} cm
+                                        @elseif (Auth::user()->units == 1)
+                                            {{ number_format($article->largeur / 2.54, 2) }} po
+                                        @endif
+                                    </p>
                                 </div>
+
+                                {{-- Profondeur --}}
                                 <div class="w-full flex items-center gap-1 h-[25%]">
-                                    <p class="textPetit-dark font-bold">Profondeur:</p>
-                                    <p class="textPetit-dark">{{ $article->profondeur }} cm</p>
+                                    <p class="textPetit-dark font-bold">Profondeur :</p>
+                                    <p class="textPetit-dark">
+                                        @if (Auth::user()->units == 0)
+                                            {{ $article->profondeur }} cm
+                                        @elseif (Auth::user()->units == 1)
+                                            {{ number_format($article->profondeur / 2.54, 2) }} po
+                                        @endif
+                                    </p>
                                 </div>
                                 <div class="w-full flex items-center gap-1 h-[25%] ">
-                                    <p class="textPetit-dark font-bold">Poids:</p>
-                                    <p class=" textPetit-dark">{{ $article->poids }} cm</p>
+                                    <p class="textPetit-dark font-bold">Poids :</p>
+                                    <p class=" textPetit-dark">{{ $article->poids }} g</p>
                                 </div>
                             </div>
 
                             {{-- Type et quantité --}}
-                            <div class="w-[20%] h-full flex flex-wrap">
-                                <div class="w-full flex flex-wrap gap-1">
-                                    <div class="w-full flex gap-input">
-                                        <p class="textPetit-dark font-bold">Type d'usage: </p>
+                            <div class="w-[20%] h-full flex flex-wrap gap-1">
+                                <div class="w-full h-[50%] gap-1 items-baseline">
+                                    <div class="w-full h-[50%] items-center flex gap-input">
+                                        <p class="textPetit-dark font-bold">Type d'usage : </p>
                                         @if ($article->is_alimentaire)
                                             <p class="textPetit-dark">Alimetaire</p>
                                         @else
                                             <p class="textPetit-dark">Non alimetaire</p>
                                         @endif
                                     </div>
-                                    <div class=" w-full flex gap-input">
-                                        <p class="textPetit-dark font-bold">Type de pièce: </p>
+                                    <div class="w-full h-[50%] items-center flex gap-input">
+                                        <p class="textPetit-dark font-bold">Type de pièce : </p>
                                         @if ($article->is_unique)
                                             <p class="textPetit-dark">Unique</p>
                                         @else
@@ -129,12 +152,12 @@
                                     </div>
                                 </div>
 
-                                <div class="flex gap-1 text-end w-full">
-                                    <p class="textPetit-dark font-bold mb-0 mt-auto">Quantité: </p>
+                                <div class="w-full h-[45%] items-baseline flex gap-input">
+                                    <p class="textPetit-dark font-bold">Quantité : </p>
                                     @if ($article->quantite_disponible < 1)
-                                        <p class="text-[14px] mb-0 mt-auto">En rupture de stock</p>
+                                        <p class="text-[14px] ">En rupture de stock</p>
                                     @elseif ($article->quantite_disponible >= 1)
-                                        <p class="text-[14px] mb-0 mt-auto">{{ $article->quantite_disponible }}</p>
+                                        <p class="text-[14px] ">{{ $article->quantite_disponible }}</p>
                                     @endif
                                 </div>
                             </div>
@@ -162,7 +185,7 @@
 
                                         </span>
                                     @elseif($article->is_en_vedette == 0)
-                                    <span class=" border-2 border-darkGrey p-2 rounded-[99px]">
+                                        <span class=" border-2 border-darkGrey p-2 rounded-[99px]">
 
                                         </span>
                                     @endif
@@ -176,7 +199,7 @@
 
                                         </span>
                                     @elseif($article->is_sensible == 0)
-                                    <span class=" border-2 border-darkGrey p-2 rounded-[99px]">
+                                        <span class=" border-2 border-darkGrey p-2 rounded-[99px]">
 
                                         </span>
                                     @endif

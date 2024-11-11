@@ -8,16 +8,18 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Models\Artiste;
+
 
 class AuthenticatedSessionController extends Controller
 {
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create()
     {
         session()->flash('openLoginModal', 'Vous devez vous connecter pour accéder à cette fonctionnalité');
-        return view('decouverte');
+        return redirect('/');
     }
 
     /**
@@ -31,7 +33,7 @@ class AuthenticatedSessionController extends Controller
 
         $user = $request->user();
 
-        if($user->active == 0) {
+        if ($user->active == 0) {
             Auth::guard('web')->logout();
 
             $request->session()->invalidate();
@@ -39,12 +41,15 @@ class AuthenticatedSessionController extends Controller
             $request->session()->regenerateToken();
 
             return redirect('/');
-        }
-        else{
+        } else {
+            $art = Artiste::where('id_user', Auth::id())->first();
+
+            if ($art != null)
+                $art->validate();
+
             return back();
             #return redirect()->intended(route('decouverte', absolute: false));
         }
-
     }
 
     /**

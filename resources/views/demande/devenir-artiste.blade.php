@@ -82,16 +82,14 @@
                     <p class="text-center mt-10">Puisque vous appliquez en tant que professionnel(le), <span
                             class="font-bold">le paiement d'un
                             abonnement sera requis.</span> Cet abonnement soutient les frais de maintenance de la
-                        plateforme web.
-                        Le mode de paiement utilisé sera celui que vous avez enregistré dans
-                        Paramètres > Facturation. Vous serez facturés dès que votre demande sera approuvée. Si le
-                        paiement ne passe pas, vous n'aurez pas votre accès artiste.</p>
+                        plateforme web. Si votre candidature est approuvée par l'administration, un courriel vous sera
+                        envoyé en vous indiquant quoi faire pour procéder au premier paiement.</p>
                 </div>
             </div>
         </div>
         <div>
             <x-button.green.send class="mx-auto mt-6">Envoyer</x-button.green.send>
-            <p class="text-center mt-6">Vous serez notifiés lorsqu'un administrateur passera en revue votre profil.</p>
+            <p class="text-center mt-6">Lorsqu'un administrateur passera en revue votre profil, vous receverez un courriel et serez notifiés sur le site.</p>
         </div>
 
         <div class="fixed bottom-10 right-5">
