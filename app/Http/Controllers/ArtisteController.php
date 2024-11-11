@@ -174,6 +174,52 @@ class ArtisteController extends Controller
         return redirect()->back()->with('status', 'kiosque-color-updated');
     }
 
+    public function updateSocials(Request $request)
+    {
+        $artiste = Auth::user()->artiste;
+
+        $usernames = $request->input('usernames');
+        $reseaux = $request->input('reseaux');
+        $removedFields = json_decode($request->input('removed_fields'), true);
+
+        dd($usernames, $reseaux, $removedFields);
+
+        // First, handle removed fields by detaching them
+        foreach ($removedFields as $field) {
+            $reseau_id = $field['id_reseau'];  // Access the 'id_reseau' property
+            $username = $field['username'];    // Access the 'username' property
+
+            if ($reseau_id && $username) {
+                DB::table('reseaux_artistes')
+                ->where('id_artiste', $artiste->id)  // Make sure it's for the correct artiste
+                ->where('id_reseau', $reseau_id)
+                ->where('username', $username)
+                ->delete();
+            }
+        }
+
+        // Now, handle adding/updating the fields
+        foreach ($reseaux as $index => $reseau_id) {
+            $username = $usernames[$index];
+
+            // Check if a 'reseau' with the specific username is already attached to the artiste
+            $existingPivot = $artiste->reseaux()
+                ->wherePivot('id_reseau', $reseau_id)
+                ->wherePivot('username', $username)
+                ->first();
+
+            if ($existingPivot) {
+                // If the pivot entry with both reseau_id and username exists, update it
+                $artiste->reseaux()->updateExistingPivot($reseau_id, ['username' => $username]);
+            } else {
+                // If no existing pivot entry matches, attach a new entry
+                $artiste->reseaux()->attach($reseau_id, ['username' => $username]);
+            }
+        }
+
+        return redirect()->back()->with('status', 'social-media-updated');
+    }
+
     /**
      * Remove the specified resource from storage.
      */

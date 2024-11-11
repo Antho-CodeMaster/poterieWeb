@@ -26,7 +26,8 @@ class Artiste extends Model
 
     public function reseaux()
     {
-        return $this->belongsToMany(Reseau::class, "reseaux_artistes", 'id_artiste', 'id_reseau')->withPivot('username');
+        return $this->belongsToMany(Reseau::class, 'reseaux_artistes', 'id_artiste', 'id_reseau')
+                ->withPivot('username');
     }
     public function user(): BelongsTo
     {

@@ -25,6 +25,13 @@
                 </div>
             </div>
 
+            <!-- Update artiste social medias -->
+            <div class="lg:col-span-3 p-4 sm:p-8 bg-beige hover:shadow-lg rounded-lg">
+                <div class="max-w-xl">
+                    @include('profile.partials.update-social-media-form')
+                </div>
+            </div>
+
         </div>
     </div>
 </x-app-layout>

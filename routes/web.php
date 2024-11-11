@@ -82,6 +82,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/profil/update-picture', [ArtisteController::class, 'updatePicture'])->name('artiste.updatePicture');
     Route::post('/profil/update-name', [ArtisteController::class, 'updateName'])->name('artiste.updateName');
     Route::post('/profil/update-color', [ArtisteController::class, 'updateColor'])->name('artiste.updateColor');
+    Route::post('/profil/update-socials', [ArtisteController::class, 'updateSocials'])->name('artiste.updateSocials');
     Route::get('/devenir-artiste', [DemandeController::class, 'create'])->name('devenir-artiste')->middleware(EnsureUserCanBecomeArtist::class);
     Route::post('/devenir-artiste', [DemandeController::class, 'store'])->name('store-demande-artiste');
     Route::get('/renouvellement', [DemandeController::class, 'create'])->name('renouvellement-artiste')->middleware(EnsureUserIsArtist::class);

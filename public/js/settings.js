@@ -74,3 +74,33 @@ window.colorPicker = function() {
         }
     };
 };
+
+
+window.socialMediaHandler = function() {
+    return {
+        // Array to Track All Input Fields
+        fields: [],
+
+        // Array to Track Removed Fields (Ids and Names)
+        removedFields: [],
+
+        // Add a New Field
+        addField() {
+            this.fields.push({ username: '', reseau_id: '' }); // Add new object with empty fields
+        },
+
+        // Remove a Field by Index (Visually Hide It)
+        removeField(index) {
+            this.fields.splice(index, 1); // Remove field at the specified index
+        },
+
+        // Remove Existing Field and Track It for Removal
+        removeExistingField(reseauId, userName) {
+            const removed = { id_reseau: reseauId, username: userName };
+            console.log(removed);
+            if (!this.removedFields.some(field => field.id_reseau === reseauId && field.username === userName)) {
+                this.removedFields.push(removed); // Add to removedFields array if not already present
+            }
+        }
+    };
+}
