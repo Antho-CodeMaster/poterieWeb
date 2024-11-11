@@ -1,4 +1,4 @@
-<section>
+<section class="w-full">
     <header>
         <h2 class="text-lg font-medium text-gray-900">
             {{ __("Réseaux sociaux") }}
@@ -13,14 +13,14 @@
         @csrf
 
         <!-- Container for Existing Social Media Fields -->
-        <div class="space-y-4">
+        <div class="space-y-4 flex flex-col lg:w-[100vh] w-fit">
             @foreach ($reseaux as $reseau)
-                <div class="flex space-x-4 items-center" :class="{ 'hidden': removedFields.some(field => field.id_reseau === {{ $reseau->pivot->id_reseau }} && field.username === '{{ $reseau->pivot->username }}') }">
+                <div class="flex space-x-4 items-center w-full" :class="{ 'hidden': removedFields.some(field => field.id_reseau === {{ $reseau->pivot->id_reseau }} && field.username === '{{ $reseau->pivot->username }}') }">
                     <!-- Pre-filled Username Field -->
-                    <input type="text" name="usernames[]" value="{{ $reseau->pivot->username }}" placeholder="Nom d'utilisateur" class="text-lg text-darkGrey h-12 px-4 border border-darkGrey rounded-md shadow-sm focus:outline-none focus:border-beige" required>
+                    <input type="text" name="usernames[]" value="{{ $reseau->pivot->username }}" placeholder="Nom d'utilisateur" class="text-lg text-darkGrey h-12 px-4 rounded-md shadow-sm focus:outline-none w-full" required>
 
                     <!-- Pre-selected Social Network Dropdown -->
-                    <select name="reseaux[]" class="text-lg text-darkGrey h-12 px-4 border border-darkGrey rounded-md shadow-sm focus:outline-none" required>
+                    <select name="reseaux[]" class="text-lg text-darkGrey h-12 px-4 rounded-md shadow-sm focus:outline-none w-full" required>
                         <option value="">{{ __('Sélectionnez un réseau') }}</option>
                         @foreach ($allReseaux as $optionReseau)
                             <option value="{{ $optionReseau->id_reseau }}" {{ $optionReseau->id_reseau == $reseau->id_reseau ? 'selected' : '' }}>
@@ -41,14 +41,14 @@
         </div>
 
         <!-- Container for Dynamic Fields -->
-        <div id="extend-field" class="space-y-4">
+        <div id="extend-field" class="space-y-4 w-full">
             <template x-for="(field, index) in fields" :key="index">
-                <div class="flex space-x-4 items-center">
+                <div class="flex space-x-4 items-center w-full">
                     <!-- Username Input Field -->
-                    <input type="text" x-model="field.username" placeholder="Nom d'utilisateur" name="usernames[]" class="text-lg text-darkGrey h-12 px-4 border border-darkGrey rounded-md shadow-sm focus:outline-none focus:border-beige" required>
+                    <input type="text" x-model="field.username" placeholder="Nom d'utilisateur" name="usernames[]" class="text-lg text-darkGrey h-12 px-4 rounded-md shadow-sm focus:outline-none focus:border-beige w-full" required>
 
                     <!-- Social Network Dropdown -->
-                    <select x-model="field.reseau_id" name="reseaux[]" class="text-lg text-darkGrey h-12 px-4 border border-darkGrey rounded-md shadow-sm focus:outline-none" required>
+                    <select x-model="field.reseau_id" name="reseaux[]" class="text-lg text-darkGrey h-12 px-4 rounded-md shadow-sm focus:outline-none w-full" required>
                         <option value="">{{ __('Sélectionnez un réseau') }}</option>
                         @foreach ($allReseaux as $reseau)
                             <option :value="{{ $reseau->id_reseau }}">{{ $reseau->reseau }}</option>
