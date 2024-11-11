@@ -48,7 +48,7 @@ class ProfileController extends Controller
         $sub_info = null;
         $subbed = false;
         $was_subbed = false;
-        if ($art != null)
+        if ($art != null && !$art->is_etudiant)
             if ($art->subscribed())
                 $subbed = true;
             else
