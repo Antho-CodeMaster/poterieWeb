@@ -1,7 +1,17 @@
-//Settings to show the artist's profile picture
+//Settings to show the artist's profil picture
 document.addEventListener('DOMContentLoaded', function() {
-    // Check if we're on the profile edit page
-    if (document.baseURI.includes("profile/personnaliser")) {
+    //Check if the path contains 'profil'
+    if (document.baseURI.includes("profil")) {
+        document.getElementById('hamburger').addEventListener('click', function() {
+            let menu = document.getElementById('menu-gauche');
+
+            menu.classList.toggle('hidden');
+            menu.classList.toggle('top-24');
+        });
+    }
+
+    // Check if we're on the profil edit page
+    if (document.baseURI.includes("profil/personnaliser")) {
         var imageInput = document.getElementById('image-input');
         var imagePreview = document.getElementById('image-preview');
 
@@ -15,16 +25,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
-
-    //Check if the path contains 'profile'
-    if (document.baseURI.includes("profile")) {
-        document.getElementById('hamburger').addEventListener('click', function() {
-            let menu = document.getElementById('menu-gauche');
-            menu.classList.toggle('hidden'); // Just toggle visibility
-            menu.classList.toggle('top-24');
-        });
-    }
-
 });
 
 window.colorPicker = function() {
