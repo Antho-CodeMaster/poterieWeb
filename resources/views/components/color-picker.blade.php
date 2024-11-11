@@ -1,4 +1,4 @@
-<div class="bg-white mx-auto my-auto p-6">
+<div class="bg-white py-6">
     <form action="{{ route('artiste.updateColor') }}" method="POST" x-data="colorPicker()"
         x-init="[initColor('{{ isset($artiste->couleur_banniere) ? 'bg-' . $artiste->couleur_banniere : 'bg-neutral-500' }}')]">
         @csrf <!-- Include CSRF token for security -->
