@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
-
+use Stripe\Climate\Order;
 
 class ArticleController extends Controller
 {
@@ -266,7 +266,9 @@ class ArticleController extends Controller
         $idUser = Auth::user()->id;
         $artiste = Artiste::with("reseaux", "articles")->where('id_user', $idUser)->first();
 
-        $articles = $artiste->articles;
+        $articles = $artiste->articles()
+            ->orderBy('created_at', 'desc')  // Tri par date décroissante
+            ->get();
 
         return view('articleSettings/tousMesArticles', [
             'artiste' => $artiste,
@@ -585,7 +587,9 @@ class ArticleController extends Controller
     public function articleFiltre(Request $request)
     {
         // 1. Récupérer les valeurs des filtres envoyés depuis le client
-        $dateFiltre = $request->input('dateFiltre');
+        $dateFiltre = $request->input('dateFilter');
+        $dateFiltre = $dateFiltre ?? '1'; //Pour filtrer en ordre croissant toujours si aucun filtre
+
         $usageFilter = $request->input('usageFilter');
         $pieceFilter = $request->input('pieceFilter');
         $prixMinFilter = $request->input('prixMinFilter');
@@ -595,30 +599,19 @@ class ArticleController extends Controller
         $sensibleFilter = $request->input('sensibleFilter');
         $searchTerm = $request->input('searchArticle');
 
-        /*         dump([
-            'dateFiltre' => $dateFiltre,
-            'usageFilter' => $usageFilter,
-            'pieceFilter' => $pieceFilter,
-            'prixMinFilter' => $prixMinFilter,
-            'prixMaxFilter' => $prixMaxFilter,
-        ]); */
-
         // 2. Récupérer l'artiste connecté
         $artiste = Artiste::where('id_user', Auth::user()->id)->first();
 
         // 3. Commencer la requête pour les articles de l'artiste
         $articles = Article::where('id_artiste', $artiste->id_artiste)
             ->where('id_etat', '!=', 3) // Exclure les articles avec id_etat = 3
-            ->when($dateFiltre !== null, function ($query) use ($dateFiltre) {
+            ->when(isset($dateFiltre) && $dateFiltre !== null, function ($query) use ($dateFiltre) {
                 // Filtre par date de création
-                if ($dateFiltre == 1) {
+                if ($dateFiltre === '1') {
                     $query->orderBy('created_at', 'desc');
-                } elseif ($dateFiltre == 0) {
+                } elseif ($dateFiltre === '0') {
                     $query->orderBy('created_at', 'asc');
                 }
-            }, function ($query) {
-                // Ordre par défaut si $dateFiltre n'est pas défini
-                $query->orderBy('created_at', 'asc');
             })
             ->when(isset($usageFilter) && $usageFilter !== 'null', function ($query) use ($usageFilter) {
                 // Appliquer le filtre usage si une valeur est sélectionnée (0 ou 1)
@@ -648,9 +641,9 @@ class ArticleController extends Controller
                 // Filtre pour sensibilité (sensible ou insensible)
                 $query->where('is_sensible', (int)$sensibleFilter);
             })
-            ->where(function ($query) use ($searchTerm) {
+            ->when(isset($searchTerm) && $searchTerm !== 'null', function ($query) use ($searchTerm) {
                 $query->where('nom', 'LIKE', '%' . $searchTerm . '%');
-                })
+            })
             ->get();
 
         $view = view('articleSettings.partials.allArticles', compact('articles'))->render();

@@ -99,8 +99,8 @@
                         <label for="dateFiltre" class="block textPetit-dark font-medium">Date de création</label>
                         <select id="dateFiltre" name="dateFiltre" data-url="{{ route('articleFiltre') }}"
                             class="h-[39px] w-[180px] border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                            <option value="1">Plus récent</option>
-                            <option value="0" selected>Moins récent</option>
+                            <option value="1" selected>Plus récent</option>
+                            <option value="0">Moins récent</option>
                         </select>
                     </div>
 

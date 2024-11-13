@@ -46,9 +46,8 @@ class ArtisteController extends Controller
         }
 
         /* 2. Vérifie si l'utilisateur est un artiste actif */
-        if($artiste->actif == 0)
-        {
-            if (Auth::id() != $artiste->id_user){
+        if ($artiste->actif == 0) {
+            if (Auth::id() != $artiste->id_user) {
                 session()->flash('errorInactif', 'L\'artiste n\'existe pas');
                 return redirect()->back();
             }
@@ -60,18 +59,14 @@ class ArtisteController extends Controller
         /* 3. Va chercher les reseaux et articles de l'artiste */
         $reseaux = $artiste->reseaux;
 
-        /* Filtre les articles en fonctions de qui visite la page */
+        /* Filtre les articles en fonction de qui visite la page */
         if (Auth::id() == $artiste->id_user) {
-            $articles = $artiste->articles;
+            // Si l'utilisateur est l'artiste, récupérer tous les articles
+            $articles = $artiste->articles()->orderBy('created_at', 'desc')->get(); // Tri par date décroissante
         } else {
-            $articles = [];
-            foreach ($artiste->articles as $article) {
-                if ($article->id_etat == 1) {
-                    $articles[] = $article;
-                }
-            }
+            // Si l'utilisateur n'est pas l'artiste, ne récupérer que les articles visibles
+            $articles = $artiste->articles()->where('id_etat', 1)->orderBy('created_at', 'desc')->get(); // Tri par date décroissante
         }
-
 
         /* 4. Vérifie si l'artiste a des articles en vedette */
         $aDesArticlesVedette = collect($articles)->contains('is_en_vedette', true);

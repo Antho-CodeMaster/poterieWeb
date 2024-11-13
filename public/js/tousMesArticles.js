@@ -72,6 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }).then(data => {
                 if (data.status === 'success') {
                     document.getElementById('articlesContainer').innerHTML = data.html; // Met à jour le conteneur des articles
+                    console.log(data.dateFiltre);
                 } else {
                     console.error("Échec de l'application du filtre");
                 }
