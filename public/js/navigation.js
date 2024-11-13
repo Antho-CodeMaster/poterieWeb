@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function hideNotification(notificationId, notificationElement) {
+    console.log(window.notificationHideRoute);
     fetch(window.notificationHideRoute, {
         method: 'POST',
         headers: {

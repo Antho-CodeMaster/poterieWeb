@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     if (document.baseURI.includes("kiosque")) {
 
         let closeWelcome = document.getElementById("closeWelcomeModal");

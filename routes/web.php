@@ -41,6 +41,9 @@ Route::controller(ArticleController::class)->group(function () {
     Route::get('/addArticleForm', 'create')->name('addArticleForm');
     Route::patch('/modifArticle', 'update')->name('modifArticle');
     Route::post('/signaleArticle', 'store')->name('signaleArticle');
+
+    /* Route lié aux filtre */
+    Route::post('/articleFiltre', [ArticleController::class, 'articleFiltre'])->name('articleFiltre');
 });
 
 /* Routes lié aux commandes*/
@@ -97,6 +100,8 @@ Route::get('/recherche', [ArticleController::class, 'getSearch'])->name('recherc
 Route::controller(UserController::class)->group(function () {
     Route::post('/updateUnits', [UserController::class, 'updateUnits'])->name('updateUnits');
 });
+
+
 
 
 require __DIR__ . '/auth.php';

@@ -14,8 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-
-
+use Illuminate\Support\Facades\Log;
 
 
 class ArticleController extends Controller
@@ -579,4 +578,94 @@ class ArticleController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(article $article) {}
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function articleFiltre(Request $request)
+    {
+        // 1. Récupérer les valeurs des filtres envoyés depuis le client
+        $dateFiltre = $request->input('dateFiltre');
+        $usageFilter = $request->input('usageFilter');
+        $pieceFilter = $request->input('pieceFilter');
+        $prixMinFilter = $request->input('prixMinFilter');
+        $prixMaxFilter = $request->input('prixMaxFilter');
+        $masqueFilter = $request->input('masqueFilter');
+        $vedetteFilter = $request->input('vedetteFilter');
+        $sensibleFilter = $request->input('sensibleFilter');
+        $searchTerm = $request->input('searchArticle');
+
+        /*         dump([
+            'dateFiltre' => $dateFiltre,
+            'usageFilter' => $usageFilter,
+            'pieceFilter' => $pieceFilter,
+            'prixMinFilter' => $prixMinFilter,
+            'prixMaxFilter' => $prixMaxFilter,
+        ]); */
+
+        // 2. Récupérer l'artiste connecté
+        $artiste = Artiste::where('id_user', Auth::user()->id)->first();
+
+        // 3. Commencer la requête pour les articles de l'artiste
+        $articles = Article::where('id_artiste', $artiste->id_artiste)
+            ->where('id_etat', '!=', 3) // Exclure les articles avec id_etat = 3
+            ->when($dateFiltre !== null, function ($query) use ($dateFiltre) {
+                // Filtre par date de création
+                if ($dateFiltre == 1) {
+                    $query->orderBy('created_at', 'desc');
+                } elseif ($dateFiltre == 0) {
+                    $query->orderBy('created_at', 'asc');
+                }
+            }, function ($query) {
+                // Ordre par défaut si $dateFiltre n'est pas défini
+                $query->orderBy('created_at', 'asc');
+            })
+            ->when(isset($usageFilter) && $usageFilter !== 'null', function ($query) use ($usageFilter) {
+                // Appliquer le filtre usage si une valeur est sélectionnée (0 ou 1)
+                $query->where('is_alimentaire', (int)$usageFilter);
+            })
+            ->when(isset($pieceFilter) && $pieceFilter !== 'null', function ($query) use ($pieceFilter) {
+                // Filtre par type de pièce : 1 pour unique, 0 pour en série
+                $query->where('is_unique', $pieceFilter);
+            })
+            ->when(isset($prixMinFilter) && $prixMinFilter !== '', function ($query) use ($prixMinFilter) {
+                // Filtre pour les prix minimum si défini
+                $query->where('prix', '>=', $prixMinFilter);
+            })
+            ->when(isset($prixMaxFilter) && $prixMaxFilter !== '', function ($query) use ($prixMaxFilter) {
+                // Filtre pour les prix maximum si défini
+                $query->where('prix', '<=', $prixMaxFilter);
+            })
+            ->when(isset($masqueFilter) && $masqueFilter !== 'null', function ($query) use ($masqueFilter) {
+                // Filtre pour visibilité (masqué ou visible)
+                $query->where('id_etat', (int)$masqueFilter);
+            })
+            ->when(isset($vedetteFilter) && $vedetteFilter !== 'null', function ($query) use ($vedetteFilter) {
+                // Filtre pour "en vedette" ou "commun"
+                $query->where('is_en_vedette', (int)$vedetteFilter);
+            })
+            ->when(isset($sensibleFilter) && $sensibleFilter !== 'null', function ($query) use ($sensibleFilter) {
+                // Filtre pour sensibilité (sensible ou insensible)
+                $query->where('is_sensible', (int)$sensibleFilter);
+            })
+            ->where(function ($query) use ($searchTerm) {
+                $query->where('nom', 'LIKE', '%' . $searchTerm . '%');
+                })
+            ->get();
+
+        $view = view('articleSettings.partials.allArticles', compact('articles'))->render();
+
+
+        // Retourner les articles sous forme de JSON
+        return response()->json([
+            'status' => 'success',
+            'articles' => $articles,
+            'html' => $view,
+        ]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function commandeFiltre(Request $request) {}
 }
