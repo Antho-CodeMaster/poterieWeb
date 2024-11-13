@@ -89,14 +89,27 @@ Route::middleware('auth')->group(function () {
     Route::get('/abonnement', [AbonnementController::class, 'create'])->name('abonnement')->middleware(EnsureUserCanSubscribe::class);
     Route::get('/abonnement/demarrer', [AbonnementController::class, 'store'])->name('demarrer-abonnement');
     Route::get('/abonnement/annuler', [AbonnementController::class, 'destroy'])->name('annuler-abonnement');
+
+    /** Route lié a stripe connect*/
+    Route::get('/stripe/create-account', [ProfileController::class, 'creeCompteConnect'])->name('stripe.connect');
+    Route::get('/connect', [ProfileController::class, 'connectReturn'])->name('connect-return');
+    Route::get('/refresh', [ProfileController::class, 'connectRefresh'])->name('connect-refresh');
+
+    //Route pour la génération de facture
+    Route::get('/facture/vente/{id_commande}', [CommandeController::class,'recusArtistes'])->name('recus');
 });
 
 Route::get('/recherche', [ArticleController::class, 'getSearch'])->name('recherche.getSearch');
+
+
+Route::view('/contact','contact')->name('contact');
+Route::view('/about-us','apropos')->name('apropos');
 
 /* Route lié à l'utilisateur */
 Route::controller(UserController::class)->group(function () {
     Route::post('/updateUnits', [UserController::class, 'updateUnits'])->name('updateUnits');
 });
+
 
 
 require __DIR__ . '/auth.php';

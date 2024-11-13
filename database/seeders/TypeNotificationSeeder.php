@@ -34,6 +34,9 @@ class TypeNotificationSeeder extends Seeder
         ]);
 
         DB::table('types_notification')->insert([
+            'description' => 'Vous avez une nouvelle commande en cours, [1]',
+        ]);
+        DB::table('types_notification')->insert([
             'description' => 'Votre abonnement est terminé! Vous pouvez le réactiver via Paramètres > Facturation.',
         ]);
 

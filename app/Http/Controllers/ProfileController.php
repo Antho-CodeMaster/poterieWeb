@@ -221,6 +221,43 @@ class ProfileController extends Controller
         return Redirect::to('/');
     }
 
+
+    public function creeCompteConnect(){
+        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+
+        $artiste = Artiste::where('id_user',Auth::id())->first();
+
+        $account = \Stripe\Account::create([
+            'type' => 'express',
+            'country' => 'CA',
+            'email' => $artiste->user->email,
+            'business_type' => 'individual',
+            'capabilities' => [
+                'card_payments' => ['requested' => true],
+                'transfers' => ['requested' => true],
+            ],
+        ]);
+
+        $artiste->update([
+            'stripe_acc' => $account->id
+        ]);
+
+        $lienCompte = \Stripe\AccountLink::create([
+            'account' => $account->id,
+            'refresh_url' => route('connect-refresh'),
+            'return_url' => route('connect-return'),
+            'type' => 'account_onboarding'
+        ]);
+
+        return redirect($lienCompte->url);
+    }
+
+    public function connectReturn(Request $request){
+
+    }
+    public function connectRefresh(Request $request){
+    }
+
     /**
      * Delete the user's card.
      */

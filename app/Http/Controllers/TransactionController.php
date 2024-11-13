@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Stripe\Invoice;
 
 class TransactionController extends Controller
 {
@@ -43,6 +44,32 @@ class TransactionController extends Controller
 
         /* 4. Récupérer les transactions en lien avec les articles de l'artiste*/
         $transactions = Transaction::whereIn('id_article', $articleIds)->get();
+
+
+        //Scrap that, trash code lmao i spent to much time on this for nooooone
+        /* 5. Récupérer auprès de stripe les informations de facturations */
+        /*\Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+
+        $stripeId = Artiste::where('id_user',$idUser)->pluck('stripe_acc')->first();
+
+        $invoices = Invoice::all([],[
+            'stripe_account' => $stripeId
+        ]);
+
+        $invoiceUrls = [];
+
+        foreach($invoices->data as $invoice){
+            if ($invoice->hosted_invoice_url) {
+                $invoiceUrls[] = $invoice->hosted_invoice_url;
+            } else {
+                // If the hosted link is missing, send the invoice to generate the link
+                $sentInvoice = Invoice::retrieve($invoice->id, [
+                    'stripe_account' => $stripeId,
+                ]);
+                $sentInvoice->sendInvoice(); // This generates the hosted link
+                $invoiceUrls[] = $sentInvoice->hosted_invoice_url;
+            }
+        }*/
 
         return view('commande.commandesArtiste', [
             'articles' => $articles,

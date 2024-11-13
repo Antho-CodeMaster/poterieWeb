@@ -8,7 +8,12 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Reseau_artiste;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+
+use Stripe\Account as StripeAccount;
+use Stripe\FinancialConnections\Account;
+
 use App\Models\Notification;
+
 
 class ArtisteController extends Controller
 {
@@ -240,4 +245,6 @@ class ArtisteController extends Controller
     {
         //
     }
+
+
 }

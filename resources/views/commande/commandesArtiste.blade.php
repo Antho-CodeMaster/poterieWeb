@@ -89,12 +89,30 @@
                                     </div>
                                 </div>
                             </div>
+                                {{-- <p>{{ $transaction->commande->ville->ville }}</p> --}}
+                            </div>
 
+                            {{-- Date de prise de commande --}}
+                            <div class="flex gap-1 items-baseline w-[19%]">
+                                <p class="textGrand-dark font-bold">Date:</p>
+                                @if (
+                                    $commandeTransactions->first()->commande->no_civique == null ||
+                                        $commandeTransactions->first()->commande->rue == null)
+                                    <p class="textGrand-dark"> N/A </p>
+                                @else
+                                    <p class="textGrand-dark text-nowrap text-ellipsis overflow-hidden">
+                                        {{ $commandeTransactions->first()->commande->date }}</p>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="flex w-full p-sectionX p-sectionTop gap-1 underline">
+                            <a href="/facture/vente/{{$commandeId}}" target="_blank">Facture</a>
+                        </div>
 
-                            {{-- Transactions qui ont besoin d'être traitées --}}
-                            @foreach ($commandeTransactions->sortBy('id_etat') as $transaction)
-                                <div
-                                    class="flex gap-input rounded-[12px] bg-beige w-full p-sectionX p-sectionY border-[2px]
+                        {{-- Transactions qui ont besoin d'être traitées --}}
+                        @foreach ($commandeTransactions->sortBy('id_etat') as $transaction)
+                            <div
+                                class="flex gap-input rounded-[12px] bg-beige w-full p-sectionX p-sectionY border-[2px]
                                 {{ $transaction->id_etat == 2 ? 'border-jauneWarning' : '' }}
                                 {{ $transaction->id_etat == 3 ? 'border-blue-700' : '' }}
                                 {{ $transaction->id_etat == 4 ? 'border-vertSucces' : '' }}

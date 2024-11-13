@@ -31,6 +31,11 @@
                 <span></span>
                 <span></span>
             @endif
+            <div class="lg:col-span-2 p-4 sm:p-8 bg-beige hover:shadow-lg rounded-lg">
+                <div class="max-w-xl">
+                    @include('profile.partials.add-payout-info-form')
+                </div>
+            </div>
         </div>
         @if (Session::has('succes'))
             <div class="w-fit absolute right-2 bottom-10">
