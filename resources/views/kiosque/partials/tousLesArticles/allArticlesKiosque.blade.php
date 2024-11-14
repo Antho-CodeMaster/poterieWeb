@@ -282,20 +282,34 @@
                     </div>
 
                     {{-- Vérifie chaque like du user avec l'article --}}
-                    @if ($article->isLikedByUser(Auth::id()))
-                        <svg class="w-10 h-10" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" fill="#ff0000" viewBox="0 0 24 24">
-                            <path stroke="#444444" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m12.75 20.66 6.184-7.098c2.677-2.884 2.559-6.506.754-8.705-.898-1.095-2.206-1.816-3.72-1.855-1.293-.034-2.652.43-3.963 1.442-1.315-1.012-2.678-1.476-3.973-1.442-1.515.04-2.825.76-3.724 1.855-1.806 2.201-1.915 5.823.772 8.706l6.183 7.097c.19.216.46.34.743.34a.985.985 0 0 0 .743-.34Z" />
-                        </svg>
+                    @auth
+                        <div x-cloak x-data="{ liked: {{ json_encode($article->isLikedByUser(Auth::id()) != '' ? true : false) }} }"
+                            @click="toggleLike({{ $article->id_article }}); liked = !liked"
+                            class="relative cursor-pointer flex items-center justify-center ">
+                            <svg class="w-10 h-10 mb-[2px] relative z-20 transition-all duration-200"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path
+                                    class="main fill-transparent stroke-darkGrey stroke-2 origin-center transition-transform duration-300"
+                                    :class="liked ? 'scale-0' : 'scale-100'"
+                                    d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
+                                <path class="second fill-red-600 origin-center transition-transform duration-300"
+                                    :class="liked ? 'scale-100' : 'scale-0'"
+                                    d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
+                            </svg>
+                        </div>
                     @else
-                        <svg class="w-10 h-10 text-gray-800 dark:text-white mb-[2px]" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                            viewBox="0 0 24 24">
-                            <path stroke="#444444" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
-                        </svg>
-                    @endif
+                        <div x-cloak @click="$dispatch('open-login-modal')"
+                            class="relative cursor-pointer flex items-center justify-center">
+
+                            <!-- Heart SVG Icon -->
+                            <svg class="w-10 h-10 relative z-20 transition-all duration-200 mb-[2px]"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24">
+                                <path class="main fill-transparent stroke-darkGrey stroke-2 origin-center transition-transform duration-300"
+                                    d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
+                            </svg>
+                        </div>
+                    @endauth
                 </div>
 
                 {{-- Changer le bouton selon l'état de l'article --}}
