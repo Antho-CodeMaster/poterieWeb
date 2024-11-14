@@ -14,12 +14,12 @@
         @foreach ($articles as $article)
             @if ($article->etat->etat == 'Visible client' && $article->quantite_disponible > 0 && $article->is_en_vedette == 1)
                 {{-- Div de l'article --}}
-                <div class="w-[300px] m-article flex-shrink-0  whitespace-nowrap" x-data="{ openArticleModal: false, currentIndex: 0 }">
-                    <div class="relative overflow-hidden rounded-[16px]">
+                <div class="w-[300px] m-article flex-shrink-0  whitespace-nowrap " x-data="{ openArticleModal: false, currentIndex: 0 }">
+                    <div class="relative overflow-hidden transition-all ease-in-out duration-200 hover:scale-[103%] hover:shadow-md rounded-[16px]">
                         @if (Auth::check())
                             @if (Auth::user()->contenu_sensible == 1)
                                 <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
-                                    class="shadow-md rounded-[16px] cursor-pointer w-full h-[300px] object-cover transition-all ease-in-out duration-200 select-none "
+                                    class="shadow-md rounded-[16px] cursor-pointer w-full h-[300px] object-cover select-none"
                                     @click=" $dispatch('open-article-modal');
                                     $dispatch('set-article', {
                                         id_article: '{{ $article->id_article }}',
@@ -43,7 +43,7 @@
                                     $dispatch('set-mots-cles', '{{ $article->motCles }}'); ">
                             @else
                                 <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
-                                    class="shadow-md rounded-[16px] cursor-pointer w-full h-[300px] object-cover transition-all ease-in-out duration-200 select-none {{ $article->is_sensible == 1 ? ' blur-[18px]' : '' }}"
+                                    class="shadow-md rounded-[16px] cursor-pointer w-full h-[300px] object-cover  select-none {{ $article->is_sensible == 1 ? ' blur-[18px]' : '' }}"
                                     @click=" $dispatch('open-article-modal');
                                     $dispatch('set-article', {
                                         id_article: '{{ $article->id_article }}',
@@ -68,7 +68,7 @@
                             @endif
                         @else
                             <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
-                                class="shadow-md rounded-[16px] cursor-pointer w-full h-[300px] object-cover transition-all ease-in-out duration-200 select-none {{ $article->is_sensible == 1 ? ' blur-[18px]' : '' }}"
+                                class="shadow-md rounded-[16px] cursor-pointer w-full h-[300px] object-cover  select-none {{ $article->is_sensible == 1 ? ' blur-[18px]' : '' }}"
                                 @click=" $dispatch('open-article-modal');
                                 $dispatch('set-article', {
                                     id_article: '{{ $article->id_article }}',

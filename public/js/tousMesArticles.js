@@ -83,8 +83,8 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('dateFiltre').addEventListener('change', applyFilter);
         document.getElementById('typePieceFiltre').addEventListener('change', applyFilter);
         document.getElementById('pieceUniqueFiltre').addEventListener('change', applyFilter);
-        document.getElementById('prixFiltreMin').addEventListener('change', applyFilter);
-        document.getElementById('prixFiltreMax').addEventListener('change', applyFilter);
+        document.getElementById('prixFiltreMin').addEventListener('input', applyFilter);
+        document.getElementById('prixFiltreMax').addEventListener('input', applyFilter);
         document.getElementById('masqueFiltre').addEventListener('change', applyFilter);
         document.getElementById('vedetteFiltre').addEventListener('change', applyFilter);
         document.getElementById('sensibleFiltre').addEventListener('change', applyFilter);

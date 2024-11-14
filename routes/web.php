@@ -44,6 +44,7 @@ Route::controller(ArticleController::class)->group(function () {
 
     /* Route lié aux filtre */
     Route::post('/articleFiltre', [ArticleController::class, 'articleFiltre'])->name('articleFiltre');
+    Route::post('/kiosqueFiltre', [ArticleController::class, 'kiosqueFiltre'])->name('kiosqueFiltre');
 });
 
 /* Routes lié aux commandes*/
