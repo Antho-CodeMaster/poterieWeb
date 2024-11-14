@@ -1,5 +1,5 @@
 <div class="my-20" data-collection-id="{{ $collection->id_collection }}">
-    <h2 class="titre font-semibold mt-8 mb-4">{{ $collection->collection }}</h2>
+    <h2 class="titre font-semibold mx-4 mt-8 mb-2">{{ $collection->collection }}</h2>
 
     @if ($collection->articles->isEmpty())
         <p>Aucun article disponible dans cette collection.</p>
@@ -19,9 +19,9 @@
                 class="carousel bg-beige p-2 flex overflow-x-scroll scroll-smooth whitespace-nowrap scrollbar-hide w-full">
                 @foreach ($collection->articles as $article)
                     <div x-data='{openArticleModal: false}'
-                        class="inline-block w-[300px] mx-2 flex-shrink-0 overflow-hidden whitespace-nowrap bg-white shadow-md rounded-md">
+                        class="inline lg:w-[16vw] w-[56vw] lg:mx-6 mx-2 shrink-0 overflow-hidden whitespace-nowrap bg-white shadow-md rounded-md hover:shadow-lg">
                         <img src="/../img/{{ $article->photosArticle->path }}" alt="{{ $article->nom }}"
-                            class="w-full h-48 object-cover rounded-t-md"
+                            class="{{($article->is_sensible == 0 && !Auth::check()) || (Auth::check() && Auth()->user()->contenu_sensible == 0 && $article->is_sensible == 0) ? 'blur-[18px]' : ''}} w-full h-64 object-cover rounded-t-md"
                             @click=" $dispatch('open-article-modal');
                             $dispatch('set-article', {
                                 id_article: '{{ $article->id_article }}',
@@ -43,12 +43,12 @@
                             $dispatch('set-artiste', '{{ $article->artiste }}');
                             $dispatch('set-photos', '{{ $article->photo_article }}');
                             $dispatch('set-mots-cles', '{{ $article->motCles }}'); ">
-                        <div class="p-4">
-                            <h3 class="text-lg font-bold text-nowrap overflow-hidden text-ellipsis">{{ $article->nom }}
-                            </h3>
-                            <p class="text-gray-600">{{ $article->prix }}$</p>
-                            <div class="flex items-end justify-between m-2">
-                                <div class="flex justify-center items-end w-[75%]">
+                        <div class="h-fit flex flex-row p-4">
+                            <div class="flex-col w-[70%] h-full">
+                                <h3 class="text-lg font-bold text-nowrap overflow-hidden text-ellipsis">{{ $article->nom }}</h3>
+                                <p class="text-gray-600">{{ $article->prix }}$</p>
+
+                                <div class="mt-8">
                                     @if ($article->quantite_disponible == 0)
                                         <p
                                             class="border-darkGrey border rounded-[24px] w-full h-[32px] text-beige font-bold bg-darkGrey text-center">
@@ -64,15 +64,17 @@
                                         </form>
                                     @endif
                                 </div>
-                                <div class="flex flex-col items-center justify-end mx-2">
+                            </div>
+                            <div class="flex flex-col justify-end w-[20%] h-fit ml-auto">
+                                <div class="flex flex-col items-center">
                                     @auth
                                         <div x-cloak
                                             x-data="{ liked: {{ json_encode($article->isLikedByUser(Auth::id()) != "" ? true : false) }} }"
                                             @click="toggleLike({{ $article->id_article }}); liked = !liked"
-                                            class="relative cursor-pointer w-20 h-20 flex items-center justify-center">
+                                            class="relative cursor-pointer w-auto h-auto">
 
                                             <!-- Heart SVG Icon -->
-                                            <svg width="80" height="80" viewBox="0 0 48 48" class="relative z-20 transition-all duration-200">
+                                            <svg width="32" height="32" viewBox="12 18 24 24" class="relative z-20 transition-all duration-200">
                                                 <path :class="liked ? 'scale-0' : 'scale-100'"
                                                     class="main fill-transparent stroke-darkGrey stroke-2 origin-center transition-transform duration-300"
                                                     d="M24 23c1.2-1.2 2.8-1.8 4.5-1.8 3.8 0 6.5 3.4 6.5 7 0 4.5-6.8 10-10 12.3-0.7 0.4-1 0.4-1.6 0C20.2 38.2 13.5 32.7 13.5 28c0-3.6 2.8-7 6.5-7 1.7 0 3.3 0.6 4.5 1.8z" />
@@ -83,15 +85,17 @@
                                         </div>
                                     @else
                                         <div x-cloak @click="$dispatch('open-login-modal')"
-                                        class="relative cursor-pointer w-20 h-20 flex items-center justify-center">
+                                        class="relative cursor-pointer w-auto h-auto">
 
                                             <!-- Heart SVG Icon -->
-                                            <svg width="80" height="80" viewBox="0 0 48 48" class="relative z-20 transition-all duration-200">
-                                                <path class="fill-transparent stroke-darkGrey stroke-2 origin-center transition-transform duration-300"
+                                            <svg width="32" height="32" viewBox="12 18 24 24" class="relative z-20">
+                                                <path class="fill-transparent stroke-darkGrey stroke-2"
                                                     d="M24 23c1.2-1.2 2.8-1.8 4.5-1.8 3.8 0 6.5 3.4 6.5 7 0 4.5-6.8 10-10 12.3-0.7 0.4-1 0.4-1.6 0C20.2 38.2 13.5 32.7 13.5 28c0-3.6 2.8-7 6.5-7 1.7 0 3.3 0.6 4.5 1.8z" />
                                                 </svg>
                                         </div>
                                     @endauth
+
+                                    <span class="my-5"></span>
 
                                     <img src="{{ asset($article->getArtiste->path_photo_profil ?? 'img/artistePFP/default_artiste.png') }}"
                                         alt="{{ $article->getArtiste->nom_artiste }}"
