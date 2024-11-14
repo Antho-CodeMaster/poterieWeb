@@ -62,13 +62,14 @@ Route::middleware(EnsureUserIsModerateur::class)->group(function () {
         return view('admin/articles-non-recus');
     })->name('admin-articles-non-recus');
 
-    Route::get('/admin/transactions', function () {
-        return view('admin/transactions');
-    })->name('admin-transactions');
+    Route::get('/admin/commandes', [AdminController::class, 'commandes'])
+    ->name('admin-commandes');
 
-    Route::get('/admin/renouvellement', function () {
-        return view('admin/renouvellement');
-    })->name('admin-display-renouvellement');
+    Route::get('/admin/abonnements', [AdminController::class, 'abonnements'])
+    ->name('admin-abonnements');
+
+    Route::get('/admin/renouvellement', [RenouvellementController::class, 'index'])
+    ->name('admin-renouvellement');
 
     Route::post('/admin/renouvellement', [RenouvellementController::class, 'store'])->name('admin-do-renouvellement');
 });

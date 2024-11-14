@@ -66,7 +66,6 @@ class CommandeController extends Controller
         else{
             return view('commande/commandes', ['commandes' => null, 'authis' => Auth::id()]);
         }
-
     }
 
     /**
