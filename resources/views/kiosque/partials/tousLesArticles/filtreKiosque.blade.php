@@ -1,5 +1,5 @@
 {{-- Conteneur --}}
-<div class="flex flex-col gap-input items-center p-Y p-X absolute z-[11] bg-beigeFoncé rounded-[16px] shadow -left-20 top-[38px] opacity-0 invisible transition-all duration-200" id="kiosqueFiltres">
+<div class="flex flex-col gap-input items-center p-Y p-X absolute z-[21] bg-beigeFoncé rounded-[16px] shadow -left-20 top-[38px] opacity-0 invisible transition-all duration-200" id="kiosqueFiltres">
 
     <!-- Barre de recherche -->
     <div class="w-[200px] h-[39px] py-auto flex border rounded border-black">

@@ -3,7 +3,7 @@
         @include('articleSettings.articleSettings-sideMenu')
 
         <div class="w-[84%] p-sectionX h-full flex flex-col relative">
-            <h1 class=" m-titreY titre2-dark p-sectionY border-b-2 border-darkGrey">Mes commandes</h1>
+            <h1 class="m-titreY titre2-dark p-sectionY border-b-2 border-darkGrey">Mes commandes</h1>
 
             {{-- Filtres de recherche --}}
             <form action="" method="post" class="flex justify-between w-full mt-1.5">
