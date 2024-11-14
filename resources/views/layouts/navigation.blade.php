@@ -7,7 +7,7 @@ window.addEventListener('scroll', () => {
     class="fixed top-0 left-0 w-full h-[48px] z-50 bg-darkGrey border-gray-100 shadow-md transition-all duration-300 ease-in-out"
     x-show="showNav" x-transition:enter="transition ease-in duration-500" x-transition:enter-start="opacity-0"
     x-transition:enter-end="opacity-100" x-transition:leave="transition ease-out duration-500"
-    x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+    x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="z-[102]">
 
     <!-- Navigation Menu -->
     <div class="flex h-nav justify-between items-center">
@@ -173,7 +173,7 @@ window.addEventListener('scroll', () => {
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button
-                                class="inline-flex items-center border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                class="inline-flex items-center border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 hover:text-gray-700 focus:outline-none transition ease-in-out duration-200">
                                 <div class="ms-1">
                                     <svg width="24" height="34" viewBox="0 0 34 44" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">

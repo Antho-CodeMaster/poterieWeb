@@ -96,7 +96,12 @@ export default {
         "rounded-[0.5rem]",
         {
             pattern: /bg-+/
-        }
+        },
+        'opacity-100',
+        'opacity-0',
+        'visible',
+        'invisible',
+        'gap-input'
     ],
 
     plugins: [
@@ -376,6 +381,16 @@ export default {
                 // Autres
                 '.m-submit': {
                     'margin-top': 'calc(8px + 1vw)',
+                },
+
+                '.p-X': {
+                    'padding-right': 'calc(6px + 0.5vw) ',
+                    'padding-left': 'calc(6px + 0.5vw) ',
+                },
+
+                '.p-Y': {
+                    'padding-top': 'calc(6px + 0.5vw)',
+                    'padding-bottom': 'calc(6px + 0.5vw)',
                 },
 
                 /* Couleurs */

@@ -14,9 +14,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-
-
-
+use Illuminate\Support\Facades\Log;
+use Stripe\Climate\Order;
 
 class ArticleController extends Controller
 {
@@ -267,7 +266,9 @@ class ArticleController extends Controller
         $idUser = Auth::user()->id;
         $artiste = Artiste::with("reseaux", "articles")->where('id_user', $idUser)->first();
 
-        $articles = $artiste->articles;
+        $articles = $artiste->articles()
+            ->orderBy('created_at', 'desc')  // Tri par date décroissante
+            ->get();
 
         return view('articleSettings/tousMesArticles', [
             'artiste' => $artiste,
@@ -579,4 +580,160 @@ class ArticleController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(article $article) {}
+
+    /**
+     * Fonction pour filtrer les articles.
+     */
+    public function articleFiltre(Request $request)
+    {
+        // 1. Récupérer les valeurs des filtres envoyés depuis le client
+        $dateFiltre = $request->input('dateFilter');
+        $dateFiltre = $dateFiltre ?? '1'; //Pour filtrer en ordre croissant toujours si aucun filtre
+
+        $usageFilter = $request->input('usageFilter');
+        $pieceFilter = $request->input('pieceFilter');
+        $prixMinFilter = $request->input('prixMinFilter');
+        $prixMaxFilter = $request->input('prixMaxFilter');
+        $masqueFilter = $request->input('masqueFilter');
+        $vedetteFilter = $request->input('vedetteFilter');
+        $sensibleFilter = $request->input('sensibleFilter');
+        $searchTerm = $request->input('searchArticle');
+
+        // 2. Récupérer l'artiste connecté
+        $artiste = Artiste::where('id_user', Auth::id())->first();
+
+        // 3. Commencer la requête pour les articles de l'artiste
+        $articles = Article::where('id_artiste', $artiste->id_artiste)
+            ->where('id_etat', '!=', 3) // Exclure les articles avec id_etat = 3
+            ->when(isset($dateFiltre) && $dateFiltre !== null, function ($query) use ($dateFiltre) {
+                // Filtre par date de création
+                if ($dateFiltre === '1') {
+                    $query->orderBy('created_at', 'desc');
+                } elseif ($dateFiltre === '0') {
+                    $query->orderBy('created_at', 'asc');
+                }
+            })
+            ->when(isset($usageFilter) && $usageFilter !== 'null', function ($query) use ($usageFilter) {
+                // Appliquer le filtre usage si une valeur est sélectionnée (0 ou 1)
+                $query->where('is_alimentaire', (int)$usageFilter);
+            })
+            ->when(isset($pieceFilter) && $pieceFilter !== 'null', function ($query) use ($pieceFilter) {
+                // Filtre par type de pièce : 1 pour unique, 0 pour en série
+                $query->where('is_unique', $pieceFilter);
+            })
+            ->when(isset($prixMinFilter) && $prixMinFilter !== '', function ($query) use ($prixMinFilter) {
+                // Filtre pour les prix minimum si défini
+                $query->where('prix', '>=', $prixMinFilter);
+            })
+            ->when(isset($prixMaxFilter) && $prixMaxFilter !== '', function ($query) use ($prixMaxFilter) {
+                // Filtre pour les prix maximum si défini
+                $query->where('prix', '<=', $prixMaxFilter);
+            })
+            ->when(isset($masqueFilter) && $masqueFilter !== 'null', function ($query) use ($masqueFilter) {
+                // Filtre pour visibilité (masqué ou visible)
+                $query->where('id_etat', (int)$masqueFilter);
+            })
+            ->when(isset($vedetteFilter) && $vedetteFilter !== 'null', function ($query) use ($vedetteFilter) {
+                // Filtre pour "en vedette" ou "commun"
+                $query->where('is_en_vedette', (int)$vedetteFilter);
+            })
+            ->when(isset($sensibleFilter) && $sensibleFilter !== 'null', function ($query) use ($sensibleFilter) {
+                // Filtre pour sensibilité (sensible ou insensible)
+                $query->where('is_sensible', (int)$sensibleFilter);
+            })
+            ->when(isset($searchTerm) && $searchTerm !== 'null', function ($query) use ($searchTerm) {
+                $query->where('nom', 'LIKE', '%' . $searchTerm . '%');
+            })
+            ->get();
+
+
+        $view = view('articleSettings.partials.allArticles', compact('articles'))->render();
+
+
+        // Retourner les articles sous forme de JSON
+        return response()->json([
+            'status' => 'success',
+            'articles' => $articles,
+            'html' => $view,
+        ]);
+    }
+
+    /**
+     * Fonction pour filtrer les articles.
+     */
+    public function kiosqueFiltre(Request $request)
+    {
+        // 1. Récupérer les valeurs des filtres envoyés depuis le client
+        $dateFiltre = $request->input('dateFilter');
+        $dateFiltre = $dateFiltre ?? '1'; //Pour filtrer en ordre croissant toujours si aucun filtre
+
+        $usageFilter = $request->input('usageFilter');
+        $pieceFilter = $request->input('pieceFilter');
+        $prixMinFilter = $request->input('prixMinFilter');
+        $prixMaxFilter = $request->input('prixMaxFilter');
+        $searchTerm = $request->input('searchArticle');
+
+        // 2. Récupérer l'artiste connecté
+        $artiste = Artiste::where('id_user', $request->input("idArtiste"))->first();
+
+        // 3. Commencer la requête pour les articles de l'artiste
+        $articles = Article::where('id_artiste', $artiste->id_artiste)
+            ->when(Auth::id() === $artiste->id_user, function ($query) {
+                // Si l'utilisateur est l'artiste, on ne filtre pas par l'état (on exclut quand même l'état 3)
+                $query->where('id_etat', '!=', 3);
+            }, function ($query) {
+                // on garde uniquement ceux en état '1'
+                $query->where('id_etat', 1);
+            })
+            ->when(isset($dateFiltre) && $dateFiltre !== null, function ($query) use ($dateFiltre) {
+                // Filtre par date de création
+                if ($dateFiltre === '1') {
+                    $query->orderBy('created_at', 'desc');
+                } elseif ($dateFiltre === '0') {
+                    $query->orderBy('created_at', 'asc');
+                }
+            })
+            ->when(isset($usageFilter) && $usageFilter !== 'null', function ($query) use ($usageFilter) {
+                // Appliquer le filtre usage si une valeur est sélectionnée (0 ou 1)
+                $query->where('is_alimentaire', (int)$usageFilter);
+            })
+            ->when(isset($pieceFilter) && $pieceFilter !== 'null', function ($query) use ($pieceFilter) {
+                // Filtre par type de pièce : 1 pour unique, 0 pour en série
+                $query->where('is_unique', $pieceFilter);
+            })
+            ->when(isset($prixMinFilter) && $prixMinFilter !== '', function ($query) use ($prixMinFilter) {
+                // Filtre pour les prix minimum si défini
+                $query->where('prix', '>=', $prixMinFilter);
+            })
+            ->when(isset($prixMaxFilter) && $prixMaxFilter !== '', function ($query) use ($prixMaxFilter) {
+                // Filtre pour les prix maximum si défini
+                $query->where('prix', '<=', $prixMaxFilter);
+            })
+            ->when(isset($searchTerm) && $searchTerm !== 'null', function ($query) use ($searchTerm) {
+                $query->where('nom', 'LIKE', '%' . $searchTerm . '%');
+            })
+            ->get();
+
+        try {
+            $view = view('kiosque.partials.tousLesArticles.allArticlesKiosque', compact('articles', 'artiste'))->render();
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ]);
+        }
+
+        // Retourner les articles sous forme de JSON
+        return response()->json([
+            'status' => 'success',
+            'articles' => $articles,
+            'html' => $view,
+        ]);
+    }
+
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function commandeFiltre(Request $request) {}
 }
