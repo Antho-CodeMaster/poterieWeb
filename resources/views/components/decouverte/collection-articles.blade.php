@@ -76,10 +76,10 @@
                                             <!-- Heart SVG Icon -->
                                             <svg width="32" height="32" viewBox="12 18 24 24" class="relative z-20 transition-all duration-200">
                                                 <path :class="liked ? 'scale-0' : 'scale-100'"
-                                                    class="main fill-transparent stroke-darkGrey stroke-2 origin-center transition-transform duration-300"
+                                                    class="main fill-transparent stroke-darkGrey stroke-2 origin-bottom-right transition-transform duration-300"
                                                     d="M24 23c1.2-1.2 2.8-1.8 4.5-1.8 3.8 0 6.5 3.4 6.5 7 0 4.5-6.8 10-10 12.3-0.7 0.4-1 0.4-1.6 0C20.2 38.2 13.5 32.7 13.5 28c0-3.6 2.8-7 6.5-7 1.7 0 3.3 0.6 4.5 1.8z" />
                                                 <path :class="liked ? 'scale-100' : 'scale-0'"
-                                                    class="second fill-red-600 origin-center transition-transform duration-300"
+                                                    class="second fill-red-600 origin-bottom-right transition-transform duration-300"
                                                     d="M24 23c1.2-1.2 2.8-1.8 4.5-1.8 3.8 0 6.5 3.4 6.5 7 0 4.5-6.8 10-10 12.3-0.7 0.4-1 0.4-1.6 0C20.2 38.2 13.5 32.7 13.5 28c0-3.6 2.8-7 6.5-7 1.7 0 3.3 0.6 4.5 1.8z" />
                                             </svg>
                                         </div>
