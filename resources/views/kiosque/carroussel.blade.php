@@ -101,20 +101,33 @@
                         </div>
 
                         {{-- Vérifie chaque like du user avec l'article --}}
-                        @if ($article->isLikedByUser(Auth::id()))
-                            <svg class="w-10 h-10 text-darkGery" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                width="24" height="24" fill="#ff0000" viewBox="0 0 24 24">
-                                <path stroke="#444444" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="m12.75 20.66 6.184-7.098c2.677-2.884 2.559-6.506.754-8.705-.898-1.095-2.206-1.816-3.72-1.855-1.293-.034-2.652.43-3.963 1.442-1.315-1.012-2.678-1.476-3.973-1.442-1.515.04-2.825.76-3.724 1.855-1.806 2.201-1.915 5.823.772 8.706l6.183 7.097c.19.216.46.34.743.34a.985.985 0 0 0 .743-.34Z" />
-                            </svg>
+                        @auth
+                            <div x-cloak
+                                x-data="{ liked: {{ json_encode($article->isLikedByUser(Auth::id()) != "" ? true : false) }} }"
+                                @click="toggleLike({{ $article->id_article }}); liked = !liked"
+                                class="relative cursor-pointer w-20 h-20 flex items-center justify-center">
+
+                                <!-- Heart SVG Icon -->
+                                <svg width="80" height="80" viewBox="0 0 48 48" class="relative z-20 transition-all duration-200">
+                                    <path :class="liked ? 'scale-0' : 'scale-100'"
+                                        class="main fill-transparent stroke-darkGrey stroke-2 origin-center transition-transform duration-300"
+                                        d="M24 23c1.2-1.2 2.8-1.8 4.5-1.8 3.8 0 6.5 3.4 6.5 7 0 4.5-6.8 10-10 12.3-0.7 0.4-1 0.4-1.6 0C20.2 38.2 13.5 32.7 13.5 28c0-3.6 2.8-7 6.5-7 1.7 0 3.3 0.6 4.5 1.8z" />
+                                    <path :class="liked ? 'scale-100' : 'scale-0'"
+                                        class="second fill-red-600 origin-center transition-transform duration-300"
+                                        d="M24 23c1.2-1.2 2.8-1.8 4.5-1.8 3.8 0 6.5 3.4 6.5 7 0 4.5-6.8 10-10 12.3-0.7 0.4-1 0.4-1.6 0C20.2 38.2 13.5 32.7 13.5 28c0-3.6 2.8-7 6.5-7 1.7 0 3.3 0.6 4.5 1.8z" />
+                                </svg>
+                            </div>
                         @else
-                            <svg class="w-10 h-10 text-gray-800 dark:text-white mb-[2px]" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                viewBox="0 0 24 24">
-                                <path stroke="#444444" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
-                            </svg>
-                        @endif
+                            <div x-cloak @click="$dispatch('open-login-modal')"
+                            class="relative cursor-pointer w-20 h-20 flex items-center justify-center">
+
+                                <!-- Heart SVG Icon -->
+                                <svg width="80" height="80" viewBox="0 0 48 48" class="relative z-20 transition-all duration-200">
+                                    <path class="fill-transparent stroke-darkGrey stroke-2 origin-center transition-transform duration-300"
+                                        d="M24 23c1.2-1.2 2.8-1.8 4.5-1.8 3.8 0 6.5 3.4 6.5 7 0 4.5-6.8 10-10 12.3-0.7 0.4-1 0.4-1.6 0C20.2 38.2 13.5 32.7 13.5 28c0-3.6 2.8-7 6.5-7 1.7 0 3.3 0.6 4.5 1.8z" />
+                                    </svg>
+                            </div>
+                        @endauth
                     </div>
                     {{-- Si l'artiste est sur son propre kiosque l'empecher d'acheter --}}
                     @if ($article->artiste->id_user != Auth::id())
