@@ -97,6 +97,8 @@ Route::middleware('auth')->group(function () {
 
     //Route pour la génération de facture
     Route::get('/facture/vente/{id_commande}', [CommandeController::class,'recusArtistes'])->name('recus');
+
+    Route::post('/like/{idArticle}', [LikeController::class, 'toggleLike'])->name('like.toggle');
 });
 
 Route::get('/recherche', [ArticleController::class, 'getSearch'])->name('recherche.getSearch');
