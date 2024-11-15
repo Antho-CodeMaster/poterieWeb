@@ -45,6 +45,19 @@ class TransactionController extends Controller
         /* 4. Récupérer les transactions en lien avec les articles de l'artiste*/
         $transactions = Transaction::whereIn('id_article', $articleIds)->get();
 
+        /* 5. Regrouper les transaction par commande */
+        $commandeTransactions = $transactions->groupBy('id_commande');
+
+        /* 6. Placer les commandes en fonction de ceux qui contiennent le plus de transaction non traité et de la date*/
+        $commandeTransactions = $commandeTransactions->sortByDesc(function ($transactions) {
+            // Compter les transactions non traitées dans chaque commande (id_etat 2 = en attente)
+            return $transactions->where('id_etat', 2)->count();
+        })->sortByDesc(function ($transactions) {
+            // Puis trier par la date de commande (plus récente en premier)
+            return $transactions->first()->commande->date; // Assurez-vous que `date` est bien une propriété de votre modèle
+        });
+
+
 
         //Scrap that, trash code lmao i spent to much time on this for nooooone
         /* 5. Récupérer auprès de stripe les informations de facturations */
@@ -73,8 +86,16 @@ class TransactionController extends Controller
 
         return view('commande.commandesArtiste', [
             'articles' => $articles,
-            'transactions' => $transactions,
+            'commandeTransactions' => $commandeTransactions,
         ]);
+    }
+
+
+    /**
+     * Fonction pour filtrer les transactions dans la commandes
+     */
+    public function commandeFiltre(Request $request) {
+
     }
 
     /**
