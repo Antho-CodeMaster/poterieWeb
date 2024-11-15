@@ -653,7 +653,6 @@ class ArticleController extends Controller
         // Retourner les articles sous forme de JSON
         return response()->json([
             'status' => 'success',
-            'articles' => $articles,
             'html' => $view,
         ]);
     }
@@ -726,14 +725,7 @@ class ArticleController extends Controller
         // Retourner les articles sous forme de JSON
         return response()->json([
             'status' => 'success',
-            'articles' => $articles,
             'html' => $view,
         ]);
     }
-
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function commandeFiltre(Request $request) {}
 }
