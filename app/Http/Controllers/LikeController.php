@@ -62,4 +62,27 @@ class LikeController extends Controller
     {
         //
     }
+
+    /**
+     * Allows adding and removing likes
+     */
+    public function toggleLike($articleId)
+    {
+        $user = auth()->user();
+
+        // Check if the user has already liked this article
+        $like = $user->likes()->where('id_article', $articleId)->first();
+
+        if ($like) {
+            // If the like exists, delete it
+            Like::where('id_user', $user->id)->where('id_article', $articleId)->delete();
+            return response()->json(['liked' => false]);  // Return the updated state
+        } else {
+            // If no like exists, create a new one
+            $user->likes()->create([
+                'id_article' => $articleId
+            ]);
+            return response()->json(['liked' => true]);  // Return the updated state
+        }
+    }
 }

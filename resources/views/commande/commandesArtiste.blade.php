@@ -82,7 +82,14 @@
                                             @else
                                                 {{ $commandeTransactions->first()->commande->no_civique }}
                                                 {{ $commandeTransactions->first()->commande->rue }},
-                                                {{ $commandeTransactions->first()->commande->code_postal }}
+                                                @php
+                                                    $codePostal = $commandeTransactions->first()->commande->code_postal;
+                                                    $codePostal =
+                                                        strtoupper(substr($codePostal, 0, 3)) .
+                                                        ' ' .
+                                                        strtoupper(substr($codePostal, 3));
+                                                @endphp
+                                                {{ $codePostal }}
                                                 {{ $commandeTransactions->first()->commande->ville->ville }}
                                             @endif
                                         </p>

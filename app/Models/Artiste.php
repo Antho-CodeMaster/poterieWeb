@@ -76,35 +76,42 @@ class Artiste extends Model
                 ]);
                 $notif->save();
             }
-        }
 
-        if ($this->is_etudiant == true) {
-            $date = Carbon::create(Renouvellement::latest()->first()->created_at);
+            // Validation de l'artiste si un renouvellement est dû
+            if ($this->is_etudiant == true) {
+                $renouvellement = Renouvellement::latest()->first();
 
-            // S'assurer que le checkup soit seulement fait si l'étudiant était déjà existant au moment du renouvellement
-            if ($this->created_at < $date) {
-                // Retrouver la dernière demande de renouvellement de l'utilisateur
-                $demande = Demande::where('id_user', $this->id_user)->where('id_type', 1)->latest('date')->first();
+                // S'assurer que le checkup soit fait seulement si le renouvellement existe
+                if($renouvellement != null)
+                {
+                    $date = Carbon::create($renouvellement->created_at);
 
-                // Si la date du dernier renouvellement est passée
-                if (now() > $date->addMonth()) {
-                    // Si aucune demande de renouvellement n'a été faite depuis, on doit rendre l'artiste inactif.
-                    if ($demande == null || $demande->date < $date) {
-                        $this->actif = 0;
-                        $this->save();
+                    // S'assurer que le checkup soit seulement fait si l'étudiant était déjà existant au moment du renouvellement
+                    if ($this->created_at < $date) {
+                        // Retrouver la dernière demande de renouvellement de l'utilisateur
+                        $demande = Demande::where('id_user', $this->id_user)->where('id_type', 1)->latest('date')->first();
 
-                        // Notifier in-app pour avertir l'artiste qu'il perd ses accès
-                        $notif = Notification::create([
-                            'id_type' => 7,
-                            'id_user' => $this->id_user,
-                            'date' => now(),
-                            'message' => '',
-                            'lien' => route('renouvellement-artiste'),
-                            'visible' => 1
-                        ]);
-                        $notif->save();
+                        // Si la date du dernier renouvellement est passée
+                        if (now() > $date->addMonth()) {
+                            // Si aucune demande de renouvellement n'a été faite depuis, on doit rendre l'artiste inactif.
+                            if ($demande == null || $demande->date < $date) {
+                                $this->actif = 0;
+                                $this->save();
 
-                        // Les autres cas de figure sont déjà gérés dans les méthode accept() et deny() de DemandeController.
+                                // Notifier in-app pour avertir l'artiste qu'il perd ses accès
+                                $notif = Notification::create([
+                                    'id_type' => 7,
+                                    'id_user' => $this->id_user,
+                                    'date' => now(),
+                                    'message' => '',
+                                    'lien' => route('renouvellement-artiste'),
+                                    'visible' => 1
+                                ]);
+                                $notif->save();
+
+                                // Les autres cas de figure sont déjà gérés dans les méthode accept() et deny() de DemandeController.
+                            }
+                        }
                     }
                 }
             }

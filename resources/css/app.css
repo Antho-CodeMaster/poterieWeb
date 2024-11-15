@@ -251,3 +251,15 @@ body {
     right: 0;
     background: linear-gradient(to left, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
 }
+
+/* ---------------------------------------------------------------- */
+/* Style pour les filtre de tous mes articles */
+.filter-item{
+display: flex;
+flex-direction: column;
+gap: 2px;
+}
+
+.contenuFiltre{
+    height: calc(100% - (32px + calc(2px + 0.4vw) + calc(2px + 0.2vw) + calc(2px + 0.4vw) + calc(2px + 0.4vw)) );
+}

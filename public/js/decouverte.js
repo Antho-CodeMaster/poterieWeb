@@ -31,3 +31,31 @@ if (document.baseURI.includes("decouverte") || window.location.pathname === '/')
         });
     });
 }
+
+window.toggleLike = function(articleId) {
+    const url = window.likeToggleUrl.replace(':idArticle', articleId);
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': window.csrfToken
+        },
+        body: JSON.stringify({ article_id: articleId })
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.json();  // Return the parsed JSON if response is okay
+        } else {
+            console.error('Error liking the article');
+        }
+    })
+    .then(result => {
+        if (result) {
+            return result.liked;  // Return the new liked status
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);  // Handle any errors during the fetch
+    });
+};

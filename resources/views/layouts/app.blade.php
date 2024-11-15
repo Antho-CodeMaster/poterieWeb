@@ -22,6 +22,7 @@
     <script>
     window.csrfToken = "{{ csrf_token() }}";
     window.notificationHideRoute = "{{ route('notification.hide') }}";
+    window.likeToggleUrl = "{{ route('like.toggle', ':idArticle') }}";
     </script>
 </head>
 
