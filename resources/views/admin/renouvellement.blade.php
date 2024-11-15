@@ -22,11 +22,11 @@
                     perdront leur statut d'artiste.</p>
             </div>
             <div class="flex flex-col grow overflow-y-auto">
-                <h1 class="titre3-dark m-titreY p-sectionY">Renouvellements passés</h1>
-                <div class="overflow-y-auto flex flex-col grow">
+                <h1 class="titre3-dark text-center m-titreY p-sectionY">Renouvellements passés</h1>
+                <div class="overflow-y-auto flex flex-col grow items-center">
                     @foreach ($renouvellements as $renouvellement)
-                        <div class="px-4 my-2 w-full bg-lightGrey rounded-[14px] flex p-1 gap-3 shrink-0">
-                            <p>{{ $renouvellement->created_at }}</p>
+                        <div class="px-4 my-2 w-1/4 bg-lightGrey rounded-[14px] flex py-2 gap-3 shrink-0">
+                            <p class="text-center w-full">{{ $renouvellement->created_at }}</p>
                         </div>
                     @endforeach
                     @if ($renouvellements->isEmpty())

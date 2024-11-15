@@ -1,11 +1,11 @@
 <x-app-layout>
     <form action="{{ route('store-demande-artiste') }}" method="post" enctype="multipart/form-data"
-        class="content-height py-16 px-12 flex flex-col justify-center">
+        class="lg:content-height py-16 lg:px-12 flex flex-col justify-center">
         @csrf
-        <h1 class="text-center text-5xl">Devenir artiste-vendeur chez Terracium</h1>
-        <div class="flex mt-20">
-            <div class="w-1/2 py-4 px-12">
-                <h2 class="text-center text-2xl mb-4">Étape 1</h2>
+        <h1 class="text-center titre1-dark">Devenir artiste-vendeur chez Terracium</h1>
+        <div class="lg:flex lg:mt-20 mt-5">
+            <div class="lg:w-1/2 py-4 px-12">
+                <h2 class="text-center titre3-dark mb-4">Étape 1</h2>
                 <p class="text-center">Pour pouvoir vendre sur le site et avoir un kiosque, vous devez soumettre des
                     photos de vos créations. Cette étape nous permet d'éviter les faux comptes sur le site et nous
                     permet de nous assurer que les oeuvres vendues sont réelles et de qualité pour la plateforme.
@@ -29,8 +29,8 @@
                 @endfor
             </div>
 
-            <div class="w-1/2 py-4 px-12 border-l-2 border-black">
-                <h2 class="text-center text-2xl mb-4">Étape 2</h2>
+            <div class="lg:w-1/2 py-4 px-12 lg:border-l-2 border-black">
+                <h2 class="text-center titre3-dark mb-4">Étape 2</h2>
                 <div class="justify-center flex">
                     <p class="my-auto">J'aimerais devenir vendeur en tant que : </p>
                     <select name="type" class="mx-4">

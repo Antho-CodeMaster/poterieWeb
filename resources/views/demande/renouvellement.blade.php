@@ -1,10 +1,10 @@
 <x-app-layout>
 
-    <div class="content-height py-16 px-12 flex flex-col justify-center">
-        <h1 class="text-center text-5xl">Effectuer votre renouvellement</h1>
-        <div class="flex mt-20 justify-center">
+    <div class="lg:content-height py-16 lg:px-12 flex flex-col justify-center">
+        <h1 class="text-center titre1-dark">Effectuer votre renouvellement</h1>
+        <div class="lg:flex lg:mt-20 justify-center">
 
-            <div class="w-1/2 py-4 px-12">
+            <div class="lg:w-1/2 py-4 px-12">
                 <div class="justify-center flex">
                     <p class="my-auto">Je suis : </p>
                     <select class="mx-4">

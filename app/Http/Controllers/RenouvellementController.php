@@ -17,7 +17,7 @@ class RenouvellementController extends Controller
     public function index()
     {
         return view('admin/renouvellement', [
-            'renouvellements' => Renouvellement::All(),
+            'renouvellements' => Renouvellement::orderBy('created_at', 'desc')->get()
         ]);
     }
 

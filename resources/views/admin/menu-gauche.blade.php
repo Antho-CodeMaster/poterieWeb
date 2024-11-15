@@ -1,6 +1,6 @@
 <div class="w-[20%] color-sideBar h-full mr-4">
     <h1 class="m-titreY titre2-dark border-b-2 p-sectionX p-sectionY border-darkGrey">
-        Menu
+        Administrateur
     </h1>
     <div class="">
         <a href="{{ route('admin-utilisateurs') }}"
@@ -64,13 +64,13 @@
 
         <a href="{{ route('admin-commandes') }}"
             class="textNavigation-dark flex items-center color-sideBar-hover p-sidebarNav">
-            <svg class="w-7 h-7 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+            <svg class="w-7 h-7" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                 height="24" fill="currentColor" viewBox="0 0 24 24">
                 <path fill-rule="evenodd"
                     d="M5.617 2.076a1 1 0 0 1 1.09.217L8 3.586l1.293-1.293a1 1 0 0 1 1.414 0L12 3.586l1.293-1.293a1 1 0 0 1 1.414 0L16 3.586l1.293-1.293A1 1 0 0 1 19 3v18a1 1 0 0 1-1.707.707L16 20.414l-1.293 1.293a1 1 0 0 1-1.414 0L12 20.414l-1.293 1.293a1 1 0 0 1-1.414 0L8 20.414l-1.293 1.293A1 1 0 0 1 5 21V3a1 1 0 0 1 .617-.924ZM9 7a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2H9Zm0 4a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Zm0 4a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Z"
                     clip-rule="evenodd" />
             </svg>
-            <p>Commandes</p>
+            <p class="mx-2">Commandes</p>
             <svg class="w-7 h-7" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                 fill="none" viewBox="0 0 24 24">
                 <path stroke="#444444" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -79,14 +79,14 @@
         </a>
         <a href="{{ route('admin-abonnements') }}"
             class="textNavigation-dark flex items-center color-sideBar-hover p-sidebarNav">
-            <svg class="w-7 h-7 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+            <svg class="w-7 h-7" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                 height="24" fill="currentColor" viewBox="0 0 24 24">
                 <path fill-rule="evenodd"
                     d="M7 2a2 2 0 0 0-2 2v1a1 1 0 0 0 0 2v1a1 1 0 0 0 0 2v1a1 1 0 1 0 0 2v1a1 1 0 1 0 0 2v1a1 1 0 1 0 0 2v1a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H7Zm3 8a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm-1 7a3 3 0 0 1 3-3h2a3 3 0 0 1 3 3 1 1 0 0 1-1 1h-6a1 1 0 0 1-1-1Z"
                     clip-rule="evenodd" />
             </svg>
 
-            <p>Abonnements</p>
+            <p class="mx-2">Abonnements</p>
             <svg class="w-7 h-7" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                 height="24" fill="none" viewBox="0 0 24 24">
                 <path stroke="#444444" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
