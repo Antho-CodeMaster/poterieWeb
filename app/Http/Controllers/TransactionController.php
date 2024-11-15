@@ -58,7 +58,6 @@ class TransactionController extends Controller
         });
 
 
-
         //Scrap that, trash code lmao i spent to much time on this for nooooone
         /* 5. Récupérer auprès de stripe les informations de facturations */
         /*\Stripe\Stripe::setApiKey(config('services.stripe.secret'));
@@ -94,8 +93,70 @@ class TransactionController extends Controller
     /**
      * Fonction pour filtrer les transactions dans la commandes
      */
-    public function commandeFiltre(Request $request) {
+    public function commandesFiltre(Request $request)
+    {
+        // 1. Récupérer les valeurs des filtres envoyés depuis le client
+        $dateFiltre = $request->input('dateFilter');
+        $dateFiltre = $dateFiltre ?? '1'; //Pour filtrer en ordre croissant toujours si aucun filtre
 
+        $compagnieFilter = $request->input('compagnieFilter');
+        $statutFilter = $request->input('statutFilter');
+        $searchTerm = $request->input('searchTransaction');
+
+        // 2. Récupérer l'artiste connecté
+        $artiste = Artiste::where('id_user', $request->input("idArtiste"))->first();
+
+        /* 3. Récupérer les articles de l'artiste */
+        $articles = Article::where('id_artiste', $artiste->id_artiste)->get();
+
+        /* 3. Créer un array contenant que les id de chaque article */
+        $articleIds = $articles->pluck('id_article')->toArray();
+
+        // 4. Commencer la requête pour filtrer les commandes liées aux transactions
+        $commandeTransactions = Transaction::whereIn('id_article', $articleIds)
+            ->when(!empty($compagnieFilter) && $compagnieFilter !== 'null', function ($query) use ($compagnieFilter) {
+                // Filtrer par compagnie si défini
+                $query->where('id_compagnie', $compagnieFilter);
+            })
+            ->when(!empty($statutFilter) && $statutFilter !== 'null', function ($query) use ($statutFilter) {
+                // Filtrer par statut si défini
+                $query->where('id_etat', $statutFilter);
+            })
+            ->when(!empty($searchTerm) && $searchTerm !== 'null', function ($query) use ($searchTerm) {
+                $query->whereHas('article', function ($subQuery) use ($searchTerm) {
+                    $subQuery->where('nom', 'LIKE', '%' . $searchTerm . '%');
+                })->orWhereHas('commande.user', function ($subQuery) use ($searchTerm) {
+                    $subQuery->where('name', 'LIKE', '%' . $searchTerm . '%');
+                });
+            })
+            ->whereIn('id_article', $articleIds)
+            ->get()
+            ->groupBy('id_commande') // Grouper par commande
+            ->sortByDesc(function ($transactions) {
+                // Trier pour afficher les commandes avec le plus de transactions en cours (`id_etat = 2`) en premier
+                return $transactions->where('id_etat', 2)->count();
+            })
+            ->sortBy(function ($transactions) use ($dateFiltre) {
+                // Trier par date de commande (croissant ou décroissant selon `dateFiltre`)
+                $date = $transactions->first()->commande->date ?? null;
+                return $dateFiltre === '0' ? $date : -strtotime($date);
+            });
+
+        try {
+            $view = view('commande.partials.allTransactions', compact('commandeTransactions', 'artiste'))->render();
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ]);
+        }
+
+        // Retourner les articles sous forme de JSON
+        return response()->json([
+            'status' => 'success',
+            'html' => $view,
+            'commandeTransactions' => $commandeTransactions
+        ]);
     }
 
     /**

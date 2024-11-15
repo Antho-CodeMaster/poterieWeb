@@ -9,7 +9,7 @@
             @include('commande.partials.filtresCommandes')
 
             {{-- Group transactions by commande --}}
-            <div class="rounded-[12px] m-sectionY overflow-auto flex flex-wrap gap-inputXXL">
+            <div class="rounded-[12px] m-sectionY overflow-auto flex flex-wrap gap-inputXXL" id="commandesContainer">
 
                 @include('commande.partials.allTransactions')
 

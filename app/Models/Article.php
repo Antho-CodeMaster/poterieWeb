@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -62,27 +63,30 @@ class Article extends Model
 
     public function artiste()
     {
-        return $this->belongsTo(Artiste::class,'id_artiste','id_artiste');
+        return $this->belongsTo(Artiste::class, 'id_artiste', 'id_artiste');
     }
 
-    public function photo_article(){
-        return $this->hasMany(Photo_article::class,'id_article','id_article');
+    public function photo_article()
+    {
+        return $this->hasMany(Photo_article::class, 'id_article', 'id_article');
     }
 
-    public function collection(){
+    public function collection()
+    {
         return $this->belongsToMany(Collection::class, 'article_collection', 'id_article', 'id_collection');
     }
 
-    public function mot_cle(){
-        return $this->belongsToMany(Mot_cle::class,'mot_cle_article','id_article', 'id_mot_cle');
+    public function mot_cle()
+    {
+        return $this->belongsToMany(Mot_cle::class, 'mot_cle_article', 'id_article', 'id_mot_cle');
     }
 
     public function collections()
     {
         return $this->belongsToMany(Collection::class, 'collections_articles', 'id_article', 'id_collection');
     }
-
-    public function cmApo($units){
+    public function cmApo($units)
+    {
         return $units / 2.54;
     }
 }
