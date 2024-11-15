@@ -131,26 +131,30 @@ document.addEventListener('DOMContentLoaded', function () {
             const prixMinFilter = document.getElementById('prixFiltreMin');
             const prixMaxFilter = document.getElementById('prixFiltreMax');
             const searchArticle = document.getElementById('searchArticle');
+            const idArtiste = document.getElementById('idArtiste');
 
             // Récupérer l'URL de la route pour le filtre depuis l'attribut `data-url`
             const routeFiltre = dateFilter.dataset.url;
 
             // Récupérer la valeur sélectionnée
-            const dateFilterValue = dateFilter.value = 1;
+            const dateFilterValue = dateFilter.value = '1';
             const usageFilterValue = usageFilter.value = 'null';
             const pieceFilterValue = pieceFilter.value = 'null';
             const prixMinFilterValue = prixMinFilter.value = '';
             const prixMaxFilterValue = prixMaxFilter.value = '';
+            const idArtisteValue = idArtiste.value;
 
-            const searchArticleValue = searchArticle.value;
+            const searchArticleValue = searchArticle.value = '';
 
             console.clear();
+            console.log("ROUTE:", routeFiltre);
             console.log("Date Filtre:", dateFilterValue);
             console.log("Usage Filter:", usageFilterValue);
             console.log("Piece Filter:", pieceFilterValue);
             console.log("Prix Min Filter:", prixMinFilterValue);
             console.log("Prix Max Filter:", prixMaxFilterValue);
             console.log("Search article:", searchArticleValue);
+            console.log("idArtiste:", idArtisteValue);
 
             // Faire la requête asynchrone pour appliquer le filtre
             fetch(routeFiltre, {
@@ -165,7 +169,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     pieceFilter: pieceFilterValue,
                     prixMinFilter: prixMinFilterValue,
                     prixMaxFilter: prixMaxFilterValue,
-                    searchArticle: searchArticleValue
+                    searchArticle: searchArticleValue,
+                    idArtiste: idArtisteValue
                 })
             }).then(response => {
                 if (!response.ok) {
@@ -175,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }).then(data => {
                 if (data.status === 'success') {
                     document.getElementById('articlesContainer').innerHTML = data.html; // Met à jour le conteneur des articles
-                    console.log(data.dateFiltre);
+                    Alpine.initTree(document.getElementById('articlesContainer'));
                 } else {
                     console.error("Échec de l'application du filtre");
                 }

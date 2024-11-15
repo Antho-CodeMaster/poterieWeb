@@ -1,5 +1,6 @@
 {{-- Conteneur --}}
-<div class="flex flex-col gap-input items-center p-Y p-X absolute z-[21] bg-beigeFoncé rounded-[16px] shadow -left-20 top-[38px] opacity-0 invisible transition-all duration-200" id="kiosqueFiltres">
+<div class="flex flex-col gap-input items-center p-Y p-X absolute z-[21] bg-beigeFoncé rounded-[16px] shadow -left-20 top-[38px] opacity-0 invisible transition-all duration-200"
+    id="kiosqueFiltres">
 
     <!-- Barre de recherche -->
     <div class="w-[200px] h-[39px] py-auto flex border rounded border-black">
@@ -55,12 +56,11 @@
         </select>
     </div>
 
-    <input type="hidden" name="idArtiste" id="idArtiste" value="{{$artiste->id_user}}">
+    <input type="hidden" name="idArtiste" id="idArtiste" value="{{ $artiste->id_user }}">
 
     {{-- Clear filtre --}}
-    <div class="flex w-[200px] items-center justify-center">
-        <x-button.red.empty type="submit" id="clearFiltre" value="0">
-            Effacer les filtres
-        </x-button.red.empty>
-    </div>
+    <x-button.red.empty type="submit" id="clearFiltre" value="0" class="w-[200px]">
+        Effacer les filtres
+    </x-button.red.empty>
+
 </div>
