@@ -243,7 +243,7 @@ class ArticleController extends Controller
             $newsignalement = Signalement::create([
                 "id_user" => Auth::user()->id,
                 "id_article" => $validatedData["idArticle"],
-                "date" => date('Y-m-d'),
+                "date" => now(),
                 "description" => $validatedData["signaleDescription"]
             ]);
 

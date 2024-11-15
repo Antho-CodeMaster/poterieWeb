@@ -9,7 +9,7 @@ use App\Models\Article;
 use App\Models\Signalement;
 use App\Models\Demande;
 use App\Models\Article_non_recu;
-use App\Models\Transaction;
+use App\Models\Renouvellement;
 
 class AdminController extends Controller
 {
@@ -25,17 +25,19 @@ class AdminController extends Controller
             'demandes' => Demande::All()->count(),
             'newDemandes' => Demande::where('id_etat', 1)->count(),
             'articles_non_recus' => Article_non_recu::All()->count(),
-            'transactions' => Transaction::All()->count()
+            'renouvellements' => Renouvellement::All()->count(),
         ]);
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function commandes()
     {
-        //
+        return redirect(url('https://dashboard.stripe.com/test/payments'));
+    }
+
+    public function abonnements()
+    {
+        return redirect(url('https://dashboard.stripe.com/test/subscriptions'));
     }
 
     /**
