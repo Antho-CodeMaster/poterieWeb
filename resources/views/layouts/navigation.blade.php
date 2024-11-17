@@ -52,6 +52,7 @@ window.addEventListener('scroll', () => {
                 @endif
 
                 {{-- Boutons de réglage du kiosque --}}
+
                 @if (Auth::user()->artiste)
                     @if (Auth::user()->artiste->actif == 1)
                         <a href="{{ route('tousMesArticles') }}" class="ml-[15px] flex items-center">
@@ -252,4 +253,5 @@ window.addEventListener('scroll', () => {
         </div>
         --}}
     </div>
+
 </nav>

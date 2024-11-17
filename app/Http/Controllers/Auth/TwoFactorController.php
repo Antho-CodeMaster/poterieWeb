@@ -4,16 +4,50 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Pragmarx\Google2FA\Google2FA;
-use Illuminate\Validation\ValidationException;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use PragmaRX\Google2FAQRCode\Google2FA;
+use App\Models\User;
+use Illuminate\Validation\ValidationException;
 
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\Image\SvgImageBackEnd;
+use BaconQrCode\Writer;
 
 class TwoFactorController extends Controller
 {
     public function show(Request $request){
-        return view();
+        $google2fa = new Google2FA();
+        $user = User::find(Auth::id());
+
+        if($user->google2fa_secret == null){
+            $key = $google2fa->generateSecretKey();
+
+            $user->google2fa_secret = $key;
+            $user->uses_two_factor_auth = true;
+            $user->save();
+        }
+
+
+
+        $renderer = new ImageRenderer(
+            new \BaconQrCode\Renderer\RendererStyle\RendererStyle(256),
+            new SvgImageBackEnd()
+        );
+
+        $writer = new Writer($renderer);
+
+        // Generate QR Code
+        $qrCode = $writer->writeString(
+            $google2fa->getQRCodeUrl(
+                '@Terracium', // Issuer (App Name)
+                $user->email,  // User's email
+                $user->google2fa_secret // Secret key
+            )
+        );
+
+        return view('f2a-test')->with([
+            'qrCode' => $qrCode
+        ]);
     }
 
     public function verify(Request $request){
@@ -21,15 +55,12 @@ class TwoFactorController extends Controller
             'one_time_password' => 'required|string'
         ]);
 
-        $user_id = $request->session()->get('2fa:user:id');
-        $remember = $request->session()->get('2fa:auth:remember', false);
-        $attempt = $request->session()->get('2fa:auth:attempt', false);
 
-        if(!$user_id || !$attempt){
+        if(!Auth::check()){
             return redirect('/');
         }
 
-        $user = User::find($user_id);
+        $user = User::find(Auth::id());
 
         if(!$user || !$user->uses_two_factor_auth){
             return redirect('/');
@@ -38,33 +69,15 @@ class TwoFactorController extends Controller
         $google2fa = new Google2FA();
         $otp_secret = $user->google2fa_secret;
 
-        if(!$google2fa->verify($otp_secret, $request->one_time_password )){
-            throw ValidationException::withMessages([
-                'one_time_password' => [__('Le code est incorrecte')],
-              ]);
-        }
-
-        $guard = config('auth.defaults.guard');
-        $credentials = [$user->getAuthIdentifierName() => $user->getAuthIdentifier(), 'password' => $user->getAuthPassword()];
-
-        if ($remember) {
-            $guard = config('auth.defaults.remember_me_guard', $guard);
-        }
-
-        if ($attempt) {
-            $guard = config('auth.defaults.attempt_guard', $guard);
-        }
-
-        if (Auth::guard($guard)->attempt($credentials, $remember)) {
-            $request->session()->remove('2fa:user:id');
-            $request->session()->remove('2fa:auth:remember');
-            $request->session()->remove('2fa:auth:attempt');
+        if($google2fa->verify($request->one_time_password ,$otp_secret)){
+            $request->session()->put('2fa:auth:passed', true);
 
             return redirect()->intended('/');
         }
 
+        $request->session()->put('2fa:auth:passed', false);
         return redirect()->route('login')->withErrors([
-            'password' => __('The provided credentials are incorrect.'),
+            'password' => __('Authentification multifactorielle échoué'),
         ]);
     }
 }

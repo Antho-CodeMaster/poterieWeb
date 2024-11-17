@@ -3,6 +3,7 @@
 use App\Http\Controllers\AbonnementController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ArtisteController;
+use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\ProfileController;
@@ -17,6 +18,8 @@ use App\Http\Middleware\EnsureUserIsArtist;
 use App\Http\Middleware\EnsureUserCanBecomeArtist;
 use App\Http\Middleware\EnsureUserCanSubscribe;
 use App\Http\Middleware\EnsureUserIsProArtist;
+use App\Http\Middleware\TwoFactorAuthMiddleware;
+
 use Illuminate\Support\Facades\Route;
 use Laravel\Cashier\Checkout;
 
@@ -74,7 +77,7 @@ Route::get('/buttons', function () {
     return view('buttons');
 })->name('buttons');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', TwoFactorAuthMiddleware::class])->group(function () {
     Route::get('/profil/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::get('/profil/facturation', [ProfileController::class, 'facturation'])->name('profile.facturation');
     Route::get('/profil/carte/modifier', [ProfileController::class, 'stripe_methodePaiement_form'])->name('profile.modifierCarte');
@@ -104,6 +107,9 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/like/{idArticle}', [LikeController::class, 'toggleLike'])->name('like.toggle');
 });
+
+Route::get('/2fa', [TwoFactorController::class,'show'])->name('2fa');
+Route::post('/2fa/verif', [TwoFactorController::class,'verify'])->name('2fa.verify');
 
 Route::get('/recherche', [ArticleController::class, 'getSearch'])->name('recherche.getSearch');
 
