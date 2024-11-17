@@ -1,11 +1,7 @@
 if (document.baseURI.includes('admin/utilisateurs')) {
-    let users = document.getElementsByClassName("user");
-    let searchButton = document.querySelector("#search-user button");
     let selectType = document.getElementById("type");
     let filterForm = document.getElementById("filterForm");
     let pageLink = document.getElementsByClassName("pageLink");
-
-    searchButton.addEventListener("click", filter);
 
     selectType.addEventListener("change", function(){filterForm.submit();});
 
@@ -16,26 +12,6 @@ if (document.baseURI.includes('admin/utilisateurs')) {
             filterForm.submit();
         });
     }
-
-    function filter() {
-        let type = selectType.value;                                //Type d'utilisateur sélectionné
-
-        for (let i = 0; i < users.length; i++) {
-            let user_type = users[i].firstChild.nextElementSibling.firstChild.nextElementSibling.firstChild.nextElementSibling.nextElementSibling; // Type d'utilisateur
-            // Il faut vérifier que le type soit celui sélectionné.
-            // Ensuite, il faut vérifier si le nom d'utilisateur inclut la string mise tans la recherche, puis mettre ces deux filtres ensemble avec un ET.
-            if(
-                    (type == "tous") || // Si on veut afficher tous les utilisateurs
-                    (user_type.innerHTML.toUpperCase() == type.toUpperCase()) || //Si le type de l'utilisateur est égal à celui du filtre
-                    (user_type.querySelector('button') !== null && type == "Artiste") ||
-                    (type == "Administration" && (user_type.innerHTML == "Modérateur" || user_type.innerHTML == "Administrateur")) // Si le type choisi est Administration, on veut afficher Modérateurs et administrateurs
-                ) {
-                users[i].classList.remove('hidden'); // S'il était caché, il ne le sera plus
-            } else users[i].classList.add('hidden'); // Si une des conditions n'est pas respectée, cacher l'utilisateur
-        }
-    }
-
-    //filter();
 
     // Rendre le bouton rouge et actif si on entre le bon nom d'utilisateur pour pouvoir le supprimer
 

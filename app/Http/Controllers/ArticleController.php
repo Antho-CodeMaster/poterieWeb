@@ -24,16 +24,53 @@ class ArticleController extends Controller
      */
     public function index(Request $request)
     {
+        $searchTerm = $request->input('query');
+        $etat = $request->input('etat');
+        $sensible = $request->input('sensible');
+        $vedette = $request->input('vedette');
         $page = $request->input('page', 1);
-        $articles = Article::where('id_etat','!=', 3)
-            ->orderBy('date_publication', 'desc')
-            ->skip(50 * ($page - 1))
+
+        $articles = Article::where('id_etat', '!=', 3)
+            ->when(isset($etat) && $etat != "tous", function ($query) use ($etat) {
+                if ($etat == "Public")
+                    $query->where('id_etat', 1);
+                else if ($etat == "Masqué")
+                    $query->where('id_etat', 2);
+            })
+            ->when(isset($searchTerm), function ($query) use ($searchTerm) {
+                $query->where(function ($subQuery) use ($searchTerm) {
+                    $subQuery->where('nom', 'LIKE', '%' . $searchTerm . '%') //Nom de l'article correspond
+                        ->orWhereHas('artiste', function ($subsubQuery) use ($searchTerm) {
+                            $subsubQuery->where('nom_artiste', 'LIKE', '%' . $searchTerm . '%') //Nom de l'artiste correspond
+                                ->orWhereHas('user', function ($subsubsubQuery) use ($searchTerm) {
+                                    $subsubsubQuery->where('name', 'LIKE', '%' . $searchTerm . '%'); //Nom de l'user si l'artiste n'a pas de nom
+                                });
+                        });
+                });
+            })
+            ->when($sensible === "true", function ($query){
+                    $query->where('is_sensible', 1);
+            })
+            ->when($vedette === "true", function ($query){
+                    $query->where('is_en_vedette', 1);
+            })
+            ->whereHas('artiste', function ($query) {
+                $query->where('actif', true); //L'artiste doit être actif présentement
+            })
+            ->orderBy('date_publication', 'desc');
+
+        $count = $articles->count();
+        $articles = $articles->skip(50 * ($page - 1))
             ->take(50)
             ->get();
-        $count = Article::where('id_etat','!=', 3)->count();
+
 
         return view('admin/articles', [
             'articles' => $articles,
+            'query' => $request->input('query'),
+            'etat' => $request->input('etat'),
+            'sensible' => $request->input('sensible'),
+            'vedette' => $request->input('vedette'),
             'page' => $page - 1,
             'count' => $count,
             'total_pages' => ceil($count / 50),
