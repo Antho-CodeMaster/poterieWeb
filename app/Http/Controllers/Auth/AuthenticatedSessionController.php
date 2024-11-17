@@ -61,7 +61,7 @@ class AuthenticatedSessionController extends Controller
 
                 $otp_secret = $user->google2fa_secret;
                 $one_time_password = $google2fa->getCurrentOtp($otp_secret);
-                return redirect()->route('2fa')->with('one_time_password', $one_time_password);
+                return redirect()->route('decouverte')->with('show_2fa_modal', true);
             }
 
 
