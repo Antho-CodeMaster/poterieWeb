@@ -29,6 +29,7 @@
                         @include('profile.partials.update-units-form')
                     </div>
                 </div>
+
             </div>
 
             <span class="col-span-1 p-4 sm:p-8"></span>
@@ -40,6 +41,14 @@
                 </div>
             </div>
 
+            <!-- 2fa -->
+            <div>
+                <div class="col-span-1 p-4 sm:p-8">
+                    <div class="max-w-xl">
+                        @include('profile.partials.activate-2fa-form')
+                    </div>
+                </div>
+            </div>
             <span class="col-span-2 p-4 sm:p-8"></span>
 
             <!-- Delete account -->
