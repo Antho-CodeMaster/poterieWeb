@@ -98,7 +98,7 @@ Route::middleware(['auth', TwoFactorAuthMiddleware::class])->group(function () {
     Route::get('/abonnement/annuler', [AbonnementController::class, 'destroy'])->name('annuler-abonnement');
 
     Route::post('/2fa/activate',[TwoFactorController::class, 'create'])->name('2fa.activate');
-    Route::get('/2fa/deactivate',[TwoFactorController::class, 'destroy'])->name('2fa.deactivate');
+    Route::post('/2fa/deactivate',[TwoFactorController::class, 'destroy'])->name('2fa.deactivate');
 
     /** Route lié a stripe connect*/
     Route::get('/stripe/create-account', [ProfileController::class, 'creeCompteConnect'])->name('stripe.connect');

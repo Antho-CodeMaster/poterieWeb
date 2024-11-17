@@ -49,7 +49,8 @@
                     </div>
                 </div>
             </div>
-            <span class="col-span-2 p-4 sm:p-8"></span>
+
+
 
             <!-- Delete account -->
             <div class="col-span-2 p-4 sm:p-8 bg-beige hover:shadow-lg rounded-lg">
