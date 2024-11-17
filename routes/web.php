@@ -3,6 +3,7 @@
 use App\Http\Controllers\AbonnementController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ArtisteController;
+use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\ProfileController;
@@ -17,6 +18,8 @@ use App\Http\Middleware\EnsureUserIsArtist;
 use App\Http\Middleware\EnsureUserCanBecomeArtist;
 use App\Http\Middleware\EnsureUserCanSubscribe;
 use App\Http\Middleware\EnsureUserIsProArtist;
+use App\Http\Middleware\TwoFactorAuthMiddleware;
+
 use Illuminate\Support\Facades\Route;
 use Laravel\Cashier\Checkout;
 
@@ -42,12 +45,12 @@ Route::controller(ArticleController::class)->group(function () {
     Route::patch('/modifArticle', 'update')->name('modifArticle');
     Route::post('/signaleArticle', 'store')->name('signaleArticle');
 
-    /* Route lié aux filtre */
+    /* Routes liées aux filtre */
     Route::post('/articleFiltre', [ArticleController::class, 'articleFiltre'])->name('articleFiltre');
     Route::post('/kiosqueFiltre', [ArticleController::class, 'kiosqueFiltre'])->name('kiosqueFiltre');
 });
 
-/* Routes lié aux commandes*/
+/* Routes liées aux commandes*/
 Route::controller(CommandeController::class)->group(function () {
     #Route pour afficher le panier en cours de l'utilisateur
     Route::get('/panier', [CommandeController::class, 'showPanier'])->name('panier');
@@ -60,7 +63,7 @@ Route::controller(CommandeController::class)->group(function () {
     Route::get('/checkout/cancel', 'cancel')->name('checkout-cancel');
 });
 
-/* Routes liés aux transactions */
+/* Routes liées aux transactions */
 Route::controller(TransactionController::class)->group(function () {
     Route::get('/deleteThisArticle/{id}', 'destroy');
     Route::post('/addArticleToPanier', 'store')->name('addArticleToPanier');
@@ -68,13 +71,16 @@ Route::controller(TransactionController::class)->group(function () {
     Route::get('/traiterTransactionForm/{idTransaction}', [TransactionController::class, 'edit'])->name('traiterTransactionForm');
     Route::post('/traiterTransaction', [TransactionController::class, 'update'])->name('traiterTransaction');
     Route::post('/updateQuantite', 'updateQt')->name('update');
+
+    /* Routes liées aux filtres */
+    Route::post('/transactionsFiltres', [TransactionController::class, 'commandesFiltre'])->name('commandesFiltre');
 });
 
 Route::get('/buttons', function () {
     return view('buttons');
 })->name('buttons');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', TwoFactorAuthMiddleware::class])->group(function () {
     Route::get('/profil/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::get('/profil/facturation', [ProfileController::class, 'facturation'])->name('profile.facturation');
     Route::get('/profil/carte/modifier', [ProfileController::class, 'stripe_methodePaiement_form'])->name('profile.modifierCarte');
@@ -94,6 +100,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/abonnement/demarrer', [AbonnementController::class, 'store'])->name('demarrer-abonnement');
     Route::get('/abonnement/annuler', [AbonnementController::class, 'destroy'])->name('annuler-abonnement');
 
+    Route::post('/2fa/activate',[TwoFactorController::class, 'create'])->name('2fa.activate');
+    Route::post('/2fa/deactivate',[TwoFactorController::class, 'destroy'])->name('2fa.deactivate');
+
     /** Route lié a stripe connect*/
     Route::get('/stripe/create-account', [ProfileController::class, 'creeCompteConnect'])->name('stripe.connect');
     Route::get('/connect', [ProfileController::class, 'connectReturn'])->name('connect-return');
@@ -104,6 +113,9 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/like/{idArticle}', [LikeController::class, 'toggleLike'])->name('like.toggle');
 });
+
+Route::get('/2fa', [TwoFactorController::class,'show'])->name('2fa');
+Route::post('/2fa/verif', [TwoFactorController::class,'verify'])->name('2fa.verify');
 
 Route::get('/recherche', [ArticleController::class, 'getSearch'])->name('recherche.getSearch');
 

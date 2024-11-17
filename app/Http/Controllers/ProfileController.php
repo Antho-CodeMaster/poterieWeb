@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -23,9 +24,13 @@ class ProfileController extends Controller
         // Check if the authenticated user is an artiste
         $artiste = Artiste::where('id_user', $request->user()->id)->first();
 
+        $twoFactor =  new TwoFactorController();
+        $qrCode = $twoFactor->getQr();
+
         return view('profile.edit', [
             'user' => $request->user(),
             'artiste' => $artiste,
+            'qrCode' => $qrCode,
         ]);
     }
 

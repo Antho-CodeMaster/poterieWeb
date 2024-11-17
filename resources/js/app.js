@@ -14,6 +14,7 @@ import '../../public/js/modifArticle.js';
 import '../../public/js/deployerArticle.js';
 import '../../public/js/traiterTransaction.js';
 import '../../public/js/navigation.js';
+import '../../public/js/mesCommandes.js'
 
 import './panier';
 

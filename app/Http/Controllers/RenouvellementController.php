@@ -16,15 +16,9 @@ class RenouvellementController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-
+        return view('admin/renouvellement', [
+            'renouvellements' => Renouvellement::orderBy('created_at', 'desc')->get()
+        ]);
     }
 
     /**
@@ -58,38 +52,6 @@ class RenouvellementController extends Controller
             $usr->notify(new Demande_renouvellement($artiste->id_user));
         }
 
-        return redirect()->to(route('admin-display-renouvellement'));
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Renouvellement $renouvellement)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Renouvellement $renouvellement)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Renouvellement $renouvellement)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Renouvellement $renouvellement)
-    {
-        //
+        return redirect()->to(route('admin-renouvellement'));
     }
 }

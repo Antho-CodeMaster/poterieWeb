@@ -9,7 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use App\Models\Artiste;
-
+use PHPUnit\Metadata\DisableReturnValueGenerationForTestDoubles;
+use PragmaRX\Google2FA\Google2FA as Google2FAGoogle2FA;
+use PragmaRX\Google2FALaravel\Google2FA;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -42,10 +44,27 @@ class AuthenticatedSessionController extends Controller
 
             return redirect('/');
         } else {
+
             $art = Artiste::where('id_user', Auth::id())->first();
 
             if ($art != null)
                 $art->validate();
+
+
+            if($user->uses_two_factor_auth){
+
+                $google2fa = new Google2FAGoogle2FA();
+                if($request->session()->has('2fa:auth:passed')){
+                    $request->session()->forget('2fa:auth:passed');
+                }
+
+
+                $otp_secret = $user->google2fa_secret;
+                $one_time_password = $google2fa->getCurrentOtp($otp_secret);
+                return redirect()->route('2fa')->with('one_time_password', $one_time_password);
+            }
+
+
 
             return back();
             #return redirect()->intended(route('decouverte', absolute: false));
