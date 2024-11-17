@@ -13,24 +13,31 @@ window.addEventListener('scroll', () => {
     <div class="flex h-nav justify-between items-center">
 
         <!-- Logo -->
-        <div class="w-[225px] flex items-center ml-[16px]">
+        <div class="items-center ml-[16px]">
             <a class="navTitre" href="{{ route('decouverte') }}">
                 @Terracium
             </a>
         </div>
 
         <!-- Barre de recherche -->
-        <div class="w-[500px]">
-            <form action="{{ route('recherche.getSearch') }}" method="GET"
-                class="w-full h-[38px] py-auto">
+        <div class="hidden lg:block w-[500px]">
+            <form action="{{ route('recherche.getSearch') }}" method="GET" class="w-full h-[38px] py-auto">
                 <input class="w-full rounded h-full" type="text" placeholder="Rechercher..." name="query">
                 <button type="submit"><i class="fa fa-search"></i></button>
             </form>
         </div>
 
-
         <!-- Boutons de droite -->
         <div class="flex justify-end w-[225px] items-center mr-[16px]">
+
+            {{-- Icône recherche pour format mobile --}}
+            <a class="lg:hidden block" href="{{ route('decouverte') }}">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="none"
+                    viewBox="0 0 24 24">
+                    <path stroke="#F4F0EC" stroke-linecap="round" stroke-width="2"
+                        d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                </svg>
+            </a>
 
             {{-- Bouton Admin --}}
             @if (Auth::user() != null)
@@ -116,11 +123,11 @@ window.addEventListener('scroll', () => {
                             </div>
                             <div class="overflow-y-auto h-[400px] w-[300px] select-none p-4 space-y-2">
                                 @php
-                                    $visibleNotifications = Auth::user()->notifications->filter(function (
-                                        $notification,
-                                    ) {
-                                        return $notification->visible == 1;
-                                    })->sortByDesc('date');
+                                    $visibleNotifications = Auth::user()
+                                        ->notifications->filter(function ($notification) {
+                                            return $notification->visible == 1;
+                                        })
+                                        ->sortByDesc('date');
                                 @endphp
 
                                 @if ($visibleNotifications->isNotEmpty())

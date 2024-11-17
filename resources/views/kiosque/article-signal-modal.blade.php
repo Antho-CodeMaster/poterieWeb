@@ -33,7 +33,7 @@
 
                         <x-button.red.empty type="submit" name="id_article"
                             class="h-[36px] text-[20px] w-[50%] font-black text-center">
-                            Signalement
+                            Signaler
                         </x-button.red.empty>
                     </div>
                 </form>

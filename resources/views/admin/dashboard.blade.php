@@ -8,7 +8,8 @@
             <!-- Conteneur des statistiques -->
             <div class="flex flex-wrap grow justify-evenly py-4 overflow-auto mt-8">
 
-                <a href="{{ route('admin-utilisateurs') }}" class="my-6 mx-4 min-w-[344px] w-[25%] min-h-[200px] h-[25%] border-2 border-black rounded-[14px] flex flex-col justify-around p-2 bg-lightGrey hover:bg-hoverGrey">
+                <a href="{{ route('admin-utilisateurs') }}"
+                    class="my-6 mx-4 min-w-[344px] w-[25%] min-h-[200px] h-[25%] border-2 border-black rounded-[14px] flex flex-col justify-around p-2 bg-lightGrey hover:bg-hoverGrey">
                     <svg class="w-16 h-16 mx-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                         height="24" fill="black" viewBox="0 0 24 24">
                         <path fill-rule="evenodd"
@@ -16,12 +17,13 @@
                             clip-rule="evenodd" />
                     </svg>
                     <div class="mx-auto flex flex-col">
-                        <p class="mx-auto text-2xl">{{$utilisateurs}}</p>
+                        <p class="mx-auto text-2xl">{{ $utilisateurs }}</p>
                         <p class="mx-auto text-2xl">Utilisateurs</p>
                     </div>
                 </a>
 
-                <a href="{{ route('admin-articles') }}" class="my-6 mx-4 min-w-[344px] w-[25%] min-h-[200px] h-[25%] border-2 border-black rounded-[14px] flex flex-col justify-around p-2 bg-lightGrey hover:bg-hoverGrey">
+                <a href="{{ route('admin-articles') }}"
+                    class="my-6 mx-4 min-w-[344px] w-[25%] min-h-[200px] h-[25%] border-2 border-black rounded-[14px] flex flex-col justify-around p-2 bg-lightGrey hover:bg-hoverGrey">
                     <svg class="w-16 h-16 mx-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                         height="24" fill="black" viewBox="0 0 24 24">
                         <path fill-rule="evenodd"
@@ -29,24 +31,26 @@
                             clip-rule="evenodd" />
                     </svg>
                     <div class="mx-auto flex flex-col">
-                        <p class="mx-auto text-2xl">{{$articles}}</p>
+                        <p class="mx-auto text-2xl">{{ $articles }}</p>
                         <p class="mx-auto text-2xl">Articles en ligne</p>
                     </div>
                 </a>
 
-                <a href="{{ route('admin-signalements') }}" class="my-6 mx-4 min-w-[344px] w-[25%] min-h-[200px] h-[25%] border-2 border-black rounded-[14px] flex flex-col justify-around p-2 bg-lightGrey hover:bg-hoverGrey">
+                <a href="{{ route('admin-signalements') }}"
+                    class="my-6 mx-4 min-w-[344px] w-[25%] min-h-[200px] h-[25%] border-2 border-black rounded-[14px] flex flex-col justify-around p-2 bg-lightGrey hover:bg-hoverGrey">
                     <svg class="w-16 h-16 mx-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                         height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="black" stroke-linecap="round" stroke-width="2"
                             d="m6 6 12 12m3-6a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                     </svg>
                     <div class="mx-auto flex flex-col">
-                        <p class="mx-auto text-2xl">{{$signalements}}</p>
+                        <p class="mx-auto text-2xl">{{ $signalements }}</p>
                         <p class="mx-auto text-2xl">Signalements</p>
                     </div>
                 </a>
 
-                <a href="{{ route('admin-demandes') }}" class="my-6 mx-4 min-w-[344px] w-[25%] min-h-[200px] h-[25%] border-2 border-black rounded-[14px] flex flex-col justify-around p-2 bg-lightGrey hover:bg-hoverGrey">
+                <a href="{{ route('admin-demandes') }}"
+                    class="my-6 mx-4 min-w-[344px] w-[25%] min-h-[200px] h-[25%] border-2 border-black rounded-[14px] flex flex-col justify-around p-2 bg-lightGrey hover:bg-hoverGrey">
                     <svg class="w-16 h-16 mx-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                         height="24" fill="black" viewBox="0 0 24 24">
                         <path fill-rule="evenodd"
@@ -54,15 +58,18 @@
                             clip-rule="evenodd" />
                     </svg>
                     <div class="mx-auto flex flex-col">
-                        <p class="mx-auto text-2xl">{{$demandes}}</p>
+                        <p class="mx-auto text-2xl">{{ $demandes }}</p>
                         <p class="mx-auto text-2xl">Demandes d'inscription</p>
-                        @if($newDemandes > 0)
-                        <span class="w-fit mx-auto bg-red-500 text-white py-1 px-2 text-center rounded-md">{{$newDemandes}} en attente</span>
+                        @if ($newDemandes > 0)
+                            <span
+                                class="w-fit mx-auto bg-red-500 text-white py-1 px-2 text-center rounded-md">{{ $newDemandes }}
+                                en attente</span>
                         @endif
                     </div>
                 </a>
 
-                <a href="{{ route('admin-articles-non-recus') }}" class="my-6 mx-4 min-w-[344px] w-[25%] min-h-[200px] h-[25%] border-2 border-black rounded-[14px] flex flex-col justify-around p-2 bg-lightGrey hover:bg-hoverGrey">
+                <a href="{{ route('admin-articles-non-recus') }}"
+                    class="my-6 mx-4 min-w-[344px] w-[25%] min-h-[200px] h-[25%] border-2 border-black rounded-[14px] flex flex-col justify-around p-2 bg-lightGrey hover:bg-hoverGrey">
                     <svg class="w-16 h-16 mx-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                         height="24" fill="black" viewBox="0 0 24 24">
                         <path fill-rule="evenodd"
@@ -70,21 +77,22 @@
                             clip-rule="evenodd" />
                     </svg>
                     <div class="mx-auto flex flex-col">
-                        <p class="mx-auto text-2xl">{{$articles_non_recus}}</p>
+                        <p class="mx-auto text-2xl">{{ $articles_non_recus }}</p>
                         <p class="mx-auto text-2xl">Articles non reçus</p>
                     </div>
                 </a>
 
-                <a href="{{ route('admin-transactions') }}" class="my-6 mx-4 min-w-[344px] w-[25%] min-h-[200px] h-[25%] border-2 border-black rounded-[14px] flex flex-col justify-around p-2 bg-lightGrey hover:bg-hoverGrey">
+                <a href="{{ route('admin-renouvellement') }}"
+                    class="my-6 mx-4 min-w-[344px] w-[25%] min-h-[200px] h-[25%] border-2 border-black rounded-[14px] flex flex-col justify-around p-2 bg-lightGrey hover:bg-hoverGrey">
                     <svg class="w-16 h-16 mx-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                         height="24" fill="black" viewBox="0 0 24 24">
                         <path fill-rule="evenodd"
-                            d="M5.617 2.076a1 1 0 0 1 1.09.217L8 3.586l1.293-1.293a1 1 0 0 1 1.414 0L12 3.586l1.293-1.293a1 1 0 0 1 1.414 0L16 3.586l1.293-1.293A1 1 0 0 1 19 3v18a1 1 0 0 1-1.707.707L16 20.414l-1.293 1.293a1 1 0 0 1-1.414 0L12 20.414l-1.293 1.293a1 1 0 0 1-1.414 0L8 20.414l-1.293 1.293A1 1 0 0 1 5 21V3a1 1 0 0 1 .617-.924ZM9 7a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2H9Zm0 4a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Zm0 4a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Z"
+                            d="M5 5a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1 2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a2 2 0 0 1 2-2ZM3 19v-7a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm6.01-6a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm-10 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z"
                             clip-rule="evenodd" />
                     </svg>
                     <div class="mx-auto flex flex-col">
-                        <p class="mx-auto text-2xl">{{$transactions}}</p>
-                        <p class="mx-auto text-2xl">Transactions</p>
+                        <p class="mx-auto text-2xl">{{ $renouvellements }}</p>
+                        <p class="mx-auto text-2xl">Renouvellements</p>
                     </div>
                 </a>
 

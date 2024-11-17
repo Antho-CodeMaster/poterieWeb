@@ -45,12 +45,12 @@ Route::controller(ArticleController::class)->group(function () {
     Route::patch('/modifArticle', 'update')->name('modifArticle');
     Route::post('/signaleArticle', 'store')->name('signaleArticle');
 
-    /* Route lié aux filtre */
+    /* Routes liées aux filtre */
     Route::post('/articleFiltre', [ArticleController::class, 'articleFiltre'])->name('articleFiltre');
     Route::post('/kiosqueFiltre', [ArticleController::class, 'kiosqueFiltre'])->name('kiosqueFiltre');
 });
 
-/* Routes lié aux commandes*/
+/* Routes liées aux commandes*/
 Route::controller(CommandeController::class)->group(function () {
     #Route pour afficher le panier en cours de l'utilisateur
     Route::get('/panier', [CommandeController::class, 'showPanier'])->name('panier');
@@ -63,7 +63,7 @@ Route::controller(CommandeController::class)->group(function () {
     Route::get('/checkout/cancel', 'cancel')->name('checkout-cancel');
 });
 
-/* Routes liés aux transactions */
+/* Routes liées aux transactions */
 Route::controller(TransactionController::class)->group(function () {
     Route::get('/deleteThisArticle/{id}', 'destroy');
     Route::post('/addArticleToPanier', 'store')->name('addArticleToPanier');
@@ -71,6 +71,9 @@ Route::controller(TransactionController::class)->group(function () {
     Route::get('/traiterTransactionForm/{idTransaction}', [TransactionController::class, 'edit'])->name('traiterTransactionForm');
     Route::post('/traiterTransaction', [TransactionController::class, 'update'])->name('traiterTransaction');
     Route::post('/updateQuantite', 'updateQt')->name('update');
+
+    /* Routes liées aux filtres */
+    Route::post('/transactionsFiltres', [TransactionController::class, 'commandesFiltre'])->name('commandesFiltre');
 });
 
 Route::get('/buttons', function () {

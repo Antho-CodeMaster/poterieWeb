@@ -23,11 +23,11 @@
                     </p>
                     @if ($hasArticle == false)
                         <a href="{{ route('tousMesArticles') }}" class=" textMoyen-dark underline mx-[16px]">Voici un
-                            lien pour modifier un article afin de le rajouter dans la collection en vedette</a>
+                            lien pour modifier un article afin de l'ajouter dans la collection en vedette</a>
                     @else
                         <a href="{{ route('addArticleForm', ['idArticle' => 1]) }}"
                             class=" textMoyen-dark underline mx-[16px]">Voici un lien pour
-                            ajouter un nouvelle article et le placer en vedette</a>
+                            ajouter un nouvel article et le placer en vedette</a>
                     @endif
                 </div>
             @endif
@@ -74,7 +74,7 @@
         <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1 z-[1001]" role="alert">
             @include('messages.messageFail', [
                 'message' => Session::get('errorInactif'),
-                'titre' => 'Artiste pas trouvée',
+                'titre' => 'Artiste',
             ])
         </div>
     @endif

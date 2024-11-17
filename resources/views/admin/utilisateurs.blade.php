@@ -76,7 +76,7 @@
                                 <p class="mx-auto">{{ $user->email }}</p>
                             </div>
                             <p class="text-center w-3/12">{{ $user->created_at }}</p>
-                            <a href="{{ route('admin-transactions') }}"
+                            <a href="{{ route('admin-commandes') }}"
                                 class="text-center w-1/6">{{ $user->commandes->count() }}</a>
                             <p class="text-center w-1/6">{{ $user->avertissements()->count() }}</p>
                         </div>
