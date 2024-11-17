@@ -174,6 +174,8 @@ window.addEventListener('scroll', () => {
                 </div>
             @endauth
 
+            @include('components.2fa-modal')
+
             <!-- Settings Dropdown -->
             <div class="sm:flex sm:items-center ml-[15px]">
                 @auth

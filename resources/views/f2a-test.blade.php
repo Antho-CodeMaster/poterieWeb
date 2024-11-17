@@ -8,6 +8,7 @@
                     <img src="data:image/svg+xml;base64,{{ base64_encode($qrCode) }}" alt="QR Code">
                     <div class="card-body">
                         <p>{{ __('Please enter your one-time password to complete your login.') }}</p>
+                        @dump(session('show_2fa_modal'))
 
                         {{--<form method="POST" action="{{ route('2fa.verify') }}">
                             @csrf
