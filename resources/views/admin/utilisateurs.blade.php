@@ -42,8 +42,8 @@
                             {{ $total_pages }}</p>
                     </div>
                 </div>
-                <h2 class="text-2xl text-darkGrey">{{ $page * 5 + 1 }} à
-                    {{ ($page * 5 + 5) > $count ? $count : ($page * 5 + 5)}} de {{ $count }} résultats</h2>
+                <h2 class="text-2xl text-darkGrey">{{ $page * 50 + 1 }} à
+                    {{ ($page * 50 + 50) > $count ? $count : ($page * 50 + 50)}} de {{ $count }} résultats</h2>
 
                 <form method="get" action="{{route('admin-utilisateurs')}}" class="flex justify-end" id="filterForm">
                     <input id="pageID" type="hidden" name="page" value="1">
@@ -58,7 +58,7 @@
                     <!-- Barre de recherche -->
                     <div id="search-user" class="w-[500px] h-[50px] py-auto flex border rounded border-black">
                         <input class="w-full border-0 focus:border-0 focus:shadow-none rounded h-full" type="text"
-                            placeholder="Rechercher par nom..." name="query" value="{{$query}}">
+                            placeholder="Rechercher par nom / par e-mail..." name="query" value="{{$query}}">
                         <button>
                             <svg class="w-6 h-6 mr-3 text-gray-800 dark:text-white" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"

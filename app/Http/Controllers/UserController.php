@@ -31,14 +31,17 @@ class UserController extends Controller
             ->when(isset($searchTerm) && $searchTerm !== null, function ($query) use ($searchTerm) {
                 $query->where(function ($subQuery) use ($searchTerm) {
                     $subQuery->where('name', 'LIKE', '%' . $searchTerm . '%')
-                        ->orWhere('email', 'LIKE', '%' . $searchTerm . '%');
+                        ->orWhere('email', 'LIKE', '%' . $searchTerm . '%')
+                        ->orWhereHas('artiste', function ($subsubQuery) use ($searchTerm) {
+                            $subsubQuery->where('nom_artiste', 'LIKE', '%' . $searchTerm . '%'); //Nom de l'artiste correspond
+                        });
                 });
             });
 
         $count = $users->count();
 
-        $users = $users->skip(5 * ($page - 1))
-            ->take(5)
+        $users = $users->skip(50 * ($page - 1))
+            ->take(50)
             ->get();
 
         return view(
@@ -49,7 +52,7 @@ class UserController extends Controller
                 'type' => $request->input('type'),
                 'page' => $page - 1,
                 'count' => $count,
-                'total_pages' => ceil($count / 5),
+                'total_pages' => ceil($count / 50),
             ]
         );
     }
