@@ -306,8 +306,17 @@ class ArticleController extends Controller
             ->where('id_etat', 1)
             ->get();
 
+        $artistes = Artiste::where(function ($query) use ($searchTerm) {
+                $query->where('nom_artiste', 'LIKE', '%' . $searchTerm . '%')
+                    ->orWhereHas('user', function ($subQuery) use ($searchTerm) {
+                        $subQuery->where('name', 'LIKE', '%' . $searchTerm . '%');
+                    });
+            })
+                ->where('actif', 1)
+                ->get();
+
         // Return the results to the view with the search term and matched articles
-        return view('recherche.recherche', compact('articles', 'searchTerm'));
+        return view('recherche.recherche', compact('articles', 'searchTerm', 'artistes'));
     }
 
     /**
