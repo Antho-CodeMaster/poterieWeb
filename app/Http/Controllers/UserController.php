@@ -13,12 +13,45 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin/utilisateurs',
-        [
-            'users' => User::where('active', 1)->get(),
-        ]);
+        $searchTerm = $request->input('query');
+        $type = $request->input('type');
+        $page = $request->input('page', 1);
+
+        $users = User::where('active', 1)
+            ->when(isset($type) && $type != null && $type != "tous", function ($query) use ($type) {
+                if ($type == "Client")
+                    $query->whereDoesntHave('artiste')->whereDoesntHave('moderateur');
+                else if ($type == "Artiste")
+                    $query->whereHas('artiste');
+                else if ($type == "Administration")
+                    $query->whereHas('moderateur');
+            })
+            ->when(isset($searchTerm) && $searchTerm !== null, function ($query) use ($searchTerm) {
+                $query->where(function ($subQuery) use ($searchTerm) {
+                    $subQuery->where('name', 'LIKE', '%' . $searchTerm . '%')
+                        ->orWhere('email', 'LIKE', '%' . $searchTerm . '%');
+                });
+            });
+
+        $count = $users->count();
+
+        $users = $users->skip(5 * ($page - 1))
+            ->take(5)
+            ->get();
+
+        return view(
+            'admin/utilisateurs',
+            [
+                'users' => $users,
+                'query' => $request->input('query'),
+                'type' => $request->input('type'),
+                'page' => $page - 1,
+                'count' => $count,
+                'total_pages' => ceil($count / 5),
+            ]
+        );
     }
 
     /**

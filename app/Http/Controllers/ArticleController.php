@@ -22,12 +22,23 @@ class ArticleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $page = $request->input('page', 1);
+        $articles = Article::where('id_etat','!=', 3)
+            ->orderBy('date_publication', 'desc')
+            ->skip(50 * ($page - 1))
+            ->take(50)
+            ->get();
+        $count = Article::where('id_etat','!=', 3)->count();
+
+        return view('admin/articles', [
+            'articles' => $articles,
+            'page' => $page - 1,
+            'count' => $count,
+            'total_pages' => ceil($count / 50),
+        ]);
     }
-
-
 
     /* Form pour l'ajout d'un article */
     public function create()

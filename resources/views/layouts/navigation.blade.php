@@ -163,7 +163,7 @@ window.addEventListener('scroll', () => {
                                         </div>
                                     @endforeach
                                 @else
-                                    <div class="p-2">
+                                    <div class="p-2 flex justify-center">
                                         <span class="font-semibold text-darkGrey">Aucune notification à afficher</span>
                                     </div>
                                 @endif

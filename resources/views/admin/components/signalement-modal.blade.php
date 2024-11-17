@@ -2,7 +2,8 @@
     class="z-[1000] transition-all duration-200 ease-in-out" x-data="articleModal()">
     {{-- Fond gris --}}
     <div x-show="openArticleModal" @set-article.window="article = $event.detail; console.log(article); currentIndex = 0;"
-        @set-artiste.window="artiste = $event.detail" @set-photos.window="photos = JSON.parse($event.detail)"
+        @set-signalement.window="signalement = $event.detail; console.log(signalement)"
+        @set-photos.window="photos = JSON.parse($event.detail)"
         @set-mots-cles.window="motsCles = JSON.parse($event.detail); console.log('Mots-clés mis à jour : ', this.motsCles);"
         class="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-[101]">
 
@@ -215,7 +216,7 @@
                         {{-- Description --}}
                         <div class="flex flex-wrap w-full m-titreY">
                             <p class="titre3-dark w-full ">Description</p>
-                            <p class="textGrand-dark" x-text="article.description"></p>
+                            <p class="textGrand-dark " x-text="article.description"></p>
                         </div>
 
                         {{-- Mots clés --}}
@@ -264,19 +265,12 @@
                             <p class=" articleGrand-dark bg-beigeFoncé rounded-md py-[1px] px-[14px]"
                                 x-text="article.quantite_disponible"></p>
                         </div>
-
-                        <p class="textGrand-dark">Date de publication: <span x-text="article.date_publication">N/A</span></p>
-
-                        <div class="h-fit" x-data="{ openDelete: {{ $errors->any() ? 'true' : 'false' }} }">
-                            <x-button.red.trash class="w-full"
-                            @click="$dispatch('open-delete-modal');
-                            $dispatch('set-id', article.id_article);
-                            $dispatch('set-name', article.nom);
-                            closeModal();
-                            index = 0;
-                            ">Supprimer
-                                cet article
-                            </x-button.red.trash>
+                        <div class="border border-black rounded p-4 w-full">
+                            <p class="titre3-dark mr-1 text-center mb-2">Signalement</p>
+                            <p><span class="font-bold">Signalé par :</span> <span
+                                    x-html="signalement.client">N/A</span></p>
+                            <p><span class="font-bold">Commentaire :</span> <span
+                                    x-html="signalement.raison">N/A</span></p>
                         </div>
                     </div>
                 </div>
@@ -290,8 +284,8 @@
         return {
             openArticleModal: false,
             article: {},
-            artiste: {},
             photos: [],
+            signalement: {},
             motsCles: [],
             currentIndex: 0,
 
@@ -300,7 +294,8 @@
                 this.article = {};
                 this.photos = [];
                 this.motsCles = [];
-                this.artiste = {};
+                this.client = {};
+                this.raison = {};
             }
         }
     }
