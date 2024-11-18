@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Signalement;
 use App\Models\Article;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 
 class SignalementController extends Controller
@@ -78,9 +79,20 @@ class SignalementController extends Controller
             /* 2. Changer l'état (masqué aux clients et à l'artiste) */
             $article->id_etat = 3;
 
-            /* 3. Mettre à jours l'article en BD */
+            /* 3. Mettre à jour l'article en BD */
             if ($article->save()) {
                 session()->flash('succes', 'Article supprimé.');
+
+                $notif = Notification::create([
+                    'id_type' => 9,
+                    'id_user' => $article->artiste->id_user,
+                    'date' => now(),
+                    'message' => $article->nom,
+                    'lien' => route('kiosque', ['idUser' => $article->artiste->id_user]),
+                    'visible' => 1
+                ]);
+
+                $notif->save();
             } else {
                 session()->flash('erreur', 'Un problème est survenu lors de la suppression de l\'article.');
             }

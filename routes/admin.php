@@ -4,7 +4,7 @@ use App\Http\Middleware\EnsureUserIsModerateur;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ArtisteController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\SignalementController;
 use App\Http\Controllers\RenouvellementController;
 use Illuminate\Support\Facades\Route;
@@ -31,9 +31,7 @@ Route::middleware(EnsureUserIsModerateur::class)->group(function () {
             ->name('admin-user-demote');
     });
 
-    Route::get('/admin/articles', function () {
-        return view('admin/articles');
-    })->name('admin-articles');
+    Route::get('/admin/articles', [ArticleController::class, 'index'])->name('admin-articles');
 
     Route::controller(SignalementController::class)->group(function () {
         Route::get('/admin/signalements', 'index')

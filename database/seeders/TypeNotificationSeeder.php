@@ -36,12 +36,17 @@ class TypeNotificationSeeder extends Seeder
         DB::table('types_notification')->insert([
             'description' => 'Vous avez une nouvelle commande en cours, [1]',
         ]);
+
         DB::table('types_notification')->insert([
             'description' => 'Votre abonnement est terminé! Vous pouvez le réactiver via Paramètres > Facturation.',
         ]);
 
         DB::table('types_notification')->insert([
             'description' => 'Vous n\'avez pas fait votre renouvellement à temps. Vos accès artiste ont donc été retirés. Vous pouvez les récupérer en cliquant sur l\'icône dans la barre de navigation.',
+        ]);
+
+        DB::table('types_notification')->insert([
+            'description' => 'Un de vos articles a été supprimé par l\'administration. Nom de l\'article: [1]',
         ]);
     }
 }
