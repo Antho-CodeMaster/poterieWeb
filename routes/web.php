@@ -80,7 +80,7 @@ Route::get('/buttons', function () {
     return view('buttons');
 })->name('buttons');
 
-Route::middleware(['auth', TwoFactorAuthMiddleware::class])->group(function () {
+Route::middleware('auth')->group(function () {
     Route::get('/profil/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::get('/profil/facturation', [ProfileController::class, 'facturation'])->name('profile.facturation');
     Route::get('/profil/carte/modifier', [ProfileController::class, 'stripe_methodePaiement_form'])->name('profile.modifierCarte');

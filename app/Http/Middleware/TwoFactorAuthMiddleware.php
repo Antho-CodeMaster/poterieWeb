@@ -17,21 +17,16 @@ class TwoFactorAuthMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check()) {
-            return redirect()->route('login'); // Redirect to login if not authenticated
-        }
-
-        $user = User::find(Auth::id());
-        // Check if 2FA has been passed
-        if($user->uses_two_factor_auth){
-            if (!($request->session()->has('2fa:auth:passed') && $request->session()->get('2fa:auth:passed'))) {
-                session()->flash('show_2fa_modal', true);
-                return redirect()->route('decouverte'); // Redirect to 2FA prompt
+        if (Auth::check()) {
+            $user = User::find(Auth::id());
+            // Check if 2FA has been passed
+            if($user->uses_two_factor_auth){
+                if (!($request->session()->has('2fa:auth:passed') && $request->session()->get('2fa:auth:passed'))) {
+                    session()->flash('show_2fa_modal', true);
+                    return redirect()->route('decouverte'); // Redirect to 2FA prompt
+                }
             }
         }
-
-
-
         return $next($request);
     }
 }
