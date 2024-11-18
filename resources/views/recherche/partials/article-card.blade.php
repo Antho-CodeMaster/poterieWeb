@@ -3,7 +3,7 @@
         {{-- Image section --}}
         <div class="flex justify-center mb-2">
             <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
-                class="{{($article->is_sensible == 0 && !Auth::check()) || (Auth::check() && Auth()->user()->contenu_sensible == 0 && $article->is_sensible == 0) ? 'blur-[18px]' : ''}} shadow-md rounded-[12px] cursor-pointer h-[250px] w-[250px] object-cover"
+                class="{{($article->is_sensible == 1 && !Auth::check()) || (Auth::check() && Auth()->user()->contenu_sensible == 0 && $article->is_sensible == 1) ? 'blur-[18px]' : ''}} shadow-md rounded-[12px] cursor-pointer h-[250px] w-[250px] object-cover"
                 @click=" $dispatch('open-article-modal');
                             $dispatch('set-article', {
                                 id_article: '{{ $article->id_article }}',
