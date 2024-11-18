@@ -1,9 +1,30 @@
 @if ($article->id_etat != 2 && $article->quantite_disponible > 0)
-    <div class="flex flex-col w-[75%] mx-[16px] my-[16px] p-4">
+    <div  x-data='{openArticleModal: false}' class="flex flex-col w-[75%] mx-[16px] my-[16px] p-4">
         {{-- Image section --}}
         <div class="flex justify-center mb-2">
             <img src="/../img/{{ $article->photosArticle->path }}" alt="Photo d'article"
-                class="shadow-md rounded-[12px] cursor-pointer h-[250px] w-[250px] object-cover">
+                class="{{($article->is_sensible == 0 && !Auth::check()) || (Auth::check() && Auth()->user()->contenu_sensible == 0 && $article->is_sensible == 0) ? 'blur-[18px]' : ''}} shadow-md rounded-[12px] cursor-pointer h-[250px] w-[250px] object-cover"
+                @click=" $dispatch('open-article-modal');
+                            $dispatch('set-article', {
+                                id_article: '{{ $article->id_article }}',
+                                id_artiste: '{{ $article->artiste->id_artiste }}',
+                                id_etat: '{{ $article->id_etat }}',
+                                nom: '{{ htmlspecialchars($article->nom) }}',
+                                description: '{{ htmlspecialchars($article->description) }}',
+                                prix: '{{ $article->prix }}',
+                                hauteur: '{{ $article->hauteur }}',
+                                largeur: '{{ $article->largeur }}',
+                                profondeur: '{{ $article->profondeur }}',
+                                poids: '{{ $article->poids }}',
+                                couleur: '{{ $article->couleur }}',
+                                quantite_disponible: '{{ htmlspecialchars($article->quantite_disponible) }}',
+                                is_unique: '{{ $article->is_unique }}',
+                                is_alimentaire: '{{ $article->is_alimentaire }}',
+                                is_sensible: '{{ $article->is_sensible }}',
+                            });
+                            $dispatch('set-artiste', '{{ $article->artiste }}');
+                            $dispatch('set-photos', '{{ $article->photo_article }}');
+                            $dispatch('set-mots-cles', '{{ $article->motCles }}'); ">
         </div>
 
         {{-- Article info section --}}
@@ -53,7 +74,7 @@
                 @endif
             </div>
 
-            {{-- Artist photo section --}}
+            {{-- Artiste photo section --}}
             <div class="flex justify-end mx-2">
                 <img src="{{ asset($article->getArtiste->path_photo_profil ?? 'img/artistePFP/default_artiste.png') }}"
                     alt="{{$article->getArtiste->nom_artiste}}" class="rounded-full w-[48px] h-[48px]">

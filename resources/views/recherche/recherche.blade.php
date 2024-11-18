@@ -1,4 +1,6 @@
 <x-app-layout>
+    @include('kiosque.article-modal')
+
     <section class="grid lg:grid-cols-4">
         <header class="lg:col-span-4 gap-6 m-4">
             <h2 class="text-2xl font-medium text-gray-900">

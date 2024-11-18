@@ -60,37 +60,37 @@
                         {{ __('Connexion') }}
                     </button>
                 </div>
-
-                <!-- Divider -->
-                <div class="flex items-center justify-center mb-4">
-                    <hr class="w-full border-gray-300">
-                    <span class="absolute bg-white px-3 text-gray-500">OU</span>
-                </div>
-
-                <!-- Sign Up Button that closes Login Modal and opens Register Modal -->
-                <div class="text-center my-8">
-                    <button
-                        @click.stop="openLogin = false; $dispatch('open-register-modal')"
-                        class="w-64 mx-auto bg-[#444444] text-[#F4F0EC] py-2 rounded"
-                    >
-                        {{ __('S’inscrire') }}
-                    </button>
-                </div>
-
-                <!-- Placeholder for Google -->
-                <div class="text-center my-8">
-                    <button class="w-64 mx-auto bg-[#444444] text-[#F4F0EC] py-2 rounded">
-                        {{ __('Google') }}
-                    </button>
-                </div>
-
-                <!-- Placeholder for Facebook -->
-                <div class="text-center mt-4">
-                    <button class="w-64 mx-auto bg-[#444444] text-[#F4F0EC] py-2 rounded">
-                        {{ __('Facebook') }}
-                    </button>
-                </div>
             </form>
+
+            <!-- Divider -->
+            <div class="flex items-center justify-center mb-4">
+                <hr class="w-full border-gray-300">
+                <span class="absolute bg-white px-3 text-gray-500">OU</span>
+            </div>
+
+            <!-- Sign Up Button that closes Login Modal and opens Register Modal -->
+            <div class="text-center my-8">
+                <button
+                    @click.stop="openLogin = false; $dispatch('open-register-modal')"
+                    class="w-64 mx-auto bg-[#444444] text-[#F4F0EC] py-2 rounded"
+                >
+                    {{ __('S’inscrire') }}
+                </button>
+            </div>
+
+            <!-- Placeholder for Google -->
+            <div class="text-center my-8">
+                <button class="w-64 mx-auto bg-[#444444] text-[#F4F0EC] py-2 rounded">
+                    {{ __('Google') }}
+                </button>
+            </div>
+
+            <!-- Placeholder for Facebook -->
+            <div class="text-center mt-4">
+                <button class="w-64 mx-auto bg-[#444444] text-[#F4F0EC] py-2 rounded">
+                    {{ __('Facebook') }}
+                </button>
+            </div>
         </div>
     </div>
 </div>

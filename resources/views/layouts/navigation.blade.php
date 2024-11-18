@@ -219,6 +219,12 @@ window.addEventListener('scroll', () => {
                             </form>
                         </x-slot>
                     </x-dropdown>
+
+                    @include('components.2fa-modal')
+
+                    @if (Auth::user()->uses_two_factor_auth == 1 && (!session()->has('2fa:auth:passed') || session()->get('2fa:auth:passed') == false))
+                        <div x-data="$dispatch('open-2fa-modal')"></div>
+                    @endif
                 @else
                     <!-- Guest User: Show Login Modal Trigger -->
                     <div x-data="{ open: false }">
@@ -227,6 +233,8 @@ window.addEventListener('scroll', () => {
                         @include('components.login-modal')
                         @include('components.register-modal')
                     </div>
+
+
                 @endauth
             </div>
         </div>
