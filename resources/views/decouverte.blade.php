@@ -50,7 +50,6 @@
         </div>
     </div>
     -->
-
     <!-- Parallax Section -->
     <div id="parallax-img" class="relative top-0 h-[101vh] w-full overflow-hidden">
         <div class="bg-cover bg-center min-h-full w-full" style="background-image: url('/../covers/cover_picture.png');">

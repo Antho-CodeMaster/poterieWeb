@@ -19,7 +19,7 @@
                 class="carousel bg-beige p-2 flex overflow-x-scroll scroll-smooth whitespace-nowrap scrollbar-hide w-full">
                 @foreach ($collection->articles as $article)
                     <div x-data='{openArticleModal: false}'
-                        class="inline lg:w-[16vw] w-[56vw] lg:mx-6 mx-2 shrink-0 overflow-hidden whitespace-nowrap bg-white shadow-md rounded-md hover:shadow-lg">
+                        class="inline lg:w-[16vw] w-[56vw] lg:mx-6 mx-2 shrink-0 overflow-hidden whitespace-nowrap rounded-[16px] bg-white shadow-md hover:shadow-lg">
                         <img src="/../img/{{ $article->photosArticle->path }}" alt="{{ $article->nom }}"
                             class="{{($article->is_sensible == 0 && !Auth::check()) || (Auth::check() && Auth()->user()->contenu_sensible == 0 && $article->is_sensible == 0) ? 'blur-[18px]' : ''}} w-full h-64 object-cover rounded-t-md"
                             @click=" $dispatch('open-article-modal');
