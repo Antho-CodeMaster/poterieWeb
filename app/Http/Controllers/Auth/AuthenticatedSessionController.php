@@ -67,6 +67,7 @@ class AuthenticatedSessionController extends Controller
             #return redirect()->intended(route('decouverte', absolute: false));
         }
     }
+}
 
     /**
      * Destroy an authenticated session.

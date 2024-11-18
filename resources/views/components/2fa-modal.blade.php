@@ -1,5 +1,9 @@
+
 <div
-    x-data="{ open2fa: {{ $errors->any() || session('show_2fa_modal') ? 'true' : 'false' }} }"
+    x-cloak
+    x-data="{ open2fa: {{ $errors->any() ? 'true' : 'false' }} }"
+    @close-2fa-modal.window="open2fa = false"
+    @open-2fa-modal.window="open2fa = true"
 >
     <!-- 2fa Modal -->
     <div id="2faModal" x-show="open2fa"  class="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
