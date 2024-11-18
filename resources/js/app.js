@@ -16,8 +16,7 @@ import '../../public/js/deployerArticle.js';
 import '../../public/js/traiterTransaction.js';
 import '../../public/js/navigation.js';
 import '../../public/js/mesCommandes.js'
-
-import './panier';
+import '../../public/js/panier.js'
 
 // Cause des problèmes de code Alpine qui run deux fois
 //import Alpine from 'alpinejs';

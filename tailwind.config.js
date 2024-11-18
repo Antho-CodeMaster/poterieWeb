@@ -101,7 +101,9 @@ export default {
         'opacity-0',
         'visible',
         'invisible',
-        'gap-input'
+        'gap-input',
+        'left-[25%]',
+        'left-[50%]'
     ],
 
     plugins: [

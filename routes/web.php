@@ -65,7 +65,7 @@ Route::controller(CommandeController::class)->group(function () {
 
 /* Routes liées aux transactions */
 Route::controller(TransactionController::class)->group(function () {
-    Route::get('/deleteThisArticle/{id}', 'destroy');
+    Route::get('/deleteThisArticle/{id}', 'destroy')->name('removeFromPanier');
     Route::post('/addArticleToPanier', 'store')->name('addArticleToPanier');
     Route::get('/mesTransactions/{idUser}', [TransactionController::class, 'mesTransactions'])->name('mesTransactions');
     Route::get('/traiterTransactionForm/{idTransaction}', [TransactionController::class, 'edit'])->name('traiterTransactionForm');
@@ -81,32 +81,41 @@ Route::get('/buttons', function () {
 })->name('buttons');
 
 Route::middleware(['auth', TwoFactorAuthMiddleware::class])->group(function () {
-    Route::get('/profil/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::get('/profil/facturation', [ProfileController::class, 'facturation'])->name('profile.facturation');
-    Route::get('/profil/carte/modifier', [ProfileController::class, 'stripe_methodePaiement_form'])->name('profile.modifierCarte');
-    Route::get('/profil/carte/supprimer', [ProfileController::class, 'destroy_card'])->name('profile.supprimerCarte');
-    Route::get('/profil/personnaliser', [ProfileController::class, 'personnaliser'])->name('profile.personnaliser');
-    Route::post('/profil/edit', [ProfileController::class, 'updateBlur'])->name('profile.updateBlur');
-    Route::patch('/profil', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profil', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::post('/profil/update-picture', [ArtisteController::class, 'updatePicture'])->name('artiste.updatePicture');
-    Route::post('/profil/update-name', [ArtisteController::class, 'updateName'])->name('artiste.updateName');
-    Route::post('/profil/update-color', [ArtisteController::class, 'updateColor'])->name('artiste.updateColor');
-    Route::post('/profil/update-socials', [ArtisteController::class, 'updateSocials'])->name('artiste.updateSocials');
-    Route::get('/devenir-artiste', [DemandeController::class, 'create'])->name('devenir-artiste')->middleware(EnsureUserCanBecomeArtist::class);
-    Route::post('/devenir-artiste', [DemandeController::class, 'store'])->name('store-demande-artiste');
-    Route::get('/renouvellement', [DemandeController::class, 'create'])->name('renouvellement-artiste')->middleware(EnsureUserIsArtist::class);
+    Route::controller(ProfileController::class)->group(function () {
+        Route::get('/profil/edit', 'edit')->name('profile.edit');
+        Route::get('/profil/facturation', 'facturation')->name('profile.facturation');
+        Route::get('/profil/carte/modifier', 'stripe_methodePaiement_form')->name('profile.modifierCarte');
+        Route::get('/profil/carte/supprimer', 'destroy_card')->name('profile.supprimerCarte');
+        Route::get('/profil/personnaliser', 'personnaliser')->name('profile.personnaliser');
+        Route::post('/profil/edit', 'updateBlur')->name('profile.updateBlur');
+        Route::patch('/profil', 'update')->name('profile.update');
+        Route::delete('/profil', 'destroy')->name('profile.destroy');
+
+        /** Route lié a stripe connect*/
+        Route::get('/stripe/create-account', 'creeCompteConnect')->name('stripe.connect');
+        Route::get('/connect', 'connectReturn')->name('connect-return');
+        Route::get('/refresh', 'connectRefresh')->name('connect-refresh');
+    });
+
+    Route::controller(ArtisteController::class)->group(function () {
+        Route::post('/profil/update-picture', 'updatePicture')->name('artiste.updatePicture');
+        Route::post('/profil/update-name', 'updateName')->name('artiste.updateName');
+        Route::post('/profil/update-color', 'updateColor')->name('artiste.updateColor');
+        Route::post('/profil/update-socials', 'updateSocials')->name('artiste.updateSocials');
+    });
+
+    Route::controller(DemandeController::class)->group(function () {
+        Route::get('/devenir-artiste', 'create')->name('devenir-artiste')->middleware(EnsureUserCanBecomeArtist::class);
+        Route::post('/devenir-artiste', 'store')->name('store-demande-artiste');
+        Route::get('/renouvellement', 'create')->name('renouvellement-artiste')->middleware(EnsureUserIsArtist::class);
+    });
+
     Route::get('/abonnement', [AbonnementController::class, 'create'])->name('abonnement')->middleware(EnsureUserCanSubscribe::class);
     Route::get('/abonnement/demarrer', [AbonnementController::class, 'store'])->name('demarrer-abonnement');
     Route::get('/abonnement/annuler', [AbonnementController::class, 'destroy'])->name('annuler-abonnement');
 
     Route::post('/2fa/activate',[TwoFactorController::class, 'create'])->name('2fa.activate');
     Route::post('/2fa/deactivate',[TwoFactorController::class, 'destroy'])->name('2fa.deactivate');
-
-    /** Route lié a stripe connect*/
-    Route::get('/stripe/create-account', [ProfileController::class, 'creeCompteConnect'])->name('stripe.connect');
-    Route::get('/connect', [ProfileController::class, 'connectReturn'])->name('connect-return');
-    Route::get('/refresh', [ProfileController::class, 'connectRefresh'])->name('connect-refresh');
 
     //Route pour la génération de facture
     Route::get('/facture/vente/{id_commande}', [CommandeController::class,'recusArtistes'])->name('recus');
@@ -127,8 +136,6 @@ Route::view('/about-us','apropos')->name('apropos');
 Route::controller(UserController::class)->group(function () {
     Route::post('/updateUnits', [UserController::class, 'updateUnits'])->name('updateUnits');
 });
-
-
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';

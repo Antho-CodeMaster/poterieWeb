@@ -26,11 +26,10 @@
             @if (Auth::id() == $artiste->id_user)
                 <div class="bg-beige p-sectionY">
                     <p class=" textGrand-dark mx-[16px] select-none font-bold">Pour le moment vous n'avez aucun
-                        article en vente
+                        article en vente.
                     </p>
                     <a href="{{ route('addArticleForm', ['idArticle' => 1]) }}"
-                        class=" textMoyen-dark underline mx-[16px]">Voici un lien pour
-                        mettre en vente un article </a>
+                        class=" textMoyen-dark underline mx-[16px]">Ajouter un article </a>
                 </div>
             @else
                 <p>Aucun article pour le moment</p>
