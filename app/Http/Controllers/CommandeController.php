@@ -137,7 +137,6 @@ class CommandeController extends Controller
         else{
             return $this->cookieToCommande($request);
         }
-
     }
 
     /**
@@ -318,8 +317,8 @@ class CommandeController extends Controller
     public function cookieToCommande(Request $request){
         //recupere les cookies
         $cookie = $request->cookie('panier','');
-        $items = $cookie ? json_decode($cookie,true) : [];
 
+        $items = $cookie ? json_decode($cookie,true) : [];
         //cree pbj commande
         $commande = new Commande();
         $commande->transactions->collect();
@@ -328,7 +327,6 @@ class CommandeController extends Controller
             $article = Article::find($item['id_article']);
             if($article){
                 $transaction = new Transaction();
-                #$transaction->id_article = $article->id_article;
                 $transaction->quantite = $item['quantite'];
                 $transaction->prix_unitaire = $article->prix;
                 $transaction->id_article = $item['id_article'];

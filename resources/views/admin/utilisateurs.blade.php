@@ -3,22 +3,62 @@
         @include('admin.menu-gauche')
         <div class="pr-10 w-[90%] h-[100%] flex flex-col" x-data="{ openAvertir: false, openDelete: false, openPromote: false, openDemote: false, openArtist: false }">
             <div id="header-info">
-                <h1 class="titre2-dark m-titreY p-sectionY border-b-2 border-darkGrey">Utilisateurs</h1>
-                <h2 class="text-2xl text-darkGrey">{{ count($users) }} résultats</h2>
+                <div class="flex border-b-2 border-darkGrey gap-5 justify-between">
+                    <h1 class="titre2-dark m-titreY p-sectionY">Utilisateurs</h1>
+                    <!-- Navigateur de pages-->
+                    <div class="flex items-center gap-2">
+                        <?php
+                        switch ($page) {
+                            case 0:
+                            case 1:
+                                $initial = 1;
+                                $final = 4;
+                                break;
+                            case $total_pages - 2:
+                                $initial = $page - 2;
+                                $final = $page + 1;
+                                break;
+                            case $total_pages - 1:
+                                $initial = $page - 3;
+                                $final = $page + 1;
+                                break;
+                            default:
+                                $initial = $page - 1;
+                                $final = $page + 2;
+                                break;
+                        }
+                        ?>
+                        <p>Page: </p>
+                        @for ($i = $initial; $i <= $final && $i < $total_pages; $i++)
+                            <p class="pageLink cursor-pointer px-4 py-2 rounded
+                        {{ $page + 1 == $i ? 'bg-darkGrey text-white' : '' }}">
+                                {{ $i }}</p>
+                        @endfor
+                        @if ($page + 3 < $total_pages)
+                            <p>...</p>
+                        @endif
+                        <p class="pageLink cursor-pointer px-4 py-2 rounded
+                    {{ $page + 1 == $total_pages ? 'bg-darkGrey text-white' : '' }}">
+                            {{ $total_pages }}</p>
+                    </div>
+                </div>
+                <h2 class="text-2xl text-darkGrey">{{ $page * 50 + 1 }} à
+                    {{ ($page * 50 + 50) > $count ? $count : ($page * 50 + 50)}} de {{ $count }} résultats</h2>
 
-                <div class="flex justify-end">
+                <form method="get" action="{{route('admin-utilisateurs')}}" class="flex justify-end" id="filterForm">
+                    <input id="pageID" type="hidden" name="page" value="1">
                     <!-- Sélection du type d'utilisateur -->
-                    <select id="type" class="mr-6 border rounded border-black">
-                        <option selected value="tous">Tous</option>
-                        <option value="Client">Clients</option>
-                        <option value="Artiste">Artistes</option>
-                        <option value="Administration">Administration</option>
+                    <select id="type" name="type" class="mr-6 border rounded border-black">
+                        <option {{$type == "tous" || $type == null || $type == '' ? 'selected' : '' }} value="tous">Tous</option>
+                        <option {{$type == "Client" ? 'selected' : '' }} value="Client">Clients</option>
+                        <option {{$type == "Artiste" ? 'selected' : '' }} value="Artiste">Artistes</option>
+                        <option {{$type == "Administration" ? 'selected' : '' }} value="Administration">Administration</option>
                     </select>
 
                     <!-- Barre de recherche -->
                     <div id="search-user" class="w-[500px] h-[50px] py-auto flex border rounded border-black">
                         <input class="w-full border-0 focus:border-0 focus:shadow-none rounded h-full" type="text"
-                            placeholder="Rechercher par nom..." name="search">
+                            placeholder="Rechercher par nom / par e-mail..." name="query" value="{{$query}}">
                         <button>
                             <svg class="w-6 h-6 mr-3 text-gray-800 dark:text-white" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
@@ -28,7 +68,7 @@
                             </svg>
                         </button>
                     </div>
-                </div>
+                </form>
             </div>
             <!-- Header -->
             <div class="w-[calc(100%-18px)] px-4 rounded-[14px] flex items-center p-1 gap-3 mt-4">
@@ -162,7 +202,7 @@
                 @endforeach
             </div>
             @include('admin.components.avertir-modal')
-            @include('admin.components.delete-modal')
+            @include('admin.components.delete-user-modal')
             @include('admin.components.promote-modal')
             @include('admin.components.demote-modal')
             @include('admin.components.artist-modal')

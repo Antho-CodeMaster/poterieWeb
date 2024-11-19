@@ -22,7 +22,8 @@ window.addEventListener('scroll', () => {
         <!-- Barre de recherche -->
         <div class="hidden lg:block w-[500px]">
             <form action="{{ route('recherche.getSearch') }}" method="GET" class="w-full h-[38px] py-auto">
-                <input class="w-full rounded h-full" type="text" placeholder="Rechercher..." name="query">
+                <input class="w-full rounded h-full" type="text"
+                    placeholder="Rechercher des articles ou des artistes..." name="query">
                 <button type="submit"><i class="fa fa-search"></i></button>
             </form>
         </div>
@@ -31,7 +32,7 @@ window.addEventListener('scroll', () => {
         <div class="flex justify-end w-[225px] items-center mr-[16px]">
 
             {{-- Icône recherche pour format mobile --}}
-            <a class="lg:hidden block" href="{{ route('decouverte') }}">
+            <a class="lg:hidden block" href="{{ route('recherche.getSearch') }}">
                 <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="none"
                     viewBox="0 0 24 24">
                     <path stroke="#F4F0EC" stroke-linecap="round" stroke-width="2"
@@ -89,7 +90,11 @@ window.addEventListener('scroll', () => {
             @endauth
 
             {{-- Bouton panier --}}
-            <a class="ml-[15px]" href="{{ route('panier') }}">
+            <a class="ml-[15px] relative" href="{{ route('panier') }}">
+                @if ($basketCount > 0)
+                    <p
+                        class="mx-auto bg-red-500 text-white text-sm text-center rounded w-fit absolute -right-2 -top-1 {{ $basketCount > 9 ? 'px-1' : 'px-1.5' }}">{{ $basketCount }}</p>
+                @endif
                 <svg width="34" height="34" viewBox="0 0 48 48" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -164,7 +169,7 @@ window.addEventListener('scroll', () => {
                                         </div>
                                     @endforeach
                                 @else
-                                    <div class="p-2">
+                                    <div class="p-2 flex justify-center">
                                         <span class="font-semibold text-darkGrey">Aucune notification à afficher</span>
                                     </div>
                                 @endif
@@ -202,7 +207,7 @@ window.addEventListener('scroll', () => {
                             </x-dropdown-link>
 
                             <x-dropdown-link :href="route('commandes')" class="hover:underline">
-                                {{ __('Historique de commandes') }}
+                                {{ __('Mes commandes') }}
                             </x-dropdown-link>
 
                             <!-- Authentication -->
@@ -220,7 +225,8 @@ window.addEventListener('scroll', () => {
 
                     @include('components.2fa-modal')
 
-                    @if (Auth::user()->uses_two_factor_auth == 1 && (!session()->has('2fa:auth:passed') || session()->get('2fa:auth:passed') == false))
+                    @if (Auth::user()->uses_two_factor_auth == 1 &&
+                            (!session()->has('2fa:auth:passed') || session()->get('2fa:auth:passed') == false))
                         <div x-data="$dispatch('open-2fa-modal')"></div>
                     @endif
                 @else

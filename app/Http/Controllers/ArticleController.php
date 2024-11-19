@@ -22,12 +22,60 @@ class ArticleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $searchTerm = $request->input('query');
+        $etat = $request->input('etat');
+        $sensible = $request->input('sensible');
+        $vedette = $request->input('vedette');
+        $page = $request->input('page', 1);
+
+        $articles = Article::where('id_etat', '!=', 3)
+            ->when(isset($etat) && $etat != "tous", function ($query) use ($etat) {
+                if ($etat == "Public")
+                    $query->where('id_etat', 1);
+                else if ($etat == "Masqué")
+                    $query->where('id_etat', 2);
+            })
+            ->when(isset($searchTerm), function ($query) use ($searchTerm) {
+                $query->where(function ($subQuery) use ($searchTerm) {
+                    $subQuery->where('nom', 'LIKE', '%' . $searchTerm . '%') //Nom de l'article correspond
+                        ->orWhereHas('artiste', function ($subsubQuery) use ($searchTerm) {
+                            $subsubQuery->where('nom_artiste', 'LIKE', '%' . $searchTerm . '%') //Nom de l'artiste correspond
+                                ->orWhereHas('user', function ($subsubsubQuery) use ($searchTerm) {
+                                    $subsubsubQuery->where('name', 'LIKE', '%' . $searchTerm . '%'); //Nom de l'user si l'artiste n'a pas de nom
+                                });
+                        });
+                });
+            })
+            ->when($sensible === "true", function ($query){
+                    $query->where('is_sensible', 1);
+            })
+            ->when($vedette === "true", function ($query){
+                    $query->where('is_en_vedette', 1);
+            })
+            ->whereHas('artiste', function ($query) {
+                $query->where('actif', true); //L'artiste doit être actif présentement
+            })
+            ->orderBy('date_publication', 'desc');
+
+        $count = $articles->count();
+        $articles = $articles->skip(50 * ($page - 1))
+            ->take(50)
+            ->get();
+
+
+        return view('admin/articles', [
+            'articles' => $articles,
+            'query' => $request->input('query'),
+            'etat' => $request->input('etat'),
+            'sensible' => $request->input('sensible'),
+            'vedette' => $request->input('vedette'),
+            'page' => $page - 1,
+            'count' => $count,
+            'total_pages' => ceil($count / 50),
+        ]);
     }
-
-
 
     /* Form pour l'ajout d'un article */
     public function create()
@@ -295,8 +343,17 @@ class ArticleController extends Controller
             ->where('id_etat', 1)
             ->get();
 
+        $artistes = Artiste::where(function ($query) use ($searchTerm) {
+                $query->where('nom_artiste', 'LIKE', '%' . $searchTerm . '%')
+                    ->orWhereHas('user', function ($subQuery) use ($searchTerm) {
+                        $subQuery->where('name', 'LIKE', '%' . $searchTerm . '%');
+                    });
+            })
+                ->where('actif', 1)
+                ->get();
+
         // Return the results to the view with the search term and matched articles
-        return view('recherche.recherche', compact('articles', 'searchTerm'));
+        return view('recherche.recherche', compact('articles', 'searchTerm', 'artistes'));
     }
 
     /**

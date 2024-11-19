@@ -16,41 +16,44 @@
         <p class="text-center titre2-dark">Aucune commande</p>
         <p class="text-center mt-4">Vous n'avez jamais effectué de commande chez Terracium.</p>
     @else
-    @if ($commandeEnCours != null)
-        <h2 class="my-8 titre2-dark m-section">En cours</h2>
+        @if ($commandeEnCours != null)
+            <h2 class="my-8 titre2-dark m-section">En cours</h2>
 
             @foreach ($commandeEnCours as $commande)
                 {{-- ex layout une commande --}}
-
-                <div class="flex my-24 ml-24">
+                <div class="flex border border-darkGrey mx-32 my-5 rounded p-8">
                     {{-- images --}}
                     <div class="w-1/3 flex relative space-x-0">
                         @foreach ($commande->transactions as $transaction)
                             <img src="{{ 'img/' . $transaction->article->photo_article[0]->path }}" alt=""
-                                class="w-1/3 h-full object-cover z-{{ $loop->iteration * 10 }} rounded-[12px] shadow-xl shadow-black {{ $loop->first === true ? '' : 'absolute left-[' . ($loop->iteration - 1) * 25 . '%]' }} ">
+                                class="aspect-square w-1/3 h-full object-cover z-{{ $loop->iteration * 10 }} rounded-[12px] shadow-xl shadow-black {{ $loop->first === true ? '' : 'absolute left-[' . ($loop->iteration - 1) * 25 . '%]' }} ">
                             @if ($loop->iteration == 3)
                             @break
                         @endif
                     @endforeach
-
                 </div>
+
                 {{-- infos --}}
                 <div class="flex flex-col w-1/3 justify-between">
-                    <p>Date : {{ $commande->date }} </p>
+                    <p class="textGrand-dark">Date : {{ $commande->date }} </p>
 
                     @php $etat = $commande->transactions[0]->etat_transaction->etat @endphp
-                    <div class="flex">
-                        <p>Statut : </p>
-                        <p class="text-[{{ $colors[$etat] }}] underline">
-                            {{ $etat === 'Annulé' ? ' Attention requise' : ' ' . $etat }}</p>
-                    </div>
+                    <p class="textGrand-dark">Statut :
+                        <span class="text-[{{ $colors[$etat] }}] underline">
+                            {{ $etat === 'Annulé' ? ' Attention requise' : ' ' . $etat }}</span>
+                    </p>
 
-                    <a href="/commande/{{ $commande->id_commande }}"
-                        class="underline hover:text-[#0000FF]">Détails</a>
+                    <p class="textGrand-dark"> {{ sizeof($commande->transactions) }} article(s)</p>
                 </div>
+
                 {{-- prix --}}
                 <div class="flex flex-col w-1/3 justify-between">
-                    <a href="{{ $commande->receipt_url }}">Télécharger le reçu</a>
+                    <form method="get" action="{{ $commande->receipt_url }}">
+                        <x-button.blue.download>Télécharger le reçu</x-button.blue.download>
+                    </form>
+                    <form method="get" action="/commande/{{ $commande->id_commande }}">
+                        <x-button.blue.info>Détails de la commande</x-button.blue.info>
+                    </form>
                     @php
                         $prix = 0.0;
                         foreach ($commande->transactions as $transaction) {
@@ -58,7 +61,7 @@
                         }
                         $prix *= 1.15;
                     @endphp
-                    <p>Total : {{ number_format($prix, 2, '.', ' ') }} $</p>
+                    <p class="textGrand-dark font-bold">Total : {{ number_format($prix, 2, ',', ' ') }} $</p>
                 </div>
             </div>
         @endforeach
@@ -67,37 +70,45 @@
     @if ($commandeFini != null)
         <h2 class="my-8 titre2-dark m-section">Précédent</h2>
 
-        <p class="mx-5">Aucune commande précédente</p>
+        @if (empty($commandeFini))
+            <p class="mx-5">Aucune commande précédente</p>
+        @endif
+
         @foreach ($commandeFini as $commande)
             {{-- ex layout une commande --}}
-
-            <div class="flex my-24 ml-24">
+            <div class="flex border border-darkGrey my-5 rounded p-8 mx-32">
                 {{-- images --}}
                 <div class="w-1/3 flex relative space-x-0">
                     @foreach ($commande->transactions as $transaction)
                         <img src="{{ 'img/' . $transaction->article->photo_article[0]->path }}" alt=""
-                            class="w-1/3 h-full object-cover z-{{ $loop->iteration * 10 }} rounded-[12px] shadow-xl shadow-black {{ $loop->first === true ? '' : 'absolute left-[' . ($loop->iteration - 1) * 25 . '%]' }} ">
+                            class="aspect-square w-1/3 h-full object-cover z-{{ $loop->iteration * 10 }} rounded-[12px] shadow-xl shadow-black {{ $loop->first === true ? '' : 'absolute left-[' . ($loop->iteration - 1) * 25 . '%]' }} ">
                         @if ($loop->iteration == 3)
                         @break
                     @endif
                 @endforeach
             </div>
+
             {{-- infos --}}
             <div class="flex flex-col w-1/3 justify-between">
-                <p>Date : {{ $commande->date }} </p>
+                <p class="textGrand-dark">Date : {{ $commande->date }} </p>
 
                 @php $etat = $commande->transactions[0]->etat_transaction->etat @endphp
-                <div class="flex">
-                    <p>Statut : </p>
-                    <p class="text-[{{ $colors[$etat] }}] underline">
-                        {{ $etat === 'Annulé' ? ' Attention requise' : ' ' . $etat }}</p>
-                </div>
+                <p class="textGrand-dark">Statut :
+                    <span class="text-[{{ $colors[$etat] }}] underline">
+                        {{ $etat === 'Annulé' ? ' Attention requise' : ' ' . $etat }}</span>
+                </p>
 
-                <a href="/commande/{{ $commande->id_commande }}"
-                    class="underline hover:text-[#0000FF]">Détails</a>
+                <p class="textGrand-dark"> {{ sizeof($commande->transactions) }} article(s)</p>
             </div>
+
             {{-- prix --}}
-            <div class="w-1/3 self-end">
+            <div class="flex flex-col w-1/3 justify-between">
+                <form method="get" action="{{ $commande->receipt_url }}">
+                    <x-button.blue.download>Télécharger le reçu</x-button.blue.download>
+                </form>
+                <form method="get" action="/commande/{{ $commande->id_commande }}">
+                    <x-button.blue.info>Détails de la commande</x-button.blue.info>
+                </form>
                 @php
                     $prix = 0.0;
                     foreach ($commande->transactions as $transaction) {
@@ -105,7 +116,7 @@
                     }
                     $prix *= 1.15;
                 @endphp
-                <p>Total : {{ number_format($prix, 2, '.', ' ') }} $</p>
+                <p class="textGrand-dark font-bold">Total : {{ number_format($prix, 2, ',', ' ') }} $</p>
             </div>
         </div>
     @endforeach

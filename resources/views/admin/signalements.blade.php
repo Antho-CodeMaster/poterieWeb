@@ -108,7 +108,7 @@
                 @endforeach
             </div>
             @include('admin.components.avertir-modal')
-            @include('admin.components.article-modal')
+            @include('admin.components.signalement-modal')
 
             @if (Session::has('succes'))
                 <div class="w-[500px] absolute right-2 bottom-10">

@@ -3,6 +3,7 @@ import './bootstrap';
 import '../../public/js/kiosque.js';
 import '../../public/js/addArticle.js';
 import '../../public/js/admin-users.js';
+import '../../public/js/admin-articles.js';
 import '../../public/js/admin-demandes.js';
 import '../../public/js/devenir-artiste.js';
 import '../../public/js/settings.js';
@@ -15,8 +16,7 @@ import '../../public/js/deployerArticle.js';
 import '../../public/js/traiterTransaction.js';
 import '../../public/js/navigation.js';
 import '../../public/js/mesCommandes.js'
-
-import './panier';
+import '../../public/js/panier.js'
 
 // Cause des problèmes de code Alpine qui run deux fois
 //import Alpine from 'alpinejs';
