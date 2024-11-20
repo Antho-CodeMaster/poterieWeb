@@ -21,20 +21,20 @@
 
             @foreach ($commandeEnCours as $commande)
                 {{-- ex layout une commande --}}
-                <div class="flex border border-darkGrey mx-32 my-5 rounded p-8">
+            <div class="lg:flex border border-darkGrey mx-6 md:mx-32 my-5 rounded p-2 md:p-8">
                     {{-- images --}}
-                    <div class="w-1/3 flex relative space-x-0">
+                    <div class="w-full lg:w-1/3 flex relative space-x-0 my-2">
                         @foreach ($commande->transactions as $transaction)
                             <img src="{{ 'img/' . $transaction->article->photo_article[0]->path }}" alt=""
                                 class="aspect-square w-1/3 h-full object-cover z-{{ $loop->iteration * 10 }} rounded-[12px] shadow-xl shadow-black {{ $loop->first === true ? '' : 'absolute left-[' . ($loop->iteration - 1) * 25 . '%]' }} ">
                             @if ($loop->iteration == 3)
                             @break
-                        @endif
-                    @endforeach
-                </div>
+                            @endif
+                        @endforeach
+                    </div>
 
                 {{-- infos --}}
-                <div class="flex flex-col w-1/3 justify-between">
+                <div class="flex flex-wrap lg:flex-col w-full lg:w-1/3 justify-between mt-6">
                     <p class="textGrand-dark">Date : {{ $commande->date }} </p>
 
                     @php $etat = $commande->transactions[0]->etat_transaction->etat @endphp
@@ -47,11 +47,11 @@
                 </div>
 
                 {{-- prix --}}
-                <div class="flex flex-col w-1/3 justify-between">
-                    <form method="get" action="{{ $commande->receipt_url }}">
+                <div class="flex flex-col w-full lg:w-1/3 justify-between my-2">
+                    <form method="get" action="{{ $commande->receipt_url }}" class="my-2">
                         <x-button.blue.download>Télécharger le reçu</x-button.blue.download>
                     </form>
-                    <form method="get" action="/commande/{{ $commande->id_commande }}">
+                    <form method="get" action="/commande/{{ $commande->id_commande }}" class="my-2">
                         <x-button.blue.info>Détails de la commande</x-button.blue.info>
                     </form>
                     @php
@@ -61,7 +61,7 @@
                         }
                         $prix *= 1.15;
                     @endphp
-                    <p class="textGrand-dark font-bold">Total : {{ number_format($prix, 2, ',', ' ') }} $</p>
+                    <p class="textGrand-dark font-bold mt-2">Total : {{ number_format($prix, 2, ',', ' ') }} $</p>
                 </div>
             </div>
         @endforeach
@@ -75,52 +75,52 @@
         @endif
 
         @foreach ($commandeFini as $commande)
-            {{-- ex layout une commande --}}
-            <div class="flex border border-darkGrey my-5 rounded p-8 mx-32">
+                {{-- ex layout une commande --}}
+            <div class="lg:flex border border-darkGrey my-5 rounded p-8 mx-6 md:mx-32">
                 {{-- images --}}
-                <div class="w-1/3 flex relative space-x-0">
+                <div class="w-full lg:w-1/3 flex relative space-x-0">
                     @foreach ($commande->transactions as $transaction)
                         <img src="{{ 'img/' . $transaction->article->photo_article[0]->path }}" alt=""
                             class="aspect-square w-1/3 h-full object-cover z-{{ $loop->iteration * 10 }} rounded-[12px] shadow-xl shadow-black {{ $loop->first === true ? '' : 'absolute left-[' . ($loop->iteration - 1) * 25 . '%]' }} ">
                         @if ($loop->iteration == 3)
-                        @break
-                    @endif
-                @endforeach
+                            @break
+                        @endif
+                    @endforeach
+                </div>
+
+                {{-- infos --}}
+                <div class="flex flex-wrap lg:flex-col w-full lg:w-1/3 justify-between mt-6">
+                    <p class="textGrand-dark">Date : {{ $commande->date }} </p>
+
+                    @php $etat = $commande->transactions[0]->etat_transaction->etat @endphp
+                    <p class="textGrand-dark">Statut :
+                        <span class="text-[{{ $colors[$etat] }}] underline">
+                            {{ $etat === 'Annulé' ? ' Attention requise' : ' ' . $etat }}</span>
+                    </p>
+
+                    <p class="textGrand-dark"> {{ sizeof($commande->transactions) }} article(s)</p>
+                </div>
+
+                {{-- prix --}}
+                <div class="flex flex-col w-full lg:w-1/3 justify-between my-2">
+                    <form method="get" action="{{ $commande->receipt_url }}" class="my-2">
+                        <x-button.blue.download>Télécharger le reçu</x-button.blue.download>
+                    </form>
+                    <form method="get" action="/commande/{{ $commande->id_commande }}" class="my-2">
+                        <x-button.blue.info>Détails de la commande</x-button.blue.info>
+                    </form>
+                    @php
+                        $prix = 0.0;
+                        foreach ($commande->transactions as $transaction) {
+                            $prix += $transaction->prix_unitaire * $transaction->quantite;
+                        }
+                        $prix *= 1.15;
+                    @endphp
+                    <p class="textGrand-dark font-bold mt-2">Total : {{ number_format($prix, 2, ',', ' ') }} $</p>
+                </div>
             </div>
-
-            {{-- infos --}}
-            <div class="flex flex-col w-1/3 justify-between">
-                <p class="textGrand-dark">Date : {{ $commande->date }} </p>
-
-                @php $etat = $commande->transactions[0]->etat_transaction->etat @endphp
-                <p class="textGrand-dark">Statut :
-                    <span class="text-[{{ $colors[$etat] }}] underline">
-                        {{ $etat === 'Annulé' ? ' Attention requise' : ' ' . $etat }}</span>
-                </p>
-
-                <p class="textGrand-dark"> {{ sizeof($commande->transactions) }} article(s)</p>
-            </div>
-
-            {{-- prix --}}
-            <div class="flex flex-col w-1/3 justify-between">
-                <form method="get" action="{{ $commande->receipt_url }}">
-                    <x-button.blue.download>Télécharger le reçu</x-button.blue.download>
-                </form>
-                <form method="get" action="/commande/{{ $commande->id_commande }}">
-                    <x-button.blue.info>Détails de la commande</x-button.blue.info>
-                </form>
-                @php
-                    $prix = 0.0;
-                    foreach ($commande->transactions as $transaction) {
-                        $prix += $transaction->prix_unitaire * $transaction->quantite;
-                    }
-                    $prix *= 1.15;
-                @endphp
-                <p class="textGrand-dark font-bold">Total : {{ number_format($prix, 2, ',', ' ') }} $</p>
-            </div>
-        </div>
-    @endforeach
-@endif
+        @endforeach
+    @endif
 @endif
 
 

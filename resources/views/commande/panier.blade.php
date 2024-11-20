@@ -2,7 +2,7 @@
     <h1 class="titre1-dark text-center mt-6 mb-12
     ">Mon Panier</h1>
     {{-- Container pour diviser la page entre la liste et le résumé --}}
-    <div class="lg:flex mb-12 px-10">
+    <div class="lg:flex mb-12 px-2 md:px-10">
         {{-- Container pour LES lignes d'articles --}}
         <div class="w-full lg:w-8/12 flex flex-col gap-8 md:px-10">
             {{-- Une ligne d'article --}}
@@ -10,7 +10,7 @@
                 <div class="flex itemPanier w-full h-[200px]"
                     data-prix="{{ $transaction->article->prix }}" data-ida="{{ $transaction->article->id_article }}"
                     data-idt="{{ $transaction->id_transaction }}">
-                    <div class="w-[200px] align-center">
+                    <div class="w-[200px] self-center ml-2">
                         <img src="{{ 'img/' . $transaction->article->photo_article[0]->path }}" alt="Une image de pot"
                             class="rounded-xl border shadow-xl shadow-black m-auto aspect-square object-cover">
                     </div>
