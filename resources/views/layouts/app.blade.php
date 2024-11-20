@@ -30,6 +30,9 @@
     <div class="min-h-screen bg-ffffff flex flex-col">
         @include('layouts.navigation')
 
+        <!-- Modal du 2fa-->
+        @include('components.2fa-modal')
+
         <!-- Page Heading -->
         @isset($header)
             <header class="bg-white shadow">

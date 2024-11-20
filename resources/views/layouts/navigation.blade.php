@@ -223,7 +223,6 @@ window.addEventListener('scroll', () => {
                         </x-slot>
                     </x-dropdown>
 
-                    @include('components.2fa-modal')
 
                     @if (Auth::user()->uses_two_factor_auth == 1 &&
                             (!session()->has('2fa:auth:passed') || session()->get('2fa:auth:passed') == false))
