@@ -61,13 +61,11 @@ class AuthenticatedSessionController extends Controller
 
 
                 //return redirect()->route('decouverte')->with('show_2fa_modal', true);
-
-
+            }
             return back();
             #return redirect()->intended(route('decouverte', absolute: false));
         }
     }
-}
 
     /**
      * Destroy an authenticated session.

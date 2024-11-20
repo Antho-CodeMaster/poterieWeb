@@ -65,6 +65,10 @@ if (document.baseURI.includes('/panier')) {
             }
         }
 
+        function updateQuantity(){
+
+        }
+
         // Add event listeners to quantity selects
         let quantitySelects = document.querySelectorAll('.quantite-select');
         quantitySelects.forEach(function (select) {
