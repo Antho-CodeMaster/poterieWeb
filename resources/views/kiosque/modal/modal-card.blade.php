@@ -1,4 +1,4 @@
-<div class="bg-white p-sectionX p-sectionY rounded-[12px] shadow-lg w-full max-w-[1080px]"
+<div class="bg-white p-sectionX p-sectionY rounded-[12px] shadow-lg w-full max-w-[1080px] h-full mx-auto"
 @click.away="openArticleModal = false">
 
     <section class="relative flex w-full h-[50px] items-center m-sectionY">

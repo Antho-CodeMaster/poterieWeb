@@ -8,7 +8,7 @@
         class="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-[101]">
 
         <!-- Modal pour écran normal -->
-        <div class="hidden md:block w-full">
+        <div class="hidden md:flex w-full">
             @include('kiosque.modal.modal-card')
         </div>
 

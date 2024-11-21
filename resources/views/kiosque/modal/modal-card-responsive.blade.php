@@ -122,7 +122,7 @@
 
             {{-- Dimension --}}
             <div class="mt-5 flex flex-wrap w-full items-baseline justify-between px-6">
-                <p class="titre3-dark w-full">Détails</p>
+                <p class="titre2-dark w-full">Détails</p>
                 <div class="">
                     {{-- Poids --}}
                     <template x-if="article.poids !== null && article.poids > 0">
