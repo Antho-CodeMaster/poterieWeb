@@ -1,18 +1,20 @@
+
 <div
     x-cloak
     x-data="{ open2fa: {{ $errors->any() ? 'true' : 'false' }} }"
     @close-2fa-modal.window="open2fa = false"
     @open-2fa-modal.window="open2fa = true"
 >
-
     <!-- 2fa Modal -->
-    <div id="2faModal" x-show="open2fa" x-init="open2fa = document.getElementById('show2faModal') ? true : false" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
+    <div id="2faModal" x-show="open2fa"  class="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
         <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
-            <!-- Close Button -->
-            <button @click="open2fa = false" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-5xl p-2">
-                &times;
-            </button>
-
+            <!-- Close Button, logout -->
+            <form action="{{route('logout')}}" method="POST">
+                @csrf
+                <button class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-5xl p-2">
+                    &times;
+                </button>
+            </form>
             <h2 class="text-left text-xl font-bold mb-6">Authentification multifactorielle</h2>
             <svg class="m-auto" fill="#000000" width="200px" height="200px" viewBox="0 0 32 32" id="icon" xmlns="http://www.w3.org/2000/svg">
                 <defs>

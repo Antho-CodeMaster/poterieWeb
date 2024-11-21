@@ -2,19 +2,19 @@
     <h1 class="titre1-dark text-center mt-6 mb-12
     ">Mon Panier</h1>
     {{-- Container pour diviser la page entre la liste et le résumé --}}
-    <div class="flex mb-12 px-10">
+    <div class="lg:flex mb-12 px-2 md:px-10">
         {{-- Container pour LES lignes d'articles --}}
-        <div class="w-8/12 flex flex-col gap-8 px-10">
+        <div class="w-full lg:w-8/12 flex flex-col gap-8 md:px-10">
             {{-- Une ligne d'article --}}
             @foreach ($commande->transactions as $transaction)
                 <div class="flex itemPanier w-full h-[200px]"
                     data-prix="{{ $transaction->article->prix }}" data-ida="{{ $transaction->article->id_article }}"
                     data-idt="{{ $transaction->id_transaction }}">
-                    <div class="w-1/4">
+                    <div class="w-[200px] self-center ml-2">
                         <img src="{{ 'img/' . $transaction->article->photo_article[0]->path }}" alt="Une image de pot"
-                            class="h-full rounded-xl border shadow-xl shadow-black m-auto aspect-square object-cover">
+                            class="rounded-xl border shadow-xl shadow-black m-auto aspect-square object-cover">
                     </div>
-                    <div class="w-1/4 flex flex-col justify-around">
+                    <div class="w-1/2 md:w-1/4 m-1 flex flex-col justify-around">
                         <div class="">
                             <h2 class="textGrand-dark"> {{ $transaction->article->nom }} </h2>
                             <p class="">{{ $transaction->article->prix }} $ / pièce</p>
@@ -33,21 +33,23 @@
                         </div>
                     </div>
 
-                    <div class="w-2/12 flex flex-col">
-                        <h3 class="self-center font-semibold" id="totalArticle{{ $transaction->id_transaction }}"></h3>
-                        {{-- A updater en JS --}}
+                    <!-- Pho artiste et nom-->
+
+                    <div class="h-1/3 md:h-full w-2/12 flex flex-col self-center">
                         <div class="m-auto">
                             <img src="{{ $transaction->article->artiste->path_photo_profil }}"
-                                alt="Photo de profil de l'artiste" class="rounded-full size-32">
+                                alt="Photo de profil de l'artiste" class="rounded-full ">
                             <p class="text-center">{{ $transaction->article->artiste->nom_artiste }}</p>
                         </div>
                     </div>
-                    <div class="w-1/4 h-full flex flex-col self-center underline">
+
+                    <!-- Boutton effacer -->
+                    <div class="h-1/3 w-1/4 md:h-full flex flex-col self-center underline">
                         <a class="m-auto"
                             @auth
-href="{{ route('removeFromPanier', ['id' => $transaction->id_transaction]) }}" @endauth
+                                href="{{ route('removeFromPanier', ['id' => $transaction->id_transaction]) }}" @endauth
                             @guest
-href="{{ route('removeFromPanier', ['id' => $transaction->id_article]) }}" @endguest>
+                                href="{{ route('removeFromPanier', ['id' => $transaction->id_article]) }}" @endguest>
                             <svg width="40" height="44" viewBox="0 0 40 44" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -62,7 +64,7 @@ href="{{ route('removeFromPanier', ['id' => $transaction->id_article]) }}" @endg
         </div>
 
         {{-- Le résumé/la facture  TODO: changer la couleur --}}
-        <div class="w-4/12">
+        <div class="w-full lg:w-4/12 ">
             <div x-data
                 class="w-3/4 mx-auto h-fit bg-gray-200 rounded-xl sticky top-[10%] flex flex-col justify-between">
                 <div class="m-section">
