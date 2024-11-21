@@ -29,7 +29,7 @@
                                 id_etat: '{{ $article->id_etat }}',
                                 nom: '{{ htmlspecialchars($article->nom) }}',
                                 description: '{{ htmlspecialchars($article->description) }}',
-                                prix: '{{ $article->prix }}',
+                                prix: '{{ number_format($article->prix, 2, ',', ' ') }}',
                                 hauteur: '{{ $article->hauteur }}',
                                 largeur: '{{ $article->largeur }}',
                                 profondeur: '{{ $article->profondeur }}',

@@ -1,4 +1,4 @@
-<div class="w-full h-fit bg-beige border-2 border-l-8 border-vertSucces p-2 flex gap-1 items-center mt-2">
+<div class="w-full h-fit bg-beige border-2 border-l-8 border-vertSucces p-2 flex gap-1 items-center mt-2 animate-fadeOut">
     <svg class="w-11 h-11 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
         width="24" height="24" fill="#3c9035" viewBox="0 0 24 24">
         <path fill-rule="evenodd"

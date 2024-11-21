@@ -249,7 +249,7 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col justify-between w-[490px] ml-2 m-sectionY border" x-data="{ openSignalArticleModal: false }">
+                <div class="flex flex-col justify-between w-[490px] ml-2 m-sectionY " x-data="{ openSignalArticleModal: false }">
 
                     {{-- Description --}}
                     <div class="w-full items-start h-[36%]">
@@ -277,7 +277,7 @@
                     </div>
 
                     {{-- Types --}}
-                    <div class="w-full flex gap-inputXXL border">
+                    <div class="w-full flex gap-inputXXL ">
                         <div>
                             <template x-if="article.is_unique == 1">
                                 <p class="titre3-dark">Unique</p>
@@ -300,13 +300,13 @@
                     </div>
 
                     {{-- Quantite --}}
-                    <div class="flex flex-wrap w-full gap-1 items-baseline border">
+                    <div class="flex flex-wrap w-full gap-1 items-baseline ">
                         <p class="titre3-dark mr-1">Quantité :</p>
                         <p class=" titre3-dark" x-text="article.quantite_disponible"></p>
                     </div>
 
                     {{-- Prix --}}
-                    <div class="flex flex-wrap w-full gap-1 items-baseline border">
+                    <div class="flex flex-wrap w-full gap-1 items-baseline ">
                         <p class="titre3-dark mr-1">Prix :</p>
                         <div class="flex items-baseline">
                             <p class=" titre3-dark" x-text="article.prix"></p>
@@ -316,7 +316,7 @@
 
 
                     {{-- Boutons d'ajout au panier --}}
-                    <div class="w-full flex flex-wrap justify-center border" x-data="{ isAuthenticated: {{ Auth::check() ? 'true' : 'false' }}, userId: {{ Auth::id() ?? 'null' }}, openSignalArticleModal: false }">
+                    <div class="w-full flex flex-wrap justify-center " x-data="{ isAuthenticated: {{ Auth::check() ? 'true' : 'false' }}, userId: {{ Auth::id() ?? 'null' }}, openSignalArticleModal: false }">
 
                         <!-- Affiche le bouton "Ajouter au panier" seulement si l'article est disponible et actif -->
                         <div x-show="article.quantite_disponible > 0 && article.id_etat == 1" class="w-full">
