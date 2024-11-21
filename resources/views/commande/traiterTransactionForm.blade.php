@@ -73,7 +73,7 @@
                         </div>
                     </div>
 
-                    {{-- Input du code de référence --}}
+                    {{-- Input de la compagnie de livraison --}}
                     <div class="grid mb-4">
                         <div class="flex items-center justify-between col-span-4">
                             <h2 class="textGrand-dark">Compagnie de livraison</h2>
@@ -112,24 +112,6 @@
                             class="col-span-4 {{ $errors->has('codeRefLivraison') ? 'color-borderError border-[2px]' : '' }}"
                             type="text" name="codeRefLivraison" required
                             placeholder="Numéro de suivie de la livraison" value="{{ old('codeRefLivraison') }}" />
-                    </div>
-
-                    {{-- Input de la date de livraison prévue --}}
-                    <div class="grid">
-                        <div class="flex items-center justify-between col-span-4">
-                            <h2 class="textGrand-dark">Date de livraison prévue</h2>
-                            <x-tooltip
-                                text="<ul class='list-disc ml-5'>
-                                <li>L'entré est obligatoire</li>
-                              </ul>"
-                                position="bottom" id="1">
-                                <p class="text-[200%]">&#9432;</p>
-                            </x-tooltip>
-                        </div>
-                        <x-text-input id="dateLivraison"
-                            class="col-span-4 {{ $errors->has('dateLivraison') ? 'color-borderError border-[2px]' : '' }}"
-                            type="date" name="dateLivraison" required placeholder="Date la livraison prévue"
-                            value="{{ old('dateLivraison') }}" min="{{ date('Y-m-d') }}" />
                     </div>
 
                     {{-- Input caché de l'id de transaction --}}

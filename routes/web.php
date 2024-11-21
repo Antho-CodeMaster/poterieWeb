@@ -71,6 +71,9 @@ Route::controller(TransactionController::class)->group(function () {
 
     /* Routes liées aux filtres */
     Route::post('/transactionsFiltres', [TransactionController::class, 'commandesFiltre'])->name('commandesFiltre');
+
+    /* Routes liées au WebHook EasyPost */
+    Route::post('/easypost/events', [TransactionController::class, 'updateWithWebHook']);
 });
 
 Route::get('/buttons', function () {
@@ -103,7 +106,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/refresh', [ProfileController::class, 'connectRefresh'])->name('connect-refresh');
 
     //Route pour la génération de facture
-    Route::get('/facture/vente/{id_commande}', [CommandeController::class,'recusArtistes'])->name('recus');
+    Route::get('/facture/vente/{id_commande}', [CommandeController::class, 'recusArtistes'])->name('recus');
 
     Route::post('/like/{idArticle}', [LikeController::class, 'toggleLike'])->name('like.toggle');
 });
@@ -111,8 +114,8 @@ Route::middleware('auth')->group(function () {
 Route::get('/recherche', [ArticleController::class, 'getSearch'])->name('recherche.getSearch');
 
 
-Route::view('/contact','contact')->name('contact');
-Route::view('/about-us','apropos')->name('apropos');
+Route::view('/contact', 'contact')->name('contact');
+Route::view('/about-us', 'apropos')->name('apropos');
 
 /* Route lié à l'utilisateur */
 Route::controller(UserController::class)->group(function () {
