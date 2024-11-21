@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AbonnementController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\ArticleNonRecuController;
 use App\Http\Controllers\ArtisteController;
 use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\CheckoutController;
@@ -110,9 +111,13 @@ Route::middleware(['auth', TwoFactorAuthMiddleware::class])->group(function () {
         Route::get('/renouvellement', 'create')->name('renouvellement-artiste')->middleware(EnsureUserIsArtist::class);
     });
 
-    Route::get('/abonnement', [AbonnementController::class, 'create'])->name('abonnement')->middleware(EnsureUserCanSubscribe::class);
-    Route::get('/abonnement/demarrer', [AbonnementController::class, 'store'])->name('demarrer-abonnement');
-    Route::get('/abonnement/annuler', [AbonnementController::class, 'destroy'])->name('annuler-abonnement');
+    Route::controller(AbonnementController::class)->group(function() {
+        Route::get('/abonnement', 'create')->name('abonnement')->middleware(EnsureUserCanSubscribe::class);
+        Route::get('/abonnement/demarrer', 'store')->name('demarrer-abonnement');
+        Route::get('/abonnement/annuler', 'destroy')->name('annuler-abonnement');
+    });
+
+    Route::post('/article-non-recu', [ArticleNonRecuController::class, 'store'])->name('article-non-recu');
 
     Route::post('/2fa/activate',[TwoFactorController::class, 'create'])->name('2fa.activate');
     Route::post('/2fa/deactivate',[TwoFactorController::class, 'destroy'])->name('2fa.deactivate');
