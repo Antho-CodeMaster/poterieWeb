@@ -57,10 +57,13 @@ Route::middleware(EnsureUserIsModerateur::class)->group(function () {
             ->name('demande-deny');
     });
 
+    Route::controller(ArticleNonRecuController::class)->group(function () {
+        Route::get('/admin/articles-non-recus', 'index')
+                ->name('admin-articles-non-recus');
+        Route::post('/admin/articles-non-recus/delete', 'destroy')
+                ->name('admin-articles-non-recus-delete');
+    });
 
-    Route::get('/admin/articles-non-recus', function () {
-        return view('admin/articles-non-recus');
-    })->name('admin-articles-non-recus');
 
     Route::get('/admin/commandes', [AdminController::class, 'commandes'])
         ->name('admin-commandes');
