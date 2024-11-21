@@ -222,12 +222,6 @@ window.addEventListener('scroll', () => {
                             </form>
                         </x-slot>
                     </x-dropdown>
-
-
-                    @if (Auth::user()->uses_two_factor_auth == 1 &&
-                            (!session()->has('2fa:auth:passed') || session()->get('2fa:auth:passed') == false))
-                        <div x-data="$dispatch('open-2fa-modal')"></div>
-                    @endif
                 @else
                     <!-- Guest User: Show Login Modal Trigger -->
                     <div x-data="{ open: false }">

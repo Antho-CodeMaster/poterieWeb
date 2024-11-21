@@ -30,8 +30,15 @@
     <div class="min-h-screen bg-ffffff flex flex-col">
         @include('layouts.navigation')
 
-        <!-- Modal du 2fa-->
-        @include('components.2fa-modal')
+        @auth
+           <!-- Modal du 2fa-->
+            @include('components.2fa-modal')
+            @if (Auth::user()->uses_two_factor_auth == 1 &&
+                    (!session()->has('2fa:auth:passed') || session()->get('2fa:auth:passed') == false))
+                <div x-data="$dispatch('open-2fa-modal')"></div>
+            @endif
+
+        @endauth
 
         <!-- Page Heading -->
         @isset($header)

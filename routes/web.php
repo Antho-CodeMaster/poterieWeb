@@ -23,7 +23,7 @@ use App\Http\Middleware\TwoFactorAuthMiddleware;
 use Illuminate\Support\Facades\Route;
 use Laravel\Cashier\Checkout;
 
-Route::get('/', [CollectionController::class, 'index'])->name('decouverte');
+Route::get('/', [CollectionController::class, 'index'])->name('decouverte')->withoutMiddleware([TwoFactorAuthMiddleware::class]);;
 
 /* Route relié au kiosque */
 Route::controller(ArtisteController::class)->group(function () {
