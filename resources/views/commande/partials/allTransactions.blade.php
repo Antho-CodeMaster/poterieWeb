@@ -95,7 +95,7 @@
                             <div class="w-full flex flex-col gap-1">
                                 <p class="textMoyen-dark font-bold">Prix unitaire:</p>
                                 <p class="textMoyen-dark text-nowrap text-ellipsis overflow-hidden">
-                                    {{ $transaction->prix_unitaire }}$</p>
+                                    {{ number_format($transaction->prix_unitaire, 2, ',', ' ') }}$</p>
                             </div>
 
                             {{-- Quantité --}}

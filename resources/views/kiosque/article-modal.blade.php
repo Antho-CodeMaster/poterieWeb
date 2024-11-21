@@ -138,7 +138,7 @@
                                 <div class="flex gap-1 items-baseline">
                                     <p class=" articleGrand-dark">Poids:</p>
                                     <div class="flex">
-                                        <p class=" articlePetit-dark" x-text="article.poids"></p>
+                                        <p class=" articlePetit-dark" x-text="(parseFloat(article.poids)).toFixed(2).replace('.' , ',')"></p>
                                         <p class=" articlePetit-dark ml-0.5">g</p>
                                     </div>
                                 </div>
@@ -152,7 +152,7 @@
                                     <!-- Affichage en pouces si l'unité est définie sur pouces et utilisateur connecté -->
                                     <template x-if="isAuthenticated && units == 1">
                                         <div class="flex">
-                                            <p class="articlePetit-dark" x-text="(article.largeur / 2.54).toFixed(2)">
+                                            <p class="articlePetit-dark" x-text="(parseFloat(article.largeur) / 2.54).toFixed(2).replace('.', ',')">
                                             </p>
                                             <p class="articlePetit-dark ml-0.5">po</p>
                                         </div>
@@ -188,7 +188,7 @@
                                     <!-- Affichage en pouces si l'unité est définie sur pouces et utilisateur connecté -->
                                     <template x-if="isAuthenticated && units == 1">
                                         <div class="flex">
-                                            <p class="articlePetit-dark" x-text="(article.hauteur / 2.54).toFixed(2)">
+                                            <p class="articlePetit-dark" x-text="(parseFloat(article.hauteur) / 2.54).toFixed(2).replace('.', ',')">
                                             </p>
                                             <p class="articlePetit-dark ml-0.5">po</p>
                                         </div>
@@ -222,7 +222,7 @@
                                     <template x-if="isAuthenticated && units == 1">
                                         <div class="flex">
                                             <p class="articlePetit-dark"
-                                                x-text="(article.profondeur / 2.54).toFixed(2)"></p>
+                                                x-text="(parseFloat(article.profondeur) / 2.54).toFixed(2).replace('.', ',')"></p>
                                             <p class="articlePetit-dark ml-0.5">po</p>
                                         </div>
                                     </template>
