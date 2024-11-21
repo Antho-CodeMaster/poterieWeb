@@ -81,6 +81,10 @@ Route::get('/buttons', function () {
     return view('buttons');
 })->name('buttons');
 
+Route::get('/erreur', function () {
+    return view('erreur');
+})->name('erreur');
+
 Route::middleware(['auth', TwoFactorAuthMiddleware::class])->group(function () {
     Route::controller(ProfileController::class)->group(function () {
         Route::get('/profil/edit', 'edit')->name('profile.edit');
