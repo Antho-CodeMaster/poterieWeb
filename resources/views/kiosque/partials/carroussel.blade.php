@@ -143,8 +143,7 @@
                         </form>
                     @else
                         <button type="button" value="{{ $article->id_article }}" name="id_article"
-                            class="border-darkGrey border rounded-[24px] w-[100%] h-[40px] articleGrand-dark cursor-default">Votre
-                            propre article</button>
+                            class="border-darkGrey border rounded-[24px] w-[100%] h-[40px] articleGrand-dark">En vedette</button>
                     @endif
                 </div>
             @endif

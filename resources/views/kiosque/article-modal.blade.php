@@ -249,35 +249,36 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col justify-between w-[490px] ml-2 m-sectionY" x-data="{ openSignalArticleModal: false }">
-                    <div class="w-full flex flex-wrap gap-input">
-                        {{-- Description --}}
-                        <div class="flex flex-wrap w-full m-titreY">
-                            <p class="titre3-dark w-full ">Description</p>
-                            <p class="textGrand-dark " x-text="article.description"></p>
-                        </div>
+                <div class="flex flex-col justify-between w-[490px] ml-2 m-sectionY border" x-data="{ openSignalArticleModal: false }">
 
-                        {{-- Mots clés --}}
-                        <div class="flex flex-wrap w-full m-titreY">
-                            <p class="titre3-dark w-full ">Mots clés</p>
-                            <template x-if="motsCles.length > 0">
-                                <div class="flex gap-2 overflow-auto">
-                                    <template x-for="(motCle, index) in motsCles" :key="index">
-                                        <div class="flex">
-                                            <p class=" textGrand-dark bg-beigeFoncé rounded-md p-2"
-                                                x-text="motCle.mot_cle"></p>
-                                        </div>
-                                    </template>
-                                </div>
-                            </template>
-                            <template x-if="motsCles.length == 0">
-                                <p class=" textGrand-dark">Aucun mot-clé disponible.</p>
-                            </template>
-                        </div>
+                    {{-- Description --}}
+                    <div class="w-full items-start h-[36%]">
+                        <p class="titre3-dark w-full ">Description</p>
+                        <p class="textGrand-dark break-words whitespace-normal w-full" x-html="article.description">
+                        </p>
+                    </div>
 
-                        {{-- Types --}}
-                        <div class="flex flex-wrap m-titreY w-full items-baseline">
-                            <p class="titre3-dark mr-1 ">Pièce :</p>
+                    {{-- Mots clés --}}
+                    <div class="flex flex-wrap w-full m-titreY">
+                        <p class="titre3-dark w-full ">Mots clés</p>
+                        <template x-if="motsCles.length > 0">
+                            <div class="flex gap-2 overflow-auto">
+                                <template x-for="(motCle, index) in motsCles" :key="index">
+                                    <div class="flex">
+                                        <p class=" textGrand-dark bg-beigeFoncé rounded-md p-2"
+                                            x-text="motCle.mot_cle"></p>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+                        <template x-if="motsCles.length == 0">
+                            <p class=" textGrand-dark">Aucun mot-clé disponible.</p>
+                        </template>
+                    </div>
+
+                    {{-- Types --}}
+                    <div class="w-full flex gap-inputXXL border">
+                        <div>
                             <template x-if="article.is_unique == 1">
                                 <p class="titre3-dark">Unique</p>
                             </template>
@@ -287,7 +288,7 @@
                             </template>
                         </div>
 
-                        <div class="w-full m-titreY">
+                        <div>
                             <template x-if="article.is_alimentaire == 1">
                                 <p class="titre3-dark">Alimentaire</p>
                             </template>
@@ -296,17 +297,26 @@
                                 <p class="titre3-dark">Non alimentaire</p>
                             </template>
                         </div>
+                    </div>
 
-                        {{-- Quantite --}}
-                        <div class="flex flex-wrap w-full gap-1 m-titreY items-baseline">
-                            <p class="titre3-dark mr-1">Quantité :</p>
-                            <p class=" articleGrand-dark bg-beigeFoncé rounded-md py-[1px] px-[14px]"
-                                x-text="article.quantite_disponible"></p>
+                    {{-- Quantite --}}
+                    <div class="flex flex-wrap w-full gap-1 items-baseline border">
+                        <p class="titre3-dark mr-1">Quantité :</p>
+                        <p class=" titre3-dark" x-text="article.quantite_disponible"></p>
+                    </div>
+
+                    {{-- Prix --}}
+                    <div class="flex flex-wrap w-full gap-1 items-baseline border">
+                        <p class="titre3-dark mr-1">Prix :</p>
+                        <div class="flex items-baseline">
+                            <p class=" titre3-dark" x-text="article.prix"></p>
+                            <p class=" titre3-dark">$</p>
                         </div>
                     </div>
 
+
                     {{-- Boutons d'ajout au panier --}}
-                    <div class="w-full flex flex-wrap justify-center" x-data="{ isAuthenticated: {{ Auth::check() ? 'true' : 'false' }}, userId: {{ Auth::id() ?? 'null' }}, openSignalArticleModal: false }">
+                    <div class="w-full flex flex-wrap justify-center border" x-data="{ isAuthenticated: {{ Auth::check() ? 'true' : 'false' }}, userId: {{ Auth::id() ?? 'null' }}, openSignalArticleModal: false }">
 
                         <!-- Affiche le bouton "Ajouter au panier" seulement si l'article est disponible et actif -->
                         <div x-show="article.quantite_disponible > 0 && article.id_etat == 1" class="w-full">
@@ -328,7 +338,7 @@
                                 <x-button.green.empty type="button" id="addArticleBtn"
                                     x-bind:value="article.id_article" name="id_article"
                                     class="w-full h-[64px] text-[36px] font-bold text-center cursor-default hover:bg-[#009B4D]">
-                                    Votre propre article
+                                    Visible
                                 </x-button.green.empty>
                             </template>
 
@@ -348,21 +358,21 @@
 
                         <template x-if="article.quantite_disponible == 0 && article.id_etat == 2">
                             <x-button.grey.empty type="submit" value="confirmer"
-                                class="w-full h-[64px] cursor-pointer text-[36px] font-bold text-center">
-                                Masqué
+                                class="w-full h-[64px] text-[36px] font-bold text-center">
+                                Masqué et rupture de stock
                             </x-button.grey.empty>
                         </template>
 
                         <template x-if="article.id_etat == 2 && article.quantite_disponible > 0">
                             <x-button.grey.empty type="submit" value="confirmer"
-                                class="w-full h-[64px] cursor-pointer  text-[36px] font-bold text-center">
+                                class="w-full h-[64px] text-[36px] font-bold text-center">
                                 Masqué
                             </x-button.grey.empty>
                         </template>
 
-                        <template x-if="article.quantite_disponible == 0">
+                        <template x-if="article.quantite_disponible == 0 && article.id_etat == 1">
                             <x-button.grey.empty type="submit" value="confirmer"
-                                class="w-full h-[64px] cursor-pointer text-[36px] font-bold text-center">
+                                class="w-full h-[64px] text-[36px] font-bold text-center">
                                 En rupture de stock
                             </x-button.grey.empty>
                         </template>

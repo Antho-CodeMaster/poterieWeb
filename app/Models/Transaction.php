@@ -15,8 +15,13 @@ class Transaction extends Model
         'id_commande',
         'id_article',
         'quantite',
+        'prix_unitaire',
+        'trackingId_easypost',         // Pour le tracker EasyPost
+        'code_ref_livraison',           // Le code de référence de la livraison
+        'id_compagnie',                 // L'ID de la compagnie de livraison
+        'date_reception_prevue',        // La date de réception prévue
+        'date_reception_effective',
         'id_etat',
-        'prix_unitaire'
     ];
 
 

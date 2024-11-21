@@ -703,7 +703,7 @@ class ArticleController extends Controller
             })
             ->get();
 
-
+        /* 4. Render la vue avec les articles filtrés */
         $view = view('articleSettings.partials.allArticles', compact('articles'))->render();
 
 

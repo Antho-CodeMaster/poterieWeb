@@ -18,7 +18,7 @@
                             {{ $article->nom }}</p>
                         <p class="w-full articlePetit-dark mt-[2px]">Prix: {{ $article->prix }}$
                         </p>
-                        <p class="w-full textPetit-dark mt-1 text-ellipsis overflow-y-hidden ">
+                        <p class="w-full textPetit-dark mt-1 line-clamp-3">
                             {{ $article->description }}</p>
                         {{-- <p class="text-[14px] mt-[4px]">{{ $article->mot_cle->motCles }}</p> --}}
                     </div>
