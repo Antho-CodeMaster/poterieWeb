@@ -93,7 +93,8 @@ window.addEventListener('scroll', () => {
             <a class="ml-[15px] relative" href="{{ route('panier') }}">
                 @if ($basketCount > 0)
                     <p
-                        class="mx-auto bg-red-500 text-white text-sm text-center rounded w-fit absolute -right-2 -top-1 {{ $basketCount > 9 ? 'px-1' : 'px-1.5' }}">{{ $basketCount }}</p>
+                        class="mx-auto bg-red-500 text-white text-sm text-center rounded w-fit absolute -right-2 -top-1 {{ $basketCount > 9 ? 'px-1' : 'px-1.5' }}">
+                        {{ $basketCount }}</p>
                 @endif
                 <svg width="34" height="34" viewBox="0 0 48 48" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
@@ -111,6 +112,11 @@ window.addEventListener('scroll', () => {
                             <button
                                 class="inline-flex items-center border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                                 <div class="ms-1">
+                                    @if ($notificationCount > 0)
+                                        <p
+                                            class="mx-auto bg-red-500 text-white text-sm text-center rounded w-fit absolute -right-2 -top-0.5 {{ $notificationCount > 9 ? 'px-1' : 'px-1.5' }}">
+                                            {{ $notificationCount }}</p>
+                                    @endif
                                     <svg width="34" height="34" viewBox="0 0 48 48" fill="none"
                                         class="flex items-center" xmlns="http://www.w3.org/2000/svg">
                                         <path
@@ -152,8 +158,21 @@ window.addEventListener('scroll', () => {
 
                                             <!-- Trash Icon -->
                                             <div x-show="slid"
-                                                class="absolute right-4 top-1/2 transform -translate-y-1/2 transition-opacity duration-200"
+                                                class="absolute right-4 top-1/2 transform -translate-y-1/2 transition-opacity duration-200 flex flex-col"
                                                 x-transition.opacity>
+                                                @if ($notification->lien != null)
+                                                    <button
+                                                        @click="slid = false; window.location.href='{{ $notification->lien }}'"
+                                                        class="focus:outline-none mb-6 text-[#59afff] hover:text-[#3779A9]">
+                                                        <svg class="w-6 h-6" aria-hidden="true"
+                                                            xmlns="http://www.w3.org/2000/svg" width="24"
+                                                            height="24" fill="none" viewBox="0 0 24 24">
+                                                            <path stroke="currentColor" stroke-linecap="round"
+                                                                stroke-linejoin="round" stroke-width="2"
+                                                                d="M18 14v4.833A1.166 1.166 0 0 1 16.833 20H5.167A1.167 1.167 0 0 1 4 18.833V7.167A1.166 1.166 0 0 1 5.167 6h4.618m4.447-2H20v5.768m-7.889 2.121 7.778-7.778" />
+                                                        </svg>
+                                                    </button>
+                                                @endif
                                                 <button
                                                     @click="slid = false; const notificationElement = $el.closest('.notification-item'); hideNotification({{ $notification->id_notification }}, notificationElement)"
                                                     class="text-red-500 hover:text-red-700 focus:outline-none">
@@ -165,6 +184,7 @@ window.addEventListener('scroll', () => {
                                                             d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
                                                     </svg>
                                                 </button>
+
                                             </div>
                                         </div>
                                     @endforeach
