@@ -2,7 +2,7 @@
 
     <div class="dynamicText flex-1" data-background-color="{{ $artiste->couleur_banniere }}">
         {{-- Nom d'artiste --}}
-        <div class="text-left titre1-dark m-titreY">
+        <div class="text-left lg:titre1-dark m-titreY md:titre2-dark titre3-dark">
             @if ($artiste->nom_artiste == null)
                 {{ $artiste->user->name }}
             @else

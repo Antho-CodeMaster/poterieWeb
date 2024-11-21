@@ -40,5 +40,5 @@
     </div>
 
     {{-- Les modals --}}
-    @include('kiosque.article-modal')
+    @include('kiosque.modal.article-modal')
 </section>
