@@ -128,7 +128,8 @@
                             @else
                                 <p class="text-center w-1/6">{{ $user->commandes->count() }}</p>
                             @endif
-                            <a href="{{route('admin-avertissements', ['idUser' => $user->id])}}" class="text-center w-1/6">{{ $user->avertissements()->count() }}</a>
+                            <a href="{{ route('admin-avertissements', ['idUser' => $user->id]) }}"
+                                class="text-center w-1/6">{{ $user->avertissements()->count() }}</a>
                         </div>
 
                         {{-- Div pour les boutons de promotion/rétrogradation --}}
@@ -218,6 +219,22 @@
             @include('admin.components.promote-modal')
             @include('admin.components.demote-modal')
             @include('admin.components.artist-modal')
+            @if (Session::has('succes'))
+                <div class="w-[500px] absolute right-2 bottom-10">
+                    @include('messages.messageSucces', [
+                        'message' => Session::get('succes'),
+                        'titre' => 'Succès',
+                    ])
+                </div>
+            @endif
+            @if (Session::has('erreur'))
+                <div class="w-[500px] absolute right-2 bottom-10">
+                    @include('messages.messageFail', [
+                        'message' => Session::get('erreur'),
+                        'titre' => 'Erreur',
+                    ])
+                </div>
+            @endif
         </div>
     </div>
 </x-app-layout>
