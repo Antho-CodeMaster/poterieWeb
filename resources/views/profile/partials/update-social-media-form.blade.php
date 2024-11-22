@@ -41,7 +41,7 @@
         </div>
 
         <!-- Container for Dynamic Fields -->
-        <div id="extend-field" class="space-y-4 w-full">
+        <div id="extend-field" class="flex flex-col lg:w-[100vh] w-fit">
             <template x-for="(field, index) in fields" :key="index">
                 <div class="flex space-x-4 items-center w-full">
                     <!-- Username Input Field -->

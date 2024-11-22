@@ -7,7 +7,7 @@
         <div class="relative flex items-center">
             <!-- Left Arrow -->
             <button id="prevBtn-{{ $collection->id_collection }}" class="prev-btn">
-                <svg class="h-12 w-12 text-darkGrey absolute cursor-pointer z-0" aria-hidden="true"
+                <svg class="h-12 w-12 text-darkGrey absolute cursor-pointer z-10" aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="none" viewBox="4 4 16 16">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="m15 19-7-7 7-7" />
@@ -19,9 +19,9 @@
                 class="carousel bg-beige p-2 flex overflow-x-scroll scroll-smooth whitespace-nowrap scrollbar-hide w-full">
                 @foreach ($collection->articles as $article)
                     <div x-data='{openArticleModal: false}'
-                        class="inline lg:w-[16vw] w-[56vw] lg:mx-6 mx-2 shrink-0 overflow-hidden whitespace-nowrap rounded-[16px] bg-white shadow-md hover:shadow-lg">
+                        class="inline lg:w-[17%] sm:w-[90%] lg:mx-6 mx-2 shrink-0 overflow-hidden whitespace-nowrap rounded-[16px] bg-white shadow-md hover:shadow-lg">
                         <img src="/../img/{{ $article->photosArticle->path }}" alt="{{ $article->nom }}"
-                            class="{{($article->is_sensible == 0 && !Auth::check()) || (Auth::check() && Auth()->user()->contenu_sensible == 0 && $article->is_sensible == 0) ? 'blur-[18px]' : ''}} w-full h-64 object-cover rounded-t-md"
+                            class="{{($article->is_sensible == 1 && !Auth::check()) || (Auth::check() && Auth()->user()->contenu_sensible == 0 && $article->is_sensible == 1) ? 'blur-[18px]' : ''}} w-full h-64 object-cover rounded-t-md"
                             @click=" $dispatch('open-article-modal');
                             $dispatch('set-article', {
                                 id_article: '{{ $article->id_article }}',
@@ -48,7 +48,7 @@
                                 <h3 class="text-lg font-bold text-nowrap overflow-hidden text-ellipsis">{{ $article->nom }}</h3>
                                 <p class="text-gray-600">{{ $article->prix }}$</p>
 
-                                <div class="mt-8">
+                                <div class="mt-8 overflow-hidden whitespace-nowrap">
                                     @if ($article->quantite_disponible == 0)
                                         <p
                                             class="border-darkGrey border rounded-[24px] w-full h-[32px] text-beige font-bold bg-darkGrey text-center">
@@ -58,7 +58,7 @@
                                         <form action="{{ route('addArticleToPanier') }}" method="POST" class="w-full">
                                             @csrf
                                             <button type="submit" value="{{ $article->id_article }}" name="id_article"
-                                                class="border-darkGrey border rounded-[24px] w-full h-[32px] text-darkGrey font-bold">
+                                                class="overflow-hidden whitespace-nowrap border-darkGrey border rounded-[24px] w-full h-[32px] text-darkGrey font-bold">
                                                 Ajouter au panier
                                             </button>
                                         </form>
@@ -109,7 +109,7 @@
 
             <!-- Right Arrow -->
             <button id="nextBtn-{{ $collection->id_collection }}" class="next-btn">
-                <svg class="h-12 w-12 text-darkGrey absolute right-0 cursor-pointer z-0" aria-hidden="true"
+                <svg class="h-12 w-12 text-darkGrey absolute right-0 cursor-pointer z-10" aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="none" viewBox="4 4 16 16">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="m9 5l7 7-7 7" />

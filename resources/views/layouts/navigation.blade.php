@@ -250,8 +250,6 @@ window.addEventListener('scroll', () => {
                         @include('components.login-modal')
                         @include('components.register-modal')
                     </div>
-
-
                 @endauth
             </div>
         </div>
