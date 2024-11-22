@@ -3,7 +3,7 @@
     <div class="flex content-height">
         @include('admin.menu-gauche')
         <!-- Partie de droite (contenu de la page) -->
-        <div class="pr-10 h-[100%] flex flex-col w-4/5" x-data="{ openAvertir: false, openDelete: false }">
+        <div class="pr-10 h-[100%] flex flex-col w-full" x-data="{ openAvertir: false, openDelete: false }">
             <!-- Titre, nombre de résultats, filtres-->
             <div id="header-info">
                 <h1 class="titre2-dark m-titreY p-sectionY border-b-2 border-darkGrey">Articles non reçus</h1>
