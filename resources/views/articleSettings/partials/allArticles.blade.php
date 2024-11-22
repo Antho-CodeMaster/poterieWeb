@@ -44,7 +44,7 @@
                                 @if (Auth::user()->units == 0)
                                     {{ number_format($article->largeur,2, ",", " ") }} cm
                                 @elseif (Auth::user()->units == 1)
-                                    {{ number_format($article->largeur / 2.54, 2) }} po
+                                    {{ number_format($article->largeur / 2.54, 2, ",", " ") }} po
                                 @endif
                             </p>
                         </div>
@@ -56,7 +56,7 @@
                                 @if (Auth::user()->units == 0)
                                     {{  number_format($article->profondeur, 2, ",", " ") }} cm
                                 @elseif (Auth::user()->units == 1)
-                                    {{ number_format($article->profondeur / 2.54, 2) }} po
+                                    {{ number_format($article->profondeur / 2.54, 2,",", " ") }} po
                                 @endif
                             </p>
                         </div>
