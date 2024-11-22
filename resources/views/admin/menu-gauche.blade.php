@@ -4,7 +4,7 @@
     </h1>
     <div class="">
         <a href="{{ route('admin-utilisateurs') }}"
-            class="textNavigation-dark flex items-center color-sideBar-hover p-sidebarNav">
+            class="textNavigation-dark flex items-center p-sidebarNav {{ request()->is('admin/utilisateurs*') ? 'bg-[#d8c9bc]' : 'color-sideBar-hover' }}">
             <svg class="w-7 h-7 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                 fill="currentColor" viewBox="0 0 24 24">
                 <path fill-rule="evenodd"
@@ -14,7 +14,7 @@
             Utilisateurs</a>
 
         <a href="{{ route('admin-articles') }}"
-            class="textNavigation-dark flex items-center color-sideBar-hover p-sidebarNav">
+            class="textNavigation-dark flex items-center  p-sidebarNav {{ request()->is('admin/articles') ? 'bg-[#d8c9bc]' : 'color-sideBar-hover' }}">
             <svg class="w-7 h-7 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                 height="24" fill="currentColor" viewBox="0 0 24 24">
                 <path fill-rule="evenodd"
@@ -24,7 +24,7 @@
             Articles en ligne </a>
 
         <a href="{{ route('admin-signalements') }}"
-            class="textNavigation-dark flex items-center color-sideBar-hover p-sidebarNav">
+            class="textNavigation-dark flex items-center p-sidebarNav {{ request()->is('admin/signalements*') ? 'bg-[#d8c9bc]' : 'color-sideBar-hover' }}">
             <svg class="w-7 h-7 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                 height="24" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
@@ -33,7 +33,7 @@
             Signalements</a>
 
         <a href="{{ route('admin-demandes') }}"
-            class="textNavigation-dark flex items-center color-sideBar-hover p-sidebarNav">
+            class="textNavigation-dark flex items-center p-sidebarNav {{ request()->is('admin/demandes*') ? 'bg-[#d8c9bc]' : 'color-sideBar-hover' }}">
             <svg class="w-7 h-7 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                 height="24" fill="currentColor" viewBox="0 0 24 24">
                 <path fill-rule="evenodd"
@@ -43,7 +43,7 @@
             Demandes d'inscription</a>
 
         <a href="{{ route('admin-articles-non-recus') }}"
-            class="textNavigation-dark flex items-center color-sideBar-hover p-sidebarNav">
+            class="textNavigation-dark flex items-center p-sidebarNav {{ request()->is('admin/articles-non-recus*') ? 'bg-[#d8c9bc]' : 'color-sideBar-hover' }}">
             <svg class="w-7 h-7 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                 height="24" fill="currentColor" viewBox="0 0 24 24">
                 <path fill-rule="evenodd"
@@ -53,7 +53,7 @@
             Articles non reçus</a>
 
         <a href="{{ route('admin-renouvellement') }}"
-            class="textNavigation-dark flex items-center color-sideBar-hover p-sidebarNav">
+            class="textNavigation-dark flex items-center p-sidebarNav {{ request()->is('admin/renouvellement*') ? 'bg-[#d8c9bc]' : 'color-sideBar-hover' }}">
             <svg class="w-7 h-7 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                 height="24" fill="currentColor" viewBox="0 0 24 24">
                 <path fill-rule="evenodd"
