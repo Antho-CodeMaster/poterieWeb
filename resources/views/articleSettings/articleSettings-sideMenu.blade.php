@@ -9,7 +9,7 @@
     {{-- ArticleSettings sideMenu --}}
     <div class="">
         <a href="{{ route('tousMesArticles') }}" id="tousMesArticles"
-            class="textNavigation-dark flex items-center color-sideBar-hover p-sidebarNav {{ request()->is('tousMesArticles*') ? 'bg-[#ebe3dc]' : '' }}">
+            class="textNavigation-dark flex items-center  p-sidebarNav {{ request()->is('tousMesArticles*') ? 'bg-[#d8c9bc]' : ' color-sideBar-hover' }}">
             <svg class="w-7 h-7 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                 fill="currentColor" viewBox="0 0 24 24">
                 <path fill-rule="evenodd"
@@ -20,7 +20,7 @@
             articles </a>
 
         <a href="{{ route('addArticleForm', ['idArticle' => 1]) }}" id="ajouterArticle"
-            class="textNavigation-dark flex items-center color-sideBar-hover p-sidebarNav {{ request()->is('addArticleForm*') ? 'bg-[#ebe3dc]' : '' }}">
+            class="textNavigation-dark flex items-center  p-sidebarNav {{ request()->is('addArticleForm*') ? 'bg-[#d8c9bc]' : ' color-sideBar-hover' }}">
             <svg class="w-7 h-7 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                 height="24" fill="currentColor" viewBox="0 0 24 24">
                 <path fill-rule="evenodd"
@@ -31,7 +31,7 @@
             article </a>
 
         <a href="{{ route('decouverte') }}" id="articlesEnVedette"
-            class="textNavigation-dark items-center color-sideBar-hover p-sidebarNav hidden">
+            class="textNavigation-dark items-center  p-sidebarNav hidden">
             <svg class="w-7 h-7 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                 height="24" fill="currentColor" viewBox="0 0 24 24">
                 <path
@@ -41,7 +41,7 @@
             vedette </a>
 
         <a href="{{ route('decouverte') }}" id="collections"
-            class="textNavigation-dark items-center color-sideBar-hover p-sidebarNav hidden">
+            class="textNavigation-dark items-center  p-sidebarNav hidden">
             <svg class="w-7 h-7 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                 height="24" fill="currentColor" viewBox="0 0 24 24">
                 <path fill-rule="evenodd"
@@ -53,7 +53,7 @@
             Collections</a>
 
         <a href="{{ route('profile.personnaliser') }}" id="personnaliser"
-            class="textNavigation-dark flex items-center color-sideBar-hover p-sidebarNav {{ request()->is('profile/personnaliser*') ? 'bg-[#ebe3dc]' : '' }}">
+            class="textNavigation-dark flex items-center  p-sidebarNav {{ request()->is('profile/personnaliser*') ? 'bg-[#d8c9bc]' : ' color-sideBar-hover' }}">
             <svg class="w-7 h-7 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                 height="24" fill="currentColor" viewBox="0 0 24 24">
                 <path fill-rule="evenodd"
@@ -66,7 +66,7 @@
             Personnaliser </a>
 
         <a href="{{ route('mesTransactions', ['idUser' => Auth::user()->id]) }}" id="commandes"
-            class="textNavigation-dark flex items-center color-sideBar-hover p-sidebarNav {{ request()->is('mesTransactions*') ? 'bg-[#ebe3dc]' : '' }}">
+            class="textNavigation-dark flex items-center  p-sidebarNav {{ request()->is('mesTransactions*') ? 'bg-[#d8c9bc]' : ' color-sideBar-hover' }}">
             <svg class="w-7 h-7 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                 height="24" fill="currentColor" viewBox="0 0 24 24">
                 <path
@@ -77,7 +77,7 @@
             Mes commandes </a>
 
         <a href="{{ route('kiosque', ['idUser' => Auth::user()->id]) }}" id="monKiosque"
-            class="textNavigation-dark flex items-center color-sideBar-hover p-sidebarNav">
+            class="textNavigation-dark flex items-center  p-sidebarNav">
             <svg class="w-7 h-7 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                 height="24" fill="currentColor" viewBox="0 0 24 24">
                 <path fill-rule="evenodd"

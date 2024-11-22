@@ -1,5 +1,5 @@
 <x-app-layout>
-    @include('kiosque.article-modal')
+    @include('kiosque.modal.article-modal')
 
     <section class="grid lg:grid-cols-4">
         <header class="lg:col-span-4 gap-6 m-4">
