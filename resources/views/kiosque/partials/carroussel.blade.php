@@ -28,10 +28,10 @@
                                         id_etat: '{{ $article->id_etat }}',
                                         nom: '{{ htmlspecialchars($article->nom) }}',
                                         description: '{{ htmlspecialchars($article->description) }}',
-                                        prix: '{{ $article->prix }}',
-                                        hauteur: '{{ $article->hauteur }}',
-                                        largeur: '{{ $article->largeur }}',
-                                        profondeur: '{{ $article->profondeur }}',
+                                        prix: '{{ number_format($article->prix, 2, ",", " ") }}',
+                                        hauteur: '{{ number_format( $article->hauteur, 2, ",", " ") }}',
+                                        largeur: '{{ number_format($article->largeur,2, ",", " ") }}',
+                                        profondeur: '{{ number_format($article->profondeur, 2, ",", " ") }}',
                                         poids: '{{ $article->poids }}',
                                         couleur: '{{ $article->couleur }}',
                                         quantite_disponible: '{{ htmlspecialchars($article->quantite_disponible) }}',
@@ -52,10 +52,10 @@
                                         id_etat: '{{ $article->id_etat }}',
                                         nom: '{{ htmlspecialchars($article->nom) }}',
                                         description: '{{ htmlspecialchars($article->description) }}',
-                                        prix: '{{ $article->prix }}',
-                                        hauteur: '{{ $article->hauteur }}',
-                                        largeur: '{{ $article->largeur }}',
-                                        profondeur: '{{ $article->profondeur }}',
+                                        prix: '{{ number_format($article->prix, 2, ",", " ") }}',
+                                        hauteur: '{{ number_format($article->hauteur , 2, ",", " ") }}',
+                                        largeur: '{{ number_format($article->largeur,2, ",", " ") }}',
+                                        profondeur: '{{ number_format($article->profondeur, 2, ",", " ") }}',
                                         poids: '{{ $article->poids }}',
                                         couleur: '{{ $article->couleur }}',
                                         quantite_disponible: '{{ htmlspecialchars($article->quantite_disponible) }}',
@@ -77,10 +77,10 @@
                                     id_etat: '{{ $article->id_etat }}',
                                     nom: '{{ htmlspecialchars($article->nom) }}',
                                     description: '{{ htmlspecialchars($article->description) }}',
-                                    prix: '{{ $article->prix }}',
-                                    hauteur: '{{ $article->hauteur }}',
-                                    largeur: '{{ $article->largeur }}',
-                                    profondeur: '{{ $article->profondeur }}',
+                                    prix: '{{ number_format($article->prix, 2, ",", " ") }}',
+                                    hauteur: '{{ number_format($article->hauteur , 2, ",", " ") }}',
+                                    largeur: '{{ number_format($article->largeur,2, ",", " ") }}',
+                                    profondeur: '{{ number_format($article->profondeur, 2, ",", " ") }}',
                                     poids: '{{ $article->poids }}',
                                     couleur: '{{ $article->couleur }}',
                                     quantite_disponible: '{{ htmlspecialchars($article->quantite_disponible) }}',
@@ -97,7 +97,7 @@
                     <div class="flex justify-between items-center my-[10px]">
                         <div class="w-[80%]">
                             <p class=" articleGrand-dark ">{{ $article->nom }}</p>
-                            <p id="prix" class="articlePetit-dark">{{ $article->prix }}$
+                            <p id="prix" class="articlePetit-dark">{{ number_format($article->prix, 2, ",", " ") }}$
                             </p>
                         </div>
 
@@ -143,8 +143,7 @@
                         </form>
                     @else
                         <button type="button" value="{{ $article->id_article }}" name="id_article"
-                            class="border-darkGrey border rounded-[24px] w-[100%] h-[40px] articleGrand-dark cursor-default">Votre
-                            propre article</button>
+                            class="border-darkGrey border rounded-[24px] w-[100%] h-[40px] articleGrand-dark">En vedette</button>
                     @endif
                 </div>
             @endif

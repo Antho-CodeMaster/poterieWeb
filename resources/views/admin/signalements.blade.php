@@ -3,7 +3,7 @@
     <div class="flex content-height">
         @include('admin.menu-gauche')
         <!-- Partie de droite (contenu de la page) -->
-        <div class="pr-10 h-[100%] flex flex-col w-4/5" x-data="{ openAvertir: false }">
+        <div class="pr-10 h-[100%] flex flex-col w-4/5" x-data="{ openAvertir: false, openDelete: false }">
             <!-- Titre, nombre de résultats, filtres-->
             <div id="header-info">
                 <h1 class="titre2-dark m-titreY p-sectionY border-b-2 border-darkGrey">Signalements</h1>
@@ -40,7 +40,8 @@
                                     </div>
                                 @endif
                                 <p class="italic">Signalé par <span>{{ $signalement->user->name }}</span> le
-                                    <span>{{ $signalement->date }}</span></p>
+                                    <span>{{ $signalement->date }}</span>
+                                </p>
                             </div>
                             <div class="w-1/2 flex items-center justify-center">
                                 <x-button.blue.leave
@@ -81,21 +82,23 @@
                                 ">Avertir
                                     l'artiste</x-button.yellow.exclamation>
                             </div>
-                            <form class="col-span-3 flex items-center"
-                                action="{{ route('admin-signalements-delete') }}" method="POST">
-                                @csrf
-                                <input class="hidden" name="id" value={{ $signalement->id_signalement }}>
-                                <input class="hidden" name="id_article" value={{ $signalement->article->id_article }}>
-                                <x-button.red.trash class="w-full">Supprimer la publication</x-button.red.trash>
-                            </form>
-                            <div class="h-full col-span-2 flex items-center" x-data="{ openAvertir: {{ $errors->any() ? 'true' : 'false' }} }">
-                                <x-button.yellow.exclamation class="w-full"
+                            <div class="h-full col-span-3 flex items-center" x-data="{ openDelete: {{ $errors->any() ? 'true' : 'false' }} }">
+                                <x-button.red.trash class="w-full"
                                     @click="
-                                $dispatch('open-avertir-modal');
-                                $dispatch('set-id', {{ $signalement->id_user }});
-                                $dispatch('set-name', {{ json_encode($signalement->user->name) }});
-                                ">Avertir
-                                    le client</x-button.yellow.exclamation>
+                            $dispatch('open-delete-modal');
+                            $dispatch('set-id', {{ $signalement->article->id_article }});
+                            $dispatch('set-signalement', {{ $signalement->id_signalement }});
+                            $dispatch('set-name', {{ json_encode($signalement->article->nom) }});">Supprimer la publication</x-button.red.trash>
+                        </div>
+                        <div class="h-full
+                                    col-span-2 flex items-center" x-data="{ openAvertir: {{ $errors->any() ? 'true' : 'false' }} }">
+                                    <x-button.yellow.exclamation class="w-full"
+                                        @click="
+                                        $dispatch('open-avertir-modal');
+                                        $dispatch('set-id', {{ $signalement->id_user }});
+                                        $dispatch('set-name', {{ json_encode($signalement->user->name) }});
+                                        ">Avertir
+                                        le client</x-button.yellow.exclamation>
                             </div>
                             <form class="col-span-3 flex items-center"
                                 action="{{ route('admin-signalements-delete') }}" method="POST">
@@ -109,6 +112,7 @@
             </div>
             @include('admin.components.avertir-modal')
             @include('admin.components.signalement-modal')
+            @include('admin.components.delete-signalement-modal')
 
             @if (Session::has('succes'))
                 <div class="w-[500px] absolute right-2 bottom-10">

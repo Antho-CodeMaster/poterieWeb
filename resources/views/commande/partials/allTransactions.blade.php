@@ -1,5 +1,5 @@
 @if ($commandeTransactions->isEmpty())
-    <p class="textGrand-dark">Aucune transaction correspondant à ces filtres</p>
+    <p class="textGrand-dark">Aucune transaction</p>
 @else
     {{-- Transactions séparées par commandes --}}
     @foreach ($commandeTransactions as $commandeId => $commandeTransactions)
@@ -95,7 +95,7 @@
                             <div class="w-full flex flex-col gap-1">
                                 <p class="textMoyen-dark font-bold">Prix unitaire:</p>
                                 <p class="textMoyen-dark text-nowrap text-ellipsis overflow-hidden">
-                                    {{ $transaction->prix_unitaire }}$</p>
+                                    {{ number_format($transaction->prix_unitaire, 2, ',', ' ') }}$</p>
                             </div>
 
                             {{-- Quantité --}}
@@ -119,7 +119,7 @@
                             </p>
                         </div>
 
-                        <div class="w-[30%] flex flex-col gap-1 justify-between">
+                        <div class="w-[25%] flex flex-col gap-1 justify-between">
 
                             {{-- Date de récéption prévue --}}
                             <div class="w-full flex flex-col gap-1">
@@ -189,6 +189,15 @@
                                 @endif
                             </div>
                         </div>
+
+                        {{-- Affiche un bouton pour la suivi de la livraison seulement si c'est une transaction traitée --}}
+                        @if ($transaction->id_etat == 3)
+                            <div class="grow h-fit flex justify-end rounded-[12px]">
+                                <a type="action" href="{{ $urlArray[$transaction->id_transaction] }}"
+                                    class="textMoyen-dark font-bold rounded-[12px] p-sectionX p-sectionY bg-blue-300 hover:bg-blue-400 hover:text-[#ffffff] transition-all duration-[198] ease-in-out"
+                                    target="_blank">Suivre la livraison </a>
+                            </div>
+                        @endif
 
                         {{-- Bouton pour traiter la commande --}}
                         @if ($transaction->id_etat == 2)

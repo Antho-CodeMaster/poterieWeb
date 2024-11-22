@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\ArticleNonRecuController;
 use App\Http\Controllers\SignalementController;
 use App\Http\Controllers\RenouvellementController;
 use Illuminate\Support\Facades\Route;
@@ -31,14 +32,15 @@ Route::middleware(EnsureUserIsModerateur::class)->group(function () {
             ->name('admin-user-demote');
     });
 
-    Route::get('/admin/articles', [ArticleController::class, 'index'])->name('admin-articles');
+    Route::get('/admin/articles', [ArticleController::class, 'index'])
+            ->name('admin-articles');
 
     Route::controller(SignalementController::class)->group(function () {
         Route::get('/admin/signalements', 'index')
-        ->name('admin-signalements');
+            ->name('admin-signalements');
 
         Route::post('/admin/signalements/delete', 'destroy')
-        ->name('admin-signalements-delete');
+            ->name('admin-signalements-delete');
     });
 
     Route::controller(DemandeController::class)->group(function () {
@@ -55,19 +57,22 @@ Route::middleware(EnsureUserIsModerateur::class)->group(function () {
             ->name('demande-deny');
     });
 
+    Route::controller(ArticleNonRecuController::class)->group(function () {
+        Route::get('/admin/articles-non-recus', 'index')
+                ->name('admin-articles-non-recus');
+        Route::post('/admin/articles-non-recus/delete', 'destroy')
+                ->name('admin-articles-non-recus-delete');
+    });
 
-    Route::get('/admin/articles-non-recus', function () {
-        return view('admin/articles-non-recus');
-    })->name('admin-articles-non-recus');
 
     Route::get('/admin/commandes', [AdminController::class, 'commandes'])
-    ->name('admin-commandes');
+        ->name('admin-commandes');
 
     Route::get('/admin/abonnements', [AdminController::class, 'abonnements'])
-    ->name('admin-abonnements');
+        ->name('admin-abonnements');
 
     Route::get('/admin/renouvellement', [RenouvellementController::class, 'index'])
-    ->name('admin-renouvellement');
+        ->name('admin-renouvellement');
 
     Route::post('/admin/renouvellement', [RenouvellementController::class, 'store'])->name('admin-do-renouvellement');
 });

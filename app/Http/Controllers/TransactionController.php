@@ -9,7 +9,10 @@ use App\Models\Commande;
 use App\Models\Compagnie_livraison;
 use App\Models\Photo_livraison;
 use App\Models\Photo_oeuvre;
+use App\Models\EasyPost;
+use EasyPost\Tracker;
 use Exception;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,16 +20,24 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Stripe\Invoice;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 
 class TransactionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    #===========================================#
+    #        PARAMÈTRES ET CONSTRUCTEUR         #
+    #===========================================#
+    protected $easyPost;
+
+    public function __construct()
     {
-        //
+        $this->easyPost = new EasyPost();
     }
+
+    #===========================================#
+    #          Fonctions qui display            #
+    #===========================================#
 
     /**
      * Montre les commandes de l'artiste a traiter
@@ -50,45 +61,26 @@ class TransactionController extends Controller
 
         /* 6. Placer les commandes en fonction de ceux qui contiennent le plus de transaction non traité et de la date*/
         $commandeTransactions = $commandeTransactions->sortByDesc(function ($transactions) {
-            // Compter les transactions non traitées dans chaque commande (id_etat 2 = en attente)
+            # Compter les transactions non traitées dans chaque commande (id_etat 2 = en attente)
             return $transactions->where('id_etat', 2)->count();
         })->sortByDesc(function ($transactions) {
-            // Puis trier par la date de commande (plus récente en premier)
-            return $transactions->first()->commande->date; // Assurez-vous que `date` est bien une propriété de votre modèle
+            # Puis trier par la date de commande (plus récente en premier)
+            return $transactions->first()->commande->date;
         });
 
+        /* 7. Récupérer les public URL de chaque transaction */
+        $urlArray = [];
+        foreach ($commandeTransactions as $transaction) {
+            $urlArray[$transaction->first()->id_transaction] = $this->getTrackerURL($transaction->first()); # Associe l'URL avec l'ID de la transaction
+        }
 
-        //Scrap that, trash code lmao i spent to much time on this for nooooone
-        /* 5. Récupérer auprès de stripe les informations de facturations */
-        /*\Stripe\Stripe::setApiKey(config('services.stripe.secret'));
-
-        $stripeId = Artiste::where('id_user',$idUser)->pluck('stripe_acc')->first();
-
-        $invoices = Invoice::all([],[
-            'stripe_account' => $stripeId
-        ]);
-
-        $invoiceUrls = [];
-
-        foreach($invoices->data as $invoice){
-            if ($invoice->hosted_invoice_url) {
-                $invoiceUrls[] = $invoice->hosted_invoice_url;
-            } else {
-                // If the hosted link is missing, send the invoice to generate the link
-                $sentInvoice = Invoice::retrieve($invoice->id, [
-                    'stripe_account' => $stripeId,
-                ]);
-                $sentInvoice->sendInvoice(); // This generates the hosted link
-                $invoiceUrls[] = $sentInvoice->hosted_invoice_url;
-            }
-        }*/
-
+        /* 8. Retourner la vue 'Mes commandes' avec un array d'article, de transaction et d'url */
         return view('commande.commandesArtiste', [
             'articles' => $articles,
             'commandeTransactions' => $commandeTransactions,
+            'urlArray' => $urlArray
         ]);
     }
-
 
     /**
      * Fonction pour filtrer les transactions dans la commandes
@@ -97,7 +89,7 @@ class TransactionController extends Controller
     {
         // 1. Récupérer les valeurs des filtres envoyés depuis le client
         $dateFiltre = $request->input('dateFilter');
-        $dateFiltre = $dateFiltre ?? '1'; //Pour filtrer en ordre croissant toujours si aucun filtre
+        $dateFiltre = $dateFiltre ?? '1'; # Pour filtrer en ordre croissant toujours si aucun filtre
 
         $compagnieFilter = $request->input('compagnieFilter');
         $statutFilter = $request->input('statutFilter');
@@ -112,14 +104,14 @@ class TransactionController extends Controller
         /* 3. Créer un array contenant que les id de chaque article */
         $articleIds = $articles->pluck('id_article')->toArray();
 
-        // 4. Commencer la requête pour filtrer les commandes liées aux transactions
+        /* 4. Commencer la requête pour filtrer les commandes liées aux transactions */
         $commandeTransactions = Transaction::whereIn('id_article', $articleIds)
             ->when(!empty($compagnieFilter) && $compagnieFilter !== 'null', function ($query) use ($compagnieFilter) {
-                // Filtrer par compagnie si défini
+                # Filtrer par compagnie si défini
                 $query->where('id_compagnie', $compagnieFilter);
             })
             ->when(!empty($statutFilter) && $statutFilter !== 'null', function ($query) use ($statutFilter) {
-                // Filtrer par statut si défini
+                # Filtrer par statut si défini
                 $query->where('id_etat', $statutFilter);
             })
             ->when(!empty($searchTerm) && $searchTerm !== 'null', function ($query) use ($searchTerm) {
@@ -131,19 +123,29 @@ class TransactionController extends Controller
             })
             ->whereIn('id_article', $articleIds)
             ->get()
-            ->groupBy('id_commande') // Grouper par commande
+            ->groupBy('id_commande') # Grouper par commande
             ->sortByDesc(function ($transactions) {
-                // Trier pour afficher les commandes avec le plus de transactions en cours (`id_etat = 2`) en premier
+                # Trier pour afficher les commandes avec le plus de transactions en cours (`id_etat = 2`) en premier
                 return $transactions->where('id_etat', 2)->count();
             })
             ->sortBy(function ($transactions) use ($dateFiltre) {
-                // Trier par date de commande (croissant ou décroissant selon `dateFiltre`)
+                # Trier par date de commande (croissant ou décroissant selon `dateFiltre`)
                 $date = $transactions->first()->commande->date ?? null;
                 return $dateFiltre === '0' ? $date : -strtotime($date);
             });
 
         try {
-            $view = view('commande.partials.allTransactions', compact('commandeTransactions', 'artiste'))->render();
+            /* 5. Récupérer les public URL de chaque transaction */
+            $urlArray = [];
+            foreach ($commandeTransactions as $transaction) {
+                $idTransaction = $transaction->first()->id_transaction;
+
+                $urlArray[$idTransaction] = Cache::remember("tracker_url_$idTransaction", now()->addHours(6), function () use ($transaction) {
+                    return $this->getTrackerURL($transaction->first());
+                });
+            }
+
+            $view = view('commande.partials.allTransactions', compact('commandeTransactions', 'artiste', 'urlArray'))->render();
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
@@ -151,21 +153,179 @@ class TransactionController extends Controller
             ]);
         }
 
-        // Retourner les articles sous forme de JSON
+        /* 6. Retourner les articles sous forme de JSON */
         return response()->json([
             'status' => 'success',
             'html' => $view,
-            'commandeTransactions' => $commandeTransactions
+            'commandeTransactions' => $commandeTransactions,
         ]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for editing the specified resource.
      */
-    public function create()
+    public function edit($idTransaction)
     {
-        //
+        /* 1. Récupérer la transaction concernée */
+        $transaction = Transaction::findOrFail($idTransaction);
+
+        /* 2. Envoyer la liste de compagnie de livraison */
+        $compagnies = Compagnie_livraison::all();
+
+        /* 3. Retourner la vue avec les variable transaction et compagnie */
+        return view("commande.traiterTransactionForm")->with("transaction", $transaction)->with("compagnies", $compagnies);
     }
+
+    #===========================================#
+    #             Fonctions EasyPost            #
+    #===========================================#
+
+    /**
+     *  Met à jour l'état de la transaction à l'aide de EasyPost
+     */
+    public function getStatut(Transaction $transaction)
+    {
+        /* 1. Récupère le trackingId de la transaction*/
+        $trackingId = $transaction->trackingId_easypost;
+
+        /* 2. Requête à l'api EasyPost pour récupérer le statut */
+        $statut = $this->easyPost->getStatus($trackingId);
+
+        // Déterminer le nouvel état en fonction du statut
+        switch ($statut) {
+            case 'pre_transit':
+            case 'in_transit':
+            case 'out_for_delivery':
+                return 3; # Statut traité
+            case 'delivered':
+            case 'available_for_pickup':
+                return 4; # Statut livré
+            case 'cancelled':
+            case 'failure':
+            case 'error':
+                return 5; # Statut annulé
+            default:
+                Log::warning("Statut inconnu retourné par EasyPost: {$statut}"); # Statut inconnu
+                return null;
+        }
+    }
+
+    /**
+     *  Met à jour l'état de la transaction à l'aide de EasyPost et met à jour la transaction en BD
+     */
+    public function setStatut(Transaction $transaction)
+    {
+        /* 1. Requête à l'api EasyPost pour récupérer le statut */
+        $statut = $this->getStatut($transaction);
+
+        /* 2. Mettre à jour l'état en fonction du statut */
+        $transaction->update([
+            'id_etat' => $statut,
+        ]);
+    }
+
+    /**
+     *  Met à jour la date de livraison prévue à l'aide de EasyPost
+     */
+    public function getEstimatedDeliveryDate(Transaction $transaction)
+    {
+        /* 1. Récupère le trackingId de la transaction*/
+        $trackingId = $transaction->trackingId_easypost;
+
+        /* 2. Requête à l'api EasyPost pour récupérer la date de réception prévue */
+        $estimatedDelivery = $this->easyPost->getEstimatedDelivery($trackingId);
+
+        /* 3. Retourne la date de réception prévue sous le bon format */
+        return $estimatedDelivery;
+    }
+
+    /**
+     *  Met à jour la date de livraison prévue à l'aide de EasyPost et met à jour la transaction en BD
+     */
+    public function setEstimatedDeliveryDate(Transaction $transaction)
+    {
+        /* 1. Requête à l'api EasyPost pour récupérer la date de réception prévue */
+        $estimatedDelivery = $this->getEstimatedDeliveryDate($transaction);
+
+        /* 2. Mettre à jour la date de réception prévue en fonction de la date estimée de livraison*/
+        $transaction->update([
+            'date_reception_prevue' => $estimatedDelivery,
+        ]);
+    }
+
+    /**
+     *  Met à jour la date de livraison effective à l'aide de EasyPost
+     */
+    public function getDeliveryDate(Transaction $transaction)
+    {
+        /* 1. Récupère le trackingId de la transaction */
+        $trackingId = $transaction->trackingId_easypost;
+
+        /* 2. Requête à l'api EasyPost pour récupérer la date de réception livré */
+        $dateDelivery = $this->easyPost->getDeliveryDate($trackingId);
+
+        /* 3. Retourne la date de réception livré sous le bon format */
+        return $dateDelivery;
+    }
+
+    /**
+     *  Met à jour la date de livraison effective à l'aide de EasyPost et met à jour la transaction en BD
+     */
+    public function setDeliveryDate(Transaction $transaction)
+    {
+        /* 1. Requête à l'api EasyPost pour récupérer la date de réception livré */
+        $dateDelivery = $this->getDeliveryDate($transaction);
+
+        /* 2. Mettre à jour la date de réception livré en fonction de la date de livraison*/
+        if ($dateDelivery != 'Not delivered yet' && $dateDelivery != null) { # Si une date est retourné
+            $transaction->update([
+                'date_reception_effective' => $dateDelivery,
+            ]);
+        } else { # Si aucune date n'est retourné
+            $transaction->update([
+                'date_reception_effective' => null,
+            ]);
+        }
+    }
+
+    /**
+     *  Met à jour la date de livraison effective à l'aide de EasyPost
+     */
+    public function getTrackerURL(Transaction $transaction)
+    {
+        /* 1. Récupère le trackingId de la transaction */
+        $trackingId = $transaction->trackingId_easypost;
+
+        /* 2. Requête à l'api EasyPost pour récupérer le public URL */
+        $publicURL = $this->easyPost->getTrackerURL($trackingId);
+
+        /* 3. Retourne le public URL */
+        return $publicURL;
+    }
+
+
+    /**
+     * Met à jour une transaction à l'aide d'un événement reçu via le webhook EasyPost
+     */
+    public function updateWithWebHook(Request $request)
+    {
+        /* 1. Récupère le trackingId de l'évenement */
+        $trackingId = $this->easyPost->getTrackerEvent($request);
+
+        /* 2. Recherche la transaction en BD lié à ce trackingId */
+        $transaction = Transaction::where("trackindId_easypost", $trackingId);
+
+        /* 3. Mettre à jour tous ses information en fonction des données reçues */
+        $this->setStatut($transaction); # Met à jour le statut
+        $this->setEstimatedDeliveryDate($transaction); # Met à jour la date de livraison prévue
+        $this->setDeliveryDate($transaction); # Met à jour la date de livraison effective
+
+        dump("Event recu \n" . "TrackingId : " . $trackingId);
+    }
+
+    #===========================================#
+    #       Fonctions update et stockage        #
+    #===========================================#
 
     /**
      * Store a new transaction
@@ -216,30 +376,7 @@ class TransactionController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($idTransaction)
-    {
-        /* 1. Récupérer la transaction concernée */
-        $transaction = Transaction::findOrFail($idTransaction);
-
-        /* 2. Envoyer la liste de compagnie de livraison */
-        $compagnies = Compagnie_livraison::all();
-
-        return view("commande.traiterTransactionForm")->with("transaction", $transaction)->with("compagnies", $compagnies);
-    }
-
-
-    /**
-     * Update rien pour l'instant
+     * Update la transaction
      */
     public function update(Request $request)
     {
@@ -250,21 +387,26 @@ class TransactionController extends Controller
                 /* 1. Récupérer et valider les données du form */
                 $validatedData = $request->validate([
                     "idTransaction" => "required",
-                    "dateLivraison" => "required",
                     "compagnieLivraison" => "required",
                     "codeRefLivraison" => "required",
                     "photo1" => "required|mimes:jpeg,png,jpg",
                     "photo2" => "mimes:jpeg,png,jpg",
                 ], [
-                    "compagnieLivraison.required" => "Le numéro de tracking de la livraison est obligatoire.",
+                    "compagnieLivraison.required" => "La compagnie de livraison est obligatoire.",
                     "codeRefLivraison.required" => "Le numéro de tracking de la livraison est obligatoire.",
-                    "dateLivraison.required" => "La date de livraison prévue est obligatoire.",
                     'photo1.mimes' => 'La photo 1 doit être au format JPEG, PNG ou JPG.',
                     'photo1.required' => 'Il doit y avoir au moins 1 photo de livraison afin de traiter une transaction correctement',
                     'photo2.mimes' => 'La photo 2 doit être au format JPEG, PNG ou JPG.',
                 ]);
 
-                /* Gestion des photos de livraisons */
+                // 2. Récupérer la transaction
+                $transaction = Transaction::where("id_transaction", $validatedData["idTransaction"])->first();
+                if (!$transaction) {
+                    session()->flash('erreurTransaction', 'Transaction introuvable.');
+                    return back();
+                }
+
+                /* 3. Gestion des photos de livraisons */
                 for ($i = 1; $i <= 2; $i++) {
                     if ($request->hasFile('photo' . $i)) {
                         $file = $request->file('photo' . $i);
@@ -280,7 +422,7 @@ class TransactionController extends Controller
 
                         /* Ajouter la données dans la BD */
                         $newPhotoLivraison = new Photo_livraison();
-                        $newPhotoLivraison->id_transaction = $validatedData["idTransaction"];
+                        $newPhotoLivraison->id_transaction = $transaction->id_transaction;
                         $newPhotoLivraison->path = $filePath; // Stockage du chemin exact en base de données
 
                         if (!$newPhotoLivraison->save()) {
@@ -290,43 +432,41 @@ class TransactionController extends Controller
                     }
                 }
 
-                $transaction = Transaction::where("id_transaction", $validatedData["idTransaction"]);
 
-                /* Gestion du numéro de tracking */
-                /* 1. Récupérer la transaction à modifier */
+                /* 5. Création d'un tracker EasyPost avec le nom de la compagnie et le numéro de suivie*/
+                # Récupérer le nom de la compagnie de livraison
+                $compagnie = Compagnie_livraison::find($validatedData['compagnieLivraison']);
+                if (!$compagnie) {
+                    session()->flash('erreurCompagnieLivraison', 'La compagnie de livraison spécifiée est introuvable.');
+                    return back();
+                }
 
-                /* 2. Modifier le numéro de tracking*/
-                if (!$transaction->update([
+                # Reformate le nom de Postes Canada
+                $compagnieNom = $compagnie->compagnie; // Supposons que le nom est stocké dans la colonne 'nom'
+                if ($compagnieNom == "Postes Canada") {
+                    $compagnieNom = "CanadaPost";
+                }
+
+                # Création du tracker
+                $tracker = $this->easyPost->createTracker(
+                    $validatedData['codeRefLivraison'],
+                    $compagnieNom
+                );
+
+                # Ajout du trackingId dans l'instance de la transaction
+                $transaction->update([
+                    "trackingId_easypost" => $tracker->id,
+                ]);
+
+                /* 6. Mise à jour de la transaction */
+                $transaction->update([
                     'code_ref_livraison' => $validatedData['codeRefLivraison'],
-                ])) {
-                    session()->flash('erreurCodeRefLivraison', 'Un problème lors de l\'ajout du numéro de suivis s\'est produit');
-                    return back();
-                }
-
-                /* Modification de l'Étatde la transaction */
-                if (!$transaction->update([
-                    'id_etat' => 3,
-                ])) {
-                    session()->flash('erreurEtatTransaction', 'Un problème lors de la modification du statut de la transaction s\'est produit');
-                    return back();
-                }
-
-                /* Gestion de la compagnie de livraison */
-                if (!$transaction->update([
                     'id_compagnie' => $validatedData['compagnieLivraison'],
-                ])) {
-                    session()->flash('erreurCompagnieLivraison', 'Un problème lors de l\'ajout du numéro de suivis s\'est produit');
-                    return back();
-                }
+                    'date_reception_prevue' => $this->getEstimatedDeliveryDate($transaction),
+                    'id_etat' => $this->getStatut($transaction),
+                ]);
 
-                /* Gestion de la date de livraison de livraison */
-                if (!$transaction->update([
-                    'date_reception_prevue' => $validatedData['dateLivraison'],
-                ])) {
-                    session()->flash('erreurDateLivraison', 'Un problème lors de l\'ajout de la date de livraison s\'est produit');
-                    return back();
-                }
-
+                /* 7. Retour à la vue "mesTransactions" */
                 session()->flash('succesTransaction', 'La transaction a bien été traitée');
                 return redirect()->route('mesTransactions', ['idUser' => Auth::user()->id]);
             }

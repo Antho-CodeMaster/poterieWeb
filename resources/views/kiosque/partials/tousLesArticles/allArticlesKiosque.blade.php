@@ -20,7 +20,7 @@
                                                 id_etat: '{{ $article->id_etat }}',
                                                 nom: '{{ htmlspecialchars($article->nom) }}',
                                                 description: '{{ htmlspecialchars($article->description) }}',
-                                                prix: '{{ $article->prix }}',
+                                                prix: '{{ number_format($article->prix, 2, ',', ' ') }}',
                                                 hauteur: '{{ $article->hauteur }}',
                                                 largeur: '{{ $article->largeur }}',
                                                 profondeur: '{{ $article->profondeur }}',
@@ -44,7 +44,7 @@
                                                 id_etat: '{{ $article->id_etat }}',
                                                 nom: '{{ htmlspecialchars($article->nom) }}',
                                                 description: '{{ htmlspecialchars($article->description) }}',
-                                                prix: '{{ $article->prix }}',
+                                                prix: '{{ number_format($article->prix, 2, ',', ' ') }}',
                                                 hauteur: '{{ $article->hauteur }}',
                                                 largeur: '{{ $article->largeur }}',
                                                 profondeur: '{{ $article->profondeur }}',
@@ -68,7 +68,7 @@
                                                 id_etat: '{{ $article->id_etat }}',
                                                 nom: '{{ htmlspecialchars($article->nom) }}',
                                                 description: '{{ htmlspecialchars($article->description) }}',
-                                                prix: '{{ $article->prix }}',
+                                                prix: '{{ number_format($article->prix, 2, ',', ' ') }}',
                                                 hauteur: '{{ $article->hauteur }}',
                                                 largeur: '{{ $article->largeur }}',
                                                 profondeur: '{{ $article->profondeur }}',
@@ -94,7 +94,7 @@
                                                 id_etat: '{{ $article->id_etat }}',
                                                 nom: '{{ htmlspecialchars($article->nom) }}',
                                                 description: '{{ htmlspecialchars($article->description) }}',
-                                                prix: '{{ $article->prix }}',
+                                                prix: '{{ number_format($article->prix, 2, ',', ' ') }}',
                                                 hauteur: '{{ $article->hauteur }}',
                                                 largeur: '{{ $article->largeur }}',
                                                 profondeur: '{{ $article->profondeur }}',
@@ -118,7 +118,7 @@
                                                 id_etat: '{{ $article->id_etat }}',
                                                 nom: '{{ htmlspecialchars($article->nom) }}',
                                                 description: '{{ htmlspecialchars($article->description) }}',
-                                                prix: '{{ $article->prix }}',
+                                                prix: '{{ number_format($article->prix, 2, ',', ' ') }}',
                                                 hauteur: '{{ $article->hauteur }}',
                                                 largeur: '{{ $article->largeur }}',
                                                 profondeur: '{{ $article->profondeur }}',
@@ -142,7 +142,7 @@
                                                 id_etat: '{{ $article->id_etat }}',
                                                 nom: '{{ htmlspecialchars($article->nom) }}',
                                                 description: '{{ htmlspecialchars($article->description) }}',
-                                                prix: '{{ $article->prix }}',
+                                                prix: '{{ number_format($article->prix, 2, ',', ' ') }}',
                                                 hauteur: '{{ $article->hauteur }}',
                                                 largeur: '{{ $article->largeur }}',
                                                 profondeur: '{{ $article->profondeur }}',
@@ -169,7 +169,7 @@
                                             id_etat: '{{ $article->id_etat }}',
                                             nom: '{{ htmlspecialchars($article->nom) }}',
                                             description: '{{ htmlspecialchars($article->description) }}',
-                                            prix: '{{ $article->prix }}',
+                                            prix: '{{ number_format($article->prix, 2, ',', ' ') }}',
                                             hauteur: '{{ $article->hauteur }}',
                                             largeur: '{{ $article->largeur }}',
                                             profondeur: '{{ $article->profondeur }}',
@@ -193,7 +193,7 @@
                                             id_etat: '{{ $article->id_etat }}',
                                             nom: '{{ htmlspecialchars($article->nom) }}',
                                             description: '{{ htmlspecialchars($article->description) }}',
-                                            prix: '{{ $article->prix }}',
+                                            prix: '{{ number_format($article->prix, 2, ',', ' ') }}',
                                             hauteur: '{{ $article->hauteur }}',
                                             largeur: '{{ $article->largeur }}',
                                             profondeur: '{{ $article->profondeur }}',
@@ -217,7 +217,7 @@
                                             id_etat: '{{ $article->id_etat }}',
                                             nom: '{{ htmlspecialchars($article->nom) }}',
                                             description: '{{ htmlspecialchars($article->description) }}',
-                                            prix: '{{ $article->prix }}',
+                                            prix: '{{ number_format($article->prix, 2, ',', ' ') }}',
                                             hauteur: '{{ $article->hauteur }}',
                                             largeur: '{{ $article->largeur }}',
                                             profondeur: '{{ $article->profondeur }}',
@@ -277,7 +277,7 @@
                 <div class="flex justify-between items-center my-[4px]">
                     <div class="w-[75%]">
                         <p class=" articlePetit-dark">{{ $article->nom }}</p>
-                        <p class="textPetit-dark">{{ $article->prix }}$
+                        <p class="textPetit-dark">{{ number_format($article->prix, 2, ',', ' ') }}$
                         </p>
                     </div>
 
@@ -303,9 +303,9 @@
 
                             <!-- Heart SVG Icon -->
                             <svg class="w-10 h-10 relative z-20 transition-all duration-200 mb-[2px]"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                viewBox="0 0 24 24">
-                                <path class="main fill-transparent stroke-darkGrey stroke-2 origin-center transition-transform duration-300"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path
+                                    class="main fill-transparent stroke-darkGrey stroke-2 origin-center transition-transform duration-300"
                                     d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
                             </svg>
                         </div>

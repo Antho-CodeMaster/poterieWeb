@@ -82,9 +82,22 @@ export default {
             borderRadius: {
                 DEFAULT: '28px',
             },
+
+            keyframes: {
+                fadeOut: {
+                    '0%, 80%': {
+                        opacity: '1',
+                    },
+                    '100%': {
+                        opacity: '0',
+                        visibility: 'hidden',
+                    },
+                },
+            },
+            animation: {
+                fadeOut: 'fadeOut 10s forwards',
+            },
         },
-
-
     },
 
     safelist: [

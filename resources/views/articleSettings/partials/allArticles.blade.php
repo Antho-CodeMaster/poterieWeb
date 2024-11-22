@@ -2,7 +2,7 @@
     <p class="textGrand-dark m-section">Aucun article correspondant à ces filtres</p>
 @else
     {{-- Affichage de tous les articles de l'artiste --}}
-    <div class="rounded-[12px] m-sectionY flex flex-wrap justify-start gap-input overflow-auto relative w-[100%]"
+    <div class="rounded-[12px] m-sectionY flex flex-wrap justify-start gap-input overflow-auto relative"
         id="articlesContainer" x-data='{openDeleteArticle: false}'>
         @foreach ($articles as $article)
             @if ($article->id_etat != 3)
@@ -16,9 +16,9 @@
                     <div class="w-[25%] h-full">
                         <p class="w-full articleGrand-dark whitespace-nowrap overflow-hidden">
                             {{ $article->nom }}</p>
-                        <p class="w-full articlePetit-dark mt-[2px]">Prix: {{ $article->prix }}$
+                        <p class="w-full articlePetit-dark mt-[2px]">Prix: {{ number_format($article->prix, 2, ",", " ") }}$
                         </p>
-                        <p class="w-full textPetit-dark mt-1 text-ellipsis overflow-y-hidden ">
+                        <p class="w-full textPetit-dark mt-1 line-clamp-3">
                             {{ $article->description }}</p>
                         {{-- <p class="text-[14px] mt-[4px]">{{ $article->mot_cle->motCles }}</p> --}}
                     </div>
@@ -30,9 +30,9 @@
                             <p class="textPetit-dark font-bold">Hauteur :</p>
                             <p class="textPetit-dark">
                                 @if (Auth::user()->units == 0)
-                                    {{ $article->hauteur }} cm
+                                    {{ number_format($article->hauteur , 2, ",", " ") }} cm
                                 @elseif (Auth::user()->units == 1)
-                                    {{ number_format($article->hauteur / 2.54, 2) }} po
+                                    {{ number_format($article->hauteur / 2.54, 2, ",", " ") }} po
                                 @endif
                             </p>
                         </div>
@@ -42,7 +42,7 @@
                             <p class="textPetit-dark font-bold">Largeur :</p>
                             <p class="textPetit-dark">
                                 @if (Auth::user()->units == 0)
-                                    {{ $article->largeur }} cm
+                                    {{ number_format($article->largeur,2, ",", " ") }} cm
                                 @elseif (Auth::user()->units == 1)
                                     {{ number_format($article->largeur / 2.54, 2) }} po
                                 @endif
@@ -54,7 +54,7 @@
                             <p class="textPetit-dark font-bold">Profondeur :</p>
                             <p class="textPetit-dark">
                                 @if (Auth::user()->units == 0)
-                                    {{ $article->profondeur }} cm
+                                    {{  number_format($article->profondeur, 2, ",", " ") }} cm
                                 @elseif (Auth::user()->units == 1)
                                     {{ number_format($article->profondeur / 2.54, 2) }} po
                                 @endif
@@ -65,7 +65,7 @@
                             @if ($article->poids == null)
                                 <p class=" textPetit-dark">N/A</p>
                             @else
-                                <p class=" textPetit-dark">{{ $article->poids }} g</p>
+                                <p class=" textPetit-dark">{{ number_format($article->poids, 2, ",", " ") }} g</p>
                             @endif
 
                         </div>

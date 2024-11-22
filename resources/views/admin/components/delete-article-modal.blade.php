@@ -7,8 +7,8 @@
                 class="absolute top-1 right-2 text-gray-500 hover:text-gray-700 text-5xl p-2">
                 &times;
             </button>
-            <h2 class="text-left text-xl font-bold mb-6">Supprimer <span id="deleteUsername"
-                    x-text="name">l'utilisateur</span>?</h2>
+            <h2 class="text-left text-xl font-bold mb-6">Supprimer <span
+                    x-text="name">l'article</span>?</h2>
 
             <form method="POST" action="{{ route('admin-signalements-delete') }}">
                 @csrf

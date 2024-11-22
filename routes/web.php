@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AbonnementController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\ArticleNonRecuController;
 use App\Http\Controllers\ArtisteController;
 use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\CheckoutController;
@@ -74,11 +75,18 @@ Route::controller(TransactionController::class)->group(function () {
 
     /* Routes liées aux filtres */
     Route::post('/transactionsFiltres', [TransactionController::class, 'commandesFiltre'])->name('commandesFiltre');
+
+    /* Routes liées au WebHook EasyPost */
+    Route::post('/easypost/events', [TransactionController::class, 'updateWithWebHook']);
 });
 
 Route::get('/buttons', function () {
     return view('buttons');
 })->name('buttons');
+
+Route::get('/erreur', function () {
+    return view('erreur');
+})->name('erreur');
 
 Route::middleware(['auth', TwoFactorAuthMiddleware::class])->group(function () {
     Route::controller(ProfileController::class)->group(function () {
@@ -110,15 +118,19 @@ Route::middleware(['auth', TwoFactorAuthMiddleware::class])->group(function () {
         Route::get('/renouvellement', 'create')->name('renouvellement-artiste')->middleware(EnsureUserIsArtist::class);
     });
 
-    Route::get('/abonnement', [AbonnementController::class, 'create'])->name('abonnement')->middleware(EnsureUserCanSubscribe::class);
-    Route::get('/abonnement/demarrer', [AbonnementController::class, 'store'])->name('demarrer-abonnement');
-    Route::get('/abonnement/annuler', [AbonnementController::class, 'destroy'])->name('annuler-abonnement');
+    Route::controller(AbonnementController::class)->group(function() {
+        Route::get('/abonnement', 'create')->name('abonnement')->middleware(EnsureUserCanSubscribe::class);
+        Route::get('/abonnement/demarrer', 'store')->name('demarrer-abonnement');
+        Route::get('/abonnement/annuler', 'destroy')->name('annuler-abonnement');
+    });
+
+    Route::post('/article-non-recu', [ArticleNonRecuController::class, 'store'])->name('article-non-recu');
 
     Route::post('/2fa/activate',[TwoFactorController::class, 'create'])->name('2fa.activate');
     Route::post('/2fa/deactivate',[TwoFactorController::class, 'destroy'])->name('2fa.deactivate');
 
     //Route pour la génération de facture
-    Route::get('/facture/vente/{id_commande}', [CommandeController::class,'recusArtistes'])->name('recus');
+    Route::get('/facture/vente/{id_commande}', [CommandeController::class, 'recusArtistes'])->name('recus');
 
     Route::post('/like/{idArticle}', [LikeController::class, 'toggleLike'])->name('like.toggle');
 });
@@ -129,8 +141,8 @@ Route::post('/2fa/verif', [TwoFactorController::class,'verify'])->name('2fa.veri
 Route::get('/recherche', [ArticleController::class, 'getSearch'])->name('recherche.getSearch');
 
 
-Route::view('/contact','contact')->name('contact');
-Route::view('/about-us','apropos')->name('apropos');
+Route::view('/contact', 'contact')->name('contact');
+Route::view('/about-us', 'apropos')->name('apropos');
 
 /* Route lié à l'utilisateur */
 Route::controller(UserController::class)->group(function () {
