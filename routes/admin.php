@@ -71,6 +71,9 @@ Route::middleware(EnsureUserIsModerateur::class)->group(function () {
     Route::get('/admin/abonnements', [AdminController::class, 'abonnements'])
         ->name('admin-abonnements');
 
+    Route::get('/admin/avertissements/{idUser}', [AdminController::class, 'avertissements'])
+        ->name('admin-avertissements');
+
     Route::get('/admin/renouvellement', [RenouvellementController::class, 'index'])
         ->name('admin-renouvellement');
 

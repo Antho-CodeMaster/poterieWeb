@@ -30,35 +30,41 @@
                         ?>
                         <p>Page: </p>
                         @for ($i = $initial; $i <= $final && $i < $total_pages; $i++)
-                            <p class="pageLink cursor-pointer px-4 py-2 rounded
+                            <p
+                                class="pageLink cursor-pointer px-4 py-2 rounded
                         {{ $page + 1 == $i ? 'bg-darkGrey text-white' : '' }}">
                                 {{ $i }}</p>
                         @endfor
                         @if ($page + 3 < $total_pages)
                             <p>...</p>
                         @endif
-                        <p class="pageLink cursor-pointer px-4 py-2 rounded
+                        <p
+                            class="pageLink cursor-pointer px-4 py-2 rounded
                     {{ $page + 1 == $total_pages ? 'bg-darkGrey text-white' : '' }}">
                             {{ $total_pages }}</p>
                     </div>
                 </div>
                 <h2 class="text-2xl text-darkGrey">{{ $page * 50 + 1 }} à
-                    {{ ($page * 50 + 50) > $count ? $count : ($page * 50 + 50)}} de {{ $count }} résultats</h2>
+                    {{ $page * 50 + 50 > $count ? $count : $page * 50 + 50 }} de {{ $count }} résultats</h2>
 
-                <form method="get" action="{{route('admin-utilisateurs')}}" class="flex justify-end" id="filterForm">
+                <form method="get" action="{{ route('admin-utilisateurs') }}" class="flex justify-end"
+                    id="filterForm">
                     <input id="pageID" type="hidden" name="page" value="1">
                     <!-- Sélection du type d'utilisateur -->
                     <select id="type" name="type" class="mr-6 border rounded border-black">
-                        <option {{$type == "tous" || $type == null || $type == '' ? 'selected' : '' }} value="tous">Tous</option>
-                        <option {{$type == "Client" ? 'selected' : '' }} value="Client">Clients</option>
-                        <option {{$type == "Artiste" ? 'selected' : '' }} value="Artiste">Artistes</option>
-                        <option {{$type == "Administration" ? 'selected' : '' }} value="Administration">Administration</option>
+                        <option {{ $type == 'tous' || $type == null || $type == '' ? 'selected' : '' }} value="tous">
+                            Tous</option>
+                        <option {{ $type == 'Client' ? 'selected' : '' }} value="Client">Clients</option>
+                        <option {{ $type == 'Artiste' ? 'selected' : '' }} value="Artiste">Artistes</option>
+                        <option {{ $type == 'Administration' ? 'selected' : '' }} value="Administration">Administration
+                        </option>
                     </select>
 
                     <!-- Barre de recherche -->
                     <div id="search-user" class="w-[500px] h-[50px] py-auto flex border rounded border-black">
                         <input class="w-full border-0 focus:border-0 focus:shadow-none rounded h-full" type="text"
-                            placeholder="Rechercher par nom / par e-mail..." name="query" value="{{$query}}">
+                            placeholder="Rechercher par nom / par e-mail..." name="query"
+                            value="{{ $query }}">
                         <button>
                             <svg class="w-6 h-6 mr-3 text-gray-800 dark:text-white" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
@@ -116,60 +122,64 @@
                                 <p class="mx-auto">{{ $user->email }}</p>
                             </div>
                             <p class="text-center w-3/12">{{ $user->created_at }}</p>
-                            <a href="{{ route('admin-commandes') }}"
-                                class="text-center w-1/6">{{ $user->commandes->count() }}</a>
-                            <p class="text-center w-1/6">{{ $user->avertissements()->count() }}</p>
+                            @if ($user->commandes->count() > 0)
+                                <a href="https://dashboard.stripe.com/test/customers/{{ $user->stripe_id }}"
+                                    class="text-center w-1/6 hover:underline">{{ $user->commandes->count() }}</a>
+                            @else
+                                <p class="text-center w-1/6">{{ $user->commandes->count() }}</p>
+                            @endif
+                            <a href="{{route('admin-avertissements', ['idUser' => $user->id])}}" class="text-center w-1/6">{{ $user->avertissements()->count() }}</a>
                         </div>
 
-                            {{-- Div pour les boutons de promotion/rétrogradation --}}
-                            <div class="w-1/12 flex flex-col h-full justify-evenly">
-                                {{-- Si utilisateur qui consulte est admin --}}
-                                @if (Auth::User()->is_admin())
-                                    {{-- Si utilisateur affiché est client, il sera possible de le promouvoir. --}}
-                                    @if ($user->moderateur == null && $user->artiste == null)
-                                        <div class="h-fit" x-data="{ openPromote: {{ $errors->any() ? 'true' : 'false' }} }">
-                                            <x-button.green.award class="w-1/2 mx-auto"
-                                                @click="
+                        {{-- Div pour les boutons de promotion/rétrogradation --}}
+                        <div class="w-1/12 flex flex-col h-full justify-evenly">
+                            {{-- Si utilisateur qui consulte est admin --}}
+                            @if (Auth::User()->is_admin())
+                                {{-- Si utilisateur affiché est client, il sera possible de le promouvoir. --}}
+                                @if ($user->moderateur == null && $user->artiste == null)
+                                    <div class="h-fit" x-data="{ openPromote: {{ $errors->any() ? 'true' : 'false' }} }">
+                                        <x-button.green.award class="w-1/2 mx-auto"
+                                            @click="
                                             $dispatch('open-promote-modal');
                                             $dispatch('set-id', {{ $user->id }});
                                             $dispatch('set-name', '{{ $user->name }}');
                                             $dispatch('set-role', 0);
                                             ">
-                                            </x-button.green.award>
-                                        </div>
-                                        <div class="h-10"></div>
-                                    @endif
-                                    {{-- Si l'utilisateur affiché fait partie de l'administration --}}
-                                    @if ($user->moderateur != null)
-                                        {{-- Si utilisateur affiché n'est pas admin, il sera possible de le promouvoir. --}}
-                                        @if (!$user->moderateur->is_admin)
-                                            <div class="h-fit" x-data="{ openPromote: {{ $errors->any() ? 'true' : 'false' }} }">
-                                                <x-button.green.award class="w-1/2 mx-auto"
-                                                    @click="
+                                        </x-button.green.award>
+                                    </div>
+                                    <div class="h-10"></div>
+                                @endif
+                                {{-- Si l'utilisateur affiché fait partie de l'administration --}}
+                                @if ($user->moderateur != null)
+                                    {{-- Si utilisateur affiché n'est pas admin, il sera possible de le promouvoir. --}}
+                                    @if (!$user->moderateur->is_admin)
+                                        <div class="h-fit" x-data="{ openPromote: {{ $errors->any() ? 'true' : 'false' }} }">
+                                            <x-button.green.award class="w-1/2 mx-auto"
+                                                @click="
                                                 $dispatch('open-promote-modal');
                                                 $dispatch('set-id', {{ $user->id }});
                                                 $dispatch('set-name', '{{ $user->name }}');
                                                 $dispatch('set-role', 1);
                                                 ">
-                                                </x-button.green.award>
-                                            </div>
-                                        @else
-                                            <div class="h-10"></div>
-                                        @endif
-                                        {{-- Dans tous les cas, il est possible de rétrograder un admin. --}}
-                                        <div class="h-fit" x-data="{ openDemote: {{ $errors->any() ? 'true' : 'false' }} }">
-                                            <x-button.red.down class="w-1/2 mx-auto"
-                                                @click="
+                                            </x-button.green.award>
+                                        </div>
+                                    @else
+                                        <div class="h-10"></div>
+                                    @endif
+                                    {{-- Dans tous les cas, il est possible de rétrograder un admin. --}}
+                                    <div class="h-fit" x-data="{ openDemote: {{ $errors->any() ? 'true' : 'false' }} }">
+                                        <x-button.red.down class="w-1/2 mx-auto"
+                                            @click="
                                             $dispatch('open-demote-modal');
                                             $dispatch('set-id', {{ $user->id }});
                                             $dispatch('set-name', '{{ $user->name }}');
                                             $dispatch('set-role', {{ $user->moderateur->is_admin }});
                                             ">
-                                            </x-button.red.down>
-                                        </div>
-                                    @endif
+                                        </x-button.red.down>
+                                    </div>
                                 @endif
-                            </div>
+                            @endif
+                        </div>
                         {{-- Si l'utilisateur affiché == utilisateur connecté, on ne peut pas  avertir/supprimer --}}
                         @if (Auth::id() != $user->id)
                             {{-- Div pour les boutons de avertir/supprimer --}}
@@ -195,8 +205,10 @@
                                     </div>
                                 @endif
                             </div>
-                            @else
-                            <div class="w-1/6 h-full flex items-center justify-center"><p class="text-center">Vous</p></div>
+                        @else
+                            <div class="w-1/6 h-full flex items-center justify-center">
+                                <p class="text-center">Vous</p>
+                            </div>
                         @endif
                     </div>
                 @endforeach

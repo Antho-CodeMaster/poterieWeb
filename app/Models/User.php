@@ -80,7 +80,7 @@ class User extends Authenticatable
 
     public function avertissements()
     {
-        return Notification::where('id_user', $this->id)->where('id_type', 2)->get();
+        return Notification::where('id_user', $this->id)->where('id_type', 1)->get();
     }
 
     public function is_admin(): bool

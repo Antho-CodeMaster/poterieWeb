@@ -40,6 +40,13 @@ class AdminController extends Controller
         return redirect(url('https://dashboard.stripe.com/test/subscriptions'));
     }
 
+    public function avertissements(int $idUser)
+    {
+        return view('admin/avertissements', [
+            'user' => User::find($idUser)
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
