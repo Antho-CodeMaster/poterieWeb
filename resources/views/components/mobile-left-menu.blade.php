@@ -22,9 +22,9 @@
 </div>
 
 <!-- Left Menu (Shows different on small vs big screens) -->
-<div id="menu-gauche" class="lg:col-span-1 fixed lg:relative lg:top-0 w-full h-full z-40 lg:h-auto lg:shadow-none lg:w-auto hidden lg:flex lg:flex-col overflow-y-auto">
+<div id="menu-gauche" class="lg:col-span-1 fixed lg:relative lg:top-0 w-full z-40 lg:h-full h-auto lg:shadow-none lg:w-auto hidden lg:flex lg:flex-col">
     <!-- Route for each left menus -->
     @if(Route::is('profile*'))
-        @include('profile.partials.menu-gauche')
+        @include('profile.partials.menu-gauche2')
     @endif
 </div>
