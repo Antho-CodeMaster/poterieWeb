@@ -28,10 +28,19 @@
         <h3 class="text-lg font-bold text-nowrap overflow-hidden text-ellipsis">{{ $article->nom }}
         </h3>
         <p class="text-gray-600">{{ $article->prix }}$</p>
-        <div class="flex items-center justify-between mr-2">
-            <p class="w-[75%]">{{ $article->artiste->nom_artiste ?? $article->artiste->user->name }}</p>
-            <img src="{{ asset($article->getArtiste->path_photo_profil ?? 'img/artistePFP/default_artiste.png') }}"
-                alt="{{ $article->getArtiste->nom_artiste }}" class="rounded-full w-[48px] h-[48px]">
+        <div class="flex items-center gap-2">
+            <img src="{{ asset($article->artiste->path_photo_profil ?? 'img/artistePFP/default_artiste.png') }}"
+                alt="{{ $article->artiste->nom_artiste }}" class="rounded-full w-[48px] h-[48px]">
+            <form class="hover:underline" method="get" action="{{ route('admin-utilisateurs') }}">
+                <input type="hidden" name="query"
+                    value="{{ $article->artiste->nom_artiste ?? $article->artiste->user->name }}">
+
+                <x-button.none.empty>{{ $article->artiste->nom_artiste ?? $article->artiste->user->name }}</x-button.none.empty>
+            </form>
+            <a class="hover:underline flex w-fit items-center"
+                href="{{ route('kiosque', ['idUser' => $article->artiste->id_user]) }}" target="_blank">
+                <x-button.border.kiosque></x-button.border.kiosque>
+            </a>
         </div>
     </div>
 </div>
