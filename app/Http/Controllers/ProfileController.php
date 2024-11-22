@@ -100,7 +100,7 @@ class ProfileController extends Controller
                 if ($i !== 0)
                     $paymentMethodToDetach->detach();
             }
-            Session::flash('succes', 'Vos informations de facturation ont bel et bien été enregistrées!');
+            Session::flash('succes', 'Vos informations de facturation ont bel et bien été enregistrées. Veuillez rafraîchir la page pour voir les changements!');
         }
 
         if ($customer != null)

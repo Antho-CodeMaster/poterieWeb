@@ -10,7 +10,7 @@
                 <div class="flex itemPanier w-full h-[200px]"
                     data-prix="{{ $transaction->article->prix }}" data-ida="{{ $transaction->article->id_article }}"
                     data-idt="{{ $transaction->id_transaction }}">
-                    <div class="w-[200px] self-center ml-2">
+                    <div class="w-[200px] self-center mx-2">
                         <img src="{{ 'img/' . $transaction->article->photo_article[0]->path }}" alt="Une image de pot"
                             class="rounded-xl border shadow-xl shadow-black m-auto aspect-square object-cover">
                     </div>
