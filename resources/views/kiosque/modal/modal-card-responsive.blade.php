@@ -1,15 +1,14 @@
 <div class="bg-white p-sectionX p-sectionY rounded-[12px] shadow-lg w-full mx-auto h-[80%] grow"
-@click.away="openArticleModal = false">
+    @click.away="openArticleModal = false">
 
     <section class="relative flex w-full h-[50px] items-center m-sectionY">
         <!-- Titre centré -->
-        <p class=" select-none titre3-dark w-full text-center text-ellipsis text-wrap px-7"
-            x-html="article.nom"></p>
+        <p class=" select-none titre3-dark w-full text-center text-ellipsis text-wrap px-7" x-html="article.nom"></p>
 
         <!-- Bouton de fermeture -->
         <button @click="closeModal(); index = 0" class="absolute right-0 hover:scale-110 duration-200">
-            <svg class="w-9 h-9" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                height="24" fill="none" viewBox="0 0 24 24">
+            <svg class="w-9 h-9" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M6 18 17.94 6M18 18 6.06 6" />
             </svg>
@@ -23,8 +22,7 @@
 
                 {{-- Flèche gauche --}}
                 <template x-if="photos.length == 1">
-                    <svg id="prevBtn"
-                        @click="currentIndex = (currentIndex - 1 + photos.length) % photos.length"
+                    <svg id="prevBtn" @click="currentIndex = (currentIndex - 1 + photos.length) % photos.length"
                         class="text-darkGrey cursor-pointer transition-transform duration-300 hover:scale-110 h-full"
                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="64" height="64"
                         fill="none" viewBox="4 4 16 16">
@@ -33,68 +31,38 @@
                     </svg>
                 </template>
                 <template x-if="photos.length > 1">
-                    <svg id="prevBtn"
-                        @click="currentIndex = (currentIndex - 1 + photos.length) % photos.length"
+                    <svg id="prevBtn" @click="currentIndex = (currentIndex - 1 + photos.length) % photos.length"
                         class="text-darkGrey cursor-pointer transition-transform duration-300 hover:scale-110 h-full"
                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="64" height="64"
                         fill="none" viewBox="4 4 16 16">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="2" d="m15 19-7-7 7-7" />
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m15 19-7-7 7-7" />
                     </svg>
                 </template>
 
                 {{-- Conteneur d'images --}}
-                <div class="flex relative w-full h-full justify-center overflow-hidden rounded"
-                    x-data="{
-                        isAuthenticated: {{ Auth::check() ? 'true' : 'false' }},
-                        userSensible: {{ Auth::check() ? (Auth::user()->contenu_sensible == 0 ? 'true' : 'false') : 'null' }}
-                    }">
-
-                    <!-- Connecté et user sensible -->
-                    <template x-if="isAuthenticated === true && userSensible === true">
-                        <template x-for="(photo, index) in photos" :key="photo.id_photo">
-                            <img :src="'/../img/' + photo.path" alt="Photo d'article"
-                                class="absolute w-[350px] h-[200px] object-cover transition-opacity duration-300 rounded select-none"
-                                :class="(article.quantite_disponible < 1 ? 'brightness-[35%]' : '') +
-                                (article.id_etat == 2 ? ' brightness-[35%]' : '') +
-                                (article.is_sensible == 1 ? 'blur-[18px]' : '')"
-                                x-show="currentIndex === index"
-                                x-transition:enter="transition-opacity ease-in duration-400"
-                                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                                x-transition:leave="transition-opacity ease-out duration-400"
-                                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" />
-                        </template>
-                    </template>
-
-                    <!-- Connecté et user insensible -->
-                    <template x-if="isAuthenticated === true && userSensible === false">
-                        <template x-for="(photo, index) in photos" :key="photo.id_photo">
-                            <img :src="'/../img/' + photo.path" alt="Photo d'article"
-                                class="absolute w-[350px] h-[200px] object-cover transition-opacity duration-300 rounded select-none"
-                                :class="(article.quantite_disponible < 1 ? 'brightness-[35%]' : '') +
-                                (article.id_etat == 2 ? ' brightness-[35%]' : '')"
-                                x-show="currentIndex === index"
-                                x-transition:enter="transition-opacity ease-in duration-400"
-                                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                                x-transition:leave="transition-opacity ease-out duration-400"
-                                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" />
-                        </template>
-                    </template>
-
-                    <!-- Connecté et user insensible -->
-                    <template x-if="isAuthenticated === false">
-                        <template x-for="(photo, index) in photos" :key="photo.id_photo">
-                            <img :src="'/../img/' + photo.path" alt="Photo d'article"
-                                class="absolute w-[350px] h-[200px] object-cover transition-opacity duration-300 rounded select-none"
-                                :class="(article.quantite_disponible < 1 ? 'brightness-[35%]' : '') +
-                                (article.id_etat == 2 ? ' brightness-[35%]' : '') +
-                                (article.is_sensible == 1 ? 'blur-[18px]' : '')"
-                                x-show="currentIndex === index"
-                                x-transition:enter="transition-opacity ease-in duration-400"
-                                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                                x-transition:leave="transition-opacity ease-out duration-400"
-                                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" />
-                        </template>
+                <div class="flex relative w-full h-full justify-center overflow-hidden rounded" x-data="{
+                    isAuthenticated: {{ Auth::check() ? 'true' : 'false' }},
+                    userSensible: {{ Auth::check() ? (Auth::user()->contenu_sensible == 0 ? 'true' : 'false') : 'null' }}
+                }">
+                    <template x-for="(photo, index) in photos" :key="photo.id_photo">
+                        <img :src="'/../img/' + photo.path" alt="Photo d'article"
+                            x-ref="image"
+                            :title="article.is_sensible == 1 ?
+                                (isAuthenticated === false ?
+                                    'Cette image contient du contenu réservé aux adultes (+18).' :
+                                    'Cette image contient du contenu sensible.') :
+                                ''"
+                            class="absolute w-[450px] h-[400px] object-cover transition-opacity duration-300 rounded select-none"
+                            :class="[
+                                article.quantite_disponible < 1 ? 'brightness-[35%]' : '',
+                                article.id_etat == 2 ? 'brightness-[35%]' : '',
+                                article.is_sensible == 1 ? 'blur-[18px]' : ''
+                            ].join(' ')"
+                            x-show="currentIndex === index" x-transition:enter="transition-opacity ease-in duration-400"
+                            x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                            x-transition:leave="transition-opacity ease-out duration-400"
+                            x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" />
                     </template>
                 </div>
 
@@ -105,8 +73,8 @@
                         class="text-darkGrey cursor-pointer transition-transform duration-300 hover:scale-110 h-full"
                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="64" height="64"
                         fill="none" viewBox="4 4 16 16">
-                        <path stroke="#c7c7c7" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="2" d=" m9 5 7 7-7 7" />
+                        <path stroke="#c7c7c7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d=" m9 5 7 7-7 7" />
                     </svg>
                 </template>
                 <template x-if="photos.length > 1">
@@ -114,8 +82,8 @@
                         class="text-darkGrey cursor-pointer transition-transform duration-300 hover:scale-110 h-full"
                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="64" height="64"
                         fill="none" viewBox="4 4 16 16">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="2" d="m9 5 7 7-7 7" />
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m9 5 7 7-7 7" />
                     </svg>
                 </template>
             </div>
@@ -129,7 +97,8 @@
                         <div class="flex gap-1 items-baseline">
                             <p class=" articleGrand-dark">Poids:</p>
                             <div class="flex">
-                                <p class=" articlePetit-dark" x-text="(parseFloat(article.poids)).toFixed(2).replace('.' , ',')"></p>
+                                <p class=" articlePetit-dark"
+                                    x-text="(parseFloat(article.poids)).toFixed(2).replace('.' , ',')"></p>
                                 <p class=" articlePetit-dark ml-0.5">g</p>
                             </div>
                         </div>
@@ -143,7 +112,8 @@
                             <!-- Affichage en pouces si l'unité est définie sur pouces et utilisateur connecté -->
                             <template x-if="isAuthenticated && units == 1">
                                 <div class="flex">
-                                    <p class="articlePetit-dark" x-text="(parseFloat(article.largeur) / 2.54).toFixed(2).replace('.', ',')">
+                                    <p class="articlePetit-dark"
+                                        x-text="(parseFloat(article.largeur) / 2.54).toFixed(2).replace('.', ',')">
                                     </p>
                                     <p class="articlePetit-dark ml-0.5">po</p>
                                 </div>
@@ -179,7 +149,8 @@
                             <!-- Affichage en pouces si l'unité est définie sur pouces et utilisateur connecté -->
                             <template x-if="isAuthenticated && units == 1">
                                 <div class="flex">
-                                    <p class="articlePetit-dark" x-text="(parseFloat(article.hauteur) / 2.54).toFixed(2).replace('.', ',')">
+                                    <p class="articlePetit-dark"
+                                        x-text="(parseFloat(article.hauteur) / 2.54).toFixed(2).replace('.', ',')">
                                     </p>
                                     <p class="articlePetit-dark ml-0.5">po</p>
                                 </div>
@@ -213,7 +184,8 @@
                             <template x-if="isAuthenticated && units == 1">
                                 <div class="flex">
                                     <p class="articlePetit-dark"
-                                        x-text="(parseFloat(article.profondeur) / 2.54).toFixed(2).replace('.', ',')"></p>
+                                        x-text="(parseFloat(article.profondeur) / 2.54).toFixed(2).replace('.', ',')">
+                                    </p>
                                     <p class="articlePetit-dark ml-0.5">po</p>
                                 </div>
                             </template>
@@ -257,8 +229,7 @@
                     <div class="flex gap-2 overflow-auto">
                         <template x-for="(motCle, index) in motsCles" :key="index">
                             <div class="flex">
-                                <p class=" textGrand-dark bg-beigeFoncé rounded-md p-2"
-                                    x-text="motCle.mot_cle"></p>
+                                <p class=" textGrand-dark bg-beigeFoncé rounded-md p-2" x-text="motCle.mot_cle"></p>
                             </div>
                         </template>
                     </div>
@@ -317,9 +288,8 @@
                     <template x-if="isAuthenticated && artiste.id_user != userId">
                         <form action="{{ '/addArticleToPanier' }}" method="POST" class="w-full h-[64px]">
                             @csrf
-                            <x-button.green.empty type="submit" id="addArticleBtn"
-                                x-bind:value="article.id_article" name="id_article"
-                                class="w-full h-[64px] text-[36px] font-bold text-center">
+                            <x-button.green.empty type="submit" id="addArticleBtn" x-bind:value="article.id_article"
+                                name="id_article" class="w-full h-[64px] text-[36px] font-bold text-center">
                                 Ajouter au panier
                             </x-button.green.empty>
                         </form>
@@ -327,8 +297,8 @@
 
                     <!-- Affiche le bouton "Votre propre article" si l'utilisateur est le propriétaire de l'article -->
                     <template x-if="isAuthenticated && artiste.id_user == userId">
-                        <x-button.green.empty type="button" id="addArticleBtn"
-                            x-bind:value="article.id_article" name="id_article"
+                        <x-button.green.empty type="button" id="addArticleBtn" x-bind:value="article.id_article"
+                            name="id_article"
                             class="w-full h-[64px] text-[36px] font-bold text-center cursor-default hover:bg-[#009B4D]">
                             Visible
                         </x-button.green.empty>
@@ -338,9 +308,8 @@
                     <template x-if="!isAuthenticated">
                         <form action="{{ '/addArticleToPanier' }}" method="POST" class="w-full h-[64px]">
                             @csrf
-                            <x-button.green.empty type="submit" id="addArticleBtn"
-                                x-bind:value="article.id_article" name="id_article"
-                                class="w-full h-[64px] text-[36px] font-bold text-center">
+                            <x-button.green.empty type="submit" id="addArticleBtn" x-bind:value="article.id_article"
+                                name="id_article" class="w-full h-[64px] text-[36px] font-bold text-center">
                                 Ajouter au panier
                             </x-button.green.empty>
                         </form>
