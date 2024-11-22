@@ -65,14 +65,62 @@ if (document.baseURI.includes('/panier')) {
             }
         }
 
-        function updateQuantity(){
+        function updateQuantite(select, isLoggedIn) {
+            const transactionId = event.target.parentElement.parentElement.parentElement.dataset.idt;
+            const articleId = event.target.parentElement.parentElement.parentElement.dataset.ida; // Assume each select has a `data-article-id` attribute
+            const newQuantity = parseInt(event.target.value, 10);
 
+            console.log(event.target.value, ' ', articleId, ' ', transactionId);
+
+
+            // Send a POST request to /updateQuantite
+            fetch('/updateQuantite', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': window.csrfToken,
+                },
+                body: JSON.stringify({
+                    transaction_id: transactionId,
+                    quantity: newQuantity,
+                    article_id: articleId,
+                }),
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Failed to update quantity');
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    if (data.updated_cart) {
+                        // Update cookie with the new cart if user is not logged in
+                        setCookie('cart', JSON.stringify(data.updated_cart), 7);
+                    } else {
+                        console.log('Quantity updated on the server.');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error updating quantity:', error);
+                });
+
+        }
+
+        function setCookie(name, value, days) {
+            let expires = '';
+            if (days) {
+                const date = new Date();
+                date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+                expires = '; expires=' + date.toUTCString();
+            }
+            document.cookie = name + '=' + (value || '') + expires + '; path=/';
         }
 
         // Add event listeners to quantity selects
         let quantitySelects = document.querySelectorAll('.quantite-select');
         quantitySelects.forEach(function (select) {
             select.addEventListener('change', updatePanierSummary);
+            select.addEventListener('change', updateQuantite);
         });
 
         // Initial update
