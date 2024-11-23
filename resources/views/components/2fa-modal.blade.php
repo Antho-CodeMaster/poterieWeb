@@ -32,10 +32,10 @@
 
             <form method="POST" action="{{ route('2fa.verify') }}">
                 @csrf
-
+                <p class="block font-medium text-sm text-gray-700 mb-2">Entrez le code affiché dans l'application d'authentification de votre appareil mobile.</p>
 
                 <div class="mb-4">
-                    <x-input-label for="one_time_password" :value="__('Code Unique')" />
+                    <x-input-label for="one_time_password" :value="__('Entrez le code')" />
                     <x-text-input id="one_time_password" class="block mt-1 w-full" type="text" name="one_time_password" :value="old('code')" required autofocus autocomplete="code" />
                     <x-input-error :messages="$errors->get('one_time_password')" class="mt-2" />
                 </div>

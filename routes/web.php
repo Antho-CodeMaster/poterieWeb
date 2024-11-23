@@ -24,7 +24,7 @@ use App\Http\Middleware\TwoFactorAuthMiddleware;
 use Illuminate\Support\Facades\Route;
 use Laravel\Cashier\Checkout;
 
-Route::get('/', [CollectionController::class, 'index'])->name('decouverte')->withoutMiddleware([TwoFactorAuthMiddleware::class]);;
+Route::get('/', [CollectionController::class, 'index'])->name('decouverte')->withoutMiddleware([TwoFactorAuthMiddleware::class]);
 
 /* Route relié au kiosque */
 Route::controller(ArtisteController::class)->group(function () {
@@ -136,7 +136,7 @@ Route::middleware(['auth', TwoFactorAuthMiddleware::class])->group(function () {
 });
 
 Route::get('/2fa', [TwoFactorController::class,'show'])->name('2fa');
-Route::post('/2fa/verif', [TwoFactorController::class,'verify'])->name('2fa.verify');
+Route::post('/2fa/verif', [TwoFactorController::class,'verify'])->name('2fa.verify')->withoutMiddleware([TwoFactorAuthMiddleware::class]);
 
 Route::get('/recherche', [ArticleController::class, 'getSearch'])->name('recherche.getSearch');
 
