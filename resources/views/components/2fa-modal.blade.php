@@ -1,7 +1,7 @@
 
 <div
     x-cloak
-    x-data="{ open2fa: {{ $errors->any() ? 'true' : 'false' }} }"
+    x-data="{ open2fa: false }"
     @close-2fa-modal.window="open2fa = false"
     @open-2fa-modal.window="open2fa = true"
 >
