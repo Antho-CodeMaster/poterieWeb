@@ -19,31 +19,35 @@
                             <div class="w-1/2">
                                 <h3 class="text-2xl text-darkGrey">
                                     {{ $signalement->article->nom }}</h3>
-                                @if ($signalement->article->artiste->actif)
-                                    <a class="hover:underline flex w-fit items-center"
-                                        href="{{ route('kiosque', ['idUser' => $signalement->article->artiste->id_user]) }}"
-                                        target="_blank">
-                                        <img src="{{ asset($signalement->article->artiste->path_photo_profil ?? 'img/artistePFP/default_artiste.png') }}"
-                                            alt="{{ $signalement->article->artiste->nom_artiste }}"
-                                            class="rounded-full w-[48px] h-[48px]">
-                                        <p>{{ $signalement->article->artiste->nom_artiste ?? $signalement->article->artiste->user->name }}
-                                        </p>
-                                    </a>
-                                @else
-                                    <div class="flex w-fit items-center">
-                                        <img src="{{ asset($signalement->article->artiste->path_photo_profil ?? 'img/artistePFP/default_artiste.png') }}"
-                                            alt="{{ $signalement->article->artiste->nom_artiste }}"
-                                            class="rounded-full w-[48px] h-[48px]">
-                                        <p>{{ $signalement->article->artiste->nom_artiste ?? $signalement->article->artiste->user->name }}
+                                <div class="flex items-center gap-2">
+                                    <img src="{{ asset($signalement->article->artiste->path_photo_profil ?? 'img/artistePFP/default_artiste.png') }}"
+                                    alt="{{ $signalement->article->artiste->nom_artiste }}"
+                                    class="rounded-full w-[48px] h-[48px]">
+                                    <form class="hover:underline" method="get" action="{{ route('admin-utilisateurs') }}">
+                                        <input type="hidden" name="query" value="{{ $signalement->article->artiste->nom_artiste ?? $signalement->article->artiste->user->name }}">
+
+                                    <x-button.none.empty>{{ $signalement->article->artiste->nom_artiste ?? $signalement->article->artiste->user->name }}
+                                        @if (!$signalement->article->artiste->actif)
                                             <span class="text-red-500">(inactif)</span>
-                                        </p>
-                                    </div>
-                                @endif
+                                        @endif
+                                    </x-button.none.empty>
+                                </form>
+                                    @if ($signalement->article->artiste->actif)
+                                        <a class="hover:underline flex w-fit items-center"
+                                            href="{{ route('kiosque', ['idUser' => $signalement->article->artiste->id_user]) }}"
+                                            target="_blank">
+                                            <x-button.border.kiosque></x-button.border.kiosque>
+                                        </a>
+                                    @endif
+                                </div>
                                 <p class="italic">Signalé par <span>{{ $signalement->user->name }}</span> le
                                     <span>{{ $signalement->date }}</span>
                                 </p>
+                                <p><span class="font-bold">Commentaire :</span>
+                                    <span>{{ $signalement->description }}</span>
+                                </p>
                             </div>
-                            <div class="w-1/2 flex items-center justify-center">
+                            <div class="w-1/2 flex flex-col items-center justify-around">
                                 <x-button.blue.leave
                                     @click=" $dispatch('open-article-modal');
                                 $dispatch('set-article', {
@@ -63,14 +67,15 @@
                                     is_alimentaire: '{{ $signalement->article->is_alimentaire }}',
                                     is_sensible: '{{ $signalement->article->is_sensible }}',
                                 });
-                                 $dispatch('set-signalement', {
-                                    client: '{{ htmlspecialchars($signalement->user->name) }}',
-                                    raison: '{{ htmlspecialchars($signalement->description) }}'
-                                });
                                  $dispatch('set-photos', '{{ $signalement->article->photo_article }}');
                                  $dispatch('set-mots-cles', '{{ $signalement->article->motCles }}'); ">Voir
-                                    l'article et le signalement</x-button.blue.leave>
+                                    l'article</x-button.blue.leave>
+                                <form method="get" action="{{ route('admin-utilisateurs') }}">
+                                    <input type="hidden" name="query" value="{{ $signalement->user->name }}">
+                                    <x-button.blue.leave>Voir le client</x-button.blue.leave>
+                                </form>
                             </div>
+
                         </div>
                         <div class="w-5/12 grid grid-cols-5 gap-x-6">
                             <div class="h-full col-span-2 flex items-center" x-data="{ openAvertir: {{ $errors->any() ? 'true' : 'false' }} }">
@@ -88,17 +93,19 @@
                             $dispatch('open-delete-modal');
                             $dispatch('set-id', {{ $signalement->article->id_article }});
                             $dispatch('set-signalement', {{ $signalement->id_signalement }});
-                            $dispatch('set-name', {{ json_encode($signalement->article->nom) }});">Supprimer la publication</x-button.red.trash>
-                        </div>
-                        <div class="h-full
-                                    col-span-2 flex items-center" x-data="{ openAvertir: {{ $errors->any() ? 'true' : 'false' }} }">
-                                    <x-button.yellow.exclamation class="w-full"
-                                        @click="
+                            $dispatch('set-name', {{ json_encode($signalement->article->nom) }});">Supprimer
+                                    la publication</x-button.red.trash>
+                            </div>
+                            <div class="h-full
+                                    col-span-2 flex items-center"
+                                x-data="{ openAvertir: {{ $errors->any() ? 'true' : 'false' }} }">
+                                <x-button.yellow.exclamation class="w-full"
+                                    @click="
                                         $dispatch('open-avertir-modal');
                                         $dispatch('set-id', {{ $signalement->id_user }});
                                         $dispatch('set-name', {{ json_encode($signalement->user->name) }});
                                         ">Avertir
-                                        le client</x-button.yellow.exclamation>
+                                    le client</x-button.yellow.exclamation>
                             </div>
                             <form class="col-span-3 flex items-center"
                                 action="{{ route('admin-signalements-delete') }}" method="POST">
@@ -111,7 +118,7 @@
                 @endforeach
             </div>
             @include('admin.components.avertir-modal')
-            @include('admin.components.signalement-modal')
+            @include('admin.components.article-modal')
             @include('admin.components.delete-signalement-modal')
 
             @if (Session::has('succes'))

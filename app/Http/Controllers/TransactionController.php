@@ -70,8 +70,13 @@ class TransactionController extends Controller
 
         /* 7. Récupérer les public URL de chaque transaction */
         $urlArray = [];
-        foreach ($commandeTransactions as $transaction) {
-            $urlArray[$transaction->first()->id_transaction] = $this->getTrackerURL($transaction->first()); # Associe l'URL avec l'ID de la transaction
+        foreach ($commandeTransactions as $transactions) {
+            // Filtrer uniquement les transactions livrées (id_etat == 3)
+            $livreeTransactions = $transactions->where('id_etat', 3);
+
+            foreach ($livreeTransactions as $transaction) {
+                $urlArray[$transaction->id_transaction] = $this->getTrackerURL($transaction); # Associe l'URL avec l'ID de la transaction
+            }
         }
 
         /* 8. Retourner la vue 'Mes commandes' avec un array d'article, de transaction et d'url */
@@ -137,12 +142,20 @@ class TransactionController extends Controller
         try {
             /* 5. Récupérer les public URL de chaque transaction */
             $urlArray = [];
-            foreach ($commandeTransactions as $transaction) {
-                $idTransaction = $transaction->first()->id_transaction;
 
-                $urlArray[$idTransaction] = Cache::remember("tracker_url_$idTransaction", now()->addHours(6), function () use ($transaction) {
-                    return $this->getTrackerURL($transaction->first());
-                });
+            $urlArray = [];
+            foreach ($commandeTransactions as $transactions) {
+                // Filtrer uniquement les transactions livrées (id_etat == 3)
+                $livreeTransactions = $transactions->where('id_etat', 3);
+
+                foreach ($livreeTransactions as $transaction) {
+
+                    $idTransaction = $transaction->id_transaction;
+
+                    $urlArray[$idTransaction] = Cache::remember("tracker_url_$idTransaction", now()->addHours(6), function () use ($transaction) {
+                        return $this->getTrackerURL($transaction);
+                    });
+                }
             }
 
             $view = view('commande.partials.allTransactions', compact('commandeTransactions', 'artiste', 'urlArray'))->render();

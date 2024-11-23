@@ -23,7 +23,7 @@
 
                     <textarea name="signaleDescription" id="signaleDescription" rows="4" required
                         class="w-[80%] rounded resize-none bg-gray-50"
-                        placeholder="Veuillez indiquer un commentaire qui permettrait aux administrateurs d'idenfier la source du problème."></textarea>
+                        placeholder="Veuillez indiquer un commentaire qui permettrait aux administrateurs d'identifier la source du problème."></textarea>
 
                     <input type="hidden" x-bind:value="transaction.id_transaction" name="id_transaction">
 

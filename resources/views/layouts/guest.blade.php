@@ -17,7 +17,7 @@
     </head>
 
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-ffffff flex flex-col">
+        <div class="min-h-screen flex flex-col">
             @include('layouts.navigation_guest')
 
             <!-- Page Heading -->

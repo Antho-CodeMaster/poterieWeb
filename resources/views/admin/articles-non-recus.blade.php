@@ -19,33 +19,38 @@
                             <div class="">
                                 <h3 class="text-2xl text-darkGrey">
                                     {{ $anr->transaction->article->nom }}
-                                @if ($anr->transaction->quantite > 1)
-                                ({{$anr->transaction->quantite}} exemplaires)
-                                @endif</h3>
-                                @if ($anr->transaction->article->artiste->actif)
-                                    <a class="hover:underline flex w-fit items-center"
-                                        href="{{ route('kiosque', ['idUser' => $anr->transaction->article->artiste->id_user]) }}"
-                                        target="_blank">
-                                        <img src="{{ asset($anr->transaction->article->artiste->path_photo_profil ?? 'img/artistePFP/default_artiste.png') }}"
-                                            alt="{{ $anr->transaction->article->artiste->nom_artiste }}"
-                                            class="rounded-full w-[48px] h-[48px]">
-                                        <p>{{ $anr->transaction->article->artiste->nom_artiste ?? $anr->transaction->article->artiste->user->name }}
-                                        </p>
-                                    </a>
-                                @else
-                                    <div class="flex w-fit items-center">
-                                        <img src="{{ asset($anr->transaction->article->artiste->path_photo_profil ?? 'img/artistePFP/default_artiste.png') }}"
-                                            alt="{{ $anr->transaction->article->artiste->nom_artiste }}"
-                                            class="rounded-full w-[48px] h-[48px]">
-                                        <p>{{ $anr->transaction->article->artiste->nom_artiste ?? $anr->transaction->article->artiste->user->name }}
+                                    @if ($anr->transaction->quantite > 1)
+                                        ({{ $anr->transaction->quantite }} exemplaires)
+                                    @endif
+                                </h3>
+                                <div class="flex items-center gap-2">
+                                    <img src="{{ asset($anr->transaction->article->artiste->path_photo_profil ?? 'img/artistePFP/default_artiste.png') }}"
+                                    alt="{{ $anr->transaction->article->artiste->nom_artiste }}"
+                                    class="rounded-full w-[48px] h-[48px]">
+                                    <form class="hover:underline" method="get" action="{{ route('admin-utilisateurs') }}">
+                                        <input type="hidden" name="query" value="{{ $anr->transaction->article->artiste->nom_artiste ?? $anr->transaction->article->artiste->user->name }}">
+
+                                    <x-button.none.empty>{{ $anr->transaction->article->artiste->nom_artiste ?? $anr->transaction->article->artiste->user->name }}
+                                        @if (!$anr->transaction->article->artiste->actif)
                                             <span class="text-red-500">(inactif)</span>
-                                        </p>
-                                    </div>
-                                @endif
-                                <p class="italic">Demandé par <span>{{ $anr->transaction->commande->user->name }}</span>
+                                        @endif
+                                    </x-button.none.empty>
+                                </form>
+                                    @if ($anr->transaction->article->artiste->actif)
+                                        <a class="hover:underline flex w-fit items-center"
+                                            href="{{ route('kiosque', ['idUser' => $anr->transaction->article->artiste->id_user]) }}"
+                                            target="_blank">
+                                            <x-button.border.kiosque></x-button.border.kiosque>
+                                        </a>
+                                    @endif
+                                </div>
+                                <p class="italic">Demandé par
+                                    <span>{{ $anr->transaction->commande->user->name }}</span>
                                 </p>
-                                <p>Date de la demande: <span>{{ $anr->created_at }}</span></p>
-                                <p>Commentaire: <span class="italic">{{ $anr->description }}</span></p>
+                                <p><span class="font-bold">Date de la demande:</span>
+                                    <span>{{ $anr->created_at }}</span></p>
+                                <p><span class="font-bold">Commentaire: </span> <span
+                                        class="italic">{{ $anr->description }}</span></p>
                             </div>
                         </div>
                         <div class="w-1/3 flex flex-col justify-between">
@@ -75,7 +80,7 @@
                                 @click="
                                 $dispatch('open-delete-modal');
                                 console.log(openDelete);
-                                $dispatch('set-id', {{ $anr->id_signalement}});">Supprimer
+                                $dispatch('set-id', {{ $anr->id_signalement }});">Supprimer
                                 la demande</x-button.red.trash>
                         </div>
                     </div>

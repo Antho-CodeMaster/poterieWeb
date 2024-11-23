@@ -77,7 +77,7 @@
                             <div class="w-full h-[50%] items-center flex gap-input">
                                 <p class="textPetit-dark font-bold">Type d'usage : </p>
                                 @if ($article->is_alimentaire)
-                                    <p class="textPetit-dark">Alimetaire</p>
+                                    <p class="textPetit-dark">Alimentaire</p>
                                 @else
                                     <p class="textPetit-dark">Non alimetaire</p>
                                 @endif

@@ -258,7 +258,7 @@ class CommandeController extends Controller
         //Artiste
         foreach($commande->transactions as $transaction){
             Notification::firstOrCreate([
-                'lien' => '/mesTransactions/'.$transaction->article->id_artiste,
+                'lien' => route("mesTransactions", ["idUser" => $transaction->article->artiste->id_user]),
                 'message' => 'Vous avez des nouvelles transactions à traiter en lien avec la commande no:'.$commande->id_commande,
                 'id_user' => $transaction->article->artiste->id_user
             ],[

@@ -39,7 +39,7 @@
                                 class="aspect-square object-cover rounded-[12px] shadow-xl shadow-black">
                         </div>
                         {{-- infos --}}
-                        <div class="flex md:flex-col w-2/3 md:w-1/3 h-1/2 md:mx-auto justify-between flex-wrap my-4">
+                        <div class="flex md:flex-col w-2/3 md:w-1/3 h-1/2 md:mx-auto justify-between flex-wrap my-4" x-data="{'openSignalArticleModal': false}">
                             <h1 class="font-bold text-lg">{{ $transaction->article->nom }}</h1>
                             <p>{{ number_format($transaction->prix_unitaire, 2, ',', ' ') . ' $ x ' . $transaction->quantite . ' pièce(s)' }}
                             </p>
@@ -50,50 +50,51 @@
                                         {{ $transaction->etat_transaction->etat }}</span></p>
                             </div>
                             <a @click=" $dispatch('open-signal-article-modal'); $dispatch('set-transaction-signal', JSON.stringify({{ $transaction }}))"
-                            class="hover:underline hover:cursor-pointer w-fit text-xs">
-                            @if ($transaction->etat_transaction->etat == 'Annulé')
-                                Pourquoi ?
-                            @else
-                                Je n'ai pas reçu cet article!
-                            @endif
-                        </a>
+                                class="hover:underline hover:cursor-pointer w-fit text-xs">
+                                @if ($transaction->etat_transaction->etat == 'Annulé')
+                                    Pourquoi ?
+                                @else
+                                    Je n'ai pas reçu cet article!
+                                @endif
+                            </a>
                         </div>
 
-                    {{-- prix --}}
-                    <div class="w-2/3 md:w-1/3 flex md:flex-col justify-between my-4 flex-row-reverse">
+                        {{-- prix --}}
+                        <div class="w-2/3 md:w-1/3 flex md:flex-col justify-between my-4 flex-row-reverse">
 
-                        <div class="text-3xl m-auto ">
-                            <x-tooltip text="{!! $tooltips[$transaction->etat_transaction->etat] !!}" position="right"
-                                id="{{ $transaction->id_transaction }}">
-                                <p
-                                    class="cursor-pointer hover:text-4xl {{ $transaction->etat_transaction->etat === 'Annulé' ? 'text-[#FF0000] rotate-180' : '' }}">
-                                    &#9432</p>
-                            </x-tooltip>
+                            <div class="text-3xl m-auto ">
+                                <x-tooltip text="{!! $tooltips[$transaction->etat_transaction->etat] !!}" position="right"
+                                    id="{{ $transaction->id_transaction }}">
+                                    <p
+                                        class="cursor-pointer hover:text-4xl {{ $transaction->etat_transaction->etat === 'Annulé' ? 'text-[#FF0000] rotate-180' : '' }}">
+                                        &#9432</p>
+                                </x-tooltip>
+                            </div>
+
+                            @php
+                                $totalItem = $transaction->prix_unitaire * $transaction->quantite;
+                                $totalArtiste += $totalItem;
+                                $grandTotal += $totalItem;
+                            @endphp
+                            <p>Total : {{ number_format($totalItem, 2, ',', ' ') }}$</p>
+
                         </div>
-
-                    @php
-                        $totalItem = $transaction->prix_unitaire * $transaction->quantite;
-                        $totalArtiste += $totalItem;
-                        $grandTotal += $totalItem;
-                    @endphp
-                    <p>Total : {{ number_format($totalItem, 2, ',', ' ') }}$</p>
-
+                    </div>
+                @endforeach
             </div>
+            {{-- Colone de droite, image, nom et total artiste --}}
+            <div class="flex-col flex w-1/3 md:w-1/4 justify-between mb-6">
+                <div class="w-full mr-0 ml-auto">
+                    <img src="{{ '../' . $transactions[0]->article->artiste->path_photo_profil }}"
+                        alt="Photo de profil de l'artiste" class="rounded-full md:size-32 mt-4 mr-4 ml-auto">
+                    <p class="mr-4 ml-auto w-fit">{{ $transactions[0]->article->artiste->nom_artiste }}</p>
+                </div>
+                <div class="mr-4 ml-auto text-xl font-bold text-center">
+                    <p class="text-center">Total : {{ number_format($totalArtiste, 2, ',', ' ') }}$</p>
+                </div>
+            </div>
+
         </div>
-    @endforeach
-    </div>
-    {{-- Colone de droite, image, nom et total artiste --}}
-    <div class="flex-col flex w-1/3 md:w-1/4 justify-between mb-6">
-        <div class="w-full mr-0 ml-auto">
-            <img src="{{ '../' . $transactions[0]->article->artiste->path_photo_profil }}" alt="Photo de profil de l'artiste"
-                class="rounded-full md:size-32 mt-4 mr-4 ml-auto">
-            <p class="mr-4 ml-auto w-fit">{{ $transactions[0]->article->artiste->nom_artiste }}</p>
-        </div>
-        <div class="mr-4 ml-auto text-xl font-bold text-center">
-            <p class="text-center">Total : {{ number_format($totalArtiste, 2, ',', ' ') }}$</p>
-        </div>
-    </div>
-    </div>
     @endforeach
 
     {{-- Section a la fin, ou le total est affiché --}}
@@ -105,7 +106,7 @@
         <p class="w-1/4">Total : {{ number_format($grandTotal * 1.14975, 2, ',', ' ') }} $</p>
     </div>
 
-    @include('commande.partials.article-non-recu-modal')
+
 
     @if (Session::has('succes'))
         <div class="w-[500px] absolute right-2 bottom-10">
@@ -123,4 +124,5 @@
             ])
         </div>
     @endif
+    @include('commande.partials.article-non-recu-modal')
 </x-app-layout>

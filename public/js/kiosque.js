@@ -23,7 +23,23 @@ document.addEventListener('DOMContentLoaded', function () {
         /* ===================================================== */
         /*             caché ou apparaite les filtres            */
         /* ===================================================== */
-        document.getElementById('btnFiltres').addEventListener("click", toggleFiltres);
+        const btnFiltres = document.getElementById('btnFiltres');
+        const kiosqueFiltres = document.getElementById('kiosqueFiltres');
+        // Gestion du clic sur le bouton pour ouvrir/fermer les filtres
+
+        btnFiltres.addEventListener("click", (event) => {
+            event.stopPropagation(); // Empêche la propagation de l'événement au document
+            toggleFiltres();
+        });
+
+        // Gestion du clic en dehors du conteneur pour fermer les filtres
+        document.addEventListener("click", (event) => {
+            // Vérifie si les filtres sont ouverts et si le clic est en dehors du conteneur
+            if (kiosqueFiltres.classList.contains('visible') &&
+                !kiosqueFiltres.contains(event.target)) {
+                toggleFiltres(); // Ferme les filtres
+            }
+        });
 
         function toggleFiltres() {
             const kiosqueFiltres = document.getElementById('kiosqueFiltres');
