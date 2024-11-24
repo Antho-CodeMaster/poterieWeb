@@ -178,54 +178,70 @@ class ArtisteController extends Controller
     {
         $artiste = Auth::user()->artiste;
 
+        // Retrieve inputs
         $usernames = $request->input('usernames');
         $reseaux = $request->input('reseaux');
-        $removedFields = json_decode($request->input('removed_fields'), true);
+        $removedFields = json_decode($request->input('removed_fields'), true) ?? []; // Default to an empty array
 
-        // Detach removed fields first
+        // Sanitize inputs
+        $usernames = array_map(function ($username) {
+            return strip_tags(str_replace(['"', "'"], '', trim($username))); // Remove HTML tags and trim
+        }, $usernames ?? []); // Default to empty array if null
+        $reseaux = array_map('intval', $reseaux ?? []); // Default to empty array if null
+        $removedFields = array_filter($removedFields, function ($field) {
+            if (isset($field['id_reseau'], $field['username']) &&
+                is_numeric($field['id_reseau']) &&
+                is_string($field['username'])) {
+                $field['username'] = strip_tags(str_replace(['"', "'"], '', trim($field['username']))); // Clean username
+                $field['id_reseau'] = (int) $field['id_reseau'];
+                return true;
+            }
+            return false;
+        });
+
+        // Detach removed fields
         if (!empty($removedFields)) {
             foreach ($removedFields as $field) {
                 $reseau_id = $field['id_reseau'];
                 $username = $field['username'];
 
-                // Detach the specific pivot record for the removed field
                 $artiste->reseaux()
                     ->wherePivot('id_reseau', $reseau_id)
                     ->wherePivot('username', $username)
                     ->detach();
             }
 
-            // Remove the detached fields from $reseaux and $usernames
             foreach ($removedFields as $field) {
                 $reseau_id = $field['id_reseau'];
                 $username = $field['username'];
 
-                // Find the index of the removed field in $reseaux and $usernames
                 $index = array_search($reseau_id, $reseaux);
                 if ($index !== false && $usernames[$index] === $username) {
-                    // Remove the values from both arrays
                     unset($reseaux[$index]);
                     unset($usernames[$index]);
                 }
             }
-        }
 
+            $reseaux = array_values($reseaux);
+            $usernames = array_values($usernames);
+        }
 
         // Add or update remaining fields
         foreach ($reseaux as $index => $reseau_id) {
             $username = $usernames[$index];
 
-            // Check if a 'reseau' with this specific reseau_id and username already exists
+            if (!is_int($reseau_id) || empty($username)) {
+                continue;
+            }
+
             $existingPivot = $artiste->reseaux()
                 ->wherePivot('id_reseau', $reseau_id)
                 ->wherePivot('username', $username)
                 ->first();
 
             if ($existingPivot) {
-                // Update the username if a match is found
                 $artiste->reseaux()->updateExistingPivot($reseau_id, ['username' => $username]);
             } else {
-                // Attach as a new entry if it doesn't already exist
                 $artiste->reseaux()->attach($reseau_id, ['username' => $username]);
             }
         }
