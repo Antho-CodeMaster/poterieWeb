@@ -55,13 +55,13 @@
                                             En rupture de stock
                                         </p>
                                     @else
-                                        <form action="{{ route('addArticleToPanier') }}" method="POST" class="w-full">
+                                        <div class="w-full" x-data="{ajoute: false}" @click="addToCart({{ $article->id_article }}); ajoute = !ajoute">
                                             @csrf
-                                            <button type="submit" value="{{ $article->id_article }}" name="id_article"
+                                            <button type="button" value="{{ $article->id_article }}" name="id_article" :class="ajoute ? 'bg-rouge' : ''"
                                                 class="overflow-hidden whitespace-nowrap border-darkGrey border rounded-[24px] w-full h-[32px] text-darkGrey font-bold">
                                                 Ajouter au panier
                                             </button>
-                                        </form>
+                                        </div>
                                     @endif
                                 </div>
                             </div>

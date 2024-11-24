@@ -95,7 +95,7 @@ if (document.baseURI.includes('/panier')) {
                 .then((data) => {
                     if (data.updated_cart) {
                         // Update cookie with the new cart if user is not logged in
-                        setCookie('cart', JSON.stringify(data.updated_cart), 7);
+                        setCookie('panier', JSON.stringify(data.updated_cart), 7);
                     } else {
                         console.log('Quantity updated on the server.');
                     }

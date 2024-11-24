@@ -365,7 +365,8 @@ class TransactionController extends Controller
             $transaction->update(['prix_unitaire' => $transaction->article->prix]);
 
             //incémente la quantité (0+1 si nouvelle)
-            return Redirect::back(302, ['message' => 'Succes: Article ajouté au panier']);
+            //return Redirect::back(302, ['message' => 'Succes: Article ajouté au panier']);
+            return response()->json(['status' => 'ok', 'ajoute' => true]);
         }
         #Créé un cookie qui store le panier si l'utilisateur n'est pas connecté
         else {
@@ -383,8 +384,9 @@ class TransactionController extends Controller
             #Update le cookie pour un 30j d'activité après avoir ajouté un article
             $biscuit = cookie('panier', json_encode($panier), 60 * 24 * 30);
 
-            return Redirect::back()->withCookie($biscuit);
+            //return Redirect::back()->withCookie($biscuit);
             // return response('Article ajouté au panier (biscuit)')->cookie($biscuit);
+            return response()->json(['message' => 'Succès, Article ajouté au panier', 'ajoute' => true])->withCookie($biscuit);
         }
     }
 
@@ -520,18 +522,6 @@ class TransactionController extends Controller
                 'id_article' => $validated['article_id'],
                 'quantite' => $validated['quantity']
             ];
-
-            /*foreach ($panierData as $item) {
-                try {
-                    if ($qte > Article::first($item['Article'])->quantite_disponible || $qte < 0) {
-                        throw new Exception('Failed to update, Quantity out of bound');
-                    }
-
-                    $panier[$item['Article']]['quantite'] = $item['quantite'];
-                } catch (Exception $e) {
-                    return response(400)->json()->withException($e);
-                }
-            }*/
 
             $biscuit = cookie('panier', json_encode($panier), 60 * 24 * 30);
 

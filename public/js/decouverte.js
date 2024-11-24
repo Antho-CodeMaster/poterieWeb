@@ -59,3 +59,45 @@ window.toggleLike = function(articleId) {
         console.error('Error:', error);  // Handle any errors during the fetch
     });
 };
+
+window.addToCart = function(articleId) {
+    const url = window.addToCartUrl;
+
+    console.log(articleId);
+
+    fetch(url, {
+        method : 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': window.csrfToken
+        },
+        body: JSON.stringify({ id_article: articleId })
+    }).then(response => {
+        if (response.ok) {
+            return response.json();  // Return the parsed JSON if response is okay
+        } else {
+            console.error("Erreur a l'ajout de l'article");
+        }
+    })
+    .then((data) => {
+        if (data.updated_cart) {
+            // Update cookie with the new cart if user is not logged in
+            setCookie('cart', JSON.stringify(data.updated_cart), 7);
+        } else {
+            console.log('Article ajouté sur le serveur');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);  // Handle any errors during the fetch
+    });
+}
+
+function setCookie(name, value, days) {
+    let expires = '';
+    if (days) {
+        const date = new Date();
+        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+        expires = '; expires=' + date.toUTCString();
+    }
+    document.cookie = name + '=' + (value || '') + expires + '; path=/';
+}
