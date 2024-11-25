@@ -10,6 +10,7 @@ use App\Models\Compagnie_livraison;
 use App\Models\Photo_livraison;
 use App\Models\Photo_oeuvre;
 use App\Models\EasyPost;
+
 use EasyPost\Tracker;
 use Exception;
 use Illuminate\Auth\Events\Validated;
@@ -22,6 +23,8 @@ use Illuminate\View\View;
 use Stripe\Invoice;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Validation\ValidationData;
+use Illuminate\Validation\ValidationException;
 
 class TransactionController extends Controller
 {
@@ -463,15 +466,21 @@ class TransactionController extends Controller
                 }
 
                 # Création du tracker
-                $tracker = $this->easyPost->createTracker(
-                    $validatedData['codeRefLivraison'],
-                    $compagnieNom
-                );
+                try{
+                    $tracker = $this->easyPost->createTracker(
+                        $validatedData['codeRefLivraison'],
+                        $compagnieNom
+                    );
 
-                # Ajout du trackingId dans l'instance de la transaction
-                $transaction->update([
-                    "trackingId_easypost" => $tracker->id,
-                ]);
+                    # Ajout du trackingId dans l'instance de la transaction
+                    $transaction->update([
+                        "trackingId_easypost" => $tracker->id,
+                    ]);
+                }catch(Exception $e){
+                    throw ValidationException::withMessages([
+                        'code' => 'Code de livraison eroné'
+                    ]);
+                }
 
                 /* 6. Mise à jour de la transaction */
                 $transaction->update([
