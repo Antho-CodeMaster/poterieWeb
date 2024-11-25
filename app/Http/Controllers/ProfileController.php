@@ -70,6 +70,11 @@ class ProfileController extends Controller
                 $sub_info['debut_periode'] = Carbon::createFromTimestamp($sub_info->current_period_start)->locale('fr_FR')->isoFormat('dddd [le] D MMMM YYYY');
                 $sub_info['fin_periode'] = Carbon::createFromTimestamp($sub_info->current_period_end)->locale('fr_FR')->isoFormat('dddd [le] D MMMM YYYY');
             }
+            else
+            {
+                $subbed = false;
+                $was_subbed = false;
+            }
         }
 
         // Si la méthode de paiement a bel et bien été définie, remplacer tout ancienne méthode de paiement par la nouvelle.
