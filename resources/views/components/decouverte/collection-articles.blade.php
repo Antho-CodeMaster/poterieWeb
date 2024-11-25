@@ -18,7 +18,7 @@
                 <div x-data='{openArticleModal: false}'
                     class="inline lg:w-[17%] sm:w-[90%] lg:mx-6 mx-2 shrink-0 overflow-hidden whitespace-nowrap rounded-[16px] bg-white shadow-md hover:shadow-lg">
                     <img src="/../img/{{ $article->photosArticle->path }}" alt="{{ $article->nom }}"
-                        class="{{($article->is_sensible == 1 && !Auth::check()) || (Auth::check() && Auth()->user()->contenu_sensible == 0 && $article->is_sensible == 1) ? 'blur-[18px]' : ''}} w-full h-64 object-cover rounded-t-md"
+                        class="cursor-pointer {{($article->is_sensible == 1 && !Auth::check()) || (Auth::check() && Auth()->user()->contenu_sensible == 0 && $article->is_sensible == 1) ? 'blur-[18px]' : ''}} w-full h-64 object-cover rounded-t-md"
                         @click=" $dispatch('open-article-modal');
                         $dispatch('set-article', {
                             id_article: '{{ $article->id_article }}',
