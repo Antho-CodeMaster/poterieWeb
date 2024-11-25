@@ -60,7 +60,7 @@
                 <!-- Google Login -->
                 <div class="text-center my-8">
                     <a class="w-64 px-16 py-2 bg-[#444444] text-[#F4F0EC] rounded" href="{{ route('login.google') }}">
-                        {{ __('Connexion Google') }}
+                        {{ __('Inscription Google') }}
                     </a>
                 </div>
             </form>
