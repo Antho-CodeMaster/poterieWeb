@@ -55,11 +55,11 @@
                                             En rupture de stock
                                         </p>
                                     @else
-                                        @auth
+                                        @if(is_object($panier))
                                             {{$ajoute = $panier->contains('id_article',$article->id_article)}}
-                                        @else
+                                        @elseif(is_array($panier))
                                             {{$ajoute = in_array($article->id_article,$panier)}}
-                                        @endauth
+                                        @endif
                                         <button class="w-full add-to-cart overflow-hidden whitespace-nowrap border-darkGrey border rounded-[24px] h-[32px] text-darkGrey font-bold" x-data="{ajoute: {{$ajoute ? 'true' : 'false'}}}" @click="addToCart({{ $article->id_article }}); ajoute = !ajoute"
                                             :class="ajoute ? 'added':''">
                                             <div value="{{ $article->id_article }}" name="id_article"
