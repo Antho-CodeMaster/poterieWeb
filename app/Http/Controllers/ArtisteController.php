@@ -185,14 +185,14 @@ class ArtisteController extends Controller
 
         // Sanitize inputs
         $usernames = array_map(function ($username) {
-            return strip_tags(str_replace(['"', "'"], '', trim($username))); // Remove HTML tags and trim
+            return strip_tags(str_replace(['"', "'", " "], '', trim($username))); // Remove HTML tags and trim
         }, $usernames ?? []); // Default to empty array if null
         $reseaux = array_map('intval', $reseaux ?? []); // Default to empty array if null
         $removedFields = array_filter($removedFields, function ($field) {
             if (isset($field['id_reseau'], $field['username']) &&
                 is_numeric($field['id_reseau']) &&
                 is_string($field['username'])) {
-                $field['username'] = strip_tags(str_replace(['"', "'"], '', trim($field['username']))); // Clean username
+                $field['username'] = strip_tags(str_replace(['"', "'", " "], '', trim($field['username']))); // Clean username
                 $field['id_reseau'] = (int) $field['id_reseau'];
                 return true;
             }
