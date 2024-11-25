@@ -47,6 +47,7 @@ mysql-8/*
 !/vendor/laravel/framework/src/Illuminate/Notifications/resources/views
 /vendor/laravel/framework/src/Illuminate/Notifications/resources/views/*
 !/vendor/laravel/framework/src/Illuminate/Notifications/resources/views/email.blade.php
+!/vendor/laravel/framework/config/services.php
 
 # !/vendor/laravel/framework/src/Illuminate/Mail/resources/views/html/message.blade.php
 !/vendor/laravel/framework/src/Illuminate/Mail
