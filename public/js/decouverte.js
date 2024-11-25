@@ -86,6 +86,10 @@ window.addToCart = function(articleId) {
         } else {
             console.log('Article ajouté sur le serveur');
         }
+
+        document.getElementById("basketCount").innerHTML = data.basketCount;
+
+        console.log(data.basketCount);
     })
     .catch(error => {
         console.error('Error:', error);  // Handle any errors during the fetch

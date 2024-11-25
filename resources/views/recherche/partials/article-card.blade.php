@@ -62,13 +62,20 @@
                         En rupture de stock
                     </p>
                 @else
-                    <form action="{{ route('addArticleToPanier') }}" method="POST" class="w-full">
-                        @csrf
-                        <button type="submit" value="{{ $article->id_article }}" name="id_article"
-                            class="border-darkGrey border rounded-[24px] w-full h-[32px] text-darkGrey font-bold">
+                    <button class="w-full add-to-cart overflow-hidden whitespace-nowrap border-darkGrey border rounded-[24px] h-[32px] text-darkGrey font-bold" x-data="{ajoute: {{$panier->contains('id_article',$article->id_article) ? 'true' : 'false'}}}" @click="addToCart({{ $article->id_article }}); ajoute = !ajoute"
+                        :class="ajoute ? 'added':''">
+                        <div value="{{ $article->id_article }}" name="id_article"
+                            class="default m-auto">
                             Ajouter au panier
-                        </button>
-                    </form>
+                        </div>
+                        <div class="success">Ajouté</div>
+                        <div class="cart">
+                            <div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </div>
+                    </button>
                 @endif
             </div>
 

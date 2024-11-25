@@ -448,7 +448,13 @@ gap: 2px;
     54% {
         transform: translateX(78px) rotate(0deg) translateY(1px);
     }
+    99% {
+        opacity: 1;
+        transform: translateX(200px) rotate(-16deg);
+    }
     100% {
+        opacity: 0;
+        visibility: hidden;
         transform: translateX(200px) rotate(-16deg);
     }
 }

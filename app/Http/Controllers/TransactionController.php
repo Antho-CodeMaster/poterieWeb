@@ -366,7 +366,7 @@ class TransactionController extends Controller
 
             //incémente la quantité (0+1 si nouvelle)
             //return Redirect::back(302, ['message' => 'Succes: Article ajouté au panier']);
-            return response()->json(['status' => 'ok', 'ajoute' => true]);
+            return response()->json(['status' => 'ok', 'ajoute' => true, 'basketCount' => sizeof($commande->transactions)]);
         }
         #Créé un cookie qui store le panier si l'utilisateur n'est pas connecté
         else {
@@ -386,7 +386,7 @@ class TransactionController extends Controller
 
             //return Redirect::back()->withCookie($biscuit);
             // return response('Article ajouté au panier (biscuit)')->cookie($biscuit);
-            return response()->json(['message' => 'Succès, Article ajouté au panier', 'ajoute' => true])->withCookie($biscuit);
+            return response()->json(['message' => 'Succès, Article ajouté au panier', 'ajoute' => true, 'basketCount' => sizeof($panier)])->withCookie($biscuit);
         }
     }
 
