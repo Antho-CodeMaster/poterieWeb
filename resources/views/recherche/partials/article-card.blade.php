@@ -39,7 +39,7 @@
                         @if(is_object($panier))
                             @php $ajoute = $panier->contains('id_article',$article->id_article)@endphp
                         @elseif(is_array($panier))
-                            @php $ajoute = in_array($article->id_article,$panier)@endphp
+                            @php $ajoute = in_array($article->id_article, $panier)@endphp
                         @endif
                         <button class="w-full add-to-cart overflow-hidden whitespace-nowrap border-darkGrey border rounded-[24px] h-[32px] text-darkGrey font-bold" x-data="{ajoute: {{$ajoute ? 'true' : 'false'}}}" @click="addToCart({{ $article->id_article }}); ajoute = !ajoute"
                             :class="ajoute ? 'added':''">
