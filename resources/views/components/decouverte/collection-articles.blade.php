@@ -1,9 +1,12 @@
-<div class="my-20" data-collection-id="{{ $collectionName }}">
-    <h2 class="titre font-semibold mx-4 mt-8 mb-2">{{ $collectionName }}</h2>
+<div class="my-20" data-collection-id="{{ $collection->id_collection }}">
+    <h2 class="titre font-semibold mx-4 mt-8 mb-2">{{ $collection->collection }}</h2>
 
+    @if ($collection->articles->isEmpty())
+        <p>Aucun article disponible dans cette collection.</p>
+    @else
         <div class="relative flex items-center">
             <!-- Left Arrow -->
-            <button id="prevBtn-{{ $collectionName }}" class="prev-btn">
+            <button id="prevBtn-{{ $collection->id_collection }}" class="prev-btn">
                 <svg class="h-12 w-12 text-darkGrey absolute cursor-pointer z-10" aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="none" viewBox="4 4 16 16">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -12,9 +15,9 @@
             </button>
 
             <!-- Carousel Wrapper -->
-            <div id="carousel-{{ $collectionName }}"
+            <div id="carousel-{{ $collection->id_collection }}"
                 class="carousel bg-beige p-2 flex overflow-x-scroll scroll-smooth whitespace-nowrap scrollbar-hide w-full">
-                @foreach ($collection as $article)
+                @foreach ($collection->articles as $article)
                     <div x-data='{openArticleModal: false}'
                         class="inline lg:w-[17%] sm:w-[90%] lg:mx-6 mx-2 shrink-0 overflow-hidden whitespace-nowrap rounded-[16px] bg-white shadow-md hover:shadow-lg">
                         <img src="/../img/{{ $article->photosArticle->path }}" alt="{{ $article->nom }}"
@@ -117,7 +120,7 @@
             </div>
 
             <!-- Right Arrow -->
-            <button id="nextBtn-{{ $collectionName }}" class="next-btn">
+            <button id="nextBtn-{{ $collection->id_collection }}" class="next-btn">
                 <svg class="h-12 w-12 text-darkGrey absolute right-0 cursor-pointer z-10" aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="none" viewBox="4 4 16 16">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -125,4 +128,5 @@
                 </svg>
             </button>
         </div>
+    @endif
 </div>
