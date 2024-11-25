@@ -264,3 +264,192 @@ gap: 2px;
 .contenuFiltre{
     height: calc(100% - (32px + calc(2px + 0.4vw) + calc(2px + 0.2vw) + calc(2px + 0.4vw) + calc(2px + 0.4vw)) );
 }
+
+.add-to-cart {
+    --icon: var(--color);
+    --cart: black;
+    cursor: pointer;
+    position: relative;
+    outline: none;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    transform: scale(var(--s, .97));
+    transition: transform .3s, box-shadow .3s;
+    .default {
+        padding-left: 16px;
+        position: relative;
+        opacity: var(--o, 1);
+        transform: scale(var(--s, 1));
+        transition: transform .3s, opacity .3s;
+        transition-delay: var(--d, .3s);
+        &:before,
+        &:after {
+            content: '';
+            width: 2px;
+            height: 12px;
+            left: 0;
+            top: 4px;
+            border-radius: 1px;
+            background: var(--icon);
+            position: absolute;
+            transform: rotate(var(--r, 0deg));
+            transition: transform .25s;
+        }
+        &:after {
+            --r: 90deg;
+        }
+    }
+    .success {
+        opacity: var(--o, 0);
+        transform: translate(-50%, var(--y, 12px));
+        position: absolute;
+        top: 0px;
+        left: 50%;
+        transition: opacity .3s, transform .3s;
+        transition-delay: var(--d, 0s);
+    }
+    .cart {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+        border-radius: inherit;
+        overflow: hidden;
+        -webkit-mask-image: -webkit-radial-gradient(white, black);
+        &:before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 16px;
+            background: var(--background);
+            top: 1px;
+            right: 100%;
+            z-index: 1;
+            margin-right: -20px;
+            transform: translateX(-18px) rotate(-16deg);
+        }
+        & > div {
+            top: 3px;
+            right: 100%;
+            transform: translateX(-18px) rotate(-16deg);
+            position: absolute;
+            z-index: 2;
+            transform-origin: 1px 21px;
+            &:before,
+            &:after {
+                content: '';
+                position: absolute;
+                top: var(--t, 4px);
+                left: var(--l, 0);
+                height: 2px;
+                width: var(--w, 18px);
+                background: var(--cart);
+                border-radius: 1px;
+            }
+            &:after {
+                --w: 16px;
+                --t: 14px;
+                --l: 1px;
+            }
+            & > div {
+                width: 2px;
+                height: var(--h, 15px);
+                border-radius: 1px;
+                transform: rotate(var(--r, -8deg));
+                background: var(--cart);
+                position: relative;
+                &:before,
+                &:after {
+                    content: '';
+                    position: absolute;
+                    background: inherit;
+                }
+                &:after {
+                    width: 4px;
+                    height: 4px;
+                    border-radius: 2px;
+                    bottom: var(--b, -6px);
+                    left: var(--l, 0);
+                }
+                &:first-child {
+                    &:before {
+                        border-radius: inherit;
+                        top: 0;
+                        right: 0;
+                        height: 2px;
+                        width: 6px;
+                        transform-origin: 5px 1px;
+                        transform: rotate(16deg);
+                    }
+                }
+                &:last-child {
+                    --h: 12px;
+                    --r: 8deg;
+                    position: absolute;
+                    left: 16px;
+                    bottom: -1px;
+                    &:after {
+                        --l: -2px;
+                        --b: -5px;
+                    }
+                }
+            }
+        }
+    }
+    &.added {
+        .default {
+            --o: 0;
+            --s: .8;
+            --d: 0s;
+            &:before {
+                --r: -180deg;
+            }
+            &:after {
+                --r: -90deg;
+            }
+        }
+        .success {
+            --o: 1;
+            --y: 0;
+            --d: 1.8s;
+        }
+        .cart {
+            &:before,
+            & > div {
+                animation: cart 2s forwards;
+            }
+        }
+    }
+    &:not(.added) {
+        &:hover {
+            --s: 1;
+            --s-y: 8px;
+            --s-b: 20px;
+        }
+        &:active {
+            --s: .94;
+            --s-y: 2px;
+            --s-b: 6px;
+        }
+    }
+}
+
+@keyframes cart {
+    41%,
+    49%,
+    57%,
+    60% {
+        transform: translateX(78px) rotate(0deg);
+    }
+    40%,
+    47%,
+    54% {
+        transform: translateX(78px) rotate(0deg) translateY(1px);
+    }
+    100% {
+        transform: translateX(200px) rotate(-16deg);
+    }
+}
+

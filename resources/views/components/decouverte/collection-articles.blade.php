@@ -55,13 +55,28 @@
                                             En rupture de stock
                                         </p>
                                     @else
-                                        <div class="w-full" x-data="{ajoute: false}" @click="addToCart({{ $article->id_article }}); ajoute = !ajoute">
+                                        {{-- <div class="w-full" x-data="{ajoute: false}" @click="addToCart({{ $article->id_article }}); ajoute = !ajoute">
                                             @csrf
                                             <button type="button" value="{{ $article->id_article }}" name="id_article" :class="ajoute ? 'bg-rouge' : ''"
                                                 class="overflow-hidden whitespace-nowrap border-darkGrey border rounded-[24px] w-full h-[32px] text-darkGrey font-bold">
                                                 Ajouter au panier
                                             </button>
-                                        </div>
+                                        </div> --}}
+                                        <button class="w-full add-to-cart overflow-hidden whitespace-nowrap border-darkGrey border rounded-[24px] h-[32px] text-darkGrey font-bold" x-data="{ajoute: false}" @click="addToCart({{ $article->id_article }}); ajoute = !ajoute"
+                                            :class="ajoute ? 'added':''">
+                                            <div value="{{ $article->id_article }}" name="id_article"
+                                                class="default m-auto">
+                                                Ajouter au panier
+                                            </div>
+                                            <div class="success">Ajouté</div>
+                                            <div class="cart">
+                                                <div>
+                                                    <div></div>
+                                                    <div></div>
+                                                </div>
+                                            </div>
+                                            <div class="dots"></div>
+                                        </button>
                                     @endif
                                 </div>
                             </div>

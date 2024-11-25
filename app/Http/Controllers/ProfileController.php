@@ -232,20 +232,23 @@ class ProfileController extends Controller
 
         $artiste = Artiste::where('id_user',Auth::id())->first();
 
-        $account = \Stripe\Account::create([
-            'type' => 'express',
-            'country' => 'CA',
-            'email' => $artiste->user->email,
-            'business_type' => 'individual',
-            'capabilities' => [
-                'card_payments' => ['requested' => true],
-                'transfers' => ['requested' => true],
-            ],
-        ]);
+        if($artiste->stripe_acc == null){
+            $account = \Stripe\Account::create([
+                'type' => 'express',
+                'country' => 'CA',
+                'email' => $artiste->user->email,
+                'business_type' => 'individual',
+                'capabilities' => [
+                    'card_payments' => ['requested' => true],
+                    'transfers' => ['requested' => true],
+                ],
+            ]);
+        } else{
+            $account = \Stripe\Account::update($artiste->stripe_acc);
+        }
 
-        $artiste->update([
-            'stripe_acc' => $account->id
-        ]);
+        $artiste->stripe_acc = $account->id;
+        $artiste->save();
 
         $lienCompte = \Stripe\AccountLink::create([
             'account' => $account->id,
@@ -258,9 +261,25 @@ class ProfileController extends Controller
     }
 
     public function connectReturn(Request $request){
-
+        return view('profile.stripe-return');
     }
+
+    //Si le lien est expiré et revisité
     public function connectRefresh(Request $request){
+        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+
+        $artiste = Artiste::where('id_user',Auth::id())->first();
+
+        $account = \Stripe\Account::update($artiste->stripe_acc);
+
+        $lienCompte = \Stripe\AccountLink::create([
+            'account' => $account->id,
+            'refresh_url' => route('connect-refresh'),
+            'return_url' => route('connect-return'),
+            'type' => 'account_onboarding'
+        ]);
+
+        return redirect($lienCompte->url);
     }
 
     /**
