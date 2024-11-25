@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="grid grid-cols-1 lg:grid-cols-6 content-height">
+    <div class="grid grid-cols-1 lg:grid-cols-6">
         <!-- Left Menu -->
         <div class="max-w-xl">
             @include('components.mobile-left-menu')
