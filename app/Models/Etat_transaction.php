@@ -10,4 +10,5 @@ class Etat_transaction extends Model
     use HasFactory;
 
     protected $table = 'etats_transaction';
+    public $timestamps = false;
 }

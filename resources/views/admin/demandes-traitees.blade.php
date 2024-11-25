@@ -36,7 +36,7 @@
                                     <p class="m-auto">{{ $demande->user->email }}</p>
                                     <p class="m-auto">{{ $demande->type->type }}</p>
                                 </div>
-                                <p class="w-2/12 text-center">{{ $demande->date }}</p>
+                                <p class="w-2/12 text-center">{{ $demande->created_at }}</p>
 
                                 <div class="w-7/12 flex gap-input overflow-x-auto overflow-y-hidden">
                                     @if ($demande->type->type != 'Renouvellement')

@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('rue')->nullable();
             $table->char('code_postal', 6)->nullable();
             $table->smallInteger('id_ville')->unsigned()->nullable();
-            $table->char('telephone', 10)->nullable();
             $table->boolean('contenu_sensible')->default(0);
             $table->tinyInteger('id_question_securite')->unsigned();
             $table->string('reponse_question');
@@ -33,7 +32,9 @@ return new class extends Migration
             $table->timestamps();
 
             $table->string('google2fa_secret')->nullable();
-            $table->boolean('uses_two_factor_auth')->nullable();
+            $table->boolean('uses_2fa');
+            $table->string('stripe_id')->nullable()->index();
+            $table->string('google_id')->nullable();
         });
 
         Schema::table('users', function (Blueprint $table) {

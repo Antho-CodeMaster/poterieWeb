@@ -56,7 +56,7 @@ class DemandeController extends Controller
         // Si on a déjà une demande pending, on ne peut pas en faire une nouvelle
         if (Demande::where('id_user', Auth::id())->where('id_etat', 1)->first() != null)
             return $view->withErrors([
-                'alreadyPending' => 'Vous avez déjà une demande en attente dans notre serveur, créée le ' . $demande->date . '. Veuillez attendre le verdict de l\'administration avant de réessayer.'
+                'alreadyPending' => 'Vous avez déjà une demande en attente dans notre serveur, créée le ' . $demande->created_at . '. Veuillez attendre le verdict de l\'administration avant de réessayer.'
             ]);
 
         return $view;
@@ -128,7 +128,6 @@ class DemandeController extends Controller
             'id_type' => $type,
             'id_etat' => 1, // En attente
             'id_user' => Auth::id(),
-            'date' => now()
         ]);
         if (!$newDemande->save()) {
             return back()->withErrors(['msg' => 'Une erreur inattendue s\'est produite lors de l\'envoi de votre demande. Veuillez réessayer plus tard.']);

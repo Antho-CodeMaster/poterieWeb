@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('message');
             $table->string('lien')->nullable();
             $table->boolean('visible');
-            $table->timestamps();
         });
 
         Schema::table('notifications', function (Blueprint $table) {

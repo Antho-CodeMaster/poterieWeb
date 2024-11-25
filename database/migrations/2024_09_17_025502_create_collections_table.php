@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('collections', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->bigIncrements('id_collection');
-            $table->timestamps();
             $table->string('collection');
         });
     }

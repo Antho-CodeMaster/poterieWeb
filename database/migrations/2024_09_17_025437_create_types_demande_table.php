@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('types_demande', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->tinyIncrements('id_type');
-            $table->timestamps();
             $table->string('type');
         });
     }

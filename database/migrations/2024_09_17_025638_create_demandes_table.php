@@ -19,7 +19,6 @@ return new class extends Migration
             $table->bigInteger('id_user')->unsigned();
             $table->string('raison_refus')->nullable();
             $table->timestamps();
-            $table->dateTime('date');
         });
 
         Schema::table('demandes', function (Blueprint $table) {

@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('reseaux', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->smallIncrements('id_reseau');
-            $table->timestamps();
             $table->string('reseau', 32);
             $table->string('url');
         });

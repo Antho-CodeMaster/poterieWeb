@@ -65,7 +65,8 @@ class ArticleNonRecuController extends Controller
 
         $newsignalement = Article_non_recu::create([
             "id_transaction" => $validatedData["id_transaction"],
-            "description" => $validatedData["signaleDescription"]
+            "description" => $validatedData["signaleDescription"],
+            "date" => now()
         ]);
 
         /* Stockage en BD du nouvel article */

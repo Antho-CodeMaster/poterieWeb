@@ -14,7 +14,7 @@
         poids: '{{ $article->poids }}',
         couleur: '{{ $article->couleur }}',
         quantite_disponible: '{{ htmlspecialchars($article->quantite_disponible) }}',
-        date_publication: '{{ $article->date_publication }}',
+        created_at: '{{ $article->created_at }}',
         is_unique: '{{ $article->is_unique }}',
         is_alimentaire: '{{ $article->is_alimentaire }}',
         is_sensible: '{{ $article->is_sensible }}',

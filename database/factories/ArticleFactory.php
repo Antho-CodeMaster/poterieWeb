@@ -29,7 +29,6 @@ class ArticleFactory extends Factory
             'poids' => fake()->randomFloat(2, 0, 500),
             'couleur' => fake()->word(),
             'quantite_disponible' => $unique == 1 ? 1 : random_int(1, 50),
-            'date_publication' => now(),
             'is_en_vedette' => random_int(0, 1),
             'is_sensible' => random_int(0, 1),
             'is_alimentaire' => random_int(0, 1),

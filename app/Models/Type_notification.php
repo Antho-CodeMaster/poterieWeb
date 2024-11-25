@@ -9,6 +9,7 @@ class Type_notification extends Model
 {
     use HasFactory;
     protected $table = 'types_notification';
+    public $timestamps = false;
 
     public function notifications()
     {

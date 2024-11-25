@@ -9,7 +9,7 @@
         </p>
     </header>
 
-    @if ($user->uses_two_factor_auth)
+    @if ($user->uses_2fa)
     <form method="post" action="{{ route('2fa.deactivate') }}" class="mt-6 space-y-6" id="2faForm">
         @csrf
         <x-primary-button class="hover:bg-[#FA3D3D] bg-rouge">{{ __('Désactiver') }}</x-primary-button>

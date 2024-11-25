@@ -15,7 +15,6 @@ return new class extends Migration
             $table->engine = 'InnoDB';
             $table->bigIncrements('id_artiste');
             $table->bigInteger('id_user')->unsigned();
-            $table->tinyInteger('id_theme')->unsigned();
             $table->string('nom_artiste')->nullable();
             $table->string('path_photo_profil')->nullable()->default('default_artiste.png');
             $table->boolean('is_etudiant');
@@ -30,7 +29,6 @@ return new class extends Migration
 
         Schema::table('artistes', function (Blueprint $table) {
             $table->foreign('id_user')->references('id')->on('users');
-            $table->foreign('id_theme')->references('id_theme')->on('themes');
         });
     }
 

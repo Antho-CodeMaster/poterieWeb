@@ -23,7 +23,6 @@ class Article extends Model
         'profondeur',
         'poids',
         'quantite_disponible',
-        'date_publication',
         'is_en_vedette',
         'is_sensible',
         'is_alimentaire',

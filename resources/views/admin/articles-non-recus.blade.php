@@ -48,7 +48,7 @@
                                     <span>{{ $anr->transaction->commande->user->name }}</span>
                                 </p>
                                 <p><span class="font-bold">Date de la demande:</span>
-                                    <span>{{ $anr->created_at }}</span></p>
+                                    <span>{{ $anr->date }}</span></p>
                                 <p><span class="font-bold">Commentaire: </span> <span
                                         class="italic">{{ $anr->description }}</span></p>
                             </div>
@@ -70,7 +70,7 @@
                         </div>
                         <div class="w-1/3 flex flex-col justify-between" x-data="{ openDelete: {{ $errors->any() ? 'true' : 'false' }} }">
 
-                            <p class="textGrand-dark">Payé le: <span>{{ $anr->transaction->created_at }}</span></p>
+                            <p class="textGrand-dark">Payé le: <span>{{ $anr->transaction->commande->date }}</span></p>
 
                             <form method="get" action="mailto:{{ $anr->transaction->commande->user->email }}">
                                 @csrf

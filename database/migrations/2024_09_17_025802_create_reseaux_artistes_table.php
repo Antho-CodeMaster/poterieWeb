@@ -16,7 +16,6 @@ return new class extends Migration
             $table->smallInteger('id_reseau')->unsigned();
             $table->bigInteger('id_artiste')->unsigned();
             $table->string('username');
-            $table->timestamps();
         });
 
         Schema::table('reseaux_artistes', function (Blueprint $table) {

@@ -11,6 +11,7 @@ class Reseau extends Model
     use HasFactory;
     protected $table = "reseaux";
     protected $primaryKey = "id_reseau";
+    public $timestamps = false;
 
     public function artistes(): BelongsToMany
     {

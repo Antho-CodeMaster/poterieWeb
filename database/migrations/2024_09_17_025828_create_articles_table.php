@@ -25,7 +25,6 @@ return new class extends Migration
             $table->float('poids', 2)->nullable();
             $table->string('couleur')->nullable();
             $table->smallInteger('quantite_disponible');
-            $table->dateTime('date_publication');
             $table->boolean('is_en_vedette');
             $table->boolean('is_sensible');
             $table->boolean('is_alimentaire');

@@ -28,7 +28,6 @@ class DatabaseSeeder extends Seeder
             MotCleSeeder::class,
             QuestionSecuriteSeeder::class,
             VilleSeeder::class,
-            ThemeSeeder::class,
             CompagnieLivraisonSeeder::class,
             ReseauSeeder::class,
 
@@ -40,7 +39,6 @@ class DatabaseSeeder extends Seeder
             #DemandeSeeder::class,
             SignalementSeeder::class,
             LikeSeeder::class,
-            FollowSeeder::class,
             ReseauArtisteSeeder::class,
             MotCleArticleSeeder::class,
             PhotoArticleSeeder::class,
@@ -50,7 +48,6 @@ class DatabaseSeeder extends Seeder
             #PhotoIdentiteSeeder::class,
             #PhotoLivraisonSeeder::class,
             CollectionSeeder::class,
-            CollectionArticleSeeder::class,
             ]);
     }
 }

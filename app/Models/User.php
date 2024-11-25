@@ -96,19 +96,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(Notification::class, 'id_user', 'id');
     }
-
-    public function default_pm_id()
-    {
-        if ($this->stripe_id != null) {
-            \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
-            $defaultPaymentMethod = \Stripe\PaymentMethod::all([
-                'customer' => $this->stripe_id,
-                'type' => 'card',
-            ]);
-
-            if(!empty($defaultPaymentMethod->data))
-                return $defaultPaymentMethod->data[0]->id;
-        }
-        return null;
-    }
 }

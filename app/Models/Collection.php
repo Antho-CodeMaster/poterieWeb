@@ -11,6 +11,7 @@ class Collection extends Model
     protected $table = 'collections';
     protected $primaryKey = 'id_collection';
     protected $fillable = ['collection'];
+    public $timestamps = false;
 
     public function articles()
     {

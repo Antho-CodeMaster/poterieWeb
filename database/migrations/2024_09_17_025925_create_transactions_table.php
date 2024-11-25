@@ -24,7 +24,6 @@ return new class extends Migration
             $table->date('date_reception_effective')->nullable();
             $table->string('code_ref_livraison')->nullable();
             $table->string('trackingId_easypost')->nullable();
-            $table->timestamps();
         });
 
         Schema::table('transactions', function (Blueprint $table) {

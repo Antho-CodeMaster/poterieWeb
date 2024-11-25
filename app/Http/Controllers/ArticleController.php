@@ -57,7 +57,7 @@ class ArticleController extends Controller
             ->whereHas('artiste', function ($query) {
                 $query->where('actif', true); //L'artiste doit être actif présentement
             })
-            ->orderBy('date_publication', 'desc');
+            ->orderBy('created_at', 'desc');
 
         $count = $articles->count();
         $articles = $articles->skip(50 * ($page - 1))
@@ -207,7 +207,6 @@ class ArticleController extends Controller
                 'profondeur' => $validatedData['profondeurArticle'],
                 'poids' => $validatedData['poidsArticle'],
                 'quantite_disponible' => $validatedData['quantiteArticle'],
-                'date_publication' => now(), // Utiliser now() pour obtenir la date actuelle
                 'is_en_vedette' => $validatedData['enVedette'],
                 'is_sensible' => $validatedData['flouter'],
                 'is_alimentaire' => $validatedData['typePiece'],

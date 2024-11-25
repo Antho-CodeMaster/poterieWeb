@@ -18,7 +18,6 @@ return new class extends Migration
             $table->bigInteger('id_article')->unsigned();
             $table->dateTime('date');
             $table->string('description');
-            $table->timestamps();
         });
 
         Schema::table('signalements', function (Blueprint $table) {

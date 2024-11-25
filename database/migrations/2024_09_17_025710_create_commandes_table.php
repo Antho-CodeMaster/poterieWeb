@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('rue')->nullable();
             $table->char('code_postal', 6)->nullable();
             $table->smallInteger('id_ville')->unsigned()->nullable();
-            $table->timestamps();
             $table->boolean('is_panier');
             $table->string('checkout_id', 255)->nullable();
             $table->string('payment_intent_id', 255)->nullable();

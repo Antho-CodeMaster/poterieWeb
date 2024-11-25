@@ -94,7 +94,7 @@ class Artiste extends Model
                         // Si la date du dernier renouvellement est passée
                         if (now() > $date->addMonth()) {
                             // Si aucune demande de renouvellement n'a été faite depuis, on doit rendre l'artiste inactif.
-                            if ($demande == null || $demande->date < $date) {
+                            if ($demande == null || $demande->created_at < $date) {
                                 $this->actif = 0;
                                 $this->save();
 

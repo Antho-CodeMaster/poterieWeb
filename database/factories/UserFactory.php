@@ -33,7 +33,8 @@ class UserFactory extends Factory
             'id_question_securite' => 1,
             'reponse_question' => Hash::make('Lorem Ipsum Dolor Sit Amet'),
             'active' => 1,
-            'units' => 0
+            'units' => 0,
+            'uses_2fa' => 0
         ];
     }
 

@@ -15,7 +15,6 @@ return new class extends Migration
             $table->engine = 'InnoDB';
             $table->bigInteger('id_mot_cle')->unsigned();
             $table->bigInteger('id_article')->unsigned();
-            $table->timestamps();
         });
 
         Schema::table('mots_cles_articles', function (Blueprint $table) {

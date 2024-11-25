@@ -23,7 +23,7 @@ class TwoFactorController extends Controller
             $key = $google2fa->generateSecretKey();
 
             $user->google2fa_secret = $key;
-            $user->uses_two_factor_auth = true;
+            $user->uses_2fa = true;
             $user->save();
         }
 
@@ -62,7 +62,7 @@ class TwoFactorController extends Controller
 
         $user = User::find(Auth::id());
 
-        if(!$user || !$user->uses_two_factor_auth){
+        if(!$user || !$user->uses_2fa){
             return redirect('/');
         }
 
@@ -93,7 +93,7 @@ class TwoFactorController extends Controller
         $otp_secret = $user->google2fa_secret;
 
         if($google2fa->verify($request->one_time_password ,$otp_secret)){
-            $user->uses_two_factor_auth = true;
+            $user->uses_2fa = true;
             $user->save();
 
             $request->session()->put('2fa:auth:passed', true);
@@ -139,7 +139,7 @@ class TwoFactorController extends Controller
     public function destroy(Request $request){
         $user = User::find(Auth::id());
 
-        $user->uses_two_factor_auth = false;
+        $user->uses_2fa = false;
         $user->google2fa_secret = null;
         $user->save();
 
