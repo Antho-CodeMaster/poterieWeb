@@ -78,18 +78,11 @@
                 </button>
             </div>
 
-            <!-- Placeholder for Google -->
+            <!-- Google Login -->
             <div class="text-center my-8">
-                <button class="w-64 mx-auto bg-[#444444] text-[#F4F0EC] py-2 rounded">
-                    {{ __('Google') }}
-                </button>
-            </div>
-
-            <!-- Placeholder for Facebook -->
-            <div class="text-center mt-4">
-                <button class="w-64 mx-auto bg-[#444444] text-[#F4F0EC] py-2 rounded">
-                    {{ __('Facebook') }}
-                </button>
+                <a class="w-64 px-16 py-2 bg-[#444444] text-[#F4F0EC] rounded" href="{{ route('login.google') }}">
+                    {{ __('Connexion Google') }}
+                </a>
             </div>
         </div>
     </div>

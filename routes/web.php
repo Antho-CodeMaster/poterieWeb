@@ -12,6 +12,7 @@ use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Auth\GoogleController;
 
 use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\TransactionController;
@@ -25,6 +26,9 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Cashier\Checkout;
 
 Route::get('/', [CollectionController::class, 'index'])->name('decouverte')->withoutMiddleware([TwoFactorAuthMiddleware::class]);
+
+Route::get('login/google', [GoogleController::class, 'redirectToGoogle'])->name('login.google');
+Route::get('login/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
 /* Route relié au kiosque */
 Route::controller(ArtisteController::class)->group(function () {
