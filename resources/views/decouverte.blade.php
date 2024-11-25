@@ -59,16 +59,18 @@
 
                 <div class="my-8 text-2xl text-center">
                     <ul class="flex justify-center space-x-4">
-                        @foreach ($collections as $collection)
-                            <li class="relative inline-block overflow-hidden">
-                                <a href="#{{ $collection->collection }}"
-                                   class="p-4 text-beige hover:text-vert hover9 overflow-hidden relative inline-block transition-all duration-200 ease-out"
-                                   data-hover-label="{{ $collection->collection }}">
-                                    <span class="hover9__label inline-block transition-transform duration-300 ease-[cubic-bezier(0.86, 0.6, 0.08, 1.01)]">
-                                        {{ $collection->collection }}
-                                    </span>
-                                </a>
-                            </li>
+                        @foreach ($collections as $collection => $articles)
+                            @if (!$articles->isEmpty())
+                                <li class="relative inline-block overflow-hidden">
+                                    <a href="#{{ $collection }}"
+                                    class="p-4 text-beige hover:text-vert hover9 overflow-hidden relative inline-block transition-all duration-200 ease-out"
+                                    data-hover-label="{{ $collection }}">
+                                        <span class="hover9__label inline-block transition-transform duration-300 ease-[cubic-bezier(0.86, 0.6, 0.08, 1.01)]">
+                                            {{ $collection }}
+                                        </span>
+                                    </a>
+                                </li>
+                            @endif
                         @endforeach
                     </ul>
                 </div>
@@ -88,10 +90,12 @@
     @include('kiosque.modal.article-modal')
 
     <div id="collections">
-        @foreach ($collections as $collection)
-            <div id="{{ $collection->collection }}" class="pt-2">
-                <x-decouverte.collection-articles :collection="$collection" />
-            </div>
+        @foreach ($collections as $collection => $articles)
+            @if (!$articles->isEmpty())
+                <div id="{{ $collection }}" class="pt-2">
+                    <x-decouverte.collection-articles :collection="$articles" :collectionName="$collection" />
+                </div>
+            @endif
         @endforeach
     </div>
 </x-app-layout>
