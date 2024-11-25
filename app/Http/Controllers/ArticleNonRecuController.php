@@ -49,7 +49,7 @@ class ArticleNonRecuController extends Controller
         $transaction = Transaction::where('id_transaction', $validatedData["id_transaction"])->first();
 
         if($transaction->id_etat != 5)
-            if(now() < Carbon::create($transaction->created_at)->addMonth())
+            if(now() < Carbon::create($transaction->commande->date)->addMonth())
             {
                 session()->flash('erreur', 'Vous devez attendre au moins un mois après la commande pour signaler un article comme non reçu.');
                 return back();
