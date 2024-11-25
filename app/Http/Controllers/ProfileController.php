@@ -253,7 +253,7 @@ class ProfileController extends Controller
         $lienCompte = \Stripe\AccountLink::create([
             'account' => $account->id,
             'refresh_url' => route('connect-refresh'),
-            'return_url' => route('connect-return'),
+            'return_url' => route('profile.facturation') . '?success=true',
             'type' => 'account_onboarding'
         ]);
 

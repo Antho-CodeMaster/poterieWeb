@@ -1,3 +1,3 @@
-<c-app-layout>
-
-</c-app-layout>
+<x-app-layout>
+    <h1></h1>
+</x-app-layout>
