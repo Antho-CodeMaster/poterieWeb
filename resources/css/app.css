@@ -459,3 +459,55 @@ gap: 2px;
     }
 }
 
+
+/* ---------------------------------- Aucune collection error animation --------------------------------------------- */
+.circle-border {
+    animation: circle-anim 2s ease-in-out infinite;
+}
+
+@keyframes circle-anim {
+    0%   {transform: scale(1); background-color: white;}
+    50%  {transform: scale(1.2); background-color: #E6AF00;}
+    100%   {transform: scale(1); background-color: white;}
+}
+
+.x-icon::before,
+.x-icon::after {
+    width: 48px;
+    top: 48%;
+    left: 12%;
+
+    content: "";
+    display: block;
+    height: 4px;
+    background: #E6AF00;
+    position: absolute;
+}
+
+.x-icon::before {
+    animation: rotateX-1-anim 2s ease-in-out infinite;
+}
+
+.x-icon::after {
+    animation: rotateX-2-anim 2s ease-in-out infinite;
+}
+
+@keyframes rotateX-1-anim {
+    from {
+        transform: rotate(45deg);
+    }
+    to {
+        transform: rotate(405deg);
+    }
+}
+
+@keyframes rotateX-2-anim {
+    from {
+        transform: rotate(-45deg);
+    }
+    to {
+        transform: rotate(495deg);
+    }
+}
+
+/* ------------------------------------------------------------------------------- */

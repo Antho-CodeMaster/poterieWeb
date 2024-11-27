@@ -90,12 +90,33 @@
     @include('kiosque.modal.article-modal')
 
     <div id="collections">
-        @foreach ($collections as $collection => $articles)
-            @if (!$articles->isEmpty())
-                <div id="{{ $collection }}" class="pt-2">
-                    <x-decouverte.collection-articles :collection="$articles" :collectionName="$collection" />
+        @if (isset($collections))
+            @foreach ($collections as $collection => $articles)
+                @if (!$articles->isEmpty())
+                    <div id="{{ $collection }}" class="pt-2">
+                        <x-decouverte.collection-articles :collection="$articles" :collectionName="$collection" />
+                    </div>
+                @endif
+            @endforeach
+        @else
+            <div class="flex flex-col h-screen">
+                <span class="h-1/3"></span>
+
+                <div class="flex flex-col items-center align-center m-4 p-4 rounded bg-darkGrey">
+                    <div class="m-6 justify-center">
+                        <h1 class="text-center text-3xl text-beige">Oups, nous semblons avoir rencontré un problème, veuillez réessayer plus tard.</h1>
+                    </div>
+
+                    <div class="my-6 relative">
+                        <div class="circle-border absolute z-0 w-16 h-16 rounded-[50%] bg-jauneWarning scale-110"></div>
+                        <div class="circle relative z-1 w-16 h-16 rounded-[50%] bg-white scale-100">
+                            <div class="x-icon"></div>
+                        </div>
+                    </div>
                 </div>
-            @endif
-        @endforeach
+
+                <span class="h-1/3"></span>
+            </div>
+        @endif
     </div>
 </x-app-layout>
