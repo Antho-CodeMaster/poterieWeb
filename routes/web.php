@@ -58,8 +58,8 @@ Route::controller(ArticleController::class)->group(function () {
 /* Routes liées aux commandes*/
 Route::controller(CommandeController::class)->group(function () {
     #Route pour afficher le panier en cours de l'utilisateur
-    Route::get('/panier', [CommandeController::class, 'showPanier'])->name('panier');
-    Route::get('/commandes', [CommandeController::class, 'index'])->name('commandes');
+    Route::get('/panier', 'showPanier')->name('panier');
+    Route::get('/commandes', 'index')->name('commandes');
     Route::get('/commande/{id}', 'show');
 
     /**Route pour Cashier */
