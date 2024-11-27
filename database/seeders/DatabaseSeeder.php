@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
             // Dépendances externes
             UserSeeder::class,
             ModerateurSeeder::class,
-            #ArtisteSeeder::class,
+            ArtisteSeeder::class,
             #ArticleSeeder::class,
             #DemandeSeeder::class,
             #SignalementSeeder::class,

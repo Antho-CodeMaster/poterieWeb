@@ -18,12 +18,12 @@
             <span id="showLoginModal" class="hidden"></span>
         @endif
         @if ($errors->any())
-        <div class="w-[500px] fixed z-50 right-2 bottom-10">
-            @include('messages.messageFail', [
-                'message' => $errors->first('msg'),
-                'titre' => 'Échec',
-            ])
-        </div>
+            <div class="w-[500px] fixed z-50 right-2 bottom-10">
+                @include('messages.messageFail', [
+                    'message' => $errors->first('msg'),
+                    'titre' => 'Échec',
+                ])
+            </div>
         @endif
     </div>
 
@@ -40,9 +40,10 @@
                             @if (!$articles->isEmpty())
                                 <li class="relative inline-block overflow-hidden">
                                     <a href="#{{ $collection }}"
-                                    class="p-4 text-beige hover:text-vert hover9 overflow-hidden relative inline-block transition-all duration-200 ease-out"
-                                    data-hover-label="{{ $collection }}">
-                                        <span class="hover9__label inline-block transition-transform duration-300 ease-[cubic-bezier(0.86, 0.6, 0.08, 1.01)]">
+                                        class="p-4 text-beige hover:text-vert hover9 overflow-hidden relative inline-block transition-all duration-200 ease-out"
+                                        data-hover-label="{{ $collection }}">
+                                        <span
+                                            class="hover9__label inline-block transition-transform duration-300 ease-[cubic-bezier(0.86, 0.6, 0.08, 1.01)]">
                                             {{ $collection }}
                                         </span>
                                     </a>
@@ -67,7 +68,13 @@
     @include('kiosque.modal.article-modal')
 
     <div id="collections">
-        @if (count($collections) !== 0)
+        @if (
+            !(
+                $collections['En vedette']->isEmpty() &&
+                $collections['Nouveautés']->isEmpty() &&
+                $collections['Découvrez']->isEmpty() &&
+                $collections['Vos articles aimés']->isEmpty()
+            ))
             @foreach ($collections as $collection => $articles)
                 @if (!$articles->isEmpty())
                     <div id="{{ $collection }}" class="pt-2">
@@ -81,7 +88,8 @@
 
                 <div class="flex flex-col items-center align-center m-4 p-4 rounded bg-darkGrey">
                     <div class="m-6 justify-center">
-                        <h1 class="text-center text-3xl text-beige">Oups, nous semblons avoir rencontré un problème, veuillez réessayer plus tard.</h1>
+                        <h1 class="text-center text-3xl text-beige">Oups, nous semblons avoir rencontré un problème,
+                            veuillez réessayer plus tard.</h1>
                     </div>
 
                     <div class="my-6 relative">
