@@ -24,21 +24,13 @@ class ArtisteSeeder extends Seeder
 
         Artiste::factory()->create([
             'id_user' => 5,
-            'is_etudiant' => 0
+            'is_etudiant' => 1
         ]);
 
-        // Compte Artiste pour ARTISTE INACTIF compte HamidAdelyar
-
-        Artiste::factory()->create([
-            'id_user' => 9,
-            'is_etudiant' => 0,
-            'actif' => 0
-        ]);
-
-        for ($i = 10; $i < 20; $i++) {
+/*         for ($i = 10; $i < 20; $i++) {
             Artiste::factory()->create([
                 'id_user' => $i
             ]);
-        }
+        } */
     }
 }

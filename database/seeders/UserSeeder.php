@@ -15,9 +15,9 @@ class UserSeeder extends Seeder
     {
         // ID: 1
         User::factory()->create([
-            'name' => 'ADMINISTRATEUR',
-            'email' => 'administrateur@terracium.com',
-            'password' => 'poterie'
+            'name' => 'Léo Filiatreault',
+            'email' => 'leofiliatreault.business@gmail.com',
+            'password' => 'Terracium/Goose420'
         ]);
 
         // ID: 2
@@ -78,10 +78,10 @@ class UserSeeder extends Seeder
 
         // 10 utilisateurs qui seront artistes.
         // IDs: 10 - 19
-        User::factory(10)->create();
+        #User::factory(10)->create();
 
         // 10 utilisateurs qui seront des clients réguliers.
         // IDs: 20 - 29
-        User::factory(10)->create();
+        #User::factory(10)->create();
     }
 }
