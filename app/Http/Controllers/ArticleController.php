@@ -211,7 +211,6 @@ class ArticleController extends Controller
                 'is_sensible' => $validatedData['flouter'],
                 'is_alimentaire' => $validatedData['typePiece'],
                 'is_unique' => $validatedData['pieceUnique'],
-                'couleur' => 'brun marde', // Vous pouvez le modifier selon vos besoins
             ]);
 
             /* 5. Stockage en BD du nouvelle article */
@@ -491,7 +490,6 @@ class ArticleController extends Controller
                 'is_sensible' => $validatedData['flouter'],
                 'is_alimentaire' => $validatedData['typePiece'],
                 'is_unique' => $validatedData['pieceUnique'],
-                'couleur' => 'brun marde', // Vous pouvez le modifier selon vos besoins
             ])) {
                 session()->flash('succesArticle', 'L\'article a bien été modifié');
             } else {

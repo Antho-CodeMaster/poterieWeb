@@ -15,7 +15,6 @@
                 largeur: '{{ number_format($article->largeur,2, ",", " ") }}',
                 profondeur: '{{ number_format($article->profondeur, 2, ",", " ") }}',
                 poids: '{{ $article->poids }}',
-                couleur: '{{ $article->couleur }}',
                 quantite_disponible: '{{ htmlspecialchars($article->quantite_disponible) }}',
                 is_unique: '{{ $article->is_unique }}',
                 is_alimentaire: '{{ $article->is_alimentaire }}',

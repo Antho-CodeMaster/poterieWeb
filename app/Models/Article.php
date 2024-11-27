@@ -27,7 +27,6 @@ class Article extends Model
         'is_sensible',
         'is_alimentaire',
         'is_unique',
-        'couleur',
     ];
 
     public function etat()

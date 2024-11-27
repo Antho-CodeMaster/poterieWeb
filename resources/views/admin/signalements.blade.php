@@ -61,7 +61,6 @@
                                     largeur: '{{ $signalement->article->largeur }}',
                                     profondeur: '{{ $signalement->article->profondeur }}',
                                     poids: '{{ $signalement->article->poids }}',
-                                    couleur: '{{ $signalement->article->couleur }}',
                                     quantite_disponible: '{{ htmlspecialchars($signalement->article->quantite_disponible) }}',
                                     is_unique: '{{ $signalement->article->is_unique }}',
                                     is_alimentaire: '{{ $signalement->article->is_alimentaire }}',

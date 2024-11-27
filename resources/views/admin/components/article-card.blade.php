@@ -12,7 +12,6 @@
         largeur: '{{ $article->largeur }}',
         profondeur: '{{ $article->profondeur }}',
         poids: '{{ $article->poids }}',
-        couleur: '{{ $article->couleur }}',
         quantite_disponible: '{{ htmlspecialchars($article->quantite_disponible) }}',
         created_at: '{{ $article->created_at }}',
         is_unique: '{{ $article->is_unique }}',

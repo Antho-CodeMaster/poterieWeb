@@ -23,7 +23,6 @@ return new class extends Migration
             $table->float('largeur', 2)->nullable();
             $table->float('profondeur', 2)->nullable();
             $table->float('poids', 2)->nullable();
-            $table->string('couleur')->nullable();
             $table->smallInteger('quantite_disponible');
             $table->boolean('is_en_vedette');
             $table->boolean('is_sensible');
