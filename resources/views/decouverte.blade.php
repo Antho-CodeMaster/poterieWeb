@@ -90,7 +90,7 @@
     @include('kiosque.modal.article-modal')
 
     <div id="collections">
-        @if (isset($collections))
+        @if (count($collections) !== 0)
             @foreach ($collections as $collection => $articles)
                 @if (!$articles->isEmpty())
                     <div id="{{ $collection }}" class="pt-2">
