@@ -5,7 +5,7 @@
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            {{ __('Vous êtes abonné à Terracium afin d\'avoir un kiosque et de vendre vos articles. Vous pouvez annuler votre abonnement. Vous conserverez vos accès
+            {{ __('Vous êtes abonné à Artterre afin d\'avoir un kiosque et de vendre vos articles. Vous pouvez annuler votre abonnement. Vous conserverez vos accès
                                                                                             jusqu\'à la prochaine date où votre facturation aurait été prévue.') }}
         </p>
     </header>

@@ -37,7 +37,7 @@ class Refus_demande extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Terracium | Votre demande a été refusée')
+            ->subject('Artterre | Votre demande a été refusée')
             ->markdown('mail.refus-demande', ['reason' => $this->reason]);
     }
 

@@ -37,7 +37,7 @@ class Demande_renouvellement extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Terracium | Vous avez un mois pour renouveler votre abonnement chez Terracium')
+            ->subject('Artterre | Vous avez un mois pour renouveler votre abonnement chez Artterre')
             ->markdown('mail.demande-renouvellement', ['date' => $this->date]);
     }
 

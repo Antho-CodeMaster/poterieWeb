@@ -37,7 +37,7 @@ class Renouvellement_refuse extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Terracium | Votre renouvellement de compte étudiant a été refusé')
+            ->subject('Artterre | Votre renouvellement de compte étudiant a été refusé')
             ->markdown('mail.renouvellement-refuse', ['reason' => $this->reason]);
     }
 

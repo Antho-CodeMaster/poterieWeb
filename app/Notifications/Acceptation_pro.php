@@ -37,7 +37,7 @@ class Acceptation_pro extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Terracium | Votre demande a été acceptée!')
+            ->subject('Artterre | Votre demande a été acceptée!')
             ->markdown('mail.acceptation-pro', ['id' => $this->id_kiosque]);
     }
 

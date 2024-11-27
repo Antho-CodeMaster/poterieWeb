@@ -5,7 +5,7 @@
         <!-- Logo -->
         <div class="w-[225px] flex items-center ml-[16px]">
             <a class="navTitre" href="{{ route('decouverte') }}">
-                @Terracium
+                Artterre
             </a>
         </div>
 

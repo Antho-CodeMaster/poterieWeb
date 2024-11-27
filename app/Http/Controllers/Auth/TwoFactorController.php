@@ -39,7 +39,7 @@ class TwoFactorController extends Controller
         // Generate QR Code
         $qrCode = $writer->writeString(
             $google2fa->getQRCodeUrl(
-                '@Terracium', // Issuer (App Name)
+                'Artterre', // Issuer (App Name)
                 $user->email,  // User's email
                 $user->google2fa_secret // Secret key
             )
@@ -127,7 +127,7 @@ class TwoFactorController extends Controller
         // Generate QR Code
         $qrCode = $writer->writeString(
             $google2fa->getQRCodeUrl(
-                '@Terracium', // Issuer (App Name)
+                'Artterre', // Issuer (App Name)
                 $user->email,  // User's email
                 $user->google2fa_secret // Secret key
             )

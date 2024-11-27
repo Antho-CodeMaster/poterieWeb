@@ -27,35 +27,12 @@
         @endif
     </div>
 
-    <!--
-    <div class="bg-beigeFoncé m-section">
-        <h1 class="titreH1-dark">Terracium H1</h1>
-        <h2 class="titreH2-dark">Terracium H2</h2>
-        <p class="textGrand-dark">Terracium textNormal Gros</p>
-        <p class="titreSection-dark">Terracium titreSection</p>
-        <p class="articleGrand-dark">Terracium titreArticleGros</p>
-        <p class="articlePetit-dark">Terracium titreArticlePetit</p>
-        <p class="textFooter-dark">Terracium footer</p>
-        <p class="textNavigation-dark">Terracium navigation</p>
-
-        <div class="bg-darkGrey">
-            <h1 class="titreH1-light">Terracium H1</h1>
-            <h2 class="titreH2-light">Terracium H2</h2>
-            <p class="textPetit-light">Terracium textNormal petit</p>
-            <p class="titreSection-light">Terracium titreSection</p>
-            <p class="articleGrand-light">Terracium titreArticleGros</p>
-            <p class="articlePetit-light">Terracium titreArticlePetit</p>
-            <p class="textFooter-light">Terracium footer</p>
-            <p class="textNavigation-light">Terracium navigation</p>
-        </div>
-    </div>
-    -->
     <!-- Parallax Section -->
     <div id="parallax-img" class="relative top-0 h-[101vh] w-full overflow-hidden">
         <div class="bg-cover bg-center min-h-full w-full" style="background-image: url('/../covers/cover_picture.png');">
             <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-between items-center">
                 <!-- Centered title -->
-                <h1 class="text-beige text-8xl font-bold mt-auto">@Terracium</h1>
+                <h1 class="text-beige text-8xl font-bold mt-auto">Artterre</h1>
 
                 <div class="my-8 text-2xl text-center">
                     <ul class="flex justify-center space-x-4">

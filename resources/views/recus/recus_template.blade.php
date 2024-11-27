@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Receipt</title>
+    <title>Reçu de vente</title>
     <style>
         body { font-family: Arial, sans-serif; color: #333; }
         .container { width: 80%; margin: auto; padding: 20px; }
@@ -17,28 +17,28 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>@Terracium</h1>
-            <p>Facture de vente pour artiste</p>
+            <h1>Artterre</h1>
+            <p>Reçu de vente pour artiste</p>
             <p><strong>Date de la facture</strong> {{ $date }}</p>
         </div>
 
         <div class="info">
             <p><strong>Artiste:</strong> {{ $nom_artiste }}</p>
-            <p><strong>ID Artiste: </strong> {{ $id_artiste }}</p>
+            <p><strong>ID artiste: </strong> {{ $id_artiste }}</p>
         </div>
 
         <div class="summary">
             <h3>Résumé de la facture</h3>
             <p><strong>Date de transaction:</strong> {{ $transaction_date }}</p>
             <p><strong>ID de la commande:</strong> {{ $id_commande }}</p>
-            <p><strong>ID Session Stripe:</strong> {{ $stripe_session_id }}</p>
+            <p><strong>ID de session Stripe:</strong> {{ $stripe_session_id }}</p>
 
             <h3>Articles vendu</h3>
             <table>
                 <tr>
-                    <th>Nom article</th>
-                    <th>Quantite</th>
-                    <th>Prix Unitaire</th>
+                    <th>Article</th>
+                    <th>Quantité</th>
+                    <th>Prix unitaire</th>
                     <th>Total</th>
                 </tr>
                 @foreach ($transactions as $transaction)
@@ -55,8 +55,8 @@
         </div>
 
         <div class="footer">
-            <p>Merci d'utiliser notre plateforme</p>
-            <p>Contactez nous a support@terracium.com</p>
+            <p>Merci d'utiliser notre plateforme!</p>
+            <p>Pour toute question, contactez nous à leofiliatreault.business@gmail.com</p>
         </div>
     </div>
 </body>
