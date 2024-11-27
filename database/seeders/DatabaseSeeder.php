@@ -23,31 +23,30 @@ class DatabaseSeeder extends Seeder
             EtatDemandeSeeder::class,
             TypeDemandeSeeder::class,
             TypeNotificationSeeder::class,
-
-            // Aucune dépendance externe : temporaire
-            MotCleSeeder::class,
             QuestionSecuriteSeeder::class,
-            VilleSeeder::class,
             CompagnieLivraisonSeeder::class,
             ReseauSeeder::class,
+
+            // Aucune dépendance externe : temporaire
+            #MotCleSeeder::class,
+            #VilleSeeder::class,
 
             // Dépendances externes
             UserSeeder::class,
             ModerateurSeeder::class,
-            ArtisteSeeder::class,
-            ArticleSeeder::class,
+            #ArtisteSeeder::class,
+            #ArticleSeeder::class,
             #DemandeSeeder::class,
-            SignalementSeeder::class,
-            LikeSeeder::class,
-            ReseauArtisteSeeder::class,
-            MotCleArticleSeeder::class,
-            PhotoArticleSeeder::class,
+            #SignalementSeeder::class,
+            #LikeSeeder::class,
+            #ReseauArtisteSeeder::class,
+            #MotCleArticleSeeder::class,
+            #PhotoArticleSeeder::class,
             #CommandeSeeder::class,
             #TransactionSeeder::class,
             #PhotoOeuvreSeeder::class,
             #PhotoIdentiteSeeder::class,
             #PhotoLivraisonSeeder::class,
-            CollectionSeeder::class,
             ]);
     }
 }
