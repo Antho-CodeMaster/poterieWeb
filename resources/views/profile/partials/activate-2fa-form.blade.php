@@ -19,7 +19,7 @@
         <div class="mt-6 space-y-6">
             <x-primary-button type='button' x-on:click="show2FAForm = !show2FAForm" class="hover:bg-lightVert bg-vert" x-bind:class="{ 'hidden': show2FAForm }">{{ __('Activer') }}</x-primary-button>
         </div>
-        <form method="post" action="{{ route('2fa.activate') }}" class="mt-6 space-y-6" id="2faForm" x-bind:class="{ 'hidden': !show2FAForm }">
+        <form x-cloak method="post" action="{{ route('2fa.activate') }}" class="mt-6 space-y-6" id="2faForm" x-bind:class="{ 'hidden': !show2FAForm }">
             @csrf
 
             <p class="mt-1 text-sm text-gray-600">

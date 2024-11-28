@@ -198,7 +198,7 @@ window.addEventListener('scroll', () => {
             @endauth
 
             <!-- Settings Dropdown -->
-            <div class="sm:flex sm:items-center ml-[15px]">
+            <div class="sm:flex sm:items-center z-50 ml-[15px]">
                 @auth
                     <!-- Authenticated User: Show Dropdown -->
                     <x-dropdown align="right" width="48">
