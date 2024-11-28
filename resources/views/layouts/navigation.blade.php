@@ -111,7 +111,7 @@ window.addEventListener('scroll', () => {
                                 class="inline-flex items-center border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                                 <div class="ms-1">
                                     @if ($notificationCount > 0)
-                                        <p
+                                        <p id="notificationCount"
                                             class="mx-auto bg-red-500 text-white text-sm text-center rounded w-fit absolute -right-2 -top-0.5 {{ $notificationCount > 9 ? 'px-1' : 'px-1.5' }}">
                                             {{ $notificationCount }}</p>
                                     @endif
