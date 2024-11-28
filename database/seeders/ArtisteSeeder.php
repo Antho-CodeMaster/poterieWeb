@@ -13,24 +13,10 @@ class ArtisteSeeder extends Seeder
      */
     public function run(): void
     {
-        // Compte Artiste pour ARTISTE PROFESSIONNEL
-
-        Artiste::factory()->create([
-            'id_user' => 4,
-            'is_etudiant' => 0
-        ]);
-
-        // Compte Artiste pour ARTISTE ÉTUDIANT
-
-        Artiste::factory()->create([
-            'id_user' => 5,
-            'is_etudiant' => 1
-        ]);
-
-/*         for ($i = 10; $i < 20; $i++) {
+        for ($i = 10; $i < 20; $i++) {
             Artiste::factory()->create([
                 'id_user' => $i
             ]);
-        } */
+        }
     }
 }

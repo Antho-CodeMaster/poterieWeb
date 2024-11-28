@@ -8,10 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Signalement extends Model
 {
     use HasFactory;
-    protected $fillable = ['id_signalement', 'id_user', 'id_article', 'date', 'description'];
+    protected $fillable = ['id_signalement', 'id_user', 'id_article', 'description', 'actif'];
     protected $primaryKey = "id_signalement";
     protected $table = "signalements";
-    public $timestamps = false;
 
     public function article(){
         return $this->belongsTo(Article::class,'id_article','id_article');

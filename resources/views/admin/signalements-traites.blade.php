@@ -7,7 +7,7 @@
             <!-- Titre, nombre de résultats, filtres-->
             <div id="header-info">
                 <div class="flex items-center border-b-2 border-darkGrey gap-5 justify-between">
-                    <h1 class="titre2-dark m-titreY p-sectionY">Signalements</h1>
+                    <h1 class="titre2-dark m-titreY p-sectionY">Signalements traités</h1>
                     <div class="flex gap-2">
                         <div class="flex items-center gap-2">
                             <?php
@@ -35,7 +35,7 @@
                             @for ($i = $initial; $i <= $final && $i < $total_pages; $i++)
                                 <a class="px-4 py-2 rounded
                         {{ $page + 1 == $i ? 'bg-darkGrey text-white' : '' }}"
-                                    href="{{ route('admin-signalements') . '?page=' . $i }}">
+                                    href="{{ route('admin-signalements-traites') . '?page=' . $i }}">
                                     {{ $i }}</a>
                             @endfor
                             @if ($page + 3 < $total_pages)
@@ -43,11 +43,11 @@
                             @endif
                             <a class="px-4 py-2 rounded
                     {{ $page + 1 == $total_pages ? 'bg-darkGrey text-white' : '' }}"
-                                href="{{ route('admin-signalements') . '?page=' . $total_pages }}">
+                                href="{{ route('admin-signalements-traites') . '?page=' . $total_pages }}">
                                 {{ $total_pages }}</a>
                         </div>
-                        <x-button.blue.clipboard-check
-                        @click="window.location.href='{{ route('admin-signalements-traites') }}'">Signalements traités</x-button.blue.clipboard-check>
+                        <x-button.border.back type="button"
+                            onclick="window.location.href='{{ url()->previous() }}'">Retour</x-button.border.back>
                     </div>
                 </div>
                 <h2 class="text-2xl text-darkGrey">{{ $page * 50 + 1 }} à
@@ -65,17 +65,19 @@
                                     {{ $signalement->article->nom }}</h3>
                                 <div class="flex items-center gap-2">
                                     <img src="{{ asset($signalement->article->artiste->path_photo_profil ?? 'img/artistePFP/default_artiste.png') }}"
-                                    alt="{{ $signalement->article->artiste->nom_artiste }}"
-                                    class="rounded-full w-[48px] h-[48px]">
-                                    <form class="hover:underline" method="get" action="{{ route('admin-utilisateurs') }}">
-                                        <input type="hidden" name="query" value="{{ $signalement->article->artiste->nom_artiste ?? $signalement->article->artiste->user->name }}">
+                                        alt="{{ $signalement->article->artiste->nom_artiste }}"
+                                        class="rounded-full w-[48px] h-[48px]">
+                                    <form class="hover:underline" method="get"
+                                        action="{{ route('admin-utilisateurs') }}">
+                                        <input type="hidden" name="query"
+                                            value="{{ $signalement->article->artiste->nom_artiste ?? $signalement->article->artiste->user->name }}">
 
-                                    <x-button.none.empty>{{ $signalement->article->artiste->nom_artiste ?? $signalement->article->artiste->user->name }}
-                                        @if (!$signalement->article->artiste->actif)
-                                            <span class="text-red-500">(inactif)</span>
-                                        @endif
-                                    </x-button.none.empty>
-                                </form>
+                                        <x-button.none.empty>{{ $signalement->article->artiste->nom_artiste ?? $signalement->article->artiste->user->name }}
+                                            @if (!$signalement->article->artiste->actif)
+                                                <span class="text-red-500">(inactif)</span>
+                                            @endif
+                                        </x-button.none.empty>
+                                    </form>
                                     @if ($signalement->article->artiste->actif)
                                         <a class="hover:underline flex w-fit items-center"
                                             href="{{ route('kiosque', ['idUser' => $signalement->article->artiste->id_user]) }}"
@@ -130,14 +132,8 @@
                                 ">Avertir
                                     l'artiste</x-button.yellow.exclamation>
                             </div>
-                            <div class="h-full col-span-3 flex items-center" x-data="{ openDelete: {{ $errors->any() ? 'true' : 'false' }} }">
-                                <x-button.red.trash class="w-full"
-                                    @click="
-                            $dispatch('open-delete-modal');
-                            $dispatch('set-id', {{ $signalement->article->id_article }});
-                            $dispatch('set-signalement', {{ $signalement->id_signalement }});
-                            $dispatch('set-name', {{ json_encode($signalement->article->nom) }});">Supprimer
-                                    la publication</x-button.red.trash>
+                            <div class="col-span-3 row-span-2 flex items-center justify-center">
+                                <p>Traité le {{ $signalement->updated_at }}</p>
                             </div>
                             <div class="h-full
                                     col-span-2 flex items-center"
@@ -150,19 +146,12 @@
                                         ">Avertir
                                     le client</x-button.yellow.exclamation>
                             </div>
-                            <form class="col-span-3 flex items-center"
-                                action="{{ route('admin-signalements-delete') }}" method="POST">
-                                @csrf
-                                <input class="hidden" name="id" value={{ $signalement->id_signalement }}>
-                                <x-button.green.check class="w-full">Ignorer le signalement</x-button.green.check>
-                            </form>
                         </div>
                     </div>
                 @endforeach
             </div>
             @include('admin.components.avertir-modal')
             @include('admin.components.article-modal')
-            @include('admin.components.delete-signalement-modal')
 
             @if (Session::has('succes'))
                 <div class="w-[500px] absolute right-2 bottom-10">

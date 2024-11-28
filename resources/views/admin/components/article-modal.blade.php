@@ -321,8 +321,7 @@
                             </div>
                         </div>
 
-
-                        <div class="h-fit" x-data="{ openDelete: {{ $errors->any() ? 'true' : 'false' }} }">
+                        <div class="h-fit" x-show="article.id_etat != 3" x-data="{ openDelete: {{ $errors->any() ? 'true' : 'false' }} }">
                             <x-button.red.trash class="w-full"
                                 @click="$dispatch('open-delete-modal');
                             $dispatch('set-id', article.id_article);

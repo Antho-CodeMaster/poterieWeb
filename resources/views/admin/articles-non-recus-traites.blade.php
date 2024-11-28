@@ -7,7 +7,7 @@
             <!-- Titre, nombre de résultats, filtres-->
             <div id="header-info">
                 <div class="flex items-center border-b-2 border-darkGrey gap-5 justify-between">
-                    <h1 class="titre2-dark m-titreY p-sectionY">Articles non reçus</h1>
+                    <h1 class="titre2-dark m-titreY p-sectionY">Articles non reçus traités</h1>
                     <div class="flex gap-2">
                         <div class="flex items-center gap-2">
                             <?php
@@ -35,7 +35,7 @@
                             @for ($i = $initial; $i <= $final && $i < $total_pages; $i++)
                                 <a class="px-4 py-2 rounded
                         {{ $page + 1 == $i ? 'bg-darkGrey text-white' : '' }}"
-                                    href="{{ route('admin-articles-non-recus') . '?page=' . $i }}">
+                                    href="{{ route('admin-articles-non-recus-traites') . '?page=' . $i }}">
                                     {{ $i }}</a>
                             @endfor
                             @if ($page + 3 < $total_pages)
@@ -43,13 +43,13 @@
                             @endif
                             <a class="px-4 py-2 rounded
                     {{ $page + 1 == $total_pages ? 'bg-darkGrey text-white' : '' }}"
-                                href="{{ route('admin-articles-non-recus') . '?page=' . $total_pages }}">
+                                href="{{ route('admin-articles-non-recus-traites') . '?page=' . $total_pages }}">
                                 {{ $total_pages }}</a>
                         </div>
-                        <x-button.blue.clipboard-check
-                            @click="window.location.href='{{ route('admin-articles-non-recus-traites') }}'">Articles non
-                            reçus traités</x-button.blue.clipboard-check>
+                        <x-button.border.back type="button"
+                            onclick="window.location.href='{{ url()->previous() }}'">Retour</x-button.border.back>
                     </div>
+
                 </div>
                 <h2 class="text-2xl text-darkGrey">{{ $page * 50 + 1 }} à
                     {{ $page * 50 + 50 > $count ? $count : $page * 50 + 50 }} de {{ $count }} résultats</h2>
@@ -127,10 +127,17 @@
                                 @csrf
                                 <x-button.blue.edit>Contacter le client</x-button.blue.edit>
                             </form>
+                            <x-button.red.trash
+                                @click="
+                                $dispatch('open-delete-modal');
+                                console.log(openDelete);
+                                $dispatch('set-id', {{ $anr->id_signalement }});">Supprimer
+                                la demande</x-button.red.trash>
                         </div>
                     </div>
                 @endforeach
             </div>
+            @include('admin.components.delete-anr-modal')
 
             @if (Session::has('succes'))
                 <div class="w-[500px] absolute right-2 bottom-10">

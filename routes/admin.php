@@ -39,6 +39,9 @@ Route::middleware(EnsureUserIsModerateur::class)->group(function () {
         Route::get('/admin/signalements', 'index')
             ->name('admin-signalements');
 
+        Route::get('/admin/signalements-traites', 'index_traites')
+            ->name('admin-signalements-traites');
+
         Route::post('/admin/signalements/delete', 'destroy')
             ->name('admin-signalements-delete');
     });
@@ -60,6 +63,10 @@ Route::middleware(EnsureUserIsModerateur::class)->group(function () {
     Route::controller(ArticleNonRecuController::class)->group(function () {
         Route::get('/admin/articles-non-recus', 'index')
                 ->name('admin-articles-non-recus');
+
+        Route::get('/admin/articles-non-recus-traites', 'index_traites')
+            ->name('admin-articles-non-recus-traites');
+
         Route::post('/admin/articles-non-recus/delete', 'destroy')
                 ->name('admin-articles-non-recus-delete');
     });

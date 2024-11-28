@@ -30,12 +30,16 @@ class ArticleController extends Controller
         $vedette = $request->input('vedette');
         $page = $request->input('page', 1);
 
-        $articles = Article::where('id_etat', '!=', 3)
-            ->when(isset($etat) && $etat != "tous", function ($query) use ($etat) {
-                if ($etat == "Public")
+        $articles = Article::
+            when(isset($etat), function ($query) use ($etat) {
+                if ($etat == "tous")
+                    $query->where('id_etat', "!=", 3);
+                else if ($etat == "Public")
                     $query->where('id_etat', 1);
                 else if ($etat == "Masqué")
                     $query->where('id_etat', 2);
+                else if ($etat == "Supprimé")
+                    $query->where('id_etat', 3);
             })
             ->when(isset($searchTerm), function ($query) use ($searchTerm) {
                 $query->where(function ($subQuery) use ($searchTerm) {
@@ -289,8 +293,8 @@ class ArticleController extends Controller
             $newsignalement = Signalement::create([
                 "id_user" => Auth::user()->id,
                 "id_article" => $validatedData["idArticle"],
-                "date" => now(),
-                "description" => $validatedData["signaleDescription"]
+                "description" => $validatedData["signaleDescription"],
+                "actif" => 1
             ]);
 
             /* Stockage en BD du nouvel article */
