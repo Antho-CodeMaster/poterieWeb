@@ -15,7 +15,6 @@ class Artiste extends Model
     protected $primaryKey = "id_artiste";
     protected $fillable = [
         'id_user',
-        'id_theme',
         'nom_artiste',
         'path_photo_profil',
         'is_etudiant',

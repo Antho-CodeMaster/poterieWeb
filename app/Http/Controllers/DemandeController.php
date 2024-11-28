@@ -205,7 +205,6 @@ class DemandeController extends Controller
             case 2:
                 $artiste = Artiste::create([
                     'id_user' => $dem->id_user,
-                    'id_theme' => 1,
                     'nom_artiste' => null,
                     'path_photo_profil' => 'img/artistePFP/default_artiste.png',
                     'is_etudiant' => true,
@@ -231,7 +230,6 @@ class DemandeController extends Controller
             case 3:
                 $artiste = Artiste::create([
                     'id_user' => $dem->id_user,
-                    'id_theme' => 1,
                     'nom_artiste' => null,
                     'path_photo_profil' => 'img/artistePFP/default_artiste.png',
                     'is_etudiant' => false,
