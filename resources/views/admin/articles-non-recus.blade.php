@@ -61,7 +61,7 @@
                 @endif
                 @foreach ($anrs as $anr)
                     <div x-data='{openArticleModal: false}'
-                        class="px-4 my-2 w-full h-fit py-4 bg-lightGrey rounded-[14px] p-1 shrink-0 flex">
+                        class="px-4 my-2 w-full h-fit py-4 bg-lightGrey rounded-[14px] p-1 shrink-0 flex gap-3">
 
                         <div class="flex w-1/3">
                             <div class="">
@@ -109,7 +109,7 @@
                                 {{ number_format($anr->transaction->prix_unitaire * $anr->transaction->quantite, 2, ',', ' ') }}
                                 $</p>
 
-                            <form method="get" action="{{ $anr->transaction->commande->receipt_url }}">
+                            <form method="get" action="{{ $anr->receipt_url }}">
                                 <x-button.blue.clipboard-check>Voir la facture</x-button.blue.clipboard-check>
                             </form>
 
@@ -127,10 +127,17 @@
                                 @csrf
                                 <x-button.blue.edit>Contacter le client</x-button.blue.edit>
                             </form>
+                            <x-button.red.trash
+                                @click="
+                            $dispatch('open-delete-modal');
+                            console.log(openDelete);
+                            $dispatch('set-id', {{ $anr->id_signalement }});">Supprimer
+                                la demande</x-button.red.trash>
                         </div>
                     </div>
                 @endforeach
             </div>
+            @include('admin.components.delete-anr-modal')
 
             @if (Session::has('succes'))
                 <div class="w-[500px] absolute right-2 bottom-10">

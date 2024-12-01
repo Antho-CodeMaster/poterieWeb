@@ -15,6 +15,7 @@ class ArticleNonRecuController extends Controller
      */
     public function index(Request $request)
     {
+        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
         $page = $request->input('page', 1);
 
         $anrs = Article_non_recu::where('actif', true);
@@ -22,6 +23,16 @@ class ArticleNonRecuController extends Controller
         $anrs = $anrs->skip(50 * ($page - 1))
             ->take(50)
             ->get();
+
+        foreach($anrs as $anr)
+        {
+                if(isset($anr->transaction->commande->payment_intent_id))
+                {
+                    $paymentIntent = \Stripe\PaymentIntent::retrieve($anr->transaction->commande->payment_intent_id);
+                    $charge = \Stripe\Charge::retrieve($paymentIntent->latest_charge);
+                    $anr->receipt_url = $charge->receipt_url;
+                }
+        }
 
         return view(
             'admin/articles-non-recus',

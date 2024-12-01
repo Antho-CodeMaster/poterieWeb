@@ -127,18 +127,10 @@
                                 @csrf
                                 <x-button.blue.edit>Contacter le client</x-button.blue.edit>
                             </form>
-                            <x-button.red.trash
-                                @click="
-                                $dispatch('open-delete-modal');
-                                console.log(openDelete);
-                                $dispatch('set-id', {{ $anr->id_signalement }});">Supprimer
-                                la demande</x-button.red.trash>
                         </div>
                     </div>
                 @endforeach
             </div>
-            @include('admin.components.delete-anr-modal')
-
             @if (Session::has('succes'))
                 <div class="w-[500px] absolute right-2 bottom-10">
                     @include('messages.messageSucces', [

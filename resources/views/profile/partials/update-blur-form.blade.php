@@ -5,7 +5,10 @@
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            {{ __("Flouter les images sensibles.") }}
+            {{ __("Certaines images sur le site peuvent être considérées sensibles. ") }}
+        </p>
+        <p class="mt-1 text-sm text-gray-600">
+            {{ __("Activer ce bouton permet de flouter les images des publications que les artistes ont identifiées comme sensibles.") }}
         </p>
     </header>
 
@@ -26,15 +29,5 @@
             />
             <div class="relative h-6 w-11 after:h-5 after:w-5 peer-checked:after:translate-x-5 rounded-full border border-darkGrey bg-darkGrey after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-darkGrey after:transition-all after:content-[''] peer-checked:bg-darkGrey peer-checked:after:bg-darkGray peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:border-darkGrey dark:bg-rouge hover:dark:bg-red-500  dark:after:bg-beige dark:peer-checked:bg-vert hover:dark:peer-checked:bg-lightVert dark:peer-checked:after:bg-beige" aria-hidden="true"></div>
         </label>
-
-        @if (session('status') === 'blur-updated')
-        <p
-            x-data="{ show: true }"
-            x-show="show"
-            x-transition
-            x-init="setTimeout(() => show = false, 2000)"
-            class="text-sm text-gray-600"
-        >{{ __('Sauvegardé.') }}</p>
-    @endif
     </form>
 </section>

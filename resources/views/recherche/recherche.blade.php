@@ -8,8 +8,7 @@
                 <!-- Barre de recherche -->
                 <div class="h-20 lg:w-5/6">
                     <form action="{{ route('recherche.getSearch') }}" method="GET" class="w-full h-full py-auto">
-                        <input class="w-full rounded h-full titre2-dark" type="text"
-                            placeholder="" name="query"
+                        <input class="w-full rounded h-full titre2-dark" type="text" placeholder="" name="query"
                             value="{{ $searchTerm }}">
                         <button type="submit"><i class="fa fa-search"></i></button>
                     </form>
@@ -27,9 +26,16 @@
                     {{ sizeof($articles) + sizeof($artistes) }} résultats.
                 @endif
             </p>
+            @if (sizeof($articles) > 0 && sizeof($artistes) > 0)
+                <div class="flex gap-4 mt-4">
+                    <p class="my-auto">Voir: </p>
+                    <a href="#articles"><x-button.border.empty class="button">Articles</x-button.border.empty></a>
+                    <a href="#artistes"><x-button.border.empty class="button">Artistes</x-button.border.empty></a>
+                </div>
+            @endif
         </header>
         @if (sizeof($articles) > 0)
-            <h3 class="h-fit titre3-dark lg:col-span-4 gap-6 m-4">Articles</h3>
+            <h3 class="h-fit titre3-dark lg:col-span-4 gap-6 m-4" id="articles">Articles</h3>
         @endif
         @foreach ($articles as $article)
             <div class="lg:col-span-1 gap-6 m-4">
@@ -37,7 +43,7 @@
             </div>
         @endforeach
         @if (sizeof($artistes) > 0)
-            <h3 class="h-fit titre3-dark lg:col-span-4 gap-6 m-4">Artistes</h3>
+            <h3 class="h-fit titre3-dark lg:col-span-4 gap-6 m-4" id="artistes">Artistes</h3>
         @endif
         @foreach ($artistes as $artiste)
             <div class="lg:col-span-2 gap-6 m-4">

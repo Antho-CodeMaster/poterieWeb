@@ -32,8 +32,13 @@ Route::middleware(EnsureUserIsModerateur::class)->group(function () {
             ->name('admin-user-demote');
     });
 
-    Route::get('/admin/articles', [ArticleController::class, 'index'])
+    Route::controller(ArticleController::class)->group(function () {
+    Route::get('/admin/articles', 'index')
             ->name('admin-articles');
+
+    Route::post('/admin/articles/retrieve', 'retrieve')
+            ->name('admin-article-retrieve');
+    });
 
     Route::controller(SignalementController::class)->group(function () {
         Route::get('/admin/signalements', 'index')

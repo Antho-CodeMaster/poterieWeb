@@ -66,9 +66,6 @@
                                     <template x-for="(photo, index) in photos" :key="photo.id_photo">
                                         <img :src="'/../img/' + photo.path" alt="Photo d'article"
                                             class="absolute w-[450px] h-[400px] object-cover transition-opacity duration-300 rounded select-none"
-                                            :class="(article.quantite_disponible < 1 ? 'brightness-[35%]' : '') +
-                                            (article.id_etat == 2 ? ' brightness-[35%]' : '') +
-                                            (article.is_sensible == 1 ? 'blur-[18px]' : '')"
                                             x-show="currentIndex === index"
                                             x-transition:enter="transition-opacity ease-in duration-400"
                                             x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
@@ -82,8 +79,6 @@
                                     <template x-for="(photo, index) in photos" :key="photo.id_photo">
                                         <img :src="'/../img/' + photo.path" alt="Photo d'article"
                                             class="absolute w-[450px] h-[400px] object-cover transition-opacity duration-300 rounded select-none"
-                                            :class="(article.quantite_disponible < 1 ? 'brightness-[35%]' : '') +
-                                            (article.id_etat == 2 ? ' brightness-[35%]' : '')"
                                             x-show="currentIndex === index"
                                             x-transition:enter="transition-opacity ease-in duration-400"
                                             x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
@@ -97,9 +92,6 @@
                                     <template x-for="(photo, index) in photos" :key="photo.id_photo">
                                         <img :src="'/../img/' + photo.path" alt="Photo d'article"
                                             class="absolute w-[450px] h-[400px] object-cover transition-opacity duration-300 rounded select-none"
-                                            :class="(article.quantite_disponible < 1 ? 'brightness-[35%]' : '') +
-                                            (article.id_etat == 2 ? ' brightness-[35%]' : '') +
-                                            (article.is_sensible == 1 ? 'blur-[18px]' : '')"
                                             x-show="currentIndex === index"
                                             x-transition:enter="transition-opacity ease-in duration-400"
                                             x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
@@ -321,16 +313,23 @@
                             </div>
                         </div>
 
-                        <div class="h-fit" x-show="article.id_etat != 3" x-data="{ openDelete: {{ $errors->any() ? 'true' : 'false' }} }">
-                            <x-button.red.trash class="w-full"
+                        <div class="h-fit" x-data="{ openDelete: {{ $errors->any() ? 'true' : 'false' }}, openRetrieve: {{ $errors->any() ? 'true' : 'false' }} }">
+                            <x-button.red.trash class="w-full" x-show="article.id_etat != 3"
                                 @click="$dispatch('open-delete-modal');
                             $dispatch('set-id', article.id_article);
                             $dispatch('set-name', article.nom);
                             closeModal();
                             index = 0;
-                            ">Supprimer
-                                cet article
+                            ">Supprimer cet article
                             </x-button.red.trash>
+                            <x-button.green.plus class="w-full" x-show="article.id_etat == 3"
+                                @click="$dispatch('open-retrieve-modal');
+                            $dispatch('set-id', article.id_article);
+                            $dispatch('set-name', article.nom);
+                            closeModal();
+                            index = 0;
+                            ">Remettre en ligne
+                            </x-button.green.plus>
                         </div>
                     </div>
                 </section>

@@ -8,31 +8,19 @@
         <!-- Main Content (Profile Information + Password Update + Accessibility + Delete User + Update Profile Picture) -->
         <div class="lg:col-span-5 grid grid-cols-1 lg:grid-cols-4 gap-6 py-8 mx-4 h-fit">
             <!-- Profile Information -->
-            <div class="col-span-2 p-4 sm:p-8 bg-beige hover:shadow-lg rounded-lg">
+            <div class="col-span-2">
+                <div class="p-4 sm:p-8 bg-beige hover:shadow-lg rounded-lg">
+                    <div class="max-w-xl">
+                        @include('profile.partials.update-profile-information-form')
+                    </div>
+                </div>
+            </div>
+            <!-- 2fa -->
+            <div class="col-span-2 p-4 sm:p-8">
                 <div class="max-w-xl">
-                    @include('profile.partials.update-profile-information-form')
+                    @include('profile.partials.activate-2fa-form')
                 </div>
             </div>
-
-            <div>
-                <!-- Accessibilité -->
-                <div class="col-span-1 p-4 sm:p-8">
-                    <div class="max-w-xl">
-                        @include('profile.partials.update-blur-form')
-                    </div>
-                </div>
-
-
-                <!-- unités -->
-                <div class="col-span-1 p-4 sm:p-8">
-                    <div class="max-w-xl">
-                        @include('profile.partials.update-units-form')
-                    </div>
-                </div>
-
-            </div>
-
-            <span class="col-span-1 p-4 sm:p-8"></span>
 
             <!-- Password Update -->
             <div class="col-span-2 p-4 sm:p-8 bg-beige hover:shadow-lg rounded-lg">
@@ -41,15 +29,19 @@
                 </div>
             </div>
 
-            <!-- 2fa -->
-            <div>
-                <div class="col-span-1 p-4 sm:p-8">
-                    <div class="max-w-xl">
-                        @include('profile.partials.activate-2fa-form')
-                    </div>
+            <!-- Accessibilité -->
+            <div class="col-span-2 sm:col-span-1 p-4 sm:p-8">
+                <div class="max-w-xl">
+                    @include('profile.partials.update-blur-form')
                 </div>
             </div>
 
+            <!-- unités -->
+            <div class="col-span-2 sm:col-span-1 p-4 sm:p-8">
+                <div class="max-w-xl">
+                    @include('profile.partials.update-units-form')
+                </div>
+            </div>
 
 
             <!-- Delete account -->
@@ -60,23 +52,5 @@
             </div>
         </div>
     </div>
-    {{-- Succes de modification de l'unité --}}
-    @if (Session::has('succesUnits'))
-        <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1 z-[1001]" role="alert">
-            @include('messages.messageSucces', [
-                'message' => Session::get('succesUnits'),
-                'titre' => 'Unité de mesure',
-            ])
-        </div>
-    @endif
-
-    {{-- Succes de modification de l'unité --}}
-    @if (Session::has('erreurUnits'))
-        <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1 z-[1001]" role="alert">
-            @include('messages.messageFail', [
-                'message' => Session::get('erreurUnits'),
-                'titre' => 'Unité de mesure',
-            ])
-        </div>
-    @endif
+    @include('profile.partials.on-screen-messages')
 </x-app-layout>

@@ -131,8 +131,12 @@ class UserController extends Controller
         $id = request()->query('id');
         $user = User::where('id', $id)->first();
         $user->active = 0;
-        $user->save();
-        return redirect()->to(route('admin-utilisateurs'));
+        if($user->save())
+            session()->flash('succes', 'Utilisateur supprimé.');
+        else
+            session()->flash('erreur', 'Erreur lors de la suppression de l\'utilisateur.');
+
+        return redirect(url()->previous());
     }
 
     public function avertir()
@@ -180,7 +184,7 @@ class UserController extends Controller
         else
             session()->flash('erreur', 'Erreur lors de la promotion.');
 
-        return redirect()->to(route('admin-utilisateurs'));
+        return redirect(url()->previous());
     }
 
     // Supprimer une instance de modérateur ou rendre modérateur un administrateur

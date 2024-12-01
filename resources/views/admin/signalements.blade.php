@@ -47,7 +47,8 @@
                                 {{ $total_pages }}</a>
                         </div>
                         <x-button.blue.clipboard-check
-                        @click="window.location.href='{{ route('admin-signalements-traites') }}'">Signalements traités</x-button.blue.clipboard-check>
+                            @click="window.location.href='{{ route('admin-signalements-traites') }}'">Signalements
+                            traités</x-button.blue.clipboard-check>
                     </div>
                 </div>
                 <h2 class="text-2xl text-darkGrey">{{ $page * 50 + 1 }} à
@@ -62,20 +63,26 @@
                         <div class="flex w-7/12">
                             <div class="w-1/2">
                                 <h3 class="text-2xl text-darkGrey">
-                                    {{ $signalement->article->nom }}</h3>
+                                    {{ $signalement->article->nom }}
+                                    @if ($signalement->article->id_etat == 2)
+                                        <span class="font-normal text-red-500"> (masqué)</span>
+                                    @endif
+                                </h3>
                                 <div class="flex items-center gap-2">
                                     <img src="{{ asset($signalement->article->artiste->path_photo_profil ?? 'img/artistePFP/default_artiste.png') }}"
-                                    alt="{{ $signalement->article->artiste->nom_artiste }}"
-                                    class="rounded-full w-[48px] h-[48px]">
-                                    <form class="hover:underline" method="get" action="{{ route('admin-utilisateurs') }}">
-                                        <input type="hidden" name="query" value="{{ $signalement->article->artiste->nom_artiste ?? $signalement->article->artiste->user->name }}">
+                                        alt="{{ $signalement->article->artiste->nom_artiste }}"
+                                        class="rounded-full w-[48px] h-[48px]">
+                                    <form class="hover:underline" method="get"
+                                        action="{{ route('admin-utilisateurs') }}">
+                                        <input type="hidden" name="query"
+                                            value="{{ $signalement->article->artiste->nom_artiste ?? $signalement->article->artiste->user->name }}">
 
-                                    <x-button.none.empty>{{ $signalement->article->artiste->nom_artiste ?? $signalement->article->artiste->user->name }}
-                                        @if (!$signalement->article->artiste->actif)
-                                            <span class="text-red-500">(inactif)</span>
-                                        @endif
-                                    </x-button.none.empty>
-                                </form>
+                                        <x-button.none.empty>{{ $signalement->article->artiste->nom_artiste ?? $signalement->article->artiste->user->name }}
+                                            @if (!$signalement->article->artiste->actif)
+                                                <span class="text-red-500">(inactif)</span>
+                                            @endif
+                                        </x-button.none.empty>
+                                    </form>
                                     @if ($signalement->article->artiste->actif)
                                         <a class="hover:underline flex w-fit items-center"
                                             href="{{ route('kiosque', ['idUser' => $signalement->article->artiste->id_user]) }}"
@@ -137,7 +144,7 @@
                             $dispatch('set-id', {{ $signalement->article->id_article }});
                             $dispatch('set-signalement', {{ $signalement->id_signalement }});
                             $dispatch('set-name', {{ json_encode($signalement->article->nom) }});">Supprimer
-                                    la publication</x-button.red.trash>
+                                    l'article</x-button.red.trash>
                             </div>
                             <div class="h-full
                                     col-span-2 flex items-center"

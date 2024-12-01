@@ -1,6 +1,6 @@
 <x-app-layout>
     <!-- Div qui divise le menu de gauche et le contenu-->
-    <div class="flex content-height" x-data="{ openDelete: false }"">
+    <div class="flex content-height" x-data="{ openDelete: false, openRetrieve: false }"">
         @include('admin.menu-gauche')
         <!-- Partie de droite (contenu de la page) -->
         <div class="pr-10 w-full h-[100%] flex flex-col">
@@ -92,6 +92,7 @@
                 @endif
             </div>
             @include('admin.components.delete-article-modal')
+            @include('admin.components.retrieve-article-modal')
             @include('admin.components.article-modal')
 
 

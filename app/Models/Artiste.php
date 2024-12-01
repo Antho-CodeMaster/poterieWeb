@@ -88,7 +88,7 @@ class Artiste extends Model
                     // S'assurer que le checkup soit seulement fait si l'étudiant était déjà existant au moment du renouvellement
                     if ($this->created_at < $date) {
                         // Retrouver la dernière demande de renouvellement de l'utilisateur
-                        $demande = Demande::where('id_user', $this->id_user)->where('id_type', 1)->latest('date')->first();
+                        $demande = Demande::where('id_user', $this->id_user)->where('id_type', 1)->latest('created_at')->first();
 
                         // Si la date du dernier renouvellement est passée
                         if (now() > $date->addMonth()) {

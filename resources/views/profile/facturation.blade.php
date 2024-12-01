@@ -12,7 +12,8 @@
                     @include('profile.partials.edit-payment-method-form')
                 </div>
             </div>
-            <span></span>
+            <p class="text-sm text-gray-600">Vos informations de paiement sont sensibles. Elles sont donc gardées en sécurité par
+                <a href="https://stripe.com/fr-ca" class="text-blue-600 hover:underline">Stripe</a>, un logiciel tierce-partie. Vous serez redirigés vers leur site afin de définir vos informations.</p>
             <span></span>
             @if ($subbed == true)
                 <div class="lg:col-span-2 p-4 sm:p-8 bg-beige hover:shadow-lg rounded-lg">

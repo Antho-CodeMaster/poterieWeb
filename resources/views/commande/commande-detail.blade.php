@@ -49,6 +49,7 @@
                                         class="text-[{{ $colors[$transaction->etat_transaction->etat] }}] underline">
                                         {{ $transaction->etat_transaction->etat }}</span></p>
                             </div>
+                            @if(now() > $date_min || $transaction->etat_transaction->etat == 'Annulé')
                             <a @click=" $dispatch('open-signal-article-modal'); $dispatch('set-transaction-signal', JSON.stringify({{ $transaction }}))"
                                 class="hover:underline hover:cursor-pointer w-fit text-xs">
                                 @if ($transaction->etat_transaction->etat == 'Annulé')
@@ -57,6 +58,7 @@
                                     Je n'ai pas reçu cet article!
                                 @endif
                             </a>
+                            @endif
                         </div>
 
                         {{-- prix --}}
