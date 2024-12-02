@@ -3,8 +3,8 @@
 @endphp
 
 <div class="w-[16%] color-sideBar h-full mr-4">
-    <h2 class=" m-titreY titre2-dark border-b-2 p-sectionX p-sectionY border-darkGrey">
-        Menu
+    <h2 class=" m-titreY titre2-dark border-b-2 p-sectionX p-sectionY border-darkGrey ">
+        Article
     </h2>
     {{-- ArticleSettings sideMenu --}}
     <div class="">

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use Illuminate\Validation\ValidationException;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,133 +36,114 @@ class EasyPost extends Model
     // Création d'un tracker et retourne l'objet tracker
     public function createTracker($deliveryCode, $carrier)
     {
-        # Éviter d'appeler la fonction si les paramètre sont vide
+        // Vérifications des paramètres
         if (empty($deliveryCode)) {
-            Log::error('Le code de livraison est manquante pour la création du tracker.');
-            return null;
+            throw new Exception('Code de livraison manquante');
         }
 
         if (empty($carrier)) {
-            Log::error('La compagnie de livraison est manquante pour la création du tracker.');
-            return null;
+            throw new Exception('Compagnie de livraison manquante');
         }
 
-        try {
-            $tracker = $this->client->tracker->create([ # Création du tracker
-                'tracking_code' => $deliveryCode,
-                'carrier' => $carrier
-            ]);
-            return $tracker;
-        } catch (Exception $e) {
-            Log::error('Erreur lors de la création du tracker avec le numéro de suivie (' . $deliveryCode . ') :' . $e->getMessage());
-            return null;
+        // Création du tracker
+        $tracker = $this->client->tracker->create([
+            'tracking_code' => $deliveryCode,
+            'carrier' => $carrier
+        ]);
+
+        // Vérification de la création du tracker
+        if (!$tracker) {
+            throw new Exception('Erreur lors de la création du tracker');
         }
+
+        // Vérification du contenu du tracker
+        if (empty($tracker) || empty($tracker->id) || $tracker->tracking_code !== $deliveryCode) {
+            throw new Exception('Tracker attaché à aucune livraison ayant le code de suivie : ' . $deliveryCode);
+        }
+
+        return $tracker;
     }
+
 
     // Récupération du tracker à l'aide de son Id de tracker
     private function getTracker($trackingId)
     {
-        try {
-            $tracker = $this->client->tracker->retrieve($trackingId);
-            return $tracker;
-        } catch (Exception $e) {
-            Log::error('Erreur lors de la récupération du tracker (' . $trackingId . ') :' . $e->getMessage());
-            return null;
+        $tracker = $this->client->tracker->retrieve($trackingId);
+
+        // Vérifier si le tracker a été récupéré correctement
+        if (!$tracker) {
+            // Si aucun tracker n'a été récupéré, on lance une exception avec un message clair
+            throw new Exception('Erreur lors de la récupération du tracker avec l\'ID : ' . $trackingId);
         }
+
+        return $tracker;
     }
+
 
     // Récupération du statut à l'aide de son Id de tracker
     public function getStatus($trackingId)
     {
-        try {
-            $tracker = $this->getTracker($trackingId);
-            return $tracker ? $tracker->status : null;
-        } catch (Exception $e) {
-            Log::error('Erreur lors de la récupération du statut (' . $trackingId . ') :' . $e->getMessage());
-            return null;
-        }
+        $tracker = $this->getTracker($trackingId);
+
+        return $tracker->status;
     }
 
     // Récupération des détails de tracking à l'aide de son Id de tracker et retourne le tout en format JSON
     public function getTrackingDetails($trackingId)
     {
-        try {
-            $tracker = $this->getTracker($trackingId);
-            return $tracker ? $tracker->tracking_details : null;
-        } catch (Exception $e) {
-            Log::error('Erreur lors de la récupération des details du tracking (' . $trackingId . ') :' . $e->getMessage());
-            return null;
-        }
+        $tracker = $this->getTracker($trackingId);
+
+        return $tracker->tracking_details;
     }
 
     // Récupération de la date estimée de livraison à l'aide de son Id de tracker
     public function getEstimatedDelivery($trackingId)
     {
-        try {
-            $tracker = $this->getTracker($trackingId);
-            # Si Tracker recu refomate le pour l'insérer dans la BD du site
-            return $tracker ? Carbon::parse($tracker->est_delivery_date)->format('Y-m-d') : null;
-        } catch (Exception $e) {
-            Log::error('Erreur lors de la récupération du estimated delivery du tracker (' . $trackingId . ') :' . $e->getMessage());
-            return null;
-        }
+        $tracker = $this->getTracker($trackingId);
+
+        return Carbon::parse($tracker->est_delivery_date)->format('Y-m-d');
     }
 
     // Récupération du transporteur(compagnie de livraison) de la livraison à l'aide de son Id de tracker
     public function getCarrier($trackingId)
     {
-        try {
-            $tracker = $this->getTracker($trackingId);
-            return $tracker ? $tracker->carrier : null;
-        } catch (Exception $e) {
-            Log::error('Erreur lors de la récupération du transporteur du tracker (' . $trackingId . ') :' . $e->getMessage());
-            return null;
-        }
+        $tracker = $this->getTracker($trackingId);
+
+        return $tracker->carrier;
     }
 
     // Récupération de la destination à l'aide de son Id de tracker
     public function getDestination($trackingId)
     {
-        try {
-            $tracker = $this->getTracker($trackingId);
-            return $tracker ? $tracker->destination_location : null;
-        } catch (Exception $e) {
-            Log::error('Erreur lors de la récupération de la destination finale du tracker (' . $trackingId . ') :' . $e->getMessage());
-            return null;
-        }
+        $tracker = $this->getTracker($trackingId);
+
+        return $tracker->destination_location;
     }
 
     // Récupère la date de réception effective à l'aide de son Id de tracker
     public function getDeliveryDate($trackingId)
     {
-        try {
-            $tracker = $this->getTracker($trackingId);
-            # Parcourir les détails du suivi pour trouver quand elle a été livré
-            foreach ($tracker->tracking_details as $detail) {
-                if ($detail->status === 'delivered') {
-                    # Formater la date avec Carbon
-                    return Carbon::parse($detail->datetime)->format('Y-m-d');
-                }
+        $tracker = $this->getTracker($trackingId);
+
+        // Parcourir les détails du suivi pour trouver quand elle a été livré
+        foreach ($tracker->tracking_details as $detail) {
+            if ($detail->status === 'delivered') {
+                // Formater la date avec Carbon
+                return Carbon::parse($detail->datetime)->format('Y-m-d');
             }
-            # Si aucun statut "delivered" n'a été trouvé
-            return 'Not delivered yet';
-        } catch (Exception $e) {
-            Log::error('Erreur lors de la récupération de la date de réception du tracker (' . $trackingId . ') :' . $e->getMessage());
-            return null;
         }
+
+        // Si aucun statut "delivered" n'a été trouvé
+        return 'Pas encore livré';
     }
 
 
-    // Récupération de la destination à l'aide de son Id de tracker
+    // Récupération du public URL du tracker
     public function getTrackerURL($trackingId)
     {
-        try {
-            $tracker = $this->getTracker($trackingId);
-            return $tracker ? $tracker->public_url : null;
-        } catch (Exception $e) {
-            Log::error('Erreur lors de la récupération du public URL du tracker (' . $trackingId . ') :' . $e->getMessage());
-            return null;
-        }
+        $tracker = $this->getTracker($trackingId);
+
+        return $tracker->public_url;
     }
 
     #===========================================#
@@ -171,70 +153,80 @@ class EasyPost extends Model
     // Crée un WebHook et retourne l'objet WebHook
     public function createWebHook($url, $secret)
     {
-        try {
-            $webhook = $this->client->webhook->create([ # Créer un WebHook avec l'api du client. (Tracker API)
-                'url' => $url,
-                'webhook_secret' => $secret,
-            ]);
+        # Création du WebHook via l'API du client
+        $webhook = $this->client->webhook->create([
+            'url' => $url,
+            'webhook_secret' => $secret,
+        ]);
 
-            $this->hookId = $webhook->id; # Récupère le id de ce WebHook associé au suivi des evenements des trackers
-            return $webhook;
-        } catch (Exception $e) {
-            Log::error('Erreur lors de la création du webhook : ' . $e->getMessage());
-            return null;
+        # Vérification si le Webhook a bien été créé
+        if (!$webhook) {
+            throw new Exception('Erreur lors de la création du webhook avec l\'URL : ' . $url);
         }
+
+        $this->hookId = $webhook->id;  # Récupère l'ID du WebHook associé au suivi des événements des trackers
+        return $webhook;
     }
 
-    // Récupère tous les WebHook et les renvoie sous format JSON
+    // Récupère tous les Webhooks et les renvoie sous format JSON
     public function getAllWebHook()
     {
-        try {
-            $webhooks = $this->client->webhook->all();
+        # Récupérer tous les WebHooks via l'API du client
+        $webhooks = $this->client->webhook->all();
 
-            return $webhooks;
-        } catch (Exception $e) {
-            Log::error('Erreur lors du get des webhooks : ' . $e->getMessage());
-            return null;
+        # Vérification si les webhooks sont récupérés correctement
+        if (!$webhooks) {
+            throw new Exception("Erreur lors de la récupération des webhooks.");
         }
+
+        return $webhooks;
     }
+
 
     // Récupère le WebHook et le renvoie sous format JSON
     public function getWebHook()
     {
-        try {
-            $webhook = $this->client->webhook->retrieve($this->hookId);
+        # Récupérer le WebHook via l'API du client en utilisant l'ID du hook
+        $webhook = $this->client->webhook->retrieve($this->hookId);
 
-            return $webhook;
-        } catch (Exception $e) {
-            Log::error('Erreur lors du get du webhook(' . $this->hookId . ') :' . $e->getMessage());
-            return null;
+        # Vérification si le WebHook est récupéré correctement
+        if (!$webhook) {
+            throw new Exception('Erreur lors de la récupération du webhook avec l\'ID : ' . $this->hookId);
         }
+
+        return $webhook;
     }
+
 
     // Update le WebHook et le renvoie sous format JSON
     public function updateWebHook()
     {
-        try {
-            $webhook = $this->client->webhook->update($this->hookId);
+        # Tenter de mettre à jour le WebHook avec l'ID
+        $webhook = $this->client->webhook->update($this->hookId);
 
-            return $webhook;
-        } catch (Exception $e) {
-            Log::error('Erreur lors de l\'update du webhook(' . $this->hookId . ') :' . $e->getMessage());
-            return null;
+        # Vérifier si la mise à jour a échoué
+        if (!$webhook) {
+            throw new Exception('Erreur lors de la mise à jour du webhook avec l\'ID : ' . $this->hookId);
         }
+
+        return $webhook;
     }
+
 
     // Supprime un WebHook avec son Id
     public function deleteWebHook()
     {
-        try {
-            $this->client->webhook->delete($this->hookId); # Supprime le webhook
-            return ['success' => true, 'message' => 'Webhook supprimé']; # Retourne un message de succès
-        } catch (Exception $e) {
-            Log::error('Erreur lors du delete du webhook(' . $this->hookId . ') :' . $e->getMessage());
-            return null;
+        # Tenter de supprimer le WebHook avec l'ID
+        $result = $this->client->webhook->delete($this->hookId);
+
+        # Vérifier si la suppression a échoué
+        if (!$result) {
+            throw new Exception('Erreur lors de la suppression du webhook avec l\'ID : ' . $this->hookId);
         }
+
+        return ['success' => true, 'message' => 'Webhook supprimé']; // Retourner un message de succès
     }
+
 
     #===========================================#
     #                  EVENTS                   #
@@ -243,21 +235,21 @@ class EasyPost extends Model
     // Récupère un Event de tracker avec son Id de tracking et le renvoie sous format JSON
     public function getTrackerEvent(Request $request)
     {
-        # Validation de la clé secrète du webhook pour s'assurer que la requête vient de EasyPost
+        # Vérifier la signature du webhook pour valider que la requête vient bien de EasyPost
         if ($request->header('X-EasyPost-Webhook-Signature') !== $this->secret) {
-            return "Invalid signature";
+            throw new Exception('La requête ne semble pas venir de EasyPost');
         }
 
-        # Récupération des données envoyées par EasyPost
-        $events = $request->input('events');  # L'événement reçu de EasyPost
+        # Récupération des événements envoyés par EasyPost
+        $events = $request->input('events');
 
-        if (str_contains($events['description'], 'updated')) # Vérifie que l'évenement ne concerne que les update de tracker
-        {
-            $trackingId = $events['id'];  # L'ID du tracker mis à jour
+        # Vérifier que l'événement concerne une mise à jour de tracker
+        if (str_contains($events['description'], 'updated')) {
+            $trackingId = $events['object']['id'];  // Récupère l'id du tracker relié à cet évenement
             return $trackingId;
         }
 
-        // Si aucun événement n'est lié à un tracker mis à jour, retourner une erreur
-        return "No events";
+        # Si aucun événement n'est lié à une mise à jour de tracker, lever une exception
+        throw new Exception('Aucun événement de mise à jour de tracker trouvé.');
     }
 }
