@@ -46,3 +46,32 @@
             ])
         </div>
     @endif
+
+    @if (session('status') === 'password-updated')
+    <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1 z-[1001]" role="alert">
+        @include('messages.messageSucces', [
+            'message' => 'Votre mot de passe a été changé.',
+            'titre' => 'Mot de passe',
+        ])
+    </div>
+@endif
+
+    {{-- Succes de modification de la question --}}
+    @if (Session::has('succes_question'))
+        <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1 z-[1001]" role="alert">
+            @include('messages.messageSucces', [
+                'message' => Session::get('succes_question'),
+                'titre' => 'Question de sécurité',
+            ])
+        </div>
+    @endif
+
+    {{-- Erreur de modification de la question --}}
+    @if (Session::has('erreur_question'))
+        <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1 z-[1001]" role="alert">
+            @include('messages.messageFail', [
+                'message' => Session::get('erreur_question'),
+                'titre' => 'Question de sécurité',
+            ])
+        </div>
+    @endif

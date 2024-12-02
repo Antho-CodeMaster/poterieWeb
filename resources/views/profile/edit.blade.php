@@ -43,6 +43,15 @@
                 </div>
             </div>
 
+            <!-- Question de sécurité  -->
+            <div class="col-span-2 p-4 sm:p-8 bg-beige hover:shadow-lg rounded-lg">
+                <div class="max-w-xl">
+                    @include('profile.partials.update-security-question-form')
+                </div>
+            </div>
+
+            <span></span>
+            <span></span>
 
             <!-- Delete account -->
             <div class="col-span-2 p-4 sm:p-8 bg-beige hover:shadow-lg rounded-lg">
@@ -50,6 +59,7 @@
                     @include('profile.partials.delete-user-form')
                 </div>
             </div>
+
         </div>
     </div>
     @include('profile.partials.on-screen-messages')

@@ -28,7 +28,7 @@ use Laravel\Cashier\Checkout;
 Route::get('/', [CollectionController::class, 'index'])->name('decouverte')->withoutMiddleware([TwoFactorAuthMiddleware::class]);
 
 Route::get('login/google', [GoogleController::class, 'redirectToGoogle'])->name('login.google');
-Route::get('login/google/callback', [GoogleController::class, 'handleGoogleCallback']);
+Route::get('login/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('callback.google');
 
 /* Route relié au kiosque */
 Route::controller(ArtisteController::class)->group(function () {
@@ -100,6 +100,7 @@ Route::middleware(['auth', TwoFactorAuthMiddleware::class])->group(function () {
         Route::get('/profil/carte/supprimer', 'destroy_card')->name('profile.supprimerCarte');
         Route::get('/profil/personnaliser', 'personnaliser')->name('profile.personnaliser');
         Route::post('/profil/edit', 'updateBlur')->name('profile.updateBlur');
+        Route::put('/profil/edit', 'updateQuestion')->name('profile.question.update');
         Route::patch('/profil', 'update')->name('profile.update');
         Route::delete('/profil', 'destroy')->name('profile.destroy');
 

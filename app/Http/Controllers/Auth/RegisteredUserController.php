@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Notification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -44,6 +45,17 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+
+        $notif = Notification::create([
+            'id_type' => 12,
+            'id_user' => $user->id,
+            'date' => now(),
+            'message' => '',
+            'lien' => route('profile.edit'),
+            'visible' => 1
+        ]);
+
+        $notif->save();
 
 
         return redirect(route('decouverte', absolute: false));

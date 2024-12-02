@@ -22,8 +22,8 @@ return new class extends Migration
             $table->char('code_postal', 6)->nullable();
             $table->smallInteger('id_ville')->unsigned()->nullable();
             $table->boolean('contenu_sensible')->default(0);
-            $table->tinyInteger('id_question_securite')->unsigned();
-            $table->string('reponse_question');
+            $table->tinyInteger('id_question_securite')->unsigned()->nullable();
+            $table->string('reponse_question')->nullable();
             $table->boolean('active');
             $table->boolean('units');
 

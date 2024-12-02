@@ -25,6 +25,7 @@
     window.likeToggleUrl = "{{ route('like.toggle', ':idArticle') }}";
     window.addToCartUrl = "{{ route('addArticleToPanier')}}";
     </script>
+    <script src="https://accounts.google.com/gsi/client" async></script>
 </head>
 
 <body class="font-sans antialiased">
