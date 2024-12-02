@@ -5,7 +5,7 @@
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            {{ __("Changer l'unité de mesure.") }}
+            {{ __("Changer l'unité de mesure qui sera affichée pour la longueur, largeur et hauteur des articles en ligne.") }}
         </p>
     </header>
 

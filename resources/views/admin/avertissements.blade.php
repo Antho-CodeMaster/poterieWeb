@@ -3,11 +3,15 @@
     <div class="flex content-height">
         @include('admin.menu-gauche')
         <!-- Partie de droite (contenu de la page) -->
-        <div class="pr-10 h-[100%] w-4/5 flex flex-col">
+        <div class="pr-2 h-[100%] w-4/5 flex flex-col">
             <!-- Titre, nombre de résultats, filtres-->
-            <div id="header-info">
-                <h1 class="titre2-dark m-titreY p-sectionY border-b-2 border-darkGrey">Avertissements de
+            <div id="header-info" class="flex justify-between border-b-2 border-darkGrey">
+                <h1 class="titre2-dark m-titreY p-sectionY ">Avertissements de
                     {{ $user->name }}</h1>
+                    <div class="flex items-center justify-center">
+                        <x-button.border.back type="button"
+                        onclick="window.location.href='{{ url()->previous() }}'">Retour</x-button.border.back>
+                    </div>
             </div>
             <!-- Reste du contenu va ici-->
             <div class="flex flex-col grow overflow-auto mt-2 gap-4">

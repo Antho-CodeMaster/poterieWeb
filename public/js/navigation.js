@@ -62,6 +62,11 @@ function hideNotification(notificationId, notificationElement) {
             // Immediately hide the notification in the UI
             if (notificationElement) {
                 notificationElement.style.display = 'none';
+                let count = parseInt(document.getElementById('notificationCount').innerHTML.replace(/\s/g, ""));
+                if(count > 1)
+                    document.getElementById('notificationCount').innerHTML =  count - 1;
+                else
+                    document.getElementById('notificationCount').style.display = 'none';
             }
         } else {
             console.error('Failed to hide notification');

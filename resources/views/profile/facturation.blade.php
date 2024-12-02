@@ -1,18 +1,19 @@
 <x-app-layout>
-    <div class="grid grid-cols-1 lg:grid-cols-6 content-height">
+    <div class="grid grid-cols-1 lg:grid-cols-6 lg:min-h-screen relative lg:top-0 top-12 lg:mb-0 mb-12">
         <!-- Left Menu -->
         <div class="max-w-xl">
             @include('components.mobile-left-menu')
         </div>
 
         <!-- Main Content -->
-        <div class="lg:col-span-5 grid grid-cols-1 lg:grid-cols-4 gap-6 py-8 mx-4">
+        <div class="lg:col-span-5 grid grid-cols-1 lg:grid-cols-4 gap-6 py-8 mx-4 h-fit">
             <div class="lg:col-span-2 p-4 sm:p-8 bg-beige hover:shadow-lg rounded-lg">
                 <div class="max-w-xl">
                     @include('profile.partials.edit-payment-method-form')
                 </div>
             </div>
-            <span></span>
+            <p class="text-sm text-gray-600">Vos informations de paiement sont sensibles. Elles sont donc gardées en sécurité par
+                <a href="https://stripe.com/fr-ca" class="text-blue-600 hover:underline">Stripe</a>, un logiciel tierce-partie. Vous serez redirigés vers leur site afin de définir vos informations.</p>
             <span></span>
             @if ($subbed == true)
                 <div class="lg:col-span-2 p-4 sm:p-8 bg-beige hover:shadow-lg rounded-lg">

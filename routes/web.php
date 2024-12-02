@@ -12,6 +12,7 @@ use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Auth\GoogleController;
 
 use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\TransactionController;
@@ -24,7 +25,10 @@ use App\Http\Middleware\TwoFactorAuthMiddleware;
 use Illuminate\Support\Facades\Route;
 use Laravel\Cashier\Checkout;
 
-Route::get('/', [CollectionController::class, 'index'])->name('decouverte')->withoutMiddleware([TwoFactorAuthMiddleware::class]);;
+Route::get('/', [CollectionController::class, 'index'])->name('decouverte')->withoutMiddleware([TwoFactorAuthMiddleware::class]);
+
+Route::get('login/google', [GoogleController::class, 'redirectToGoogle'])->name('login.google');
+Route::get('login/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('callback.google');
 
 /* Route relié au kiosque */
 Route::controller(ArtisteController::class)->group(function () {
@@ -54,8 +58,8 @@ Route::controller(ArticleController::class)->group(function () {
 /* Routes liées aux commandes*/
 Route::controller(CommandeController::class)->group(function () {
     #Route pour afficher le panier en cours de l'utilisateur
-    Route::get('/panier', [CommandeController::class, 'showPanier'])->name('panier');
-    Route::get('/commandes', [CommandeController::class, 'index'])->name('commandes');
+    Route::get('/panier', 'showPanier')->name('panier');
+    Route::get('/commandes', 'index')->name('commandes');
     Route::get('/commande/{id}', 'show');
 
     /**Route pour Cashier */
@@ -96,6 +100,7 @@ Route::middleware(['auth', TwoFactorAuthMiddleware::class])->group(function () {
         Route::get('/profil/carte/supprimer', 'destroy_card')->name('profile.supprimerCarte');
         Route::get('/profil/personnaliser', 'personnaliser')->name('profile.personnaliser');
         Route::post('/profil/edit', 'updateBlur')->name('profile.updateBlur');
+        Route::put('/profil/edit', 'updateQuestion')->name('profile.question.update');
         Route::patch('/profil', 'update')->name('profile.update');
         Route::delete('/profil', 'destroy')->name('profile.destroy');
 
@@ -136,7 +141,7 @@ Route::middleware(['auth', TwoFactorAuthMiddleware::class])->group(function () {
 });
 
 Route::get('/2fa', [TwoFactorController::class,'show'])->name('2fa');
-Route::post('/2fa/verif', [TwoFactorController::class,'verify'])->name('2fa.verify');
+Route::post('/2fa/verif', [TwoFactorController::class,'verify'])->name('2fa.verify')->withoutMiddleware([TwoFactorAuthMiddleware::class]);
 
 Route::get('/recherche', [ArticleController::class, 'getSearch'])->name('recherche.getSearch');
 

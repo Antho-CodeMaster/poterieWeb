@@ -59,7 +59,7 @@
                             paiement d'un abonnement sera désormais requis.</span> Cet abonnement soutient les frais de
                         maintenance de la plateforme web.</p>
                     <p class="text-center mt-10"> <span class="font-bold"> Si vous désirez conserver vos accès à
-                            Terracium, </span> veuillez vous abonner en cliquant sur le bouton ci-dessous. Il sera
+                        Artterre, </span> veuillez vous abonner en cliquant sur le bouton ci-dessous. Il sera
                         toujours possible d'annuler votre abonnement par la suite via Paramètres > Facturation.</p>
                     <p class="text-center mt-10"> <span class="font-bold"> Si vous ne désirez pas payer
                             l'abonnement, </span> vous n'avez rien à faire. Vos accès au site seront toutefois retirés à

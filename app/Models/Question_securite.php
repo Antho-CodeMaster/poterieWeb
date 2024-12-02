@@ -9,4 +9,5 @@ class Question_securite extends Model
 {
     use HasFactory;
     protected $table = 'questions_securite';
+    public $timestamps = false;
 }

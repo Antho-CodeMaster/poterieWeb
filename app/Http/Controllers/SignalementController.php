@@ -12,12 +12,44 @@ class SignalementController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $page = $request->input('page', 1);
+
+        $signalements = Signalement::where('actif', true);
+        $count = $signalements->count();
+        $signalements = $signalements->skip(50 * ($page - 1))
+            ->take(50)
+            ->get();
+
         return view(
             'admin/signalements',
             [
-                'signalements' => Signalement::All(),
+                'signalements' => $signalements,
+                'page' => $page - 1,
+                'count' => $count,
+                'total_pages' => ceil($count / 50),
+            ]
+        );
+    }
+
+    public function index_traites(Request $request)
+    {
+        $page = $request->input('page', 1);
+
+        $signalements = Signalement::where('actif', false)->orderBy('updated_at', 'desc');
+        $count = $signalements->count();
+        $signalements = $signalements->skip(50 * ($page - 1))
+            ->take(50)
+            ->get();
+
+        return view(
+            'admin/signalements-traites',
+            [
+                'signalements' => $signalements,
+                'page' => $page - 1,
+                'count' => $count,
+                'total_pages' => ceil($count / 50),
             ]
         );
     }
@@ -68,11 +100,21 @@ class SignalementController extends Controller
     public function destroy(Request $request)
     {
         $id = $request->input("id");
-        Signalement::destroy($id);
+
+        $signalement = Signalement::find($id);
+
+        if ($signalement) {
+            $signalement->actif = 0;
+
+            if (!$signalement->save()) {
+                session()->flash('erreur', 'Un problème est survenu lors de la suppression du signalement.');
+                return back();
+            }
+        }
+
 
         $idArticle = $request->input("id_article");
-        if($idArticle != null)
-        {
+        if ($idArticle != null) {
             /* 1. Récupérer l'article en BD */
             $article = Article::where("id_article", $idArticle)->first();
 
@@ -95,9 +137,13 @@ class SignalementController extends Controller
                 $notif->save();
             } else {
                 session()->flash('erreur', 'Un problème est survenu lors de la suppression de l\'article.');
+                if($signalement != null)
+                {
+                    $signalement->actif = 1;
+                    $signalement->save();
+                }
             }
-        }
-        else{
+        } else {
             session()->flash('succes', 'Signalement supprimé.');
         }
 

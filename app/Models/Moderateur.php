@@ -10,6 +10,7 @@ class Moderateur extends Model
     use HasFactory;
 
     protected $primaryKey = 'id_moderateur';
+    public $timestamps = false;
 
     protected $fillable = [
         'id_user',

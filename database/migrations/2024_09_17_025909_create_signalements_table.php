@@ -16,8 +16,8 @@ return new class extends Migration
             $table->bigIncrements('id_signalement');
             $table->bigInteger('id_user')->unsigned();
             $table->bigInteger('id_article')->unsigned();
-            $table->dateTime('date');
             $table->string('description');
+            $table->boolean('actif');
             $table->timestamps();
         });
 

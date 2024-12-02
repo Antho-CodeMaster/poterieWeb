@@ -73,6 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
         /* ===================================================== */
 
         document.getElementById('clearFiltre').addEventListener('click', clearFilter);
+        document.getElementById('clearFiltre2').addEventListener('click', clearFilter);
 
         function clearFilter() {
             // Récupérer les éléments <select> pour les filtres

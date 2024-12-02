@@ -15,9 +15,11 @@
         <!-- Container for Existing Social Media Fields -->
         <div class="space-y-4 flex flex-col lg:w-[100vh] w-fit">
             @foreach ($reseaux as $reseau)
-                <div class="flex space-x-4 items-center w-full" :class="{ 'hidden': removedFields.some(field => field.id_reseau === {{ $reseau->pivot->id_reseau }} && field.username === '{{ $reseau->pivot->username }}') }">
+                <div class="flex space-x-2 items-center w-full" :class="{ 'hidden': removedFields.some(field => field.id_reseau === {{ $reseau->pivot->id_reseau }} && field.username === '{{ $reseau->pivot->username }}') }">
+                    <span class="text-3xl font-bold text-darkGrey">@</span>
+
                     <!-- Pre-filled Username Field -->
-                    <input type="text" name="usernames[]" value="{{ $reseau->pivot->username }}" placeholder="Nom d'utilisateur" class="text-lg text-darkGrey h-12 px-4 rounded-md shadow-sm focus:outline-none w-full" required>
+                    <input type="text" name="usernames[]" value="{{ $reseau->pivot->username }}" placeholder="@Nom d'utilisateur" class="text-lg text-darkGrey h-12 px-4 rounded-md shadow-sm focus:outline-none w-full" required>
 
                     <!-- Pre-selected Social Network Dropdown -->
                     <select name="reseaux[]" class="text-lg text-darkGrey h-12 px-4 rounded-md shadow-sm focus:outline-none w-full" required>
@@ -41,9 +43,11 @@
         </div>
 
         <!-- Container for Dynamic Fields -->
-        <div id="extend-field" class="flex flex-col lg:w-[100vh] w-fit">
+        <div id="extend-field" class="space-y-4 flex flex-col lg:w-[100vh] w-fit">
             <template x-for="(field, index) in fields" :key="index">
-                <div class="flex space-x-4 items-center w-full">
+                <div class="flex space-x-2 items-center w-full">
+                    <span class="text-3xl font-bold text-darkGrey">@</span>
+
                     <!-- Username Input Field -->
                     <input type="text" x-model="field.username" placeholder="Nom d'utilisateur" name="usernames[]" class="text-lg text-darkGrey h-12 px-4 rounded-md shadow-sm focus:outline-none focus:border-beige w-full" required>
 

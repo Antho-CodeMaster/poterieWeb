@@ -313,13 +313,12 @@
 
                     <!-- Affiche le bouton "Ajouter au panier" pour les autres utilisateurs -->
                     <template x-if="isAuthenticated && artiste.id_user != userId">
-                        <form action="{{ '/addArticleToPanier' }}" method="POST" class="w-full h-[64px]">
-                            @csrf
-                            <x-button.green.empty type="submit" id="addArticleBtn" x-bind:value="article.id_article"
+
+                            <x-button.green.empty @click="addToCart(article.id_article)" type="button" id="addArticleBtn" x-bind:value="article.id_article"
                                 name="id_article" class="w-full h-[64px] text-[36px] font-bold text-center">
                                 Ajouter au panier
                             </x-button.green.empty>
-                        </form>
+
                     </template>
 
                     <!-- Affiche le bouton "Votre propre article" si l'utilisateur est le propriétaire de l'article -->
@@ -333,13 +332,10 @@
 
                     <!-- Affiche "Ajouter au panier" pour les visiteurs non connectés -->
                     <template x-if="!isAuthenticated">
-                        <form action="{{ '/addArticleToPanier' }}" method="POST" class="w-full h-[64px]">
-                            @csrf
-                            <x-button.green.empty type="submit" id="addArticleBtn" x-bind:value="article.id_article"
+                        <x-button.green.empty @click="addToCart(article.id_article)" type="button" id="addArticleBtn" x-bind:value="article.id_article"
                                 name="id_article" class="w-full h-[64px] text-[36px] font-bold text-center">
                                 Ajouter au panier
-                            </x-button.green.empty>
-                        </form>
+                        </x-button.green.empty>
                     </template>
 
                 </div>

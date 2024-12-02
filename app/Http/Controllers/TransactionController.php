@@ -10,6 +10,7 @@ use App\Models\Compagnie_livraison;
 use App\Models\Photo_livraison;
 use App\Models\Photo_oeuvre;
 use App\Models\EasyPost;
+
 use EasyPost\Tracker;
 use Exception;
 use Illuminate\Auth\Events\Validated;
@@ -22,6 +23,8 @@ use Illuminate\View\View;
 use Stripe\Invoice;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Validation\ValidationData;
+use Illuminate\Validation\ValidationException;
 
 class TransactionController extends Controller
 {
@@ -175,7 +178,7 @@ class TransactionController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Fonction pour afficher la vue du form pour traiter une transaction
      */
     public function edit($idTransaction)
     {
@@ -202,9 +205,14 @@ class TransactionController extends Controller
         $trackingId = $transaction->trackingId_easypost;
 
         /* 2. Requête à l'api EasyPost pour récupérer le statut */
-        $statut = $this->easyPost->getStatus($trackingId);
+        try {
+            $statut = $this->easyPost->getStatus($trackingId);
+        } catch (Exception $e) {
+            session()->flash("tracker", "Statut : " . $e->getMessage());
+            return back();
+        }
 
-        // Déterminer le nouvel état en fonction du statut
+        /* 3. Déterminer le nouvel état en fonction du statut */
         switch ($statut) {
             case 'pre_transit':
             case 'in_transit':
@@ -218,8 +226,7 @@ class TransactionController extends Controller
             case 'error':
                 return 5; # Statut annulé
             default:
-                Log::warning("Statut inconnu retourné par EasyPost: {$statut}"); # Statut inconnu
-                return null;
+                session()->flash("tracker", "Statut inconnu");
         }
     }
 
@@ -246,7 +253,12 @@ class TransactionController extends Controller
         $trackingId = $transaction->trackingId_easypost;
 
         /* 2. Requête à l'api EasyPost pour récupérer la date de réception prévue */
-        $estimatedDelivery = $this->easyPost->getEstimatedDelivery($trackingId);
+        try {
+            $estimatedDelivery = $this->easyPost->getEstimatedDelivery($trackingId);
+        } catch (Exception $e) {
+            session()->flash("tracker", "Date de réception prévue : " . $e->getMessage());
+            return back();
+        }
 
         /* 3. Retourne la date de réception prévue sous le bon format */
         return $estimatedDelivery;
@@ -275,7 +287,12 @@ class TransactionController extends Controller
         $trackingId = $transaction->trackingId_easypost;
 
         /* 2. Requête à l'api EasyPost pour récupérer la date de réception livré */
-        $dateDelivery = $this->easyPost->getDeliveryDate($trackingId);
+        try {
+            $dateDelivery = $this->easyPost->getDeliveryDate($trackingId);
+        } catch (Exception $e) {
+            session()->flash("tracker", "Date de réception effective : " . $e->getMessage());
+            return back();
+        }
 
         /* 3. Retourne la date de réception livré sous le bon format */
         return $dateDelivery;
@@ -290,7 +307,7 @@ class TransactionController extends Controller
         $dateDelivery = $this->getDeliveryDate($transaction);
 
         /* 2. Mettre à jour la date de réception livré en fonction de la date de livraison*/
-        if ($dateDelivery != 'Not delivered yet' && $dateDelivery != null) { # Si une date est retourné
+        if ($dateDelivery != 'Pas encore livré' && $dateDelivery != null) { # Si une date est retourné
             $transaction->update([
                 'date_reception_effective' => $dateDelivery,
             ]);
@@ -310,7 +327,12 @@ class TransactionController extends Controller
         $trackingId = $transaction->trackingId_easypost;
 
         /* 2. Requête à l'api EasyPost pour récupérer le public URL */
-        $publicURL = $this->easyPost->getTrackerURL($trackingId);
+        try {
+            $publicURL = $this->easyPost->getTrackerURL($trackingId);
+        } catch (Exception $e) {
+            session()->flash("tracker", "Tracker URL : " . $e->getMessage());
+            return back();
+        }
 
         /* 3. Retourne le public URL */
         return $publicURL;
@@ -323,7 +345,12 @@ class TransactionController extends Controller
     public function updateWithWebHook(Request $request)
     {
         /* 1. Récupère le trackingId de l'évenement */
-        $trackingId = $this->easyPost->getTrackerEvent($request);
+        try {
+            $trackingId = $this->easyPost->getTrackerEvent($request);
+        } catch (Exception $e) {
+            session()->flash("Webhook", $e->getMessage());
+            return back();
+        }
 
         /* 2. Recherche la transaction en BD lié à ce trackingId */
         $transaction = Transaction::where("trackindId_easypost", $trackingId);
@@ -365,7 +392,8 @@ class TransactionController extends Controller
             $transaction->update(['prix_unitaire' => $transaction->article->prix]);
 
             //incémente la quantité (0+1 si nouvelle)
-            return Redirect::back(302, ['message' => 'Succes: Article ajouté au panier']);
+            //return Redirect::back(302, ['message' => 'Succes: Article ajouté au panier']);
+            return response()->json(['status' => 'ok', 'ajoute' => true, 'basketCount' => sizeof($commande->transactions)]);
         }
         #Créé un cookie qui store le panier si l'utilisateur n'est pas connecté
         else {
@@ -383,8 +411,9 @@ class TransactionController extends Controller
             #Update le cookie pour un 30j d'activité après avoir ajouté un article
             $biscuit = cookie('panier', json_encode($panier), 60 * 24 * 30);
 
-            return Redirect::back()->withCookie($biscuit);
+            //return Redirect::back()->withCookie($biscuit);
             // return response('Article ajouté au panier (biscuit)')->cookie($biscuit);
+            return response()->json(['message' => 'Succès, Article ajouté au panier', 'ajoute' => true, 'basketCount' => sizeof($panier)])->withCookie($biscuit);
         }
     }
 
@@ -461,22 +490,29 @@ class TransactionController extends Controller
                 }
 
                 # Création du tracker
-                $tracker = $this->easyPost->createTracker(
-                    $validatedData['codeRefLivraison'],
-                    $compagnieNom
-                );
+                try {
+                    $tracker = $this->easyPost->createTracker(
+                        $validatedData['codeRefLivraison'],
+                        $compagnieNom
+                    );
 
-                # Ajout du trackingId dans l'instance de la transaction
-                $transaction->update([
-                    "trackingId_easypost" => $tracker->id,
-                ]);
+                    # Ajout du trackingId dans l'instance de la transaction
+                    $transaction->update([
+                        "trackingId_easypost" => $tracker->id,
+                    ]);
+                } catch (Exception $e) {
+                    session()->flash("tracker", $e->getMessage()); # Créer un message de session avec l'erreur
+                    return back(); # Retourne à la page précédente avec l'erreur
+                }
 
                 /* 6. Mise à jour de la transaction */
+
+                $this->setEstimatedDeliveryDate($transaction);
+                $this->setStatut($transaction);
+
                 $transaction->update([
                     'code_ref_livraison' => $validatedData['codeRefLivraison'],
                     'id_compagnie' => $validatedData['compagnieLivraison'],
-                    'date_reception_prevue' => $this->getEstimatedDeliveryDate($transaction),
-                    'id_etat' => $this->getStatut($transaction),
                 ]);
 
                 /* 7. Retour à la vue "mesTransactions" */
@@ -520,18 +556,6 @@ class TransactionController extends Controller
                 'id_article' => $validated['article_id'],
                 'quantite' => $validated['quantity']
             ];
-
-            /*foreach ($panierData as $item) {
-                try {
-                    if ($qte > Article::first($item['Article'])->quantite_disponible || $qte < 0) {
-                        throw new Exception('Failed to update, Quantity out of bound');
-                    }
-
-                    $panier[$item['Article']]['quantite'] = $item['quantite'];
-                } catch (Exception $e) {
-                    return response(400)->json()->withException($e);
-                }
-            }*/
 
             $biscuit = cookie('panier', json_encode($panier), 60 * 24 * 30);
 

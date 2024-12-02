@@ -47,7 +47,7 @@ class AppServiceProvider extends ServiceProvider
 
             $basketCount = sizeof($items);
 
-            $view->with('basketCount', $basketCount)->with('notificationCount', $notifications);
+            $view->with('basketCount', $basketCount)->with('notificationCount', $notifications)->with('panier', $items);
         });
     }
 }

@@ -37,7 +37,7 @@ class Acceptation_etudiant extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Terracium | Votre demande a été acceptée!')
+            ->subject('Artterre | Votre demande a été acceptée!')
             ->markdown('mail.acceptation-etudiant', ['id' => $this->id_kiosque]);
     }
 

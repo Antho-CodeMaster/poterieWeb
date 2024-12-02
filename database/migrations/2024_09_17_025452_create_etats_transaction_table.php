@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('etats_transaction', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->tinyIncrements('id_etat');
-            $table->timestamps();
             $table->string('etat');
         });
     }

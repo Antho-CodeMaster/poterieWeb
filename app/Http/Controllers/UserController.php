@@ -131,23 +131,35 @@ class UserController extends Controller
         $id = request()->query('id');
         $user = User::where('id', $id)->first();
         $user->active = 0;
-        $user->save();
-        return redirect()->to(route('admin-utilisateurs'));
+        if($user->save())
+            session()->flash('succes', 'Utilisateur supprimé.');
+        else
+            session()->flash('erreur', 'Erreur lors de la suppression de l\'utilisateur.');
+
+        return redirect(url()->previous());
     }
 
     public function avertir()
     {
         $id = request()->query('id');
-        $notif = Notification::create([
-            'id_type' => 1,
-            'id_user' => $id,
-            'date' => now(),
-            'message' => request()->input('reason'),
-            'lien' => null,
-            'visible' => 1
-        ]);
-        $notif->save();
-        session()->flash('succes', 'Utilisateur averti.');
+        if(request()->input('reason') != null)
+        {
+            $notif = Notification::create([
+                'id_type' => 1,
+                'id_user' => $id,
+                'date' => now(),
+                'message' => request()->input('reason'),
+                'lien' => null,
+                'visible' => 1
+            ]);
+            if($notif->save())
+                session()->flash('succes', 'Utilisateur averti.');
+            else
+                session()->flash('erreur', 'Erreur lors de l\'avertissement de l\'utilisateur.');
+        }
+        else
+            session()->flash('erreur', 'Veuillez spécifier une raison pour l\'avertissement.');
+
         return redirect(url()->previous());
     }
 
@@ -167,8 +179,12 @@ class UserController extends Controller
         else
             $mod->is_admin = 1;
 
-        $mod->save();
-        return redirect()->to(route('admin-utilisateurs'));
+        if($mod->save())
+            session()->flash('succes', 'Utilisateur promu!');
+        else
+            session()->flash('erreur', 'Erreur lors de la promotion.');
+
+        return redirect(url()->previous());
     }
 
     // Supprimer une instance de modérateur ou rendre modérateur un administrateur
@@ -182,9 +198,16 @@ class UserController extends Controller
 
         if ($mod->is_admin == 1) {
             $mod->is_admin = 0;
-            $mod->save();
+            if($mod->save())
+                session()->flash('succes', 'Utilisateur rétrogradé.');
+            else
+                session()->flash('erreur', 'Erreur lors de la rétrogradation.');
         } else
-            $mod->delete();
+            if($mod->delete())
+                session()->flash('succes', 'Utilisateur rétrogradé.');
+            else
+                session()->flash('erreur', 'Erreur lors de la rétrogradation.');
+
         return redirect()->to(route('admin-utilisateurs'));
     }
 }

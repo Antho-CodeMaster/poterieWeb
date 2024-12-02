@@ -52,5 +52,13 @@ class TypeNotificationSeeder extends Seeder
         DB::table('types_notification')->insert([
             'description' => 'Votre demande concernant un article non reçu a été supprimée par l\'administration. Vous devriez avoir reçu un courriel avec plus de renseignements. Si ce n\'est pas le cas, veuillez nous contacter via le lien en bas de page.',
         ]);
+
+        DB::table('types_notification')->insert([
+            'description' => 'Un de vos articles a été remis en ligne par l\'administration. Nom de l\'article: [1]',
+        ]);
+
+        DB::table('types_notification')->insert([
+            'description' => 'Bienvenue chez Artterre! Pour plus de sécurité, veuillez configurer votre question de sécurité et l\'authentification à deux facteurs et via les paramètres.',
+        ]);
     }
 }

@@ -15,7 +15,6 @@ return new class extends Migration
             $table->engine = 'InnoDB';
             $table->bigInteger('id_user')->unsigned();
             $table->bigInteger('id_article')->unsigned();
-            $table->timestamps();
         });
 
         Schema::table('likes', function (Blueprint $table) {

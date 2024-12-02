@@ -20,7 +20,6 @@ class DemandeSeeder extends Seeder
             'id_type' => 1,
             'id_etat' => 2,
             'id_user' => 6,
-            'date' => now()
         ]);
 
         //Demande en attente de nouvel étudiant faite par Nicola
@@ -29,7 +28,6 @@ class DemandeSeeder extends Seeder
             'id_type' => 2,
             'id_etat' => 1,
             'id_user' => 7,
-            'date' => now()
         ]);
 
         //Demande refusée de renouvellement faite par Anthony
@@ -38,7 +36,6 @@ class DemandeSeeder extends Seeder
             'id_type' => 3,
             'id_etat' => 3,
             'id_user' => 8,
-            'date' => now()
         ]);
 
         for($i = 0; $i < 50; $i++)
@@ -47,7 +44,6 @@ class DemandeSeeder extends Seeder
                 'id_type' => random_int(1, 3),
                 'id_etat' => 1,
                 'id_user' => random_int(1, 9),
-                'date' => now()
             ]);
         }
     }

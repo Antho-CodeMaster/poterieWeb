@@ -23,7 +23,9 @@
     window.csrfToken = "{{ csrf_token() }}";
     window.notificationHideRoute = "{{ route('notification.hide') }}";
     window.likeToggleUrl = "{{ route('like.toggle', ':idArticle') }}";
+    window.addToCartUrl = "{{ route('addArticleToPanier')}}";
     </script>
+    <script src="https://accounts.google.com/gsi/client" async></script>
 </head>
 
 <body class="font-sans antialiased">
@@ -33,7 +35,7 @@
         @auth
            <!-- Modal du 2fa-->
             @include('components.2fa-modal')
-            @if (Auth::user()->uses_two_factor_auth == 1 &&
+            @if (Auth::user()->uses_2fa == 1 &&
                     (!session()->has('2fa:auth:passed') || session()->get('2fa:auth:passed') == false))
                 <div x-data="$dispatch('open-2fa-modal')"></div>
             @endif

@@ -13,6 +13,7 @@ class Mot_cle_article extends Model
         'id_mot_cle',
         'id_article',
     ];
+    public $timestamps = false;
 
     public function article()
     {

@@ -2,7 +2,7 @@
     <form action="{{ route('store-demande-artiste') }}" method="post" enctype="multipart/form-data"
         class="lg:content-height py-16 lg:px-12 flex flex-col justify-center">
         @csrf
-        <h1 class="text-center titre1-dark">Devenir artiste-vendeur chez Terracium</h1>
+        <h1 class="text-center titre1-dark">Devenir artiste-vendeur chez Artterre</h1>
         <div class="lg:flex lg:mt-20 mt-5">
             <div class="lg:w-1/2 py-4 px-12">
                 <h2 class="text-center titre3-dark mb-4">Étape 1</h2>

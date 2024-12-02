@@ -5,16 +5,56 @@
         <!-- Partie de droite (contenu de la page) -->
         <div class="pr-10 h-[100%] w-4/5 flex flex-col" x-data="{ openRefuser: false }">
             <!-- Titre, nombre de résultats, filtres-->
-            <div id="header-info" class="flex justify-between">
-                <div>
-                    <h1 class="titre2-dark m-titreY p-sectionY border-b-2 border-darkGrey">Demandes traitées</h1>
-                    <h2 class="text-2xl text-darkGrey">{{ sizeof($demandes) }} résultats</h2>
-                </div>
-                <div class="flex items-center justify-center">
-                    <x-button.border.back
-                        @click="window.location.href='{{ route('admin-demandes') }}'">Retour</x-button.border.back>
+            <div id="header-info">
+                <div class="flex justify-between border-b-2 border-darkGrey">
+                    <h1 class="titre2-dark m-titreY p-sectionY">Demandes traitées</h1>
+                    <div class="flex items-center justify-center">
+                        <div class="flex gap-2">
+                            <div class="flex items-center gap-2">
+                                <?php
+                                switch ($page) {
+                                    case 0:
+                                    case 1:
+                                        $initial = 1;
+                                        $final = 4;
+                                        break;
+                                    case $total_pages - 2:
+                                        $initial = $page - 2;
+                                        $final = $page + 1;
+                                        break;
+                                    case $total_pages - 1:
+                                        $initial = $page - 3;
+                                        $final = $page + 1;
+                                        break;
+                                    default:
+                                        $initial = $page - 1;
+                                        $final = $page + 2;
+                                        break;
+                                }
+                                ?>
+                                <p>Page: </p>
+                                @for ($i = $initial; $i <= $final && $i < $total_pages; $i++)
+                                    <a class="px-4 py-2 rounded
+                            {{ $page + 1 == $i ? 'bg-darkGrey text-white' : '' }}"
+                                        href="{{ route('admin-signalements-traites') . '?page=' . $i }}">
+                                        {{ $i }}</a>
+                                @endfor
+                                @if ($page + 3 < $total_pages)
+                                    <p>...</p>
+                                @endif
+                                <a class="px-4 py-2 rounded
+                        {{ $page + 1 == $total_pages ? 'bg-darkGrey text-white' : '' }}"
+                                    href="{{ route('admin-signalements-traites') . '?page=' . $total_pages }}">
+                                    {{ $total_pages }}</a>
+                            </div>
+                            <x-button.border.back type="button"
+                                onclick="window.location.href='{{ url()->previous() }}'">Retour</x-button.border.back>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <h2 class="text-2xl text-darkGrey">{{ $page * 50 + 1 }} à
+                {{ $page * 50 + 50 > $count ? $count : $page * 50 + 50 }} de {{ $count }} résultats</h2>
             <!-- Reste du contenu va ici-->
             <!-- Header -->
             <div class="w-[calc(100%-18px)] rounded-[14px] flex items-center p-1 gap-3 mt-4">
@@ -36,45 +76,48 @@
                                     <p class="m-auto">{{ $demande->user->email }}</p>
                                     <p class="m-auto">{{ $demande->type->type }}</p>
                                 </div>
-                                <p class="w-2/12 text-center">{{ $demande->date }}</p>
+                                <p class="w-2/12 text-center">{{ $demande->created_at }}</p>
 
                                 <div class="w-7/12 flex gap-input overflow-x-auto overflow-y-hidden">
                                     @if ($demande->type->type != 'Renouvellement')
-                                            @for ($i = 0; $i < 10; $i++)
-                                                @if (isset($demande->photos_oeuvres[$i]))
-                                                    <img src="{{ asset('img/demandePreuve/' . $demande->photos_oeuvres[$i]->path) }}"
-                                                        alt="Photo d'oeuvre"
-                                                        class="img shadow-md rounded-[16px] cursor-pointer w-[10%] aspect-square object-cover">
-                                                @else
-                                                    <div class="w-1/5">
-                                                    </div>
-                                                @endif
-                                            @endfor
+                                        @for ($i = 0; $i < 10; $i++)
+                                            @if (isset($demande->photos_oeuvres[$i]))
+                                                <img src="{{ asset('img/demandePreuve/' . $demande->photos_oeuvres[$i]->path) }}"
+                                                    alt="Photo d'oeuvre"
+                                                    class="img shadow-md rounded-[16px] cursor-pointer w-[10%] aspect-square object-cover">
+                                            @else
+                                                <div class="w-1/5">
+                                                </div>
+                                            @endif
+                                        @endfor
                                     @endif
                                     @if ($demande->type->type != 'Nouveau professionnel')
-                                            @for ($i = 0; $i < 3; $i++)
-                                                @if (isset($demande->photos_identite[$i]))
-                                                    <img src="{{ asset('img/demandeIdentite/' . $demande->photos_identite[$i]->path) }}"
-                                                        alt="Photo d'identité"
-                                                        class="img shadow-md rounded-[16px] cursor-pointer w-[10%] aspect-square object-cover">
-                                                @else
-                                                    <div class="w-1/5"></div>
-                                                @endif
-                                            @endfor
+                                        @for ($i = 0; $i < 3; $i++)
+                                            @if (isset($demande->photos_identite[$i]))
+                                                <img src="{{ asset('img/demandeIdentite/' . $demande->photos_identite[$i]->path) }}"
+                                                    alt="Photo d'identité"
+                                                    class="img shadow-md rounded-[16px] cursor-pointer w-[10%] aspect-square object-cover">
+                                            @else
+                                                <div class="w-1/5"></div>
+                                            @endif
+                                        @endfor
                                     @endif
                                 </div>
                             </div>
                             <div class="w-1/12 flex justify-center items-center">
                                 @if ($demande->id_etat == 2)
-                                    <svg class="w-12 h-12 text-gray-800 dark:text-white" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                        viewBox="0 0 24 24">
-                                        <path stroke="green" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                    </svg>
+                                    <x-tooltip text="{{ $demande->updated_at }}" position="bottom" id="1">
+                                        <svg class="w-12 h-12 text-gray-800 dark:text-white" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            fill="none" viewBox="0 0 24 24">
+                                            <path stroke="green" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                        </svg>
+                                    </x-tooltip>
                                 @elseif($demande->id_etat == 3)
-                                    <x-tooltip text="{{ $demande->raison_refus }}" position="bottom" id="1">
+                                    <x-tooltip text="{{ $demande->raison_refus }} ({{ $demande->updated_at }})"
+                                        position="bottom" id="1">
                                         <svg class="w-12 h-12 text-gray-800 dark:text-white" aria-hidden="true"
                                             xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             fill="none" viewBox="0 0 24 24">

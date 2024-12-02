@@ -24,5 +24,29 @@ class ModerateurSeeder extends Seeder
             'id_user' => 2,
             'is_admin' => 0
         ]);
+
+        // Simon
+        DB::table('moderateurs')->insert([
+            'id_user' => 6,
+            'is_admin' => 0
+        ]);
+
+        // Nicola
+        DB::table('moderateurs')->insert([
+            'id_user' => 7,
+            'is_admin' => 0
+        ]);
+
+        // Anthony
+        DB::table('moderateurs')->insert([
+            'id_user' => 8,
+            'is_admin' => 0
+        ]);
+
+        // Hamid
+        DB::table('moderateurs')->insert([
+            'id_user' => 9,
+            'is_admin' => 0
+        ]);
     }
 }

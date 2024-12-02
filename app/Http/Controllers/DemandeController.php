@@ -26,7 +26,7 @@ class DemandeController extends Controller
     public function index()
     {
         return view('admin/demandes', [
-            'demandes' => Demande::where('id_etat', 1)->with(['photos_oeuvres', 'photos_identite'])->orderBy('date', 'asc')->get(),
+            'demandes' => Demande::where('id_etat', 1)->with(['photos_oeuvres', 'photos_identite'])->orderBy('created_at', 'asc')->get(),
             'images' => Storage::disk('public')
         ]);
     }
@@ -34,12 +34,26 @@ class DemandeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index_traitees()
+    public function index_traitees(Request $request)
     {
-        return view('admin/demandes-traitees', [
-            'demandes' => Demande::where('id_etat', '!=', 1)->with(['photos_oeuvres', 'photos_identite'])->orderBy('updated_at', 'desc')->get(),
-            'images' => Storage::disk('public')
-        ]);
+        $page = $request->input('page', 1);
+
+        $demandes = Demande::where('id_etat', '!=', 1)->with(['photos_oeuvres', 'photos_identite'])->orderBy('updated_at', 'desc');
+        $count = $demandes->count();
+        $demandes = $demandes->skip(50 * ($page - 1))
+            ->take(50)
+            ->get();
+
+        return view(
+            'admin/demandes-traitees',
+            [
+                'demandes' => $demandes,
+                'page' => $page - 1,
+                'count' => $count,
+                'total_pages' => ceil($count / 50),
+                'images' => Storage::disk('public')
+            ]
+        );
     }
 
     /**
@@ -56,7 +70,7 @@ class DemandeController extends Controller
         // Si on a déjà une demande pending, on ne peut pas en faire une nouvelle
         if (Demande::where('id_user', Auth::id())->where('id_etat', 1)->first() != null)
             return $view->withErrors([
-                'alreadyPending' => 'Vous avez déjà une demande en attente dans notre serveur, créée le ' . $demande->date . '. Veuillez attendre le verdict de l\'administration avant de réessayer.'
+                'alreadyPending' => 'Vous avez déjà une demande en attente dans notre serveur, créée le ' . $demande->created_at . '. Veuillez attendre le verdict de l\'administration avant de réessayer.'
             ]);
 
         return $view;
@@ -128,7 +142,6 @@ class DemandeController extends Controller
             'id_type' => $type,
             'id_etat' => 1, // En attente
             'id_user' => Auth::id(),
-            'date' => now()
         ]);
         if (!$newDemande->save()) {
             return back()->withErrors(['msg' => 'Une erreur inattendue s\'est produite lors de l\'envoi de votre demande. Veuillez réessayer plus tard.']);
@@ -206,7 +219,6 @@ class DemandeController extends Controller
             case 2:
                 $artiste = Artiste::create([
                     'id_user' => $dem->id_user,
-                    'id_theme' => 1,
                     'nom_artiste' => null,
                     'path_photo_profil' => 'img/artistePFP/default_artiste.png',
                     'is_etudiant' => true,
@@ -232,7 +244,6 @@ class DemandeController extends Controller
             case 3:
                 $artiste = Artiste::create([
                     'id_user' => $dem->id_user,
-                    'id_theme' => 1,
                     'nom_artiste' => null,
                     'path_photo_profil' => 'img/artistePFP/default_artiste.png',
                     'is_etudiant' => false,

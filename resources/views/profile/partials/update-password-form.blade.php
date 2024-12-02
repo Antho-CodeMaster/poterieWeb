@@ -32,17 +32,7 @@
         </div>
 
         <div class="flex items-center gap-4">
-            <x-primary-button class="hover:bg-lightVert bg-vert">{{ __('Sauvegarder') }}</x-primary-button>
-
-            @if (session('status') === 'password-updated')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600"
-                >{{ __('Sauvegardé.') }}</p>
-            @endif
+            <x-button.green.empty class="hover:bg-lightVert bg-vert">{{ __('Sauvegarder') }}</x-button.green.empty>
         </div>
     </form>
 </section>

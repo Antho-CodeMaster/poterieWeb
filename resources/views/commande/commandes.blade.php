@@ -14,7 +14,7 @@
     {{-- Si aucune commande en cours on affiche un message, sinon on affiche les commandes --}}
     @if ($commandes->isEmpty())
         <p class="text-center titre2-dark">Aucune commande</p>
-        <p class="text-center mt-4">Vous n'avez jamais effectué de commande chez Terracium.</p>
+        <p class="text-center mt-4">Vous n'avez jamais effectué de commande chez Artterre.</p>
     @else
         @if ($commandeEnCours != null)
             <h2 class="my-8 titre2-dark m-section">En cours</h2>

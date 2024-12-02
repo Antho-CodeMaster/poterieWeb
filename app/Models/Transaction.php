@@ -10,6 +10,7 @@ class Transaction extends Model
     use HasFactory;
     protected $table = 'transactions';
     protected $primaryKey ='id_transaction';
+    public $timestamps = false;
 
     protected $fillable = [
         'id_commande',

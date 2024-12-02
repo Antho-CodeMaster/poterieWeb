@@ -28,6 +28,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'google_id',
     ];
 
     /**
@@ -94,20 +95,5 @@ class User extends Authenticatable
     public function notifications()
     {
         return $this->hasMany(Notification::class, 'id_user', 'id');
-    }
-
-    public function default_pm_id()
-    {
-        if ($this->stripe_id != null) {
-            \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
-            $defaultPaymentMethod = \Stripe\PaymentMethod::all([
-                'customer' => $this->stripe_id,
-                'type' => 'card',
-            ]);
-
-            if(!empty($defaultPaymentMethod->data))
-                return $defaultPaymentMethod->data[0]->id;
-        }
-        return null;
     }
 }

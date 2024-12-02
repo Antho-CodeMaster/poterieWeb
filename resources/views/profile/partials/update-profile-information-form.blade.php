@@ -1,7 +1,7 @@
 <section>
     <header>
         <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Information du compte') }}
+            {{ __('Informations du compte') }}
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
@@ -48,7 +48,7 @@
         </div>
 
         <div class="flex items-center gap-4">
-            <x-primary-button class="hover:bg-lightVert bg-vert">{{ __('Sauvegarder') }}</x-primary-button>
+            <x-button.green.empty class="hover:bg-lightVert bg-vert">{{ __('Sauvegarder') }}</x-button.green.empty>
 
             @if (session('status') === 'profile-updated')
                 <p

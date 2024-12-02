@@ -39,7 +39,7 @@
                                         </svg>
                                         <h1 class="text-3xl text-ellipsis overflow-hidden whitespace-nowrap">
                                             {{ $demande->user->name }}</h1>
-                                        <p>Demande créée le {{ $demande->date }}</p>
+                                        <p>Demande créée le {{ $demande->created_at }}</p>
                                         <p>{{ $demande->user->email }}</p>
                                         <p>{{ $demande->type->type }}</p>
                                     </div>

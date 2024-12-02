@@ -16,6 +16,7 @@ return new class extends Migration
             $table->bigIncrements('id_signalement');
             $table->bigInteger('id_transaction')->unsigned();
             $table->string('description')->nullable();
+            $table->boolean('actif');
             $table->timestamps();
         });
 

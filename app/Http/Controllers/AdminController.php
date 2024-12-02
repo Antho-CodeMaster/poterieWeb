@@ -21,10 +21,10 @@ class AdminController extends Controller
         return view('admin/dashboard', [
             'utilisateurs' => User::All()->count(),
             'articles' => Article::All()->count(),
-            'signalements' => Signalement::All()->count(),
+            'signalements' => Signalement::where('actif', 1)->count(),
             'demandes' => Demande::All()->count(),
             'newDemandes' => Demande::where('id_etat', 1)->count(),
-            'articles_non_recus' => Article_non_recu::All()->count(),
+            'articles_non_recus' => Article_non_recu::where('actif', 1)->count(),
             'renouvellements' => Renouvellement::All()->count(),
         ]);
 

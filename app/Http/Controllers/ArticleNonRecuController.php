@@ -13,12 +13,56 @@ class ArticleNonRecuController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+        $page = $request->input('page', 1);
+
+        $anrs = Article_non_recu::where('actif', true);
+        $count = $anrs->count();
+        $anrs = $anrs->skip(50 * ($page - 1))
+            ->take(50)
+            ->get();
+
+        foreach($anrs as $anr)
+        {
+                if(isset($anr->transaction->commande->payment_intent_id))
+                {
+                    $paymentIntent = \Stripe\PaymentIntent::retrieve($anr->transaction->commande->payment_intent_id);
+                    $charge = \Stripe\Charge::retrieve($paymentIntent->latest_charge);
+                    $anr->receipt_url = $charge->receipt_url;
+                }
+        }
+
         return view(
             'admin/articles-non-recus',
             [
-                'anrs' => Article_non_recu::All(),
+                'anrs' => $anrs,
+                'page' => $page - 1,
+                'count' => $count,
+                'total_pages' => ceil($count / 50),
+            ]
+        );
+    }
+
+    public function index_traites(Request $request)
+    {
+
+        $page = $request->input('page', 1);
+
+        $anrs = Article_non_recu::where('actif', false)->orderBy('updated_at', 'desc');
+        $count = $anrs->count();
+        $anrs = $anrs->skip(50 * ($page - 1))
+            ->take(50)
+            ->get();
+
+        return view(
+            'admin/articles-non-recus-traites',
+            [
+                'anrs' => $anrs,
+                'page' => $page - 1,
+                'count' => $count,
+                'total_pages' => ceil($count / 50),
             ]
         );
     }
@@ -49,7 +93,7 @@ class ArticleNonRecuController extends Controller
         $transaction = Transaction::where('id_transaction', $validatedData["id_transaction"])->first();
 
         if($transaction->id_etat != 5)
-            if(now() < Carbon::create($transaction->created_at)->addMonth())
+            if(now() < Carbon::create($transaction->commande->date)->addMonth())
             {
                 session()->flash('erreur', 'Vous devez attendre au moins un mois après la commande pour signaler un article comme non reçu.');
                 return back();
@@ -65,7 +109,8 @@ class ArticleNonRecuController extends Controller
 
         $newsignalement = Article_non_recu::create([
             "id_transaction" => $validatedData["id_transaction"],
-            "description" => $validatedData["signaleDescription"]
+            "description" => $validatedData["signaleDescription"],
+            "actif" => 1,
         ]);
 
         /* Stockage en BD du nouvel article */
@@ -111,7 +156,12 @@ class ArticleNonRecuController extends Controller
 
         $anr = Article_non_recu::where('id_signalement', $id)->first();
 
-        session()->flash('succes', 'Demande supprimée.');
+        $anr->actif = 0;
+
+        if($anr->save())
+            session()->flash('succes', 'Demande supprimée.');
+        else
+            session()->flash('erreur', 'Erreur lors de la suppression de la demande.');
 
         $notif = Notification::create([
             'id_type' => 10,
@@ -123,8 +173,6 @@ class ArticleNonRecuController extends Controller
         ]);
 
         $notif->save();
-
-        Article_non_recu::destroy($id);
 
         return back();
     }

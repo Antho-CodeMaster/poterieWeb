@@ -51,7 +51,7 @@ class AuthenticatedSessionController extends Controller
                 $art->validate();
 
 
-            if($user->uses_two_factor_auth){
+            if($user->uses_2fa){
 
                 $google2fa = new Google2FAGoogle2FA();
                 if($request->session()->has('2fa:auth:passed')){

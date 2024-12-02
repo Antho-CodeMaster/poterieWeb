@@ -18,6 +18,7 @@ use Stripe\Stripe;
 use Stripe\StripeClient;
 use Stripe\Transfer;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class CommandeController extends Controller
 {
@@ -76,7 +77,7 @@ class CommandeController extends Controller
      */
     public function create()
     {
-        return view('commande.formInfos');
+
     }
 
     /**
@@ -98,7 +99,8 @@ class CommandeController extends Controller
         $articleParArtiste = $commande->transactions->groupBy(function ($transaction){
             return $transaction->article->artiste;
         });
-        return view('commande.commande-detail', ['commande' => $commande, 'articleParArtiste' => $articleParArtiste]);
+
+        return view('commande.commande-detail', ['commande' => $commande, 'articleParArtiste' => $articleParArtiste, 'date_min' => Carbon::create($commande->date)->addMonth()]);
     }
 
     /**
@@ -419,7 +421,7 @@ class CommandeController extends Controller
                 'date' => now()->format('Y-m-d'),
                 'nom_artiste' => $artiste->nom_artiste,
                 'id_artiste' => $artiste->id_artiste,
-                'transaction_date' => $commande->created_at->format('Y-m-d'),
+                'transaction_date' => \Carbon\Carbon::parse($commande->date)->format('Y-m-d'),
                 'id_commande' => $commande->id_commande,
                 'stripe_session_id' => $commande->checkout_id,
                 'transactions' => $commande->transactions

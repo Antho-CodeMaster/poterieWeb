@@ -30,10 +30,11 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
             'contenu_sensible' => 0,
-            'id_question_securite' => 1,
-            'reponse_question' => Hash::make('Lorem Ipsum Dolor Sit Amet'),
+            'id_question_securite' => null,
+            'reponse_question' => null,
             'active' => 1,
-            'units' => 0
+            'units' => 0,
+            'uses_2fa' => 0
         ];
     }
 

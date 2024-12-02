@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\Question_securite;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\Mailer\Exception\TransportException;
+use Illuminate\Support\Facades\Session;
 
 class PasswordResetLinkController extends Controller
 {
@@ -38,9 +39,15 @@ class PasswordResetLinkController extends Controller
 
         $q_id = $user->id_question_securite;
 
-        $q = Question_securite::where('id_question', $q_id)->first()->question;
+        $q = Question_securite::where('id_question', $q_id)->first();
 
-        return view('auth.question-password', ['question' => $q, 'email' => $request->email]);
+        if($q == null)
+        {
+            Session::flash('question', 'Vous n\'avez jamais défini votre question de sécurité. Vous devez contacter l\'administration via le lien en bas de page pour récupérer votre compte.');
+            return back()->withInput($request->only('email'));
+        }
+
+        return view('auth.question-password', ['question' => $q->question, 'email' => $request->email]);
     }
 
     /**

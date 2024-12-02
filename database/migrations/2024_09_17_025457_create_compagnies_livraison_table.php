@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('compagnies_livraison', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->smallIncrements('id_compagnie');
-            $table->timestamps();
             $table->string('compagnie');
             $table->string('url');
         });

@@ -16,7 +16,6 @@ return new class extends Migration
             $table->bigIncrements('id_moderateur');
             $table->bigInteger('id_user')->unsigned();
             $table->boolean('is_admin');
-            $table->timestamps();
         });
 
         Schema::table('moderateurs', function (Blueprint $table) {

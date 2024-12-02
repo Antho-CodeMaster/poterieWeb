@@ -11,6 +11,7 @@ class Mot_cle extends Model
     protected $table = "mots_cles";
     protected $primaryKey = "id_mot_cle";
     protected $fillable = ['mot_cle'];
+    public $timestamps = false;
 
     public function articles()
     {

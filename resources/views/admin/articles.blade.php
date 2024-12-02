@@ -1,6 +1,6 @@
 <x-app-layout>
     <!-- Div qui divise le menu de gauche et le contenu-->
-    <div class="flex content-height" x-data="{ openDelete: false }"">
+    <div class="flex content-height" x-data="{ openDelete: false, openRetrieve: false }"">
         @include('admin.menu-gauche')
         <!-- Partie de droite (contenu de la page) -->
         <div class="pr-10 w-full h-[100%] flex flex-col">
@@ -60,9 +60,10 @@
                     <label class="textMoyen-dark mr-6" for="etat">Visibilité : </label>
                     <select id="etat" name="etat" class="mr-6 border rounded border-black">
                         <option {{ $etat == 'tous' || $etat == null || $etat == '' ? 'selected' : '' }} value="tous">
-                            Tous</option>
+                            Public & masqué</option>
                         <option {{ $etat == 'Public' ? 'selected' : '' }} value="Public">Public</option>
                         <option {{ $etat == 'Masqué' ? 'selected' : '' }} value="Masqué">Masqué aux clients</option>
+                        <option {{ $etat == 'Supprimé' ? 'selected' : '' }} value="Supprimé">Supprimé du site</option>
                     </select>
 
                     <!-- Barre de recherche -->
@@ -91,6 +92,7 @@
                 @endif
             </div>
             @include('admin.components.delete-article-modal')
+            @include('admin.components.retrieve-article-modal')
             @include('admin.components.article-modal')
 
 

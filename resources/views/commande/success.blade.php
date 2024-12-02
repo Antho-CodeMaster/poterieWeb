@@ -8,7 +8,7 @@
             <br><br>
             Pour consulter votre facture, <a href="{{ $facture }}" class="underline text-[#73BCFF]"
                 target="_blank">cliquez ici pour la télécharger.</a> Sachez également que toutes vos factures restent
-            accessibles dans votre profil, sous la section "historique de factures" et qu'une copie vous est envoyé par
+            accessibles dans votre profil, sous la section "Historique de factures" et qu'une copie vous est envoyée par
             courriel.
             <br><br>
             Votre commande sera livré au

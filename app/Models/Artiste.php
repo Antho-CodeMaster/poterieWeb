@@ -15,7 +15,6 @@ class Artiste extends Model
     protected $primaryKey = "id_artiste";
     protected $fillable = [
         'id_user',
-        'id_theme',
         'nom_artiste',
         'path_photo_profil',
         'is_etudiant',
@@ -89,12 +88,12 @@ class Artiste extends Model
                     // S'assurer que le checkup soit seulement fait si l'étudiant était déjà existant au moment du renouvellement
                     if ($this->created_at < $date) {
                         // Retrouver la dernière demande de renouvellement de l'utilisateur
-                        $demande = Demande::where('id_user', $this->id_user)->where('id_type', 1)->latest('date')->first();
+                        $demande = Demande::where('id_user', $this->id_user)->where('id_type', 1)->latest('created_at')->first();
 
                         // Si la date du dernier renouvellement est passée
                         if (now() > $date->addMonth()) {
                             // Si aucune demande de renouvellement n'a été faite depuis, on doit rendre l'artiste inactif.
-                            if ($demande == null || $demande->date < $date) {
+                            if ($demande == null || $demande->created_at < $date) {
                                 $this->actif = 0;
                                 $this->save();
 

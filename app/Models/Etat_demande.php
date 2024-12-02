@@ -9,4 +9,5 @@ class Etat_demande extends Model
 {
     use HasFactory;
     protected $table = "etats_demande";
+    public $timestamps = false;
 }

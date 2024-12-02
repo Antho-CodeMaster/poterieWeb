@@ -11,8 +11,10 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 use App\Models\Artiste;
+use App\Models\Question_securite;
 use App\Models\Reseau;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
@@ -26,11 +28,13 @@ class ProfileController extends Controller
 
         $twoFactor =  new TwoFactorController();
         $qrCode = $twoFactor->getQr();
+        $security_questions = Question_securite::all();
 
         return view('profile.edit', [
             'user' => $request->user(),
             'artiste' => $artiste,
             'qrCode' => $qrCode,
+            'security_questions' => $security_questions
         ]);
     }
 
@@ -70,6 +74,11 @@ class ProfileController extends Controller
                 $sub_info['debut_periode'] = Carbon::createFromTimestamp($sub_info->current_period_start)->locale('fr_FR')->isoFormat('dddd [le] D MMMM YYYY');
                 $sub_info['fin_periode'] = Carbon::createFromTimestamp($sub_info->current_period_end)->locale('fr_FR')->isoFormat('dddd [le] D MMMM YYYY');
             }
+            else
+            {
+                $subbed = false;
+                $was_subbed = false;
+            }
         }
 
         // Si la méthode de paiement a bel et bien été définie, remplacer tout ancienne méthode de paiement par la nouvelle.
@@ -101,6 +110,10 @@ class ProfileController extends Controller
                     $paymentMethodToDetach->detach();
             }
             Session::flash('succes', 'Vos informations de facturation ont bel et bien été enregistrées. Veuillez rafraîchir la page pour voir les changements!');
+        }
+
+        if(request()->query('successConnect') === 'true'){
+            Session::flash('succes', 'Vos informations de virements ont bel et bien été enregistrées. Vous commencerez maintenant à recevoire des paiements pour vos ventes.');
         }
 
         if ($customer != null)
@@ -204,6 +217,24 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit')->with('status', 'blur-updated');
     }
 
+    public function updateQuestion(Request $request)
+    {
+        $validated = $request->validateWithBag('updateQuestion', [
+            'question' => ['required'],
+            'reponse' => ['required', 'confirmed'],
+        ]);
+
+        $request->user()->id_question_securite = $validated['question'];
+        $request->user()->reponse_question = Hash::make($validated['reponse']);
+
+        if($request->user()->save())
+            Session::flash('succes_question', 'La question de sécurité et sa réponse ont été mis à jour.');
+        else
+            Session::flash('erreur_question', 'Erreur lors de la mise à jour de la question de sécurité. Veuillez réessayer plus tard.');
+
+        return back();
+    }
+
     /**
      * Delete the user's account.
      */
@@ -232,20 +263,45 @@ class ProfileController extends Controller
 
         $artiste = Artiste::where('id_user',Auth::id())->first();
 
-        $account = \Stripe\Account::create([
-            'type' => 'express',
-            'country' => 'CA',
-            'email' => $artiste->user->email,
-            'business_type' => 'individual',
-            'capabilities' => [
-                'card_payments' => ['requested' => true],
-                'transfers' => ['requested' => true],
-            ],
+        if($artiste->stripe_acc == null){
+            $account = \Stripe\Account::create([
+                'type' => 'express',
+                'country' => 'CA',
+                'email' => $artiste->user->email,
+                'business_type' => 'individual',
+                'capabilities' => [
+                    'card_payments' => ['requested' => true],
+                    'transfers' => ['requested' => true],
+                ],
+            ]);
+        } else{
+            $account = \Stripe\Account::update($artiste->stripe_acc);
+        }
+
+        $artiste->stripe_acc = $account->id;
+        $artiste->save();
+
+        $lienCompte = \Stripe\AccountLink::create([
+            'account' => $account->id,
+            'refresh_url' => route('connect-refresh'),
+            'return_url' => route('profile.facturation') . '?successConnect=true',
+            'type' => 'account_onboarding'
         ]);
 
-        $artiste->update([
-            'stripe_acc' => $account->id
-        ]);
+        return redirect($lienCompte->url);
+    }
+
+    public function connectReturn(Request $request){
+        return view('profile.stripe-return');
+    }
+
+    //Si le lien est expiré et revisité
+    public function connectRefresh(Request $request){
+        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+
+        $artiste = Artiste::where('id_user',Auth::id())->first();
+
+        $account = \Stripe\Account::update($artiste->stripe_acc);
 
         $lienCompte = \Stripe\AccountLink::create([
             'account' => $account->id,
@@ -255,12 +311,6 @@ class ProfileController extends Controller
         ]);
 
         return redirect($lienCompte->url);
-    }
-
-    public function connectReturn(Request $request){
-
-    }
-    public function connectRefresh(Request $request){
     }
 
     /**

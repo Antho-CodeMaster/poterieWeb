@@ -8,6 +8,7 @@ use App\Models\Mot_cle;
 use App\Models\Mot_cle_article;
 use App\Models\Photo_article;
 use App\Models\Signalement;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -30,12 +31,16 @@ class ArticleController extends Controller
         $vedette = $request->input('vedette');
         $page = $request->input('page', 1);
 
-        $articles = Article::where('id_etat', '!=', 3)
-            ->when(isset($etat) && $etat != "tous", function ($query) use ($etat) {
+        $articles = Article::
+            when(true, function ($query) use ($etat) {
                 if ($etat == "Public")
                     $query->where('id_etat', 1);
                 else if ($etat == "Masqué")
                     $query->where('id_etat', 2);
+                else if ($etat == "Supprimé")
+                    $query->where('id_etat', 3);
+                else
+                    $query->where('id_etat', "!=", 3);
             })
             ->when(isset($searchTerm), function ($query) use ($searchTerm) {
                 $query->where(function ($subQuery) use ($searchTerm) {
@@ -57,7 +62,7 @@ class ArticleController extends Controller
             ->whereHas('artiste', function ($query) {
                 $query->where('actif', true); //L'artiste doit être actif présentement
             })
-            ->orderBy('date_publication', 'desc');
+            ->orderBy('created_at', 'desc');
 
         $count = $articles->count();
         $articles = $articles->skip(50 * ($page - 1))
@@ -207,12 +212,10 @@ class ArticleController extends Controller
                 'profondeur' => $validatedData['profondeurArticle'],
                 'poids' => $validatedData['poidsArticle'],
                 'quantite_disponible' => $validatedData['quantiteArticle'],
-                'date_publication' => now(), // Utiliser now() pour obtenir la date actuelle
                 'is_en_vedette' => $validatedData['enVedette'],
                 'is_sensible' => $validatedData['flouter'],
                 'is_alimentaire' => $validatedData['typePiece'],
                 'is_unique' => $validatedData['pieceUnique'],
-                'couleur' => 'brun marde', // Vous pouvez le modifier selon vos besoins
             ]);
 
             /* 5. Stockage en BD du nouvelle article */
@@ -291,8 +294,8 @@ class ArticleController extends Controller
             $newsignalement = Signalement::create([
                 "id_user" => Auth::user()->id,
                 "id_article" => $validatedData["idArticle"],
-                "date" => now(),
-                "description" => $validatedData["signaleDescription"]
+                "description" => $validatedData["signaleDescription"],
+                "actif" => 1
             ]);
 
             /* Stockage en BD du nouvel article */
@@ -492,7 +495,6 @@ class ArticleController extends Controller
                 'is_sensible' => $validatedData['flouter'],
                 'is_alimentaire' => $validatedData['typePiece'],
                 'is_unique' => $validatedData['pieceUnique'],
-                'couleur' => 'brun marde', // Vous pouvez le modifier selon vos besoins
             ])) {
                 session()->flash('succesArticle', 'L\'article a bien été modifié');
             } else {
@@ -634,9 +636,37 @@ class ArticleController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Retrieve the specified resource from storage.
      */
-    public function destroy(article $article) {}
+    public function retrieve(Request $request) {
+
+        $idArticle = $request->input("id_article");
+        if ($idArticle != null) {
+            /* 1. Récupérer l'article en BD */
+            $article = Article::where("id_article", $idArticle)->first();
+
+            /* 2. Changer l'état (masqué aux clients) */
+            $article->id_etat = 2;
+
+            /* 3. Mettre à jour l'article en BD */
+            if ($article->save()) {
+                session()->flash('succes', 'Article récupéré.');
+
+                $notif = Notification::create([
+                    'id_type' => 11,
+                    'id_user' => $article->artiste->id_user,
+                    'date' => now(),
+                    'message' => $article->nom,
+                    'lien' => route('kiosque', ['idUser' => $article->artiste->id_user]),
+                    'visible' => 1
+                ]);
+
+                $notif->save();
+            }
+
+            return back();
+        }
+    }
 
     /**
      * Fonction pour filtrer les articles.

@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('villes', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->smallIncrements('id_ville');
-            $table->timestamps();
             $table->string('ville', 38);
         });
     }

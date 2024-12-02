@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('mots_cles', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->bigIncrements('id_mot_cle');
-            $table->timestamps();
             $table->string('mot_cle', 32);
         });
     }

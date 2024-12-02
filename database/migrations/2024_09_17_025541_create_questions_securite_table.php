@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('questions_securite', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->tinyIncrements('id_question');
-            $table->timestamps();
             $table->string('question');
         });
     }

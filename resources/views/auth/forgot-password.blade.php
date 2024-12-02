@@ -27,5 +27,14 @@
                 </div>
             </form>
         </div>
+        {{-- Erreur: pas de question définie --}}
+        @if (Session::has('question'))
+            <div class="h-fit w-fit sticky -bottom-10 right-0 ml-auto mr-2 mb-1 z-[1001]" role="alert">
+                @include('messages.messageFail', [
+                    'message' => Session::get('question'),
+                    'titre' => 'Question de sécurité',
+                ])
+            </div>
+        @endif
     </div>
 </x-guest-layout>
