@@ -421,7 +421,7 @@ class CommandeController extends Controller
                 'date' => now()->format('Y-m-d'),
                 'nom_artiste' => $artiste->nom_artiste,
                 'id_artiste' => $artiste->id_artiste,
-                'transaction_date' => $commande->date->format('Y-m-d'),
+                'transaction_date' => \Carbon\Carbon::parse($commande->date)->format('Y-m-d'),
                 'id_commande' => $commande->id_commande,
                 'stripe_session_id' => $commande->checkout_id,
                 'transactions' => $commande->transactions

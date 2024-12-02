@@ -112,6 +112,10 @@ class ProfileController extends Controller
             Session::flash('succes', 'Vos informations de facturation ont bel et bien été enregistrées. Veuillez rafraîchir la page pour voir les changements!');
         }
 
+        if(request()->query('successConnect') === 'true'){
+            Session::flash('succes', 'Vos informations de virements ont bel et bien été enregistrées. Vous commencerez maintenant à recevoire des paiements pour vos ventes.');
+        }
+
         if ($customer != null)
             $customer->invoice_settings->default_payment_method == null ? $card_info = null : $card_info = \Stripe\PaymentMethod::retrieve($customer->invoice_settings->default_payment_method)->card;
         else
@@ -280,7 +284,7 @@ class ProfileController extends Controller
         $lienCompte = \Stripe\AccountLink::create([
             'account' => $account->id,
             'refresh_url' => route('connect-refresh'),
-            'return_url' => route('profile.facturation') . '?success=true',
+            'return_url' => route('profile.facturation') . '?successConnect=true',
             'type' => 'account_onboarding'
         ]);
 
