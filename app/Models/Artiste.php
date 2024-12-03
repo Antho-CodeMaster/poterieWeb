@@ -66,7 +66,7 @@ class Artiste extends Model
 
                 // Notifier in-app pour avertir l'artiste qu'il perd ses accès
                 $notif = Notification::create([
-                    'id_type' => 6,
+                    'id_type' => 7,
                     'id_user' => $this->id_user,
                     'date' => now(),
                     'message' => '',

@@ -45,12 +45,18 @@
                     <tr>
                         <td>{{ $transaction->article->nom }}</td>
                         <td>{{ $transaction->quantite }}</td>
-                        <td>{{ $transaction->prix_unitaire }}</td>
-                        <td>{{ $transaction->prix_unitaire *  $transaction->quantite}}</td>
+                        <td>{{number_format($transaction->prix_unitaire ,2,'.',' ')}}$</td>
+                        <td>{{ number_format($transaction->prix_unitaire *  $transaction->quantite,2,'.',' ')}}$</td>
                     </tr>
                 @endforeach
 
                 <!-- End loop -->
+                <tr>
+                    <td>Aide à la livraison</td>
+                    <td></td>
+                    <td></td>
+                    <td>{{number_format($livraison,2,'.',' ') }}$</td>
+                </tr>
             </table>
         </div>
 

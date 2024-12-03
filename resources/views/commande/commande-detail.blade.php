@@ -103,9 +103,10 @@
     {{-- Le total de remboursement doit être ajouté --}}
     <div class="w-3/4 m-auto my-14 flex text-center text-xl font-bold">
         <p class="w-1/4">Sous-total : {{ number_format($grandTotal, 2, ',', ' ') }} $</p>
+        <p class="w-1/4">Frais de livraison : 10 $</p>
         <p class="w-1/4">TPS : {{ number_format($grandTotal * 0.05, 2, ',', ' ') }} $</p>
         <p class="w-1/4">TVQ : {{ number_format($grandTotal * 0.09975, 2, ',', ' ') }} $</p>
-        <p class="w-1/4">Total : {{ number_format($grandTotal * 1.14975, 2, ',', ' ') }} $</p>
+        <p class="w-1/4">Total : {{ number_format(($grandTotal + 10) * 1.14975, 2, ',', ' ') }} $</p>
     </div>
 
 

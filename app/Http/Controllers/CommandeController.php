@@ -415,7 +415,8 @@ class CommandeController extends Controller
                 $itemsByArtist[$artistId][] = $transaction;
             }
         }
-
+        $nbArt = count($itemsByArtist);
+        $livraison = 10/$nbArt;
         if(array_key_exists($artiste->id_artiste,$itemsByArtist)){
             $data = [
                 'date' => now()->format('Y-m-d'),
@@ -424,7 +425,8 @@ class CommandeController extends Controller
                 'transaction_date' => \Carbon\Carbon::parse($commande->date)->format('Y-m-d'),
                 'id_commande' => $commande->id_commande,
                 'stripe_session_id' => $commande->checkout_id,
-                'transactions' => $commande->transactions
+                'transactions' => $itemsByArtist[$artiste->id_artiste], #$commande->transactions
+                'livraison' => $livraison,
             ];
 
 
