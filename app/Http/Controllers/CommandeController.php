@@ -241,6 +241,12 @@ class CommandeController extends Controller
             'date' => now()
         ]);
 
+        //Décrémentation automatique des quantités disponnibles des articles
+        foreach($commande->transactions as $transaction){
+            $transaction->article->quantite_disponible -= $transaction->quantite;
+            $transaction->article->save();
+        }
+
         //Envoi des reçus
 
         $urlFacture = $charge->receipt_url;
