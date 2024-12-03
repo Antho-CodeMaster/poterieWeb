@@ -89,6 +89,7 @@ window.addToCart = function(articleId) {
         }
 
         document.getElementById("basketCount").innerHTML = data.basketCount;
+        document.getElementById("basketCount").classList.remove("invisible");
 
         console.log(data.basketCount);
     })

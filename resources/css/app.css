@@ -27,7 +27,7 @@ body {
 }
 
 .navTitre {
-    @apply text-titre font-titre text-beige;
+    @apply text-titre font-titre text-darkGrey;
     font-family: "Newsreader", serif;
     font-weight: 400;
     letter-spacing: 0.1em;
@@ -85,7 +85,7 @@ body {
 }
 
 .content-height {
-    height: calc(100vh - 48px - 22px);
+    height: calc(100vh - 48px - 26px);
 }
 
 /* Style pour le filtre (prix) de la page "Tous mes articles" */

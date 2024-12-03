@@ -84,14 +84,6 @@ Route::controller(TransactionController::class)->group(function () {
     Route::post('/easypost/events', [TransactionController::class, 'updateWithWebHook']);
 });
 
-Route::get('/buttons', function () {
-    return view('buttons');
-})->name('buttons');
-
-Route::get('/erreur', function () {
-    return view('erreur');
-})->name('erreur');
-
 Route::middleware(['auth', TwoFactorAuthMiddleware::class])->group(function () {
     Route::controller(ProfileController::class)->group(function () {
         Route::get('/profil/edit', 'edit')->name('profile.edit');
@@ -146,8 +138,13 @@ Route::post('/2fa/verif', [TwoFactorController::class,'verify'])->name('2fa.veri
 Route::get('/recherche', [ArticleController::class, 'getSearch'])->name('recherche.getSearch');
 
 
-Route::view('/contact', 'contact')->name('contact');
-Route::view('/about-us', 'apropos')->name('apropos');
+Route::view('/contact', 'static_pages.contact')->name('contact');
+Route::view('/a-propos', 'static_pages.apropos')->name('apropos');
+Route::view('/conditions', 'static_pages.conditions')->name('conditions');
+Route::view('/politique', 'static_pages.politique')->name('politique');
+Route::view('/buttons', 'buttons')->name('buttons');
+Route::view('/erreur', 'erreur')->name('erreur');
+Route::view('/cookies/deny', 'errors.cookies')->name('cookie_error');
 
 /* Route lié à l'utilisateur */
 Route::controller(UserController::class)->group(function () {

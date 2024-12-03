@@ -113,7 +113,7 @@ class ProfileController extends Controller
         }
 
         if(request()->query('successConnect') === 'true'){
-            Session::flash('succes', 'Vos informations de virements ont bel et bien été enregistrées. Vous commencerez maintenant à recevoire des paiements pour vos ventes.');
+            Session::flash('succes', 'Vos informations de virements ont bel et bien été enregistrées. Vous commencerez maintenant à recevoir des paiements pour vos ventes.');
         }
 
         if ($customer != null)

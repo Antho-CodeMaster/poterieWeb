@@ -46,6 +46,11 @@
                     <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                 </div>
 
+                <div class="mb-4 flex items-center gap-2">
+                    <input type="radio" name="conditions" required>
+                    <label for="conditions">J'ai lu et j'accepte la <a class="text-blue-600 hover:underline" href="{{ route('politique') }}" target="_blank">politique de confidentialité</a> et les <a class="text-blue-600 hover:underline" href="{{ route('conditions') }}" target="_blank">conditions
+                            d'utilisation</a>.</label>
+                </div>
                 <!-- Register Button -->
                 <div class="text-center my-8">
                     <button class="w-64 mx-auto bg-[#444444] text-[#F4F0EC] py-2 rounded">
@@ -61,8 +66,9 @@
 
                 <!-- Google Login -->
                 <div class="text-center my-8">
-                    <a class="w-64 py-2 mx-auto bg-[#444444] text-[#F4F0EC] rounded flex justify-center gap-4 items-center" href="{{ route('login.google') }}">
-                        <img class="w-8 h-8" src="https://pluspng.com/img-png/google-logo-png-open-2000.png"/>
+                    <a class="w-64 py-2 mx-auto bg-[#444444] text-[#F4F0EC] rounded flex justify-center gap-4 items-center"
+                        href="{{ route('login.google') }}">
+                        <img class="w-8 h-8" src="https://pluspng.com/img-png/google-logo-png-open-2000.png" />
                         {{ __('Inscription Google') }}
                     </a>
                 </div>
