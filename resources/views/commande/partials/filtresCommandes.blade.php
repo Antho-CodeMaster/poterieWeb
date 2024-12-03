@@ -1,7 +1,7 @@
-<div class="flex justify-between w-full mt-1.5">
+<div class="flex justify-between mt-1.5">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Barre de recherche -->
-    <div class="filter-item">
+    <div class="filter-item mr-3">
         <label for="search" class="block textPetit-dark font-medium">Rechercher par nom de client ou d'article</label>
         <div class="w-[300px] h-[39px] py-auto flex border rounded border-black ">
             <input class="w-full border-0 focus:border-0 focus:shadow-none rounded h-full" type="text"
@@ -45,11 +45,16 @@
             </select>
         </div>
 
-        <input type="hidden" id="idArtiste" value="{{Auth::id()}}">
+        <input type="hidden" id="idArtiste" value="{{ Auth::id() }}">
 
-        {{-- Clear filtre --}}
-        <x-button.red.empty type="submit" id="clearFiltre" value="0" class="w-[200px]">
+        {{-- Clear filtre visible sur grands écrans --}}
+        <x-button.red.empty type="submit" id="clearFiltre" value="0" class="w-[200px] lg:block hidden">
             Effacer les filtres
         </x-button.red.empty>
+
+        {{-- Trash visible sur petits écrans --}}
+        <x-button.red.trash type="submit" id="clearFiltre2" value="0" class="lg:hidden block">
+        </x-button.red.trash>
+
     </div>
 </div>

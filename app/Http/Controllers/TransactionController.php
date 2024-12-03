@@ -178,7 +178,7 @@ class TransactionController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Fonction pour afficher la vue du form pour traiter une transaction
      */
     public function edit($idTransaction)
     {
@@ -205,9 +205,14 @@ class TransactionController extends Controller
         $trackingId = $transaction->trackingId_easypost;
 
         /* 2. Requête à l'api EasyPost pour récupérer le statut */
-        $statut = $this->easyPost->getStatus($trackingId);
+        try {
+            $statut = $this->easyPost->getStatus($trackingId);
+        } catch (Exception $e) {
+            session()->flash("tracker", "Statut : " . $e->getMessage());
+            return back();
+        }
 
-        // Déterminer le nouvel état en fonction du statut
+        /* 3. Déterminer le nouvel état en fonction du statut */
         switch ($statut) {
             case 'pre_transit':
             case 'in_transit':
@@ -221,8 +226,7 @@ class TransactionController extends Controller
             case 'error':
                 return 5; # Statut annulé
             default:
-                Log::warning("Statut inconnu retourné par EasyPost: {$statut}"); # Statut inconnu
-                return null;
+                session()->flash("tracker", "Statut inconnu");
         }
     }
 
@@ -249,7 +253,12 @@ class TransactionController extends Controller
         $trackingId = $transaction->trackingId_easypost;
 
         /* 2. Requête à l'api EasyPost pour récupérer la date de réception prévue */
-        $estimatedDelivery = $this->easyPost->getEstimatedDelivery($trackingId);
+        try {
+            $estimatedDelivery = $this->easyPost->getEstimatedDelivery($trackingId);
+        } catch (Exception $e) {
+            session()->flash("tracker", "Date de réception prévue : " . $e->getMessage());
+            return back();
+        }
 
         /* 3. Retourne la date de réception prévue sous le bon format */
         return $estimatedDelivery;
@@ -278,7 +287,12 @@ class TransactionController extends Controller
         $trackingId = $transaction->trackingId_easypost;
 
         /* 2. Requête à l'api EasyPost pour récupérer la date de réception livré */
-        $dateDelivery = $this->easyPost->getDeliveryDate($trackingId);
+        try {
+            $dateDelivery = $this->easyPost->getDeliveryDate($trackingId);
+        } catch (Exception $e) {
+            session()->flash("tracker", "Date de réception effective : " . $e->getMessage());
+            return back();
+        }
 
         /* 3. Retourne la date de réception livré sous le bon format */
         return $dateDelivery;
@@ -293,7 +307,7 @@ class TransactionController extends Controller
         $dateDelivery = $this->getDeliveryDate($transaction);
 
         /* 2. Mettre à jour la date de réception livré en fonction de la date de livraison*/
-        if ($dateDelivery != 'Not delivered yet' && $dateDelivery != null) { # Si une date est retourné
+        if ($dateDelivery != 'Pas encore livré' && $dateDelivery != null) { # Si une date est retourné
             $transaction->update([
                 'date_reception_effective' => $dateDelivery,
             ]);
@@ -313,7 +327,12 @@ class TransactionController extends Controller
         $trackingId = $transaction->trackingId_easypost;
 
         /* 2. Requête à l'api EasyPost pour récupérer le public URL */
-        $publicURL = $this->easyPost->getTrackerURL($trackingId);
+        try {
+            $publicURL = $this->easyPost->getTrackerURL($trackingId);
+        } catch (Exception $e) {
+            session()->flash("tracker", "Tracker URL : " . $e->getMessage());
+            return back();
+        }
 
         /* 3. Retourne le public URL */
         return $publicURL;
@@ -326,7 +345,12 @@ class TransactionController extends Controller
     public function updateWithWebHook(Request $request)
     {
         /* 1. Récupère le trackingId de l'évenement */
-        $trackingId = $this->easyPost->getTrackerEvent($request);
+        try {
+            $trackingId = $this->easyPost->getTrackerEvent($request);
+        } catch (Exception $e) {
+            session()->flash("Webhook", $e->getMessage());
+            return back();
+        }
 
         /* 2. Recherche la transaction en BD lié à ce trackingId */
         $transaction = Transaction::where("trackindId_easypost", $trackingId);
@@ -466,7 +490,7 @@ class TransactionController extends Controller
                 }
 
                 # Création du tracker
-                try{
+                try {
                     $tracker = $this->easyPost->createTracker(
                         $validatedData['codeRefLivraison'],
                         $compagnieNom
@@ -476,18 +500,19 @@ class TransactionController extends Controller
                     $transaction->update([
                         "trackingId_easypost" => $tracker->id,
                     ]);
-                }catch(Exception $e){
-                    throw ValidationException::withMessages([
-                        'code' => 'Code de livraison eroné'
-                    ]);
+                } catch (Exception $e) {
+                    session()->flash("tracker", $e->getMessage()); # Créer un message de session avec l'erreur
+                    return back(); # Retourne à la page précédente avec l'erreur
                 }
 
                 /* 6. Mise à jour de la transaction */
+
+                $this->setEstimatedDeliveryDate($transaction);
+                $this->setStatut($transaction);
+
                 $transaction->update([
                     'code_ref_livraison' => $validatedData['codeRefLivraison'],
                     'id_compagnie' => $validatedData['compagnieLivraison'],
-                    'date_reception_prevue' => $this->getEstimatedDeliveryDate($transaction),
-                    'id_etat' => $this->getStatut($transaction),
                 ]);
 
                 /* 7. Retour à la vue "mesTransactions" */

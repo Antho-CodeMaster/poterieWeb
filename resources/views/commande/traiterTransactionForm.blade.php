@@ -24,7 +24,8 @@
                                     <p class="text-[200%] cursor-pointer">&#9432;</p>
                                 </x-tooltip>
                             </div>
-                            <p class="textMoyen-dark text-wrap w-full mb-1 text-justify">Veuillez téléverser une photo du colis et une photo du numéro de suivi. Elles serviront de preuves
+                            <p class="textMoyen-dark text-wrap w-full mb-1 text-justify">Veuillez téléverser une photo
+                                du colis et une photo du numéro de suivi. Elles serviront de preuves
                                 de livraison. Assurez-vous que les photos soient prises dans un environnement éclairé,
                                 bien
                                 cadré et à l'intérieur du cadre de la photo.</p>
@@ -161,7 +162,7 @@
                     {{-- Erreur de la date de livraison --}}
                     @if (Session::has('erreurDateLivraison'))
                         @include('messages.messageFail', [
-                            'message' => Session::get('erreurEtatTransaction'),
+                            'message' => Session::get('erreurDateLivraison'),
                             'titre' => 'Status de transaction',
                         ])
                     @endif
@@ -172,6 +173,16 @@
                             @include('messages.messageFail', [
                                 'message' => Session::get('errorInactif'),
                                 'titre' => 'Artiste pas trouvée',
+                            ])
+                        </div>
+                    @endif
+
+                    {{-- Erreur avec le Tracker --}}
+                    @if (Session::has('tracker'))
+                        <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1" role="alert">
+                            @include('messages.messageFail', [
+                                'message' => Session::get('tracker'),
+                                'titre' => 'Erreur de suivie',
                             ])
                         </div>
                     @endif
