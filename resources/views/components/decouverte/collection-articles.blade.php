@@ -59,7 +59,7 @@
                                     <button class="w-full add-to-cart overflow-hidden whitespace-nowrap border-darkGrey border rounded-[24px] h-[32px] text-darkGrey font-bold" x-data="{ajoute: {{$ajoute ? 'true' : 'false'}}}" @click="addToCart({{ $article->id_article }}); ajoute = !ajoute"
                                         :class="ajoute ? 'added':''">
                                         <div value="{{ $article->id_article }}" name="id_article"
-                                            class="default m-auto">
+                                            class="default">
                                             Ajouter au panier
                                         </div>
                                         <div class="success">Ajouté</div>

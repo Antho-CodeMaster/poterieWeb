@@ -276,7 +276,7 @@ gap: 2px;
     transform: scale(var(--s, .97));
     transition: transform .3s, box-shadow .3s;
     .default {
-        padding-left: 16px;
+
         position: relative;
         opacity: var(--o, 1);
         transform: scale(var(--s, 1));
