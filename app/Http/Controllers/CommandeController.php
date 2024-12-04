@@ -30,6 +30,7 @@ class CommandeController extends Controller
         if(Auth::check()){
             \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
 
+            /* 1. Récupère tous les commandes fait par l'utilisateur et qui ont été checkout */
             $commandes = Commande::where('id_user', Auth::id())
             ->where('is_panier', false)
             ->get();
@@ -47,6 +48,8 @@ class CommandeController extends Controller
 
 
                 $hasActiveTransaction = false;
+
+
                 foreach ($commande->transactions as $transaction) {
                     $etat = $transaction->etat_transaction->etat;
                     if ($etat === 'En cours' || $etat === 'Traité') {

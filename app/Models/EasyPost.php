@@ -20,13 +20,31 @@ class EasyPost extends Model
     #===========================================#
 
     private $client;
+
+    private $webhookURL;
     private $secret;
+
     private $hookId;
 
     public function __construct()
     {
-        $this->client = new EasyPostClient(env('EASYPOST_API_KEY')); // Utilisation d'un fichier .env pour stocker la clé
-        $this->secret = env('EASYPOST_WEBHOOK_SECRET');
+        $this->client = new EasyPostClient(env('EASYPOST_API_KEY')); # Utilisation d'un fichier .env pour stocker la clé
+
+        $this->webhookURL = "http://artterreceramique.ca/easypost/events";
+        $this->secret = env('EASYPOST_WEBHOOK_SECRET'); # Initialisation du secret à partir du fichier .env
+
+        // Recherche les webhooks existants pour l'URL donnée
+        $webhooks = $this->client->webhook->all(); // Récupère tous les webhooks
+        $existingWebhook = collect($webhooks->webhooks)->firstWhere('url', $this->webhookURL);
+
+        if ($existingWebhook) {
+            // Si un webhook existe déjà, récupère son ID
+            $this->hookId = $existingWebhook->id;
+        } else {
+            // Sinon, crée un nouveau webhook
+            $newWebhook = $this->createWebHook($this->webhookURL, $this->secret);
+            $this->hookId = $newWebhook->id;
+        }
     }
 
     #===========================================#
@@ -38,7 +56,7 @@ class EasyPost extends Model
     {
         // Vérifications des paramètres
         if (empty($deliveryCode)) {
-            throw new Exception('Code de livraison manquante');
+            throw new Exception('Code de livraison manquant');
         }
 
         if (empty($carrier)) {
@@ -68,6 +86,10 @@ class EasyPost extends Model
     // Récupération du tracker à l'aide de son Id de tracker
     private function getTracker($trackingId)
     {
+        if (empty($trackingId)) {
+            throw new Exception('Code de tracking manquant');
+        }
+
         $tracker = $this->client->tracker->retrieve($trackingId);
 
         // Vérifier si le tracker a été récupéré correctement
@@ -232,8 +254,40 @@ class EasyPost extends Model
     #                  EVENTS                   #
     #===========================================#
 
-    // Récupère un Event de tracker avec son Id de tracking et le renvoie sous format JSON
-    public function getTrackerEvent(Request $request)
+    // Récupère tous les évenements relié à un Webhook
+    public function getAllEvents()
+    {
+        $events = $this->client->event->all([
+            'page_size' => 5
+        ]);
+
+        if (empty($events) || !isset($events['events']) || count($events['events']) === 0) { # Si aucun évenement n'est retourné
+            throw new Exception('Aucun event n\'est associé à cette ID');
+        }
+
+        return $events;
+    }
+
+    // Récupère un événement particulier grâce à son ID
+    public function getEventByID($evtID)
+    {
+        // Vérifie que l'ID est valide
+        if (empty($evtID)) {
+            throw new Exception('L\'ID de l\'événement est manquant ou invalide.');
+        }
+
+        $event = $this->client->event->retrieve($evtID);
+
+        // Vérifie si l'événement existe
+        if (empty($event) || !isset($event->id)) {
+            throw new Exception('Aucun événement n\'est associé à cet ID.');
+        }
+
+        return $event;
+    }
+
+    // Function qui gère tout
+    public function getTrackerFromEvent(Request $request)
     {
         # Vérifier la signature du webhook pour valider que la requête vient bien de EasyPost
         if ($request->header('X-EasyPost-Webhook-Signature') !== $this->secret) {
@@ -241,15 +295,21 @@ class EasyPost extends Model
         }
 
         # Récupération des événements envoyés par EasyPost
-        $events = $request->input('events');
-
-        # Vérifier que l'événement concerne une mise à jour de tracker
-        if (str_contains($events['description'], 'updated')) {
-            $trackingId = $events['object']['id'];  // Récupère l'id du tracker relié à cet évenement
-            return $trackingId;
+        $event = json_decode($request->getContent(), true);
+        if (!is_array($event)) {
+            throw new Exception('Le contenu de la requête est invalide ou mal formé.');
         }
 
-        # Si aucun événement n'est lié à une mise à jour de tracker, lever une exception
-        throw new Exception('Aucun événement de mise à jour de tracker trouvé.');
+        # Si l'évenement ne contient pas de description ou que la desciption n'est pas de type "updated"
+        if (!isset($event['description']) || !str_contains($event['description'], 'updated')) {
+            throw new Exception('Aucun événement de mise à jour de tracker trouvé.');
+        }
+
+        # Si l'évenement ne contient pas de id dans son result throw une erreur
+        if (!isset($event['result']['id']) || empty($event['result']['id'])) {
+            throw new Exception('L\'événement ne contient pas d\'ID de tracker.');
+        }
+
+        return $event['result']['id']; # Retourne le id tracker
     }
 }

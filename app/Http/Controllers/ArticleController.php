@@ -83,7 +83,7 @@ class ArticleController extends Controller
     }
 
     /* Form pour l'ajout d'un article */
-    public function create()
+    public function AddArticleForm()
     {
         $artiste = Artiste::where('id_user', Auth::user()->id)->first();
 
