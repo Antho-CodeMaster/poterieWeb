@@ -187,6 +187,16 @@
                         </div>
                     @endif
 
+                    {{-- Erreur avec le Tracker --}}
+                    @if (Session::has('failTransaction'))
+                        <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1" role="alert">
+                            @include('messages.messageFail', [
+                                'message' => Session::get('failTransaction'),
+                                'titre' => 'Transaction',
+                            ])
+                        </div>
+                    @endif
+
                     {{-- Erreur de photos --}}
                     @for ($i = 1; $i <= 3; $i++)
                         @if ($errors->has("photo{$i}"))

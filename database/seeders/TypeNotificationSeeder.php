@@ -60,5 +60,32 @@ class TypeNotificationSeeder extends Seeder
         DB::table('types_notification')->insert([
             'description' => 'Bienvenue chez Artterre! Pour plus de sécurité, veuillez configurer votre question de sécurité et l\'authentification à deux facteurs et via les paramètres.',
         ]);
+
+        /* Notification pour le traitement des transactions */
+        # Client
+        DB::table('types_notification')->insert([
+            'description' => 'L\'artiste a traité votre transaction: [1]. Elle est donc maintenant en cours de livraison',
+        ]);
+
+        DB::table('types_notification')->insert([
+            'description' => 'Une erreur lors de la livraison de la transaction: [1] s\'est produite. Elle a donc été annulé par le système. Vous serez remboursé lorsqu\'un modérateur aura vérifié la source du problème.',
+        ]);
+
+        DB::table('types_notification')->insert([
+            'description' => 'Votre transaction: [1] a été traité par la compagnie de livraison. Elle est maintenant en chemin vers le point de livraison',
+        ]);
+
+        DB::table('types_notification')->insert([
+            'description' => 'Votre transaction: [1] a été livré chez vous',
+        ]);
+
+        # Artiste
+        DB::table('types_notification')->insert([
+            'description' => 'La transaction: [1] a été livré chez le client',
+        ]);
+
+        DB::table('types_notification')->insert([
+            'description' => 'Une erreur lors de la livraison de la transaction: [1] s\'est produite. Elle a donc été annulé par le système. Vous ne percevrez pas de montant pour cette transaction. Un modérateur se chargera aussi de vérifié la transaction et la nature de l\'erreur',
+        ]);
     }
 }

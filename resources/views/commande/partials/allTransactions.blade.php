@@ -174,13 +174,9 @@
                             </div>
                             <div class="w-full flex flex-col gap-1">
                                 <p class="textMoyen-dark font-bold">Numéro de suivi:</p>
-                                @if ($transaction->id_etat == 3)
+                                @if ($transaction->id_etat == 3 || $transaction->id_etat == 4)
                                     <p class="textMoyen-dark text-nowrap text-ellipsis overflow-hidden">
                                         {{ $transaction->code_ref_livraison }}
-                                    </p>
-                                @elseif ($transaction->id_etat == 3)
-                                    <p class="textMoyen-dark text-nowrap text-ellipsis overflow-hidden">
-                                        Déja livré
                                     </p>
                                 @else
                                     <p class="textMoyen-dark text-nowrap text-ellipsis overflow-hidden">
@@ -192,10 +188,10 @@
 
                         {{-- Affiche un bouton pour la suivi de la livraison seulement si c'est une transaction traitée --}}
                         @if ($transaction->id_etat == 3)
-                            <div class="grow h-fit flex justify-end rounded-[12px]">
+                            <div class="flex items-center grow rounded">
                                 <a type="action" href="{{ $urlArray[$transaction->id_transaction] }}"
-                                    class="textMoyen-dark font-bold rounded-[12px] p-sectionX p-sectionY bg-blue-300 hover:bg-blue-400 hover:text-[#ffffff] transition-all duration-[198] ease-in-out"
-                                    target="_blank">Suivre la livraison </a>
+                                    class="textMoyen-dark font-bold rounded h-10 p-sectionX p-sectionY w-full text-center bg-blue-300 hover:bg-blue-400 hover:text-[#ffffff] transition-all duration-[198] ease-in-out"
+                                    target="_blank">Suivre la livraison</a>
                             </div>
                         @endif
 

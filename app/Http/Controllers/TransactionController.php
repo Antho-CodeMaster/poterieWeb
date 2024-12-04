@@ -10,6 +10,7 @@ use App\Models\Compagnie_livraison;
 use App\Models\Photo_livraison;
 use App\Models\Photo_oeuvre;
 use App\Models\EasyPost;
+use App\Models\Notification;
 
 use EasyPost\Tracker;
 use Exception;
@@ -47,6 +48,11 @@ class TransactionController extends Controller
      */
     public function mesTransactions($idUser)
     {
+        /* 0. S'assurer que c'est le bon artiste qui viste la page */
+        if ($idUser != Auth::id()) {
+            return redirect("/");
+        }
+
         /* 1. Récupérer le id de l'artiste */
         $idArtiste = Artiste::where('id_user', $idUser)->pluck('id_artiste')->first();
 
@@ -185,10 +191,15 @@ class TransactionController extends Controller
         /* 1. Récupérer la transaction concernée */
         $transaction = Transaction::findOrFail($idTransaction);
 
-        /* 2. Envoyer la liste de compagnie de livraison */
+        /* 2. S'assurer que c'est le bon artiste qui viste la page */
+        if ($transaction->article->artiste->id_user != Auth::id()) {
+            return redirect("/");
+        }
+
+        /* 3. Envoyer la liste de compagnie de livraison */
         $compagnies = Compagnie_livraison::all();
 
-        /* 3. Retourner la vue avec les variable transaction et compagnie */
+        /* 4. Retourner la vue avec les variable transaction et compagnie */
         return view("commande.traiterTransactionForm")->with("transaction", $transaction)->with("compagnies", $compagnies);
     }
 
@@ -239,9 +250,13 @@ class TransactionController extends Controller
         $statut = $this->getStatut($transaction);
 
         /* 2. Mettre à jour l'état en fonction du statut */
-        $transaction->update([
+        $transactionUpdated = $transaction->update([
             'id_etat' => $statut,
         ]);
+
+        if (!$transactionUpdated) {
+            throw new Exception("Erreur lors de la mise à jour de l'état de la transaction en base de donnée");
+        }
     }
 
     /**
@@ -273,9 +288,13 @@ class TransactionController extends Controller
         $estimatedDelivery = $this->getEstimatedDeliveryDate($transaction);
 
         /* 2. Mettre à jour la date de réception prévue en fonction de la date estimée de livraison*/
-        $transaction->update([
+        $transactionUpdated = $transaction->update([
             'date_reception_prevue' => $estimatedDelivery,
         ]);
+
+        if (!$transactionUpdated) {
+            throw new Exception("Erreur lors de la mise à jour de la date de réception prévue de la transaction en base de donnée");
+        }
     }
 
     /**
@@ -308,13 +327,17 @@ class TransactionController extends Controller
 
         /* 2. Mettre à jour la date de réception livré en fonction de la date de livraison*/
         if ($dateDelivery != 'Pas encore livré' && $dateDelivery != null) { # Si une date est retourné
-            $transaction->update([
+            $transactionUpdated = $transaction->update([
                 'date_reception_effective' => $dateDelivery,
             ]);
         } else { # Si aucune date n'est retourné
-            $transaction->update([
+            $transactionUpdated = $transaction->update([
                 'date_reception_effective' => null,
             ]);
+        }
+
+        if (!$transactionUpdated) {
+            throw new Exception("Erreur lors de la mise à jour de la date de réception effective de la transaction en base de donnée");
         }
     }
 
@@ -346,22 +369,106 @@ class TransactionController extends Controller
     {
         /* 1. Récupère le trackingId de l'évenement */
         try {
-            $trackingId = $this->easyPost->getTrackerEvent($request);
+            # Récupère le trackingId à partir de l'événement
+            $trackingId = $this->easyPost->getTrackerFromEvent($request);
         } catch (Exception $e) {
-            session()->flash("Webhook", $e->getMessage());
-            return back();
+            Log::error('Erreur lors de la récupération du tracker : ' . $e->getMessage()); # Envoie de l'erreur en log
+            return response()->json([
+                'error Tracker' => $e->getMessage(),
+            ], 401);
         }
 
         /* 2. Recherche la transaction en BD lié à ce trackingId */
-        $transaction = Transaction::where("trackindId_easypost", $trackingId);
+        try {
+            $transaction = Transaction::where("trackingId_easypost", $trackingId)->first();
+        } catch (Exception $e) {
+            Log::error('Erreur lors de la recherche de la transaction : ' . $e->getMessage()); # Envoie de l'erreur en log
+            return response()->json([
+                'error Transaction' => $e->getMessage(),
+            ], 409);
+        }
 
         /* 3. Mettre à jour tous ses information en fonction des données reçues */
-        $this->setStatut($transaction); # Met à jour le statut
-        $this->setEstimatedDeliveryDate($transaction); # Met à jour la date de livraison prévue
-        $this->setDeliveryDate($transaction); # Met à jour la date de livraison effective
+        try {
+            $this->setStatut($transaction); # Met à jour le statut
+            $this->setEstimatedDeliveryDate($transaction); # Met à jour la date de livraison prévue
+            $this->setDeliveryDate($transaction); # Met à jour la date de livraison effective
+        } catch (Exception $e) {
+            Log::error('Erreur lors de la mise à jour de la transaction : ' . $e->getMessage()); # Envoie de l'erreur en log
+            return response()->json([
+                'error Transaction BD' => $e->getMessage(),
+            ], 402);
+        }
 
-        dump("Event recu \n" . "TrackingId : " . $trackingId);
+        /* 4. Envoyé une notification pour signalé les changements */
+        // Client
+
+        # Correspondance des statuts internes avec les types de notifications
+        $notificationClientConfig = [
+            3 => 13, // Statut traité
+            4 => 16, // Statut livré
+            5 => 14, // Statut annulé
+        ];
+
+        # Récupérer le statut
+        $statut = $this->getStatut($transaction);
+
+        # Créer une notification si le statut est valide
+        if (isset($notificationClientConfig[$statut])) {
+            Notification::firstOrCreate(
+                [
+                    'lien' => '/commande/' . $transaction->id_commande,
+                    'id_user' => $transaction->commande->id_user,
+                    'id_type' => $notificationClientConfig[$statut],
+                    'message' => $transaction->article->nom,
+                ],
+                [
+                    'date' => now(),
+                    'visible' => true,
+                ]
+            );
+        } else {
+            Log::error('Erreur lors de la création de la notification pour le client'); # Envoie de l'erreur en log
+        }
+
+        //Artiste
+
+        # Correspondance des statuts internes avec les types de notifications
+        $notificationArtisteConfig = [
+            4 => 17, // Statut livré
+            5 => 18, // Statut annulé
+        ];
+
+        // Récupérer le statut
+        $statut = $this->getStatut($transaction);
+
+        // Créer une notification si le statut est valide
+        if (isset($notificationArtisteConfig[$statut])) {
+            Notification::firstOrCreate(
+                [
+                    'lien' => '/commande/' . $transaction->id_commande,
+                    'id_user' => $transaction->article->artiste->id_user, # Puisque la requête ne vient pass du site il faut préciser quelle user précisement
+                    'id_type' => $notificationClientConfig[$statut],
+                    'message' => $transaction->article->nom,
+                ],
+                [
+                    'date' => now(),
+                    'visible' => true,
+                ]
+            );
+        } else {
+            Log::error('Erreur lors de la création de la notification pour l\'artiste'); # Envoie de l'erreur en log
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Transaction mise à jour avec succès',
+        ], 200);
     }
+
+    public function sendNotif() {}
+
+    public function PayArtiste() {}
 
     #===========================================#
     #       Fonctions update et stockage        #
@@ -506,16 +613,41 @@ class TransactionController extends Controller
                 }
 
                 /* 6. Mise à jour de la transaction */
+                try {
+                    $this->setEstimatedDeliveryDate($transaction);
+                    $this->setStatut($transaction);
+                } catch (Exception $e) {
+                    session()->flash('tracker',  $e->getMessage());
+                    return back();
+                }
 
-                $this->setEstimatedDeliveryDate($transaction);
-                $this->setStatut($transaction);
-
-                $transaction->update([
+                $transactionUpdated = $transaction->update([
                     'code_ref_livraison' => $validatedData['codeRefLivraison'],
                     'id_compagnie' => $validatedData['compagnieLivraison'],
                 ]);
 
-                /* 7. Retour à la vue "mesTransactions" */
+                if (!$transactionUpdated) {
+                    session()->flash('failTransaction', 'Erreur lors de la mise à jour de la transaction en Base de donnée');
+                    return back();
+                }
+
+
+                /* 7. Envoyé une notification au client pour signalé que le traitement a été fait */
+                # Créer une notification si le statut est valide
+                Notification::firstOrCreate(
+                    [
+                        'lien' => '/commande/' . $transaction->id_commande,
+                        'id_user' => $transaction->commande->id_user,
+                        'message' => $transaction->article->nom,
+                        'id_type' => 13,
+                    ],
+                    [
+                        'date' => now(),
+                        'visible' => true,
+                    ]
+                );
+
+                /* 8. Retour à la vue "mesTransactions" */
                 session()->flash('succesTransaction', 'La transaction a bien été traitée');
                 return redirect()->route('mesTransactions', ['idUser' => Auth::user()->id]);
             }

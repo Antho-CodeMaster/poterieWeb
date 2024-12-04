@@ -42,17 +42,17 @@ Route::controller(NotificationController::class)->group(function () {
 
 /* Routes liés à Article */
 Route::controller(ArticleController::class)->group(function () {
-    Route::post('/addArticle', 'store')->name('addArticle');
-    Route::get('/modifArticleForm/{idArticle}', 'showModifArticle')->name('modifArticleForm');
-    Route::get('/tousMesArticles', 'show')->name('tousMesArticles');
-    Route::patch('/deleteArticle', 'update')->name('deleteArticle');
-    Route::get('/addArticleForm', 'create')->name('addArticleForm');
-    Route::patch('/modifArticle', 'update')->name('modifArticle');
-    Route::post('/signaleArticle', 'store')->name('signaleArticle');
+    Route::post('/addArticle', 'store')->name('addArticle')->middleware(EnsureUserIsArtist::class);
+    Route::get('/modifArticleForm/{idArticle}', 'showModifArticle')->name('modifArticleForm')->middleware(EnsureUserIsArtist::class);
+    Route::get('/tousMesArticles', 'show')->name('tousMesArticles')->middleware(EnsureUserIsArtist::class);
+    Route::patch('/deleteArticle', 'update')->name('deleteArticle')->middleware(EnsureUserIsArtist::class);
+    Route::get('/addArticleForm', 'addArticleForm')->name('addArticleForm')->middleware(EnsureUserIsArtist::class);
+    Route::patch('/modifArticle', 'update')->name('modifArticle')->middleware(EnsureUserIsArtist::class);
+    Route::post('/signaleArticle', 'store')->name('signaleArticle')->middleware(EnsureUserIsArtist::class);
 
     /* Routes liées aux filtre */
-    Route::post('/articleFiltre', [ArticleController::class, 'articleFiltre'])->name('articleFiltre');
-    Route::post('/kiosqueFiltre', [ArticleController::class, 'kiosqueFiltre'])->name('kiosqueFiltre');
+    Route::post('/articleFiltre', [ArticleController::class, 'articleFiltre'])->name('articleFiltre')->middleware(EnsureUserIsArtist::class);
+    Route::post('/kiosqueFiltre', [ArticleController::class, 'kiosqueFiltre'])->name('kiosqueFiltre')->middleware(EnsureUserIsArtist::class);
 });
 
 /* Routes liées aux commandes*/
@@ -72,16 +72,16 @@ Route::controller(CommandeController::class)->group(function () {
 Route::controller(TransactionController::class)->group(function () {
     Route::get('/deleteThisArticle/{id}', 'destroy')->name('removeFromPanier');
     Route::post('/addArticleToPanier', 'store')->name('addArticleToPanier');
-    Route::get('/mesTransactions/{idUser}', [TransactionController::class, 'mesTransactions'])->name('mesTransactions');
-    Route::get('/traiterTransactionForm/{idTransaction}', [TransactionController::class, 'edit'])->name('traiterTransactionForm');
+    Route::get('/mesTransactions/{idUser}', [TransactionController::class, 'mesTransactions'])->name('mesTransactions')->middleware(EnsureUserIsArtist::class);
+    Route::get('/traiterTransactionForm/{idTransaction}', [TransactionController::class, 'edit'])->name('traiterTransactionForm')->middleware(EnsureUserIsArtist::class);
     Route::post('/traiterTransaction', [TransactionController::class, 'update'])->name('traiterTransaction');
     Route::post('/updateQuantite', 'updateQt')->name('update');
 
     /* Routes liées aux filtres */
-    Route::post('/transactionsFiltres', [TransactionController::class, 'commandesFiltre'])->name('commandesFiltre');
+    Route::post('/transactionsFiltres', [TransactionController::class, 'commandesFiltre'])->name('commandesFiltre')->middleware(EnsureUserIsArtist::class);
 
     /* Routes liées au WebHook EasyPost */
-    Route::post('/easypost/events', [TransactionController::class, 'updateWithWebHook']);
+    Route::get('/easypost/events', [TransactionController::class, 'updateWithWebHook']);
 });
 
 Route::get('/buttons', function () {
