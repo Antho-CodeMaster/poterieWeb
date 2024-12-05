@@ -28,7 +28,7 @@
                     <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1" role="alert">
                         @include('messages.messageFail', [
                             'message' => Session::get('tracker'),
-                            'titre' => 'Erreur de suivie',
+                            'titre' => 'Erreur de suivi',
                         ])
                     </div>
                 @endif

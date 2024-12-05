@@ -582,7 +582,7 @@ class TransactionController extends Controller
                 }
 
 
-                /* 5. Création d'un tracker EasyPost avec le nom de la compagnie et le numéro de suivie*/
+                /* 5. Création d'un tracker EasyPost avec le nom de la compagnie et le numéro de suivi*/
                 # Récupérer le nom de la compagnie de livraison
                 $compagnie = Compagnie_livraison::find($validatedData['compagnieLivraison']);
                 if (!$compagnie) {

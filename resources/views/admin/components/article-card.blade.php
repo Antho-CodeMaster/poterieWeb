@@ -1,5 +1,5 @@
 <div x-data='{openArticleModal: false}'
-    class="inline-block w-[300px] m-2 flex-shrink-0 overflow-hidden whitespace-nowrap bg-white shadow-md rounded-md">
+    class="inline-block w-[300px] h-[320px] m-2 flex-shrink-0 overflow-hidden whitespace-nowrap bg-white shadow-md rounded-md">
     <img src="/../img/{{ $article->photosArticle->path }}" alt="{{ $article->nom }}"
         class="w-full h-48 object-cover rounded-t-md cursor-pointer"
         @click=" $dispatch('open-article-modal');
@@ -55,11 +55,11 @@
         <div class="flex items-center gap-2">
             <img src="{{ asset($article->artiste->path_photo_profil ?? 'img/artistePFP/default_artiste.png') }}"
                 alt="{{ $article->artiste->nom_artiste }}" class="rounded-full w-[48px] h-[48px]">
-            <form class="hover:underline" method="get" action="{{ route('admin-utilisateurs') }}">
+            <form class="w-7/12" method="get" action="{{ route('admin-utilisateurs') }}">
                 <input type="hidden" name="query"
                     value="{{ $article->artiste->nom_artiste ?? $article->artiste->user->name }}">
 
-                <x-button.none.empty>{{ $article->artiste->nom_artiste ?? $article->artiste->user->name }}</x-button.none.empty>
+                <button class="hover:underline w-full text-left whitespace-nowrap text-ellipsis overflow-hidden" type="submit">{{ $article->artiste->nom_artiste ?? $article->artiste->user->name }}</button>
             </form>
             <a class="hover:underline flex w-fit items-center"
                 href="{{ route('kiosque', ['idUser' => $article->artiste->id_user]) }}" target="_blank">

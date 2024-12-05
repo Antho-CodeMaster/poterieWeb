@@ -76,7 +76,7 @@ class EasyPost extends Model
 
         // Vérification du contenu du tracker
         if (empty($tracker) || empty($tracker->id) || $tracker->tracking_code !== $deliveryCode) {
-            throw new Exception('Tracker attaché à aucune livraison ayant le code de suivie : ' . $deliveryCode);
+            throw new Exception('Tracker attaché à aucune livraison ayant le code de suivi : ' . $deliveryCode);
         }
 
         return $tracker;

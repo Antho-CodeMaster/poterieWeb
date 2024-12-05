@@ -112,7 +112,7 @@
                         <x-text-input id="codeRefLivraison"
                             class="col-span-4 {{ $errors->has('codeRefLivraison') ? 'color-borderError border-[2px]' : '' }}"
                             type="text" name="codeRefLivraison" required
-                            placeholder="Numéro de suivie de la livraison" value="{{ old('codeRefLivraison') }}" />
+                            placeholder="Numéro de suivi de la livraison" value="{{ old('codeRefLivraison') }}" />
                     </div>
 
                     {{-- Input caché de l'id de transaction --}}
@@ -182,7 +182,7 @@
                         <div class="h-fit w-fit sticky bottom-2 right-0 ml-auto mr-2 mb-1" role="alert">
                             @include('messages.messageFail', [
                                 'message' => Session::get('tracker'),
-                                'titre' => 'Erreur de suivie',
+                                'titre' => 'Erreur de suivi',
                             ])
                         </div>
                     @endif

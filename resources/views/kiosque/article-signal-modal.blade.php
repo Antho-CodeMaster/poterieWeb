@@ -20,7 +20,7 @@
 
 
                     <textarea name="signaleDescription" id="signaleDescription" rows="4" required
-                        class="w-[80%] rounded resize-none bg-gray-50" placeholder="Veuillez indquer la raison de votre signalement"></textarea>
+                        class="w-[80%] rounded resize-none bg-gray-50" placeholder="Veuillez indiquer la raison de votre signalement"></textarea>
 
                     <input type="hidden" x-bind:value="article.id_article" name="idArticle">
 
