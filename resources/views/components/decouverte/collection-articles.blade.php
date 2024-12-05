@@ -63,7 +63,7 @@
                                         @click="addToCart({{ $article->id_article }}); ajoute = !ajoute"
                                         :class="ajoute ? 'added' : ''">
                                         <div value="{{ $article->id_article }}" name="id_article"
-                                            class="default m-auto">
+                                            class="default">
                                             Ajouter au panier
                                         </div>
                                         <div class="success">Ajouté</div>
