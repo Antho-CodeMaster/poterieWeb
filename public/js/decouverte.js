@@ -76,7 +76,7 @@ window.addToCart = function(articleId) {
         if (response.ok) {
             return response.json();  // Return the parsed JSON if response is okay
         } else {
-            console.error("Erreur a l'ajout de l'article");
+            console.error("Erreur a l'ajout de l'article :" + response);
         }
     })
     .then((data) => {
